@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+                </head>
+    
+    <body>
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Spectrum resolution
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            There are two parameters that influence the way an acquired spectrum turns out. They are the 
+            dwell time and the number of data points. Both can be set in the acquisition settings of 
+            Insensitive's main window.
+            </p>
+            <p>
+            The dwell time or sampling interval <i>&tau;</i><sub>sample</sub> is the time delay between 
+            two data points. It determines the high frequency limit of the spectral resolution, called the 
+            Nyquist frequency. If <i>&tau;</i><sub>sample</sub> is smaller than 
+            1/(2<i>&omega;</i><sub>0</sub>) with <i>&omega;</i><sub>0</sub> being the oscillation's angular
+            frequency, the signal will oscillate several times between two adjacent data points and not be 
+            recorded. The signal is therefore mistaken for a lower frequency, the spectrum wraps around 
+            and the peak appears at a wrong position. A longer dwell time translates to a smaller 
+            frequency window being visible in the spectrum.
+            </p>
+            <center><img src="img_dwell_time.png" style="width:100%; max-width:455px;"></center>
+            <p>
+            With a constant dwell time the total number of data points <i>N</i> that is recorded 
+            determines the spectrum resolution. To resolve peaks in more detail, <i>N</i> must be 
+            raised. This can be done either by actually acquiring more data, or by simply appending
+            a string of zeros at the end of the <a href="fid.html">FID</a>, called <i>zero filling</i>. 
+            While this method does not increase the information encoded in the spectrum, i.e. it does not 
+            resolve more peaks than in the original data, it does smoothen the spectrum. Due to the 
+            algorithm of Fast <a href="fourier_transformation.html">Fourier Transformation</a> (FFT) the 
+            number of data points must be a power of two.
+            </p>
+            <center><img src="img_resolution.png" style="width:100%; max-width:454px;"></center>
+            <p>
+            The lowest frequency resolved in the spectrum is determined by the total detection time 
+            <i>N&tau;</i><sub>sample</sub>.
+            </p>
+            <p>
+            In addition, two factors that contribute to spectral resolution and cannot simply be adjusted
+            at the <a href="spectrometer.html">spectrometer</a> are spin <a href="relaxation.html">
+            relaxation</a>, which broadens the peaks, and the magnetic field strength. At higher fields
+            the <a href="energy_levels.html">energy levels</a> are more separated and the resolution of
+            individual peaks is increased.
+            </p>
+        </div>
+        
+    </body>
+</html>

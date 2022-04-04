@@ -1,0 +1,66 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Decoupling
+</h1>
+</div>
+
+<div>
+<p>
+If the observed nucleus has a low sensitivity, the <a href="coupling.html">coupling</a> of the spins leads 
+to a complicated multiplet structure or the coupling information is not needed (e.g. homonuclear coupling in 
+heteronuclear correlation spectroscopy), it is advantageous to use decoupling. The coupling interactions to the
+<a href="spin.html">spin</a> that is decoupled is then suppressed, and the multiplet peaks collapse to single 
+lines. The intensity of the signal is the combined intensity of the multiplet lines, which causes and a higher 
+signal-to-noise ratio.
+</p>
+<p>
+Decoupling can be achieved by irradiating one spin or spin type with the resonant frequency either 
+continuously or with <a href="pulse_sequences.html">pulse sequences</a> (MLEV-4, WALTZ-16, etc.). A rather 
+simple pulse sequence is an array of closely spaced 180&deg; <a href="pulse.html">pulses</a>, which constantly 
+invert the irradiated spins. This induces rapid transitions between the spin's energy levels on the NMR 
+timescale. For coupling partners the spin appears to be in a time-averaged state and the coupling cannot be 
+resolved.
+</p>
+<p>
+The more elaborate broadband decoupling techniques involve cycles of composite pulses, which minimise 
+off-resonance effects. The MLEV-4 sequence consists of the motif 
+90&deg;<sub>x</sub>180&deg;<sub>-x</sub>90&deg;<sub>x</sub>, which is repeated four times. The third and 
+fourth times the <a href="phase.html">phases</a> are inverted. The WALTZ-16 sequence repeats the motif 
+90&deg;<sub>x</sub>180&deg;<sub>-x</sub>270&deg;<sub>x</sub> sixteen times with systematically varied phase 
+shifts.
+</p>
+<p><b>Signal enhancement by decoupling</b></p>
+<p>
+Decoupling is used to increase signal intensities for insensitive or low-abundant nuclei. In addition to 
+the enhancement due to the same total intensity being distributed over less spectral lines the 
+signal is enhanced further by the <a href="noe.html">nuclear Overhauser effect</a> (NOE) during 
+heteronuclear decoupling. If the transition between the <i>&alpha;</i> and <i>&beta;</i> states of the 
+more sensitive spin is constantly excited, the levels end up equally populated and thermal equilibrium is 
+disturbed. To regain equilibrium under irradiation the spins will <a href="relaxation.html">relax</a> 
+through space via <a href="dipolar_coupling.html">dipole-dipole coupling</a> to spins close by. This 
+enhances the spin that is not irradiated up to a factor determined by the <a href="gyromagnetic_ratio.html">
+gyromagnetic ratio</a> of the irradiated spin divided by twice the gyromagnetic ratio of the spin 
+to be enhanced. For the spin types in Insensitive (emulating <sup>1</sup>H and <sup>13</sup>C) this is a 
+factor of 2. As soon as decoupling is shut off, the system will start to relax back to thermal 
+equilibrium.<br>
+Decoupling sequences are routinely applied to the unobserved nuclei in heteronuclear experiments
+before the actual pulse sequence, and continued throughout if coupling information is not needed. A 
+disadvantage is the dependence on the distance to and number of neighbouring atoms, making relative 
+intensities in the spectrum arbitrary.
+</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Pulses
+</h1>
+</div>
+
+<div>
+<p>
+A <a href="spin.html">spin</a> ensemble can be manipulated by short radio frequency pulses with phase <i>&phi;</i>
+over time <i>t</i> that are applied perpendicular to the axis of the external magnetic field <b>B</b><sub>0</sub>.
+The effect of these pulses is that the spin vectors rotate around an axis in the x,y-plane determined by 
+<i>&phi;</i> for a flip angle <i>&beta;</i> determined by <i>t</i>, the pulse's field strength
+<b>B</b><sub>1</sub>, and the <a href="gyromagnetic_ratio.html">gyromagnetic ratio</a> <i>&gamma;</i> of the spins.
+</p>
+<center><img src="img_vectors_pulse.png" height="211" width="200"></center>
+<p>
+The matrix representation of the rotational operator representing an arbitrary pulse is
+</p>
+<center><img src="formula_pulse_matrix.png" height="55" width="300"></center>
+<p>
+A rf-pulse has a certain resonance frequency <i>&Omega;</i><sup>0</sup>, but because it is applied for a
+limited period the Uncertainty Principle dictates that it also excites spins with lower and higher frequencies
+than <i>&Omega;</i><sup>0</sup>. The bandwidth is determined by the pulse duration <i>t</i>, while the shape
+of the pulse envelope in the time domain determines the excitation profile. In the simplest experiment
+the rf-field is applied with a constant field strength, or a rectangular shape. In first approximation the
+<a href="fourier_transformation.html">Fourier transformation</a> of the pulse shape determines the excitation
+profile. A rectangular pulse in the frequency domain takes the shape of the sinc-function sin(<i>x</i>)/<i>x</i>.
+Thus, depending on the gyromagnetic ratio of the nuclei in question it is possible to excite the whole spectrum with
+one short pulse, but spins with a frequency far away from the resonance requency will experience a less effective
+pulse (dashed blue line in the graph below).
+</p>
+<center><img src="img_excitation_profile.png" height="172" width="355"></center>
+<p>
+In reality the excitation profile deviates from the Fourier transform of the pulse shape, with the strongest
+deviations observed close to <i>&Omega;</i><sup>0</sup> (black line). These off-resonance effects are caused by
+a mixture of the <b>B</b><sub>0</sub> and <b>B</b><sub>1</sub> fields acting on the spins. In the absence of the
+rf-field the spins precess around the axis determined by the external magnetic field <b>B</b><sub>0</sub>.
+Viewed from the <a href="rotating_frame.html">rotating frame</a> the <a href="precession.html">precession</a>
+occurs with an offset frequency in the order of a few Hz,
+</p>
+<center><img src="formula_omega_zero.png" width="115" height="17"></center>
+<p>
+which corresponds to a reduced magnetic field &Delta;<b>B</b> = -&Omega;<sup>0</sup>/<i>&gamma;</i>.
+If <i>&omega;</i><sup>0</sup> is equal to the reference frequency <i>&omega;</i><sup>ref</sup>
+the spin appears static and the reduced magnetic field is zero.
+</p>
+<p>
+The pulse now adds a field <b>B</b><sub>1</sub> perpendicular to <b>B</b><sub>0</sub>. The linear polarised
+radiofrequency pulse can be split in two opposite, circular polarised components. The component that rotates in
+the same direction and with a similar frequency as the rotating frame will have a magnitude <b>B</b><sub>1</sub>
+that is comparable to &Delta;<b>B</b>, and the vectors add up to an effective field
+<b>B</b>' = &Delta;<b>B</b> + <b>B</b><sub>1</sub>. The component with the opposite handedness is not in resonance
+and can be neglected. If a spin's Larmor frequency matches the pulse frequency &Delta;<b>B</b> is zero and the
+spins precess around the axis of <b>B</b><sub>1</sub> that lies in the <i>x</i>,<i>y</i>-plane. If the spin is
+off-resonance it will precess around a rotation axis tilted from the <i>z</i>-axis by the angle
+<i>&theta;<sub>p</sub></i>.
+</p>
+<center><img src="formula_pulse_tilt.png" width="150" height="34"></center>
+<p>
+<i>&omega;</i><sub>nut</sub> is the nutation frequency with which the spin precesses in the effective field <b>B</b>'.
+The effective frequency <i>&omega;</i><sub>eff</sub> that, multiplied with the pulse duration <i>t</i> determines
+the flip angle <i>&beta;</i>, is larger in this case, but due to the tilted axis the pulse is less effective.
+</p>
+<center><img src="formula_omega_eff.png" width="168" height="32"></center>
+<p>
+The non-linearity of the dependence of the excitation profile on the flip angle and rotation axis leads to
+artefacts in the spectrum: with increasing distance from the resonance frequency the peak itensities become weaker
+and the peaks acquire a phase shift that needs to be corrected. Additionally rectangular pulses introduce
+oscillations of the excitation profile due to its relation to the sinc function. A number of
+<a href="shaped_pulses.html">shaped pulses</a> have been devised to mitigate these problems.
+</p>
+<p><b>Soft pulses</b></p>
+<p>
+When applied as a short, <i>hard</i> pulse the bandwidth for all shapes is broad and a wide range of spins are
+excited. Using a longer, low power <i>soft</i> pulse it is possible to selectively excite or saturate specific
+spins in the spectrum. Gaussian and BURP pulses are effective options for this.
+</p>
+<p>
+Another possibility to circumvent field inhomogenieties of the pulses are <a href="adiabatic_pulse.html">adiabatic
+pulses</a>.
+</p>
+</div>
+
+</body>
+</html>

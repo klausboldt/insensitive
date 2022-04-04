@@ -1,0 +1,81 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Limitations
+</h1>
+</div>
+
+<div>
+<p>
+The simulation of spins in Insensitive has a number of limitations:
+</p>
+<p>
+The vector display and animations are programmed to be intuitive and instructional rather than physically accurate.
+The units for delay and dwell times, relaxation constants, and spin system parameters are optimised for display.
+Small values should therefore be preferred when choosing <a href="larmor_frequency.html">Larmor frequencies</a>
+and coupling constants. A frequency of 1 Hz will be correctly displayed as one rotation per second, while a more
+accurate frequency of 1 kHz for a proton spin is too fast the animation's resolution. Accordingly, coupling
+constants should be set in the order of magnitude of 10<sup>-1</sup> Hz. 
+</p>
+<p>
+The simulation is limited to four magnetically inequivalent spins in isotropic solution with <i>I</i> = 
+1/2 and two spin types I and S. The <a href="gyromagnetic_ratio.html">gyromagnetic ratios</a> of these spin
+types can be selected from a list of common spins 1/2.
+</p>
+<p>
+Since Insensitive is based on the <a href="density_matrix.html">density matrix</a> approach and describes an 
+ensemble of spins a 180&deg;-pulse will not lead to a <a href="spin_echo_sandwich.html">spin echo</a>, because 
+only the total angular momenta are simulated and individual spins do not get refocussed. Several different spins
+must be used to simulate a spin echo.
+</p>
+<p>
+The <a href="precession.html">precession</a> is simulated only in the <a href="rotating_frame.html">
+rotating frame</a> and not in the laboratory frame. Each spin type is viewed in its own rotating frame and no
+offset needs to be introduced in the <a href="spineditor.html">Spin Editor</a> between I and S spins. If
+both spin types are recorded in the <a href="fid.html">FID</a> they will appear overlayed in the same spectrum.
+</p>
+<p>
+Quadrupolar interaction and chemical shift anisotropy are not taken into account for 
+<a href="relaxation.html">relaxation</a>. 
+</p>
+<p>
+For certain strongly coupled 4 spin systems the <a href="energy_levels.html">energy level</a> diagram
+exhibits a breaking of rotational symmetry by showing some additional, spin forbidden transition. They only
+show up for some orientations of the spin system and appear to be caused by the LAPACK linear algebra routines
+when <a href="matrix_diagonalization.html">diagonalising</a> of the hamiltonian matrix.
+</p>
+<p>
+Some of the operations, especially for <a href="two_dimensional_spectra.html">2D spectra</a>, require a 
+lot of calculations, which scale exponentially with the number of spins. Disable computing-intensive 
+features like strong coupling and dipolar relaxation, and lower the number of spins and spectrum 
+<a href="spectrum_resolution.html">resolution</a> to increase speed.
+</p>
+<p>
+The number of calculations necessary for the display of <a href="coherence_pathways.html">coherence pathways</a>
+depends on the number of spins and scales exponentially with the number of pulses in the
+<a href="pulse_sequences.html">pulse sequence</a>. The computation may take some time and will not be performed
+for a high number of calculations. The limit can be set in the preferences. Support for coherence pathways
+is experimental. The variable evolution time <i>t</i><sub>1</sub> is treated as a constant delay.
+</p>
+<p>
+If <a href="coupling.html">strong coupling</a> is activated the flip-flop exchange between <i>&alpha;&beta;</i>
+and <i>&beta;&alpha;</i> states depends on their relative populations. This causes a dependency of the 
+effects of strong coupling on the sampling time <i>&tau;</i><sub>sample</sub>. The separate application of 
+<a href="chemical_shift.html">chemical shift</a> and coupling is therefore disabled by default if strong 
+coupling is activated.<br>
+</p>
+</div>
+
+</body>
+</html>

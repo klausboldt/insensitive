@@ -1,0 +1,48 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Spin lock
+</h1>
+</div>
+
+<div>
+<p>
+For a spin-lock a sequence of closely spaced 180&deg;-pulses is applied to a spin system. Any 
+<a href="coherences.html">coherences</a> that are oriented along the axis of the pulses will be constantly
+refocussed and have no chance to dephase. This effectively suppresses <a href="relaxation.html">
+<i>T</i><sub>2</sub>-relaxation</a> and <a href="chemical_shift.html">chemical shifts</a>.
+</p>
+<center><img src="img_spinlock.png"></center>
+<p>
+In a spin locked system the transverse relaxation can cause cross relaxation via 
+<a href="dipolar_coupling.html">dipole-dipole coupling</a>, a mechanism that is used for 
+<a href="coherence_transfer.html">coherence transfer</a> in the <a href="roesyph.html">ROESY</a> 
+experiment. Also, due to being held along one axis of the <a href="rotating_frame.html">rotating frame</a>
+all spin-locked spins are magnetically equivalent and strongly coupled. This is put to use in the 
+<a href="mlevph.html">TOCSY</a> experiment.
+</p>
+<p>
+An important use of spin-locking especially for <a href="solid_state_nmr.html">solid state NMR</a> methods
+is cross polarisation (CP). It requires two different spins <op>I</op> and <op>S</op> to have the same 
+<a href="larmor_frequency.html">Larmor frequency</a>. This so-called <i>Hartmann-Hahn condition</i> can be
+achieved by adjusting the power of the different rf-channels so that the spin-lock pulses take equal time.
+If this requirement is fulfilled, magnetisation will flow from <i>cold</i> to <i>hot</i> spins. Hot spins 
+are those spins which are weakly oriented and have a small magnetic moment, cold spins are highly oriented
+and have a large magnetic moment.
+</p>
+<center><img src="img_cross_polarization.png" width="300" height="147"></center>
+</div>
+
+</body>
+</html>

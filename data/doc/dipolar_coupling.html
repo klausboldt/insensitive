@@ -1,0 +1,78 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Dipolar coupling
+</h1>
+</div>
+
+<div>
+<p>
+Different spins in a molecule do not <a href="precession.html">precess</a> independently. If one spin can 
+have different energy states depending on which state a nearby spin is in, these to spins are coupled.
+There are two basic mechanisms by which information between coupled spins is exchanged: 
+<a href="coupling.html"><i>J</i>-coupling</a> and dipolar coupling.
+</p>
+<p>
+Dipolar coupling results from each spin generating a magnetic field that is oriented parallel to the 
+nuclear spin vector. Two spins that are close to each other in space experience each other's magnetic 
+field, which leads to an slightly different effective magnetic field <b>B</b><sub>eff</sub> at one spin 
+that depends on the orientation of both magnetic dipoles. The strength of the dipole-dipole coupling 
+depends strongly on the spin-spin distance <i>r</i><sup>-3</sup> as well as the 
+<a href="gyromagnetic_ratio.html">gyromagnetic ratios</a> of the coupled spins. It is given by the 
+dipole-dipole coupling constant <i>b</i><sub>12</sub> in units of rad/s.
+</p>
+<center><img src="formula_dipolar_coupling_constant.png" height="42" width="131"></center>
+<p>
+The orientation dependence is expressed with the secular dipole-dipole coupling constant 
+<i>d</i><sub>12</sub> through the angle &Theta; between the axis connecting the two spins and the external
+magnetic field vector <b>B</b><sub>0</sub>. The secular approximation is valid in high magnetic fields.  
+</p>
+<center><img src="formula_secular_dipolar_coupling_constant.png" height="37" width="204"></center>
+<p>
+As with the <a href="coupling.html">scalar coupling</a> one differentiates between a strong coupling 
+regime where the <a href="larmor_frequency.html">Larmor frequencies</a> of the coupled spins and therefore
+the energy levels are similar, and a weak coupling regime with large difference in Larmor frequencies and 
+energy eigenvalues. In the strong coupling regime the coupling depends on all spacial components of the 
+spin. This is the case for a homonuclear spin system.
+</p>
+<center><img src="formula_homonuclear_dipolar_coupling.png" height="22" width="221"></center>
+<p>
+For heteronuclear spin systems the coupling depends only on the spacial component along the external 
+magnetic field <b>B</b><sub>0</sub>.
+</p>
+<center><img src="formula_heteronuclear_dipolar_coupling.png" height="22" width="132"></center>
+<p>
+In an isotropic liquid the molecular orientations are rapidly changed by Brownian motion that is fast
+on the timescale of NMR. Dipolar couplings are averaged out and cannot be observed. They are therefore 
+not being simulated by Insensitive. The dipolar interactions do play a role in <a href="relaxation.html">
+cross relaxation</a> processes and are the mechanism behind the <a href="noe.html">Nuclear Overhauser 
+Enhancement</a>.
+<br><br>
+In liquid crystals and <a href="solid_state_nmr.html">solids</a> the molecular motion is restricted or 
+suppressed. This leads to a splitting of the NMR signal into two lines for liquid crystals with a coupling 
+constant of 3<i>d</i><sub>12</sub>. 
+<br><br>
+In powdered solids the dipole-dipole coupling is the major contribution to spin-spin coupling and leads 
+to the characteristic Pake doublet with the secular coupling constant <i>d</i> between the two maxima.
+</p>
+<center><img src="img_pake_pattern.png" style="width:100%; max-width:647px;"></center>
+<p>
+The shape of the Pake pattern is due to the fact that there are only two possible orientations along the 
+external magnetic field (parallel and antiparallel), but many orientations perpendicular to the 
+<b>B</b><sub>0</sub>-field.
+</p>
+</div>
+
+</body>
+</html>

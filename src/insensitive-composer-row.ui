@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.39.0 -->
+<interface domain="gtk30">
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">insensitive-trash</property>
+  </object>
+  <template class="InsensitiveComposerRow" parent="GtkListBoxRow">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="margin-left">6</property>
+        <property name="margin-right">6</property>
+        <property name="margin-top">3</property>
+        <property name="margin-bottom">3</property>
+        <property name="spacing">5</property>
+        <child>
+          <object class="GtkEntry" id="coefficient_entry">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="halign">start</property>
+            <property name="width-chars">5</property>
+            <property name="text" translatable="yes">1.00</property>
+            <property name="input-purpose">number</property>
+            <signal name="changed" handler="on_coefficient_entry_changed" object="InsensitiveComposerRow" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="factor_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">5</property>
+            <property name="margin-right">5</property>
+            <property name="label" translatable="yes">1</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="spin1_combobox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="active">0</property>
+            <items>
+              <item translatable="yes">E/2</item>
+              <item translatable="yes">I1z</item>
+              <item translatable="yes">I1x</item>
+              <item translatable="yes">I1y</item>
+            </items>
+            <signal name="changed" handler="on_spin_combobox_changed" object="InsensitiveComposerRow" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="spin2_combobox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="active">0</property>
+            <items>
+              <item translatable="yes">E/2</item>
+              <item translatable="yes">I2z</item>
+              <item translatable="yes">I2x</item>
+              <item translatable="yes">I2y</item>
+            </items>
+            <signal name="changed" handler="on_spin_combobox_changed" object="InsensitiveComposerRow" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="spin3_combobox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="active">0</property>
+            <items>
+              <item translatable="yes">E/2</item>
+              <item translatable="yes">I3z</item>
+              <item translatable="yes">I3x</item>
+              <item translatable="yes">I3y</item>
+            </items>
+            <signal name="changed" handler="on_spin_combobox_changed" object="InsensitiveComposerRow" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="spin4_combobox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="active">0</property>
+            <items>
+              <item translatable="yes">E/2</item>
+              <item translatable="yes">I4z</item>
+              <item translatable="yes">I4x</item>
+              <item translatable="yes">I4y</item>
+            </items>
+            <signal name="changed" handler="on_spin_combobox_changed" object="InsensitiveComposerRow" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="delete_button">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="image">image1</property>
+            <property name="always-show-image">True</property>
+            <signal name="clicked" handler="on_delete_button_clicked" object="InsensitiveComposerRow" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">6</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

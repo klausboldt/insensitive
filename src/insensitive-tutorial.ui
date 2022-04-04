@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.39.0 -->
+<interface>
+  <requires lib="gtk+" version="3.22"/>
+  <requires lib="webkit2gtk" version="2.28"/>
+  <template class="InsensitiveTutorial" parent="GtkWindow">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Tutorial</property>
+    <property name="destroy-with-parent">True</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkToolbar">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="toolbar-style">both</property>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Back</property>
+                <property name="use-underline">True</property>
+                <property name="icon-name">go-previous</property>
+                <signal name="clicked" handler="on_back_button_clicked" object="tutorial_webview" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Forward</property>
+                <property name="use-underline">True</property>
+                <property name="icon-name">go-next</property>
+                <signal name="clicked" handler="on_forward_button_clicked" object="tutorial_webview" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Home</property>
+                <property name="use-underline">True</property>
+                <property name="icon-name">go-home</property>
+                <signal name="clicked" handler="load_default_page" object="tutorial_webview" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">User Manual</property>
+                <property name="use-underline">True</property>
+                <property name="icon-name">help-browser</property>
+                <signal name="clicked" handler="load_manual_page" object="tutorial_webview" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Command Line</property>
+                <property name="use-underline">True</property>
+                <property name="icon-name">utilities-terminal</property>
+                <signal name="clicked" handler="load_cmd_page" object="tutorial_webview" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Index</property>
+                <property name="use-underline">True</property>
+                <property name="icon-name">accessories-dictionary</property>
+                <signal name="clicked" handler="load_index_page" object="tutorial_webview" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="WebKitWebView" type-func="webkit_web_view_get_type" id="tutorial_webview">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Window functions
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            After <a href="fourier_transformation.html">Fourier transformation</a> of the 
+            <a href="fid.html">FID</a> a number of artefacts may occur in the spectrum, which are caused 
+            by the finite acquisition time. Steps in the signal, which can be described as an overlaying 
+            rectangular function, cause strong oscillations of the sinc-function, which are 
+            <a href="convolution_theorem.html">convoluted</a> with the spectral peaks. This phenomenon 
+            is typically observed when the resolution of the spectrum is enhanced by adding trailing
+            zeros to an FID that has not dropped to zero at the end of the acquisition.
+            </p>
+            <p>
+            A linear transformation of the data by multiplying the FID with an apodization or window 
+            function can remove the artefacts. The goal is to decrease the signal to zero at the end of 
+            the acquisition time. Since this procedure reduces the signal intensity this is always a 
+            trade-off between narrower signal shapes and decreased signal-to-noise ratio.
+            </p>
+            <p>
+            Several functions are in use. The simplest method is multiplication by an exponential decay, 
+            which has the disadvantage of causing very strong line broadening. 
+            </p>
+            <center><img src="formula_window_exp.png" height="24" width="132"></center>
+            <p>
+            Other common apodization functions, which show less pronounced line broadening, are the 
+            cosine function over a quarter period
+            </p>
+            <center><img src="formula_window_cosine.png" height="39" width="133"></center>
+            <p>
+            a triangle function, which decreases the FID linearly with time,
+            </p>
+            <center><img src="formula_window_triangle.png" height="39" width="125"></center>
+            <p>
+            and the Hann function.
+            </p>
+            <center><img src="formula_window_hann.png" height="39" width="192"></center>
+            <p>
+            Apart from removing artefacts the application of window functions is used as a tool for line 
+            narrowing. Contrary to the cases above this causes a decrease of the signal-to-noise ratio,
+            because for narrower lines the low signal range at long acquisition times must be overestimated.
+            A simple window function is the sine bell function.
+            </p>
+            <center><img src="formula_window_sinebell.png" height="39" width="119"></center>
+            <p>
+            This function causes narrow lines with strong oscillations and disappearing integrals. An 
+            alternative is the Hann function weighted by an exponential function. This window function also
+            causes narrowing of the spectral lines at the expense of signal-to-noise ratio.
+            </p>
+            <center><img src="formula_window_hann_weighted.png" height="44" width="268"></center>
+            <p>
+            The "Transform of Reverse Added FIDs" or TRAF function published by D. D. Traficante is a function that
+            increases either resolution or signal-to-noise ratio without degradation of the other. This is
+            accomplished by deemphasising the noisy part of the FID where most of the signal has decayed, and
+            employing a "matched filter" approach in which the signal is convoluted with a time-reversed, complex
+            conjugated general shape of the FID. This is equivalent to scaling of each point of the FID
+            by the amount of signal present at that point. The function is:
+            </p>
+            <center><img src="formula_window_traf.png" height="39" width="136"></center>
+            <p>
+            with
+            </p>
+            <center><img src="formula_window_traf_E.png" height="18" width="86"></center>
+            <p>
+            and
+            </p>
+            <center><img src="formula_window_traf_epsilon.png" height="18" width="112"></center>
+            <p>
+            <i>T</i> is the total acquisition time. The TRAF window requires knowledge of the effective
+            transverse relaxation time <i>T</i><sub>2</sub><sup>&ast;</sup>.<br>
+            <br>
+            A conversion of the lines into gaussian functions is performed by a Lorentz-Gauss transformation.
+            </p>
+            <center><img src="formula_lorentz_gauss.png" height="31" width="121"></center>
+            <p>
+            Here the signal is deconvoluted by a Lorentz function with the signal's peak width determined 
+            by <i>T</i><sub>2</sub><sup>*</sup> and then convoluted with a Gauss function of arbitrary 
+            width 1.177<i>&sigma;</i>. The advantage of this is that a Gauss peak has a smaller tail than 
+            a Lorentz peak, which causes better separation of spectral lines, while at the same time 
+            adding apodization to the FID.
+            </p>
+            <p>
+            While reducing the peak's tail a 2D gaussian <a href="lineshapes.html">line shape</a> still has a
+            star-shaped cross section. It can be transformed into cylindrical symmetry by means of the pseudo-echo transformation.
+            </p>
+            <center><img src="formula_pseudoecho.png" height="35" width="170"></center>
+            <p>
+            As with the Lorentz-Gauss transformation the signal is deconvoluted to remove the instrument decay.
+            It is then multiplied with a signal envelope that is symmetric around the centre of the FID,
+            giving it the appearance of a <a href="cpmg.html">spin echo</a>. The symmetrical cosine components
+            of this signal will give rise to pure absorption line shapes, while sine components that would cause
+            dispersion lines are antisymmetrical and vanish if the absolute value spectrum is calculated, as well
+            as a complex phase factor exp(<i>i&phi;</i>) that is carried over from the phase-sensitive signal.<br>
+            The clean elliptical or cylindrical symmetry of the signals after pseudo-echo transformation comes
+            at the cost of significantly reduced signal-to-noise ratio and sensitivity, because the high
+            intensities for small times <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub> are strongy reduced.
+            </p>
+        </div>
+        
+    </body>
+</html>

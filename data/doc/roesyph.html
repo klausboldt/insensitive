@@ -1,0 +1,49 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+ROESY
+</h1>
+</div>
+
+<div>
+<p>
+The dipolar longitudinal <a href="relaxation.html">cross-relaxation</a> and therefore also the 
+<a href="noe.html">NOE</a> efficiency plotted against the correlation time undergoes a zero crossing. 
+Thus, cross peaks in a <a href="noesyph.html">NOESY</a> spectrum will have a different sign for small and 
+large molecules and may disappear altogether for medium sized molecules. This can be circumvented by 
+using the Rotating frame Overhauser Effect (ROE) instead. If a <a href="spin_lock.html">spin locking</a> 
+field is applied to the spin system the spins are static in the <a href="rotating_frame.html">rotating 
+frame</a> and transversal cross relaxation can happen. This is put to use in the ROESY or CAMELSPIN 
+experiment. (The latter acronym stands for Cross relaxation Appropriate for Mini-molecules EmuLated by 
+SPIN-locking.)
+</p>
+<center><img src="pp_roesyph.png" width="310" height="98"></center>
+<p>
+The ROESY <a href="pulse_sequences.html">pulse sequence</a> is basically the same as the 
+<a href="mlevph.html">TOCSY</a> experiment, and effects from TOCSY will appear in the ROESY spectrum and 
+vice versa. To minimise the <a href="coherence_transfer.html">coherence transfer</a> through 
+<i>J</i>-couplings the ROESY uses spin-locking pulses with less power. These are slightly off-resonance 
+and reduce the magnetic equivalence and strong coupling effects of the TOCSY.
+</p>
+<p>
+The ROESY pulse sequence is analogous to the NOESY sequence, but instead of the second pulse that converts
+the transversal magnetisation back to longitudinal magnetisation, followed by the mixing time <i>&tau;</i>
+and a third pulse that creates observable transversal magnetisation again, a spin-locking field is used. 
+This allows for cross relaxation directly in the transversal plane, which is detected after the spin-lock 
+is switched off. ROESY cross peaks are always negative.
+</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Gradients
+</h1>
+</div>
+
+<div>
+    <p>
+    Normally one goes to great lengths to create a homogeneous magnetic field in the sample volume. A 
+    field gradient <i>G</i>(<i>z</i>), which linearly disturbs the homogeneous field <b>B</b><sub>0</sub>,
+    can be employed in several ways to enhance the NMR experiment.
+    </p>
+    <p>
+    If a gradient is applied to the sample that depends linearly on a spacial coordinate, the spins' 
+    <a href="larmor_frequency.html">Larmor frequency</a> depends on its position in the sample. The 
+    magnetisation vectors will start to form a helix along the gradient axis with a pitch that is 
+    determined by the gradient strength, the time it is applied and the <a href="gyromagnetic_ratio.html">
+    gyromagnetic ratio</a> of the nucleus.
+    </p>
+    <center><img src="img_gradient.png" style="width:100%; max-width:597px;"></center>
+    <p>
+    This effectively destroys the transverse magnetisation in the sample. Neglecting diffusion, which 
+    leads to mixing of spins with different initial positions along the gradient axis and spin
+    <a href="relaxation.html">relaxation</a>, the effect can be reversed by applying a pulse with the 
+    opposite field. In practice, gradients are not applied continuously, but as pulsed field gradients 
+    (PFG) from a gradient coil inside the probe head of the <a href="spectrometer.html">spectrometer</a>.
+    </p>
+    <p>
+    Gradients are employed to select coherence pathways as a less time-consuming alternative to 
+    <a href="phase_cycling.html">phase cycling</a>. This is based on the fact that coherences with a 
+    different <a href="coherences.html">coherence order</a> precess with different angular frequencies.
+    A single quantum coherence <op>I<sup>+</sup></op> or <op>I<sup>-</sup></op> precesses with the spin's 
+    Larmor frequency, while <a href="multi_quantum_coherence.html">double quantum coherences</a> 
+    <op>I1<sup>+</sup>I2<sup>+</sup></op> and <op>I1<sup>-</sup>I2<sup>-</sup></op> precess with the sum 
+    of both contributing Larmor frequencies. Zero quantum coherences <op>I1<sup>+</sup>I2<sup>-</sup></op>
+    and <op>I1<sup>-</sup>I2<sup>+</sup></op> precess with the difference in angular frequencies, which is 
+    close to zero in the case of homonuclear spin pairs.
+    </p>
+    <p>
+    The selection of a singular <a href="coherence_pathways.html">coherence pathway</a> is performed by setting
+    the gradient power in such a way that all but the desired magnetisation is destroyed. A reverse gradient
+    pulse with half the strength of the first gradient will recover only double quantum coherences in the
+    following <a href="pulse_sequences.html">pulse sequence</a>, and thus give no signal in the spectrum.
+    Gradient pulses of equal but inverse strengths will recover single quantum coherences only.
+    </p>
+    <center><img src="pp_gradient_dqc.png" height="250" width="252"></center>
+    <p>
+    Pulsed magnetic field gradients can be used to mark a spin with its position in the magnetic coil. 
+    After the gradient is switched off, the spacial information is decoded in the spins' 
+    <a href="phase.html">phase</a> shift. They are crucial in encoding spatial resolution for magnetic 
+    resonance imaging (MRI). Flow measurements and diffusion can be measured by encoding the spins with 
+    a pulsed field gradient and analysing the recovered magnetisation after a delay time and second 
+    gradient pulse. The <a href="stegp1f.html">DOSY experiment</a> is an example of such a technique, 
+    which separates the NMR signals of multiple substances depending on their diffusion coefficient.
+    </p>
+    <p>
+    Pulsed field gradients in Insensitive are implemented following the description by G. H. Meresi, 
+    M. Cuperlovic, W. E. Palke, J. T. Gerig, <i>J. Magn. Reson.</i> <b>1999</b>, <i>137</i>, 186-195.
+    </p>
+</div>
+
+</body>
+</html>

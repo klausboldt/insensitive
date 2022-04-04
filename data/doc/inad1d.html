@@ -1,0 +1,65 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+INADEQUATE
+</h1>
+</div>
+
+<div>
+<p>
+The signal of <sup>13</sup>C is weak due to its low natural abundance of 1.1% of all carbon nuclei. The 
+probability to observe <sup>13</sup>C-<sup>13</sup>C <i>J</i>-coupling is even smaller, and satellite 
+signals of adjacent isotopes disappear below the stronger singlets in a conventional <sup>13</sup>C 
+spectrum. The Incredible Natural Abundance Double QUAntum Technique is a pulse sequence to selectively 
+enhance the signal of natural pairs of <sup>13</sup>C nuclei while suppressing the signals from isolated 
+<sup>13</sup>C spins.
+</p>
+<center><img src="pp_inad1d.png" width="284" height="210"></center>
+<p>
+The pulse sequence consists of four pulses on the S-spins, which allow the <a href="coupling.html">
+coupled</a> spins to gain a phase shift compared to the uncoupled spins and be selected by 
+<a href="phase_cycling.html">phase cycling</a>. The first 90&deg;<sub>x</sub>-pulse creates transverse 
+magnetisation, followed by a <a href="spin_echo_sandwich.html">spin echo sandwich</a> in which only the 
+scalar coupling evolves. The period is set to be <i>&tau;</i> = (2<i>J</i>)<sup>-1</sup> to achieve 
+<a href="antiphase_magnetization.html">antiphase magnetisation</a> at the end of the spin echo. At this 
+point the product operators are <op>S1y</op> and <op>S2y</op> for two uncoupled spins or <op>-2S1xS2z</op>
+and <op>-2S1zS2x</op> for a pair of coupled spins.
+</p>
+<p>
+The first 90&deg;<sub>x</sub>-pulse of a pair of closely followed pulses transforms the antiphase terms 
+into <a href="multi_quantum_coherence.html">double quantum coherences</a> <op>2S1xS2y</op> and
+<op>2S1yS2x</op>. The phase of the second 90&deg;<sub>&phi;</sub>-pulse is varied by phase cycling 
+between the positions <i>&phi;</i><sub>4</sub> = {90&deg;, 180&deg;, 270&deg;, 0&deg;}, while the receiver 
+phase is set to <i>&phi;</i><sub>rec</sub> = {0&deg;, 270&deg;, 180&deg;, 90&deg;}. This creates antiphase 
+terms again and transfers the magnetisation from one spin to the other. The product operators are now 
+<op>-2S1zS2y</op> and <op>-2S1yS2z</op>. Uncoupled spins will be transformed into in-phase magnetisation 
+with a 90&deg; phase shift compared to coupled spins and are removed by the phase cycling. The signals in 
+the spectrum will therefore appear as characteristic antiphase peaks.
+</p>
+<p>
+The sample is irradiated with a proton <a href="decoupling.html">decoupling</a> sequence throughout the 
+pulse sequence to remove couplings between <sup>1</sup>H and <sup>13</sup>C nuclei. A low-level 
+irradiation on the proton channel can be applied to enhance the signal over <a href="noe.html">NOE</a>.
+</p>
+<p>
+The INADEQUATE sequence can be easily extended into a <a href="two_dimensional_spectra.html">
+two-dimensional</a> experiment by inserting a variable evolution time <i>t</i><sub>1</sub> between the last two
+pulses. In this period the double quantum coherences evolve and pairs of coupling spins appear in different 
+rows of the spectrum after <a href="fourier_transformation.html">Fourier transformation</a>, depending on the 
+sum of their chemical shifts <i>&Omega;</i><sub>1</sub> + <i>&Omega;</i><sub>2</sub>.
+</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Presentation
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            Insensitive has the possibility to create simple presentations for lectures and talks. All
+            simulations and representations that are part of Insensitive can be freely positioned on a series
+            of pages with an aspect ratio of 4:3 and presented in full screen.
+            </p>
+            <center><img src="img_presentation.png" style="width:100%; max-width:793px;"></center>
+            <p>
+            On the right hand side of the presentation window there are three panels that can be selected from
+            the buttons at the top, <i>Objects</i>, <i>Images</i>, and <i>Settings</i>. The objects panel shows
+            a list of all available Insensitive objects that can be used in the presentation, which are:
+            </p>
+            <p>
+            <ul>
+                <li>Spin network</li>
+                <li>Vector model (I spins)</li>
+                <li>Vector model (S spins)</li>
+                <li>Energy level diagram</li>
+                <li>Density matrix</li>
+                <li>Product operators</li>
+                <li>Pulse sequence</li>
+                <li>Coherence pathways</li>
+                <li>Phase cycling table</li>
+                <li>Spectrum</li>
+                <li>Pulse shape</li>
+                <li>Pulse power spectrum</li>
+                <li>An image</li>
+                <li>A text field</li>
+                <li>Control buttons</li>
+            </ul>
+            </p>
+            <p>
+            The image panel provides access to all images that are included with the Insensitive binary as part
+            of the tutorial. Objects from both these panels can be placed onto the canvas by drag and drop.<br>
+            The settings panel offers the same settings as the main window for the currently selected object.
+            Depending on the object some setting may have no effect.
+            </p>
+            
+            <p><b>Working with frames</b></p>
+            <p>
+            If an Insensitive object is placed on the canvas and selected by clicking, a black frame appears around
+            the object. If the objects retain their aspect ratio, for example images, the frame can be larger
+            than the visible object, which appears centered. The frame can be resized by clicking and dragging
+            one of the corners or edges. Frames can be movd by clicking on a non-responsive part of a frame and
+            dragging. The current position relative to the top left corner is displayed during moving.<br>
+            Frames can be deleted by clicking "Delete Frame" in the toolbar or pressing the backspace key. They
+            can be reordered by selecting the "Bring to Front" or "Send to Back" buttons. When clicking an a stack
+            of objects only the uppermost frame will be selected.<br>
+            The font size and type can be changed for text fields or product operators with the "Fonts" panel
+            from the toolbar.
+            </p>
+            
+            <p><b>Loading external data</b></p>
+            <p>
+            External data can be loaded into an object by selecting it and clicking "Import Content" in the
+            toolbar. Depending on the type of object Insensitive will load different file types. Possible
+            files are images, spin system files (&#42;.iss), pulse program files (&#42;.ipp) and spectrum
+            files (&#42;.igg). Spin systems, pulse programs and spectra cannot be created or edited inside the
+            presentation window, but must be saved from the respective windows in Insensitive and then imported.
+            </p>
+            
+            <p><b>Linking frames</b></p>
+            <p>
+            Each frame contains a complete Insensitive simulation engine that runs independently from the others.
+            Frames can be linked by dragging the mouse from the grey circle with the chain symbol in the upper
+            right corner of an activated frame and dropping it on another that shares the same data type
+            (see image above). The settings for the frame from which the connection is drawn will be deleted and
+            the frame will share the simulation with the target frame. If part of another shared simulation the
+            frame will leave its previous network.<br>
+            Examples for connections are a vector model, density matrix, and product operators sharing the same
+            spin system, a vector model sharing the engine with the pulse shaper frames for selective pulses, or
+            pulse sequence, coherence pathway and phase cycling table showing the same pulse program.<br>
+            The controls, which initially display buttons to manipulate the spin system, change behaviour if they
+            are connected to either spectra or the pulse shaper objects.<br>
+            Press and hold the CTRL button to see which frames are linked.
+            </p>
+            
+            <p><b>Adding and removing slides</b></p>
+            <p>
+            Slides can be added or deleted by clicking the toolbar buttons "Add Page" or "Remove Page". A new
+            page is inserted after the currently displayed slide. A slide can be selected from the "Select Page"
+            dropdown menu.
+            </p>
+            
+            <p><b>Full screen mode</b></p>
+            <p>
+            Clicking on "Play" in the toolbar starts the presentation in full screen mode. Editing the slides is
+            not possible in full screen. The presentation starts with the currently active slide. The previous or
+            next slide can be selected by pressing the left or right cursor key. Full screen mode can be closed
+            by clicking the button in the bottom left corner or pressing the escape key.
+            </p>
+            
+            <p><b>Opening and saving presentations</b></p>
+            <p>
+            Presentations can be saved in the &#42;.spinlecture format from the toolbar. A copy of Insensitive
+            0.9.13 or higher is necessary to open the files. All data is contained inside the presentation file
+            and imported content does not need to be kept separately.<br>
+            Currently there is no automatic saving and the files need to be overwritten when a new version is
+            saved.
+            </p>
+        </div>
+        
+    </body>
+</html>

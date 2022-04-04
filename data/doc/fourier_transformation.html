@@ -1,0 +1,78 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Fourier transformation
+</h1>
+</div>
+
+<div>
+<p>
+The Fourier transformation is a mathematical tool to transform a function in time-domain (the 
+<a href="fid.html">FID</a>) into a function in the frequency domain (called a spectrum). Mathematically it 
+expresses any function of time <i>f</i>(<i>t</i>) as an infinite series of complex sine and cosine functions.
+The amplitude function <i>F</i>(<i>&omega;</i>) is the corresponding spectrum.
+</p>
+<center><img src="formula_fourier_transformation.png" height="61" width="209"></center>
+<p>
+The trigonometric functions are conveniently written in the form of Euler's identity
+</p>
+<center><img src="formula_euler_identity.png" height="18" width="149"></center>
+<p>
+Technically the Fourier transformation has to be performed after converting the analogue signal from the 
+spectrometer into a digital FID. The <a href="spectrum_resolution.html">resolution</a> is determined by two 
+quantities, the number of data points and the sampling rate or dwell time <i>&tau;</i><sub>sample</sub>, 
+which is defined as the distance between two data points. Increasing the number of data points causes a higher 
+resolution, since a minimum of three data points is necessary to resolve a peak. Shorter dwell times imply a 
+wider spectral range, more data points per unit time and therefore a higher resolution. Frequencies larger 
+than 1/2<i>&tau;</i><sub>sample</sub> cannot be resolved by digital Fourier transformation.
+</p>
+<p>
+It is most useful to memorise certain Fourier pairs for using NMR:
+</p>
+<p>
+A single sine or cosine function transforms into a &delta;-function at the oscillation's frequency.
+</p>
+<center><img src="img_ft_sincos.png" style="width:100%; max-width:550px;"></center>
+<p>
+The exponential decay exp(-<i>wt</i>) transforms into the Lorentz function with the full width at half 
+maximum determined by 1/<i>w</i>. This causes any dampened oscillation to transform into a Lorentzian 
+signal at the oscillation's frequency following the <a href="convolution_theorem.html">convolution 
+theorem</a>.
+</p>
+<center><img src="img_ft_lorenzian.png" style="width:100%; max-width:550px;"></center>
+<p>
+A rectangular function transforms into the sinc-function sin(<i>x</i>)/<i>x</i>. This is put to use when 
+applying <a href="pulse.html">rf-pulses</a> to excite all spins at the same time, but also leads to 
+artefacts in the spectrum when recoding the FID is stopped before the system is fully relaxed.
+</p>
+<center><img src="img_ft_sinc.png" style="width:100%; max-width:550px;"></center>
+<p>
+A Gaussian function in the time domain transforms into a Gaussian function in the frequency domain. This 
+is useful for selective pulses that only excite one spin in the ensemble.
+</p>
+<center><img src="img_ft_gauss.png" style="width:100%; max-width:550px;"></center>
+<p>
+A periodic &delta;-function, called a comb function, with the period <i>T</i> transforms into a comb 
+function with the period 1/<i>T</i>. This is the cause of high frequency peaks appearing at the low 
+frequency end of the spectrum and vice versa if the sampling rate is too low.
+</p>
+<center><img src="img_ft_comb.png" style="width:100%; max-width:550px;"></center>
+<p>
+For <a href="two_dimensional_spectra.html">2D spectra</a> the Fourier transformation must be performed on an 
+experiment with two variable time domains.
+</p>
+</div>
+
+</body>
+</html>

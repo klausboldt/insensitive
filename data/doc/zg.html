@@ -1,0 +1,70 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+<sup>1</sup>H-Spectrum
+</h1>
+</div>
+
+<div>
+<p>
+The simplest pulsed NMR experiment is the one-dimensional, homonuclear experiment that is usually 
+performed on protons. (Bruker code: zg)
+</p>
+<center><img src="pp_zg.png" width="164" height="116"></center>
+<p>
+The pulse sequence consists of a single 90&deg; pulse that flips the spins' <i>z</i>-magnetisation into the 
+x,y-plane and creates observable <a href="coherences.html">coherences</a>. The magnetisation is then 
+allowed to freely evolve with time and the <a href="fid.html">FID</a> is recorded.
+</p>
+<p>
+Set up a two-spin system of I-spins. Set the chemical shifts to 
+<i>&Omega;</i><sub>1</sub> = 2.2 Hz for spin 1 and <i>&Omega;</i><sub>2</sub> = -1.7 Hz for spin 2. The
+coupling constant should be <i>J</i> = 0.25 Hz. To simplify the product operator terms select only spin 1 
+to be resonant at first in the Settings menu. Note that in a normal homonuclear 1D experiment all spins of
+the same type are affected by the pulse.
+</p>
+<p>
+A selective 90&deg;<sub>x</sub>-pulse turns the <op>I1z</op> operator into <op>-I1y</op>. The free 
+evolution of the transverse magnetisation can be described by the <a href="chemical_shift.html">chemical 
+shift</a> operator <i>&Omega;t<sub>1</sub></i> <op>Iz</op> and results in the terms:
+</p>
+<p>
+- <op>I1y</op> cos(<i>&Omega;t<sub>1</sub></i>) + <op>I1x</op> sin(<i>&Omega;t<sub>1</sub></i>)
+</p>
+<p>
+The <a href="coupling.html">coupling</a> operator <i>&pi;J<sub>12</sub>t<sub>1</sub></i> <op>2I1zI2z</op> 
+evolves the in-phase magnetisation <op>-I1y</op> and <op>I1x</op> into a state of 
+<a href="antiphase_magnetization.html">antiphase magnetisation</a>. The product operators then consist of 
+the terms:
+</p>
+<p>
+- <op>I1y</op> cos(<i>&Omega;t<sub>1</sub></i>) cos(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
++ <op>2I1xI2z</op> cos(<i>&Omega;t<sub>1</sub></i>) sin(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
++ <op>I1x</op> sin(<i>&Omega;t<sub>1</sub></i>) cos(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
++ <op>2I1yI2z</op> sin(<i>&Omega;t<sub>1</sub></i>) sin(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)
+</p>
+<p>
+When recording a spectrum run the experiment without, then with strong coupling enabled. Compare the 
+spectra and decrease <i>&Omega;</i><sub>2</sub> in steps of 1 Hz to see the roofing effect. Use 1024 data 
+points for better resolution.
+</p>
+<p>
+A similar experiment is the zg30, where the spin vector is only flipped around 30&deg;. The smaller
+magnetisation in the x,y-plane is compensated by shorter relaxation times which allow for a higher
+sampling rate. This leads to a higher signal-to-noise ratio and an overall better performance.
+</p>
+</div>
+
+</body>
+</html>

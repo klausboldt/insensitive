@@ -1,0 +1,73 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Product operator formalism
+</h1>
+</div>
+
+<div>
+<p>
+The product operator formalism takes the <a href="density_matrix.html">density matrix</a> representation 
+of a spin system to an easily readable form by writing it as a sum of orthogonal matrices, each 
+represented as an <a href="matrix_operators.html">operator</a> independent of the spin system's size. A 
+product operator representing the z-component of the second spin in a system (or the 
+<a href="populations.html">population</a> of the <i>&alpha;</i>-state) would be <op>I2z</op>, the 
+x-component (or <a href="coherences.html">coherence</a> in x-direction) of spin 1 would be <op>I1x</op>. 
+Coupling between spins can be described by a <a href="matrix_multiplication.html">product</a> of two 
+states, indicating a linked state. <op>2I1xI2z</op> indicates a state where the x-component of spin 1 is 
+linked to a populated <i>&alpha;</i>-state of spin 2, while a spin 1 in -x-direction would be linked to a 
+populated <i>&beta;</i>-state of spin 2. Any product operator can be combined with any number of product 
+operators for other spins in the ensemble, e.g. <op>4I1zI2xI3x</op>. The leading coefficient is needed to 
+make the trace of the density matrix equal to 1.
+</p>
+<p>
+The usefulness of the product operator formalism arises from the fact that in this form states (e.g. a spin 
+along the x-axis) and a rotational operation (e.g. a rotation around the x-axis) takes the same form. 
+Thus, precession and rf-pulses can be described by <a href="group_theory.html">group theory</a> by applying a 
+product operator (rotation) to another product operator (state), resulting in a changed state.
+</p>
+<center><img src="formula_operator_group.png" height="91" width="174"></center>
+<p>
+Precession is a rotation around the z-axis or an <op>Iz</op> operator applied to a mixture of <op>Ix</op> 
+and <op>Iy</op> states.
+</p>
+<p>
+A <a href="pulse.html">pulse</a> is a rotation around the x(y)-axis or an <op>Ix</op> (<op>Iy</op>) 
+operator applied to an <op>Iz</op> state.
+</p>
+<p>
+Coupling is the linked precession of two or more spins <op>I1x</op>, <op>I2x</op> by the 
+<a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a> <op>2I1zI2z</op> and results 
+in antiphase magnetisation <op>2I1yI2z</op> and <op>2I1zI2y</op>.
+</p>
+<p>
+The more sensitive spins are denominated by <op>I</op> while the less sensitive spin type (usually the
+hetero nuclei) is denominated by <op>S</op>.
+</p>
+<p>
+An alternative to the cartesian product operator basis are the <a href="spherical_tensors.html">spherical 
+tensor operators</a> and the <a href="singlet_triplet_basis.html">singlet-triplet basis</a>.
+</p>
+<p>
+The following papers give a good introduction into the product operator formalism:<br>
+(a) O. W. S&oslash;rensen, G. W. Eich, M. H. Levitt, G. Bodenhausen, R. R. Ernst, Product Operator Formalism
+for the Description of NMR Pulse Experiments, <i>Prog. NMR. Spectrosc.</i> <b>1983</b>, <i>16</i>, 163-192.<br>
+(b) J. Shriver, Product Operators and Coherence Transfer in Multiple-Pulse NMR Experiments, <i>Conc. Magn.
+Reson.</i> <b>1992</b>, <i>4</i>, 1-33.<br>
+(c) A. D. Bain, Operator Formalisms: An Overview <i>Conc. Magn. Reson.</i> <b>2006</b>, <i>28A</i> (6), 369-383.
+</p>
+</div>
+
+</body>
+</html>

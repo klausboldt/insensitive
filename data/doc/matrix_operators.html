@@ -1,0 +1,113 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Matrix operators
+</h1>
+</div>
+
+<div>
+<p>
+The <a href="density_matrix.html">density matrix</a> can be constructed as a linear combination of 
+orthogonal <i>n</i> x <i>n</i>-matrices representing pure spin states. These <a href="matrix.html">matrices</a>
+are called <a href="product_operator_formalism.html">product operators</a> and can be constructed from four
+basic spin matrices. They are the identity matrix
+</p>
+<center><img src="formula_identity_matrix.png" height="44" width="131"></center>
+<p>
+the <i>z</i>-component which represents the excess population of <i>&alpha;</i>-spins in the matrix diagonal
+</p>
+<center><img src="formula_iz_matrix.png" height="44" width="129"></center>
+<p>
+the <i>x</i>-component which represents <a href="coherences.html">coherences</a> in <i>x</i>-direction as real, 
+off-diagonal elements
+</p>
+<center><img src="formula_ix_matrix.png" height="44" width="116"></center>
+<p>
+and the <i>y</i>-component which represents coherences in <i>y</i>-direction as imaginary, off-diagonal elements.
+</p>
+<center><img src="formula_iy_matrix.png" height="44" width="126"></center>
+<p>
+For systems of more than one spin the product operators are formed by the 
+<a href="matrix_multiplication.html">direct product</a> of single-spin matrices. <i>x</i>-Magnetisation 
+of spin 1 is the product of <op>Ix</op> with <op>E/2</op>, while for <i>x</i>-magnetisation of spin 2 
+the direct product of <op>E/2</op> with <op>Ix</op> must be calculated.
+</p>
+<center><img src="formula_i2x_matrix.png" height="87" width="164"></center>
+<p>
+<a href="antiphase_magnetization.html">Antiphase magnetisation</a> is the product of <i>z</i>-magnetisation of 
+one spin with <i>x</i>- or <i>y</i>-magnetisation of the second spin.
+</p>
+<center><img src="formula_2ixiz_matrix.png" height="87" width="240"></center>
+<p>
+The operator for the <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a> is the 
+product of two population matrices and represents two spins of which the energy levels are not populated 
+independently.
+</p>
+<center><img src="formula_2iziz_matrix.png" height="87" width="239"></center>
+<p>
+<a href="multi_quantum_coherences.html">Multi-quantum coherences</a> are direct products of more than one 
+single quantum coherence.
+</p>
+<center><img src="formula_2ixiy_matrix.png" height="87" width="235"></center>
+<p><b>Propagators</b></p>
+<p>
+For precession and pulses the <a href="equation_of_motion.html">equation of motion</a> has to be applied 
+to the product operators. A 90&deg;<sub>x</sub>-pulse is the rotation around <op>Ix</op>. The rotation 
+operator's matrix representation is the exponential of the product operator which can be easily calculated
+for diagonal matrices as the exponential of the diagonal elements. In case of more complex matrices 
+<a href="matrix_diagonalization.html">diagonalisation</a> has to be performed first. The operator needs to be 
+applied following the sandwich formula
+</p>
+<center><img src="formula_rotation_sandwich.png" height="22" width="178"></center>
+<p>
+The matrix representation for <a href="precession.html">precession</a> around an arbitrary angle around 
+<op>Iz</op> is
+</p>
+<center><img src="formula_precession_matrix.png" height="66" width="288"></center>
+<p>
+while the rotation matrix for arbitrary <a href="pulse.html">rf-pulses</a> is
+</p>
+<center><img src="formula_pulse_matrix.png" height="55" width="300"></center>
+<p>
+with <i>&phi;</i> being the <a href="phase.html">phase</a> of the pulse.
+</p>
+<p><b>Non-cartesian Operators</b></p>
+<p>
+A change of the <a href="coherences.html">coherence order</a> of &plusmn;1 can be expressed by the shift 
+operators
+</p>
+<center><img src="formula_iplus_matrix.png" height="44" width="134"></center>
+<p>
+and
+</p>
+<center><img src="formula_iminus_matrix.png" height="44" width="120"></center>
+<p>
+They are part of the <a href="spherical_tensors.html">spherical tensor</a> operator basis, together with 
+the operators <op>E/2</op> and <op>Iz</op>.
+<br>
+Another basis can be formed from the shift operators and the projection or polarisation operators
+</p>
+<center><img src="formula_ialpha_matrix.png" height="44" width="119"></center>
+<p>
+and
+</p>
+<center><img src="formula_ibeta_matrix.png" height="44" width="118"></center>
+<p>
+which result in the <a href="populations.html">population</a> of the <i>&alpha;</i> and <i>&beta;</i> 
+state, respectively, when applied to a spin eigenvector.
+</p>
+</div>
+
+</body>
+</html>

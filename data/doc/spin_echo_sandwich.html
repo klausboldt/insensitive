@@ -1,0 +1,90 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Spin echo sandwich
+</h1>
+</div>
+
+<div>
+<p>
+One of the most frequently used pulsed sequences is the spin echo sandwich that consists of an evolution 
+period <i>&tau;</i> with an 180&deg;-pulse in the middle.
+</p>
+<center><img src="img_ses.png"></center>
+<p>
+The spin echo sequence starts with transverse magnetisation <op>-Iy</op> that is allowed to freely evolve 
+for half of the evolution period <i>&tau;</i>/2. The coherences are affected by 
+<a href="chemical_shift.html">chemical shift</a> which leads to the product operators
+</p>
+<p>
+- <op>Iy</op> cos(<i>&Omega;&tau;</i>/2) + <op>Ix</op> sin(<i>&Omega;t</i>/2)
+</p>
+<p>
+and <a href="coupling.html">coupling</a> which creates <a href="antiphase_magnetization.html">antiphase 
+magnetisation</a>
+</p>
+<p>
+- <op>Iy</op> cos(<i>&Omega;&tau;</i>/2) cos(<i>&pi;J&tau;</i>/2)<br>
++ <op>2IxSz</op> cos(<i>&Omega;&tau;</i>/2) sin(<i>&pi;J&tau;</i>/2)<br>
++ <op>Ix</op> sin(<i>&Omega;&tau;</i>/2) cos(<i>&pi;J&tau;</i>/2)<br>
++ <op>2IySz</op> sin(<i>&Omega;&tau;</i>/2) sin(<i>&pi;J&tau;</i>/2)
+</p>
+<p>
+The 180&deg;<sub>x</sub>-pulse inverts all magnetisation in y- and z-direction. Since both spins are affected 
+in the term <op>2IySz</op> the product operator does not change sign.
+</p>
+<p>
++ <op>Iy</op> cos(<i>&Omega;&tau;</i>/2) cos(<i>&pi;J&tau;</i>/2)<br>
+- <op>2IxSz</op> cos(<i>&Omega;&tau;</i>/2) sin(<i>&pi;J&tau;</i>/2)<br>
++ <op>Ix</op> sin(<i>&Omega;&tau;</i>/2) cos(<i>&pi;J&tau;</i>/2)<br>
++ <op>2IySz</op> sin(<i>&Omega;&tau;</i>/2) sin(<i>&pi;J&tau;</i>/2)
+</p>
+<p>
+In the second half of the evolution time the chemical shift evolves in the opposite direction, while the 
+coupling continues unaffected except for being flipped around 180&deg;. By using the relations
+</p>
+<center><img src="formula_cossinidentity.png" height="75" width="216"></center>
+<p>
+the product operators can be calculated as
+</p>
+<p>
++ <op>Iy</op> cos(<i>&pi;J&tau;</i>) - <op>2IxSz</op> sin(<i>&pi;J&tau;</i>)
+</p>
+<p>
+The chemical shift is refocussed while the coupling can evolve unhindered. In one's mind one can 
+substitute the spin echo sequence by evolution of the coupling terms only followed by an 180&deg;-pulse. 
+</p>
+<p>
+In the heteronuclear case one has three different options. If the 180&deg;-pulse affects both the I-spins 
+and the S-spins the result is the same as with the homonuclear case: The chemical shift is refocussed 
+while the coupling is not.
+</p>
+<center><img src="img_ses_hx.png"></center>
+<p>
+If the pulse is applied to only the I-spins the chemical shift of the I-spins as well as the coupling gets
+refocussed while the S-spins evolve normally under the chemical shift.
+</p>
+<center><img src="img_ses_h.png"></center>
+<p>
+If the pulse is applied to the S-spins only it refocusses the coupling and the chemical shift of the 
+S-spins.
+</p>
+<center><img src="img_ses_x.png"></center>
+<p>
+Spin echo sandwiches can be part of larger blocks such as the <a href="bird_tango.html">BIRD or TANGO pulses</a>.
+</p>
+</div>
+
+</body>
+</html>

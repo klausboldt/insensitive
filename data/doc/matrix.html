@@ -1,0 +1,98 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Matrices
+</h1>
+</div>
+
+<div>
+<p>
+A matrix is a two-dimensional, rectangular array of numbers <i>m</i> x <i>n</i> with <i>m</i> rows and 
+<i>n</i> columns. A vector can be regarded as the special case of a matrix with only one column. A Matrix 
+<b>A</b> (and therefore the matrix elements <i>&alpha;</i><sub><i>ij</i></sub>) can be real or complex. 
+Matrices of matching dimensions are added by adding the matrix elements with the same row and column 
+index. Matrices can be multiplied by a scalar <i>c</i> by multiplying each element by <i>c</i>. There 
+exist several different forms of <a href="matrix_multiplication.html">matrix multiplication</a>, which 
+are generally not commutative. 
+</p>
+<center><img src="formula_matrix.png" height="98" width="236"></center>
+<p>
+Matrices are used to solve linear equations (where the row and column indices are used to identify the 
+equations and coefficients) and eigenvalue equations, as well as to describe rotations of a coordinate
+system. <a href="quantum_mechanics.html">Quantum mechanics</a> makes heavy use of matrices, because the 
+multiplication rules correctly describe the <a href="product_operator_formalism.html">operator</a> 
+algebra.
+</p>
+<p>
+<i>Square matrices</i> are matrices with the same number of rows and columns, <i>m</i> = <i>n</i>. A 
+<i>diagonal matrix</i> is a square matrix, where only matrix elements with equal row and column indices 
+<i>&alpha;</i><sub><i>jj</i></sub> are non zero. The <i>identity matrix</i> <b>E</b> is a diagonal matrix with 
+only ones on the main diagonal and zeros otherwise. Identity matrices can be defined by the Kronecker delta 
+<i>&delta;</i><sub><i>ij</i></sub>, which equals 1 if <i>i</i> = <i>j</i> and 0 if <i>i</i> &ne; <i>j</i>.
+</p>
+<p>
+The <i>determinant</i> of a square matrix det(<b>A</b>) is an unambiguous number associated with the 
+matrix. It can be regarded as a measure for the "volume" of a matrix, which spans a parallelpiped in an 
+Euclidean space with the same dimensionality. The determinant's sign expresses the orientation 
+in the coordinate system. (For a two dimensional matrix the "volume" is the area of a parallelogram, for 
+one dimension it is the length of a line.) The determinant is written by substituting the brackets around 
+the matrix by vertical bars.
+</p>
+<center><img src="formula_determinant.png" height="98" width="247"></center>
+<p>
+To calculate the determinant, one needs to calculate all <i>n</i>! permutations <i>&sigma;</i> 
+of the row or column indices. These are all possible ways to rearrange the ordered array (1, 2, ..., 
+<i>n</i>) to (<i>&sigma;</i><sub>1</sub>, <i>&sigma;</i><sub>2</sub>, ..., <i>&sigma;<sub>n</sub></i>). 
+The sign of the permutation, sign(<i>&sigma;</i>) = (-1)<sup><i>p</i></sup>, is defined by the necessary 
+number of switches <i>p</i> between indices. The determinant is the sum over all possible products of 
+one matrix element per row and column, multiplied by the sign of the corresponding permutation of indices. 
+</p>
+<center><img src="formula_determinant_algebra.png" height="52" width="234"></center>
+<p>
+The trace of a matrix Tr(<b>A</b>) is the sum of its diagonal elements. The rank of a matrix is the number of 
+linear independent column or row vectors. It cannot be larger than the smaller one of the dimensions <i>m</i> 
+or <i>n</i>. If the rank is equal to the dimension of a square matrix it is called a <i>regular matrix</i>, 
+otherwise it is called a <i>singular matrix</i>. Only regular matrices have a non-zero determinant.
+</p>
+<p>
+The <i>transpose</i> of an <i>m</i> x <i>n</i> matrix <b>A</b> is the <i>n</i> x <i>m</i> matrix 
+<b>A</b><sup>T</sup>, where the rows and columns have been exchanged. In the case of complex matrices the 
+<i>adjoint matrix</i> <b>A</b><sup>&dagger;</sup> is the transpose and complex conjugate matrix.
+</p>
+<p>
+A <i>symmetric matrix</i> is equal to its own transpose, <b>A</b> = <b>A</b><sup>T</sup>. A <i>Hermitian 
+matrix</i> or self-adjoint matrix is equal to its adjoint, <b>A</b> = <b>A</b><sup>&dagger;</sup>. The 
+diagonal elements of a Hermitian matrix are always real.
+</p>
+<p>
+The <i>inverse</i> of a matrix <b>A</b><sup>-1</sup>, multiplied with <b>A</b>, results in the identity matrix,
+<b>AA</b><sup>-1</sup> = <b>E</b>. Only matrices with a non-zero determinant are invertible. If the inverse 
+matrix is equal to the transpose matrix, <b>A</b><sup>T</sup> = <b>A</b><sup>-1</sup>, one speaks of an 
+<i>orthogonal matrix</i>. If the inverse matrix is the same as the adjoint matrix, one speaks of a <i>unitary 
+matrix</i>.
+</p>
+<p>
+Matrices can be <a href="matrix_diagonalization.html">transformed</a> into another coordinate system by changing
+its basis. A transformation into a diagonal form is necessary to calculate the inverse or exponential of a 
+matrix. Two representations of the same matrix in different coordinate systems have the same determinant.
+</p>
+<p>
+In quantum mechanics each observable parameter is represented by a hermitian matrix operator, for example the 
+<a href="density_matrix.html">density matrix</a>. Each propagator, which is the evolution operator that results
+from the <a href="equation_of_motion.html">equation of motion</a> is a unitary operator.
+</p>
+</div>
+
+</body>
+</html>

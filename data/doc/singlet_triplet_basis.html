@@ -1,0 +1,75 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Singlet-Triplet basis
+</h1>
+</div>
+
+<div>
+<p>
+In the case of two magnetically equivalent <a href="spin.html">spins</a> with the same 
+<a href="larmor_frequency.html">Larmor frequency</a> the operator for the <a href="coupling.html">strong 
+coupling</a> can be <a href="matrix_diagonalization.html">diagonalised</a> and solved by choosing a different 
+operator basis called singlet-triplet basis. It consists of the three triplet states
+</p>
+<center><img src="formula_triplet.png" height="91" width="223"></center>
+<p>
+and one singlet state
+</p>
+<center><img src="formula_singlet.png" height="42" width="212"></center>
+<p>
+The states <i>T</i><sub>0</sub> and <i>S</i><sub>0</sub> are superpositions of the <i>&alpha;&beta;</i> and 
+<i>&beta;&alpha;</i> states of the Zeeman basis, the other triplet states are the same as the Zeeman states 
+<i>&alpha;&alpha;</i> and <i>&beta;&beta;</i>. The spin pair as a <a href="quantum_mechanics.html">quantum 
+mechanical</a> unit in its triplet state behaves like a spin with <i>I</i> = 1 and <i>m<sub>I</sub></i> of either
++1, 0 or -1. The singlet state behaves like a spin with <i>I</i> = 0 and is not associated with a magnetic moment.
+If a spin 1/2 couples to these spins its peaks will appear as a triplet with the intensity distribution 1:2:1 in
+the spectrum where the centre line consists of contributions from the triplet and singlet state.
+</p>
+<p>
+Similarly, three magnetically equivalent spins mix to form a quartet (<i>I</i> = 3/2) and two doublet states
+(<i>I</i> = 1/2) with an intensity distribution of 1:3:3:1. Four magnetically equivalent spins behave like the
+combination of one quintet (<i>I</i> = 2), three triplets (<i>I</i> = 1), and two singlets (<i>I</i> = 0) with
+an intensity distribution of 1:4:6:4:1. The peak intensities of more magnetically equivalent spins can be
+calculated from Pascal's triangle.
+</p>
+<p>
+State mixing is the basis of a neat trick where magnetisation can be stored in the singlet state in low magnetic
+fields with the following pulse sequence: 
+</p>
+<center><img src="pp_singlet_triplet.png" height="95" width="300"></center>
+<p>
+The first part of the pulse sequence populates the states <i>&alpha;&beta;</i> and <i>&beta;&alpha;</i> which 
+is equal to the <a href="product_operator_formalism.html">product operators</a> <op>I1z</op> - <op>I2z</op>. 
+The spin system is then moved to a low magnetic field in which the spins become magnetically equivalent.
+</p>
+<center><img src="img_singlet_store.png" style="width:100%; max-width:443px;"></center>
+<p>
+The exchange of magnetisation between the singlet and triplet states by <a href="dipolar_coupling.html">
+dipole-dipole coupling</a> are symmetry forbidden. Thus, dipolar <a href="relaxation.html">relaxation</a> 
+of the singlet state is suppressed and the state is stable for much longer than <i>T</i><sub>1</sub> in the 
+order of minutes.
+</p>
+<center><img src="img_singlet_relaxation.png" style="width:100%; max-width:374px;"></center>
+<p>
+The magnetisation can then be brought back to the high magnetic field and transformed into observable 
+<a href="coherences.html">coherences</a>.<br>
+<br>
+Further reading: Marina Carravetta, Ole G. Johannessen, Malcolm H. Levitt, <i>Phys. Rev. Lett.</i> <b>2004</i>,
+<i>92</i> (15), 153003.
+</p>
+</div>
+
+</body>
+</html>

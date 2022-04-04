@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                z-Filter
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            A <i>z</i>-filter is a <a href="pulse_sequences.html">pulse sequence</a> block used to eliminate
+            phase and multiplet distortions in <a href="two_dimensional_spectra.html">two-dimensional spectra</a>.
+            This is done by inserting two 90&deg; <a href="pulse.hrml">pulses</a> spaced by a variable delay
+            time <i>&tau;</i>, which is varied stochastically between experiments. All undesired coherences, which
+            are not transformed into <i>z</i>-magnetisation, will be averaged out when combining all experiments
+            with different <i>&tau;</i>, while the stored longitudinal magnetisation is recovered by the second
+            pulse.
+            </p>
+            <center><img src="pp_zfilter.png" width="128" height="176"></center>
+            <p>
+            An improved version of the <i>z</i>-filter uses a <a href="gradients.html">gradient pulse</a> to
+            dephase the transverse magnetisation and no variation of <i>&tau;</i> is needed.
+            </p>
+            <p><b><i>z</i>-COSY</b><p>
+            <p>
+            The block is used in the <i>z</i>-filtered COSY experiment, a variant of the <a href="cosyqf.html">
+            COSY</a> spectrum that yields simple spectra, especially for <a href="coupling.html">strongly
+            coupled</a> systems, with clean diagonal peaks and amplitudes that at proportional to the lines
+            in a 1D spectrum. The experiment shows the same signals as the <a href="ecos3ph.html">E.COSY</a>, albeit
+            with incomplete suppression of the unwanted signals.
+            </p>
+            <center><img src="pp_zcosy.png" width="287" height="176"></center>
+            <p>
+            In a compromise between sensitivity and the suppression of <a href="noesyph.html">NOESY</a>-like
+            signals short angle pulses of 20&deg; are used for the <i>z</i>-filter.
+            </p>
+        </div>
+        
+    </body>
+</html>

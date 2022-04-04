@@ -1,0 +1,84 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Group theory
+</h1>
+</div>
+
+<div>
+<p>
+A group (<i>G</i>; &bull;) is an algebraic structure, which consist of a finite or infinite set of elements 
+<i>G</i> on which an operation &bull; is defined that combines any two elements and results in another element
+of <i>G</i>. To qualify as a group the structure has to satisfy the group axioms:
+</p>
+<ol>
+  <li>There exists exactly one <b>identity element</b> <i>e</i> &isin; <i>G</i> for which the equation <i>e</i>
+      &bull; <i>a</i> = <i>a</i> &bull; <i>e</i> = <i>a</i> holds for all <i>a</i> &isin; <i>G</i></li>
+  <li>For every element <i>a</i> &isin; <i>G</i> exists an <b>inverse element</b> <i>a</i><sup>-1</sup> such
+      that <i>a</i> &bull; <i>a</i><sup>-1</sup> = <i>a</i><sup>-1</sup> &bull; <i>a</i> = <i>e</i>.</li>
+  <li>The <b>associative law</b> is satisfied so that (<i>a</i> &bull; <i>b</i>) &bull; <i>c</i> 
+      = <i>a</i> &bull; (<i>b</i> &bull; <i>c</i>).</li>
+</ol>
+<p>
+Commutativity is not required. Examples for groups are the real numbers with respect to addition (<b>Z</b>; +) 
+with the identity element 0, and the rational numbers (without zero) with respect to multiplication (<b>Q</b>\0; &sdot;) with the
+identity element 1. Finite groups are used to describe symmetries and rotations: <i>G</i> is a set of rotation 
+operations and the operation the successive application of two rotations, which is equal to a third rotation.
+</p>
+<p>
+Of special interest in spin dynamics are groups of square <a href="matrix.html">matrices</a>, which are
+combined by <a href="matrix_multiplication.html">matrix multiplication</a>. These fulfil the requirements
+of non-commuting <a href="matrix_operators.html">operators</a> in <a href="quantum_mechanics.html">quantum
+mechanics</a>. Groups of interest for NMR are:
+</p>
+<ul>
+    <li><b>GL(<i>n</i>)</b> the general linear group of all invertible <i>n</i> x <i>n</i> matrices is the largest
+        possible set of square matrices that forms a group.</li>
+    <li><b>SL(<i>n</i>)</b> the special linear group includes all members of GL(<i>n</i>) with a determinant = 1.</li>
+    <li><b>U(<i>n</i>)</b> is the subgroup of GL(<i>N</i>) that comprises of all unitary matrices that have a
+        determinant = &plusmn;1 and do not change the norm of the vectors they are applied to.</li>
+    <li><b>O(<i>n</i>)</b> is the group of all orthogonal matrices with determinant = &plusmn;1, which make up
+        all rotation or inversion matrices.</li>
+    <li><b>SO(3)</b> the special orthogonal group in three dimensions is the group of all possible rotations in
+        real space with a determinant = 1, thus excluding inversions. It describes orbital angular momentum.</li>
+    <li><b>SU(<i>n</i>)</b> is the special unitary group of dimension <i>n</i>, which describes <a href="spin.html">
+        spin</a>. In contrary to spatial rotations a rotation by 360&deg; is not necessarily equal to the identity
+        operator. In the case of SU(2) for spin 1/2 the original state is restored after a rotation by 720&deg;.</li>
+</ul>
+<p>
+Group theory is employed in NMR for describing <a href="precession.html">precession</a> and <a href="pulse.html">
+pulses</a> with the 4<sup><i>n</i></sup> <a href="product_operator_formalism.html">product operators</a> that
+form the basis of the continuous operator space. They can represent states like the population of the
+<i>&alpha;</i>-state <op>Iz</op>, the coherence in x-direction <op>Ix</op> or the
+<a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a> <op>2IzSz</op>. The same operators
+can also describe rotations if the operation &bull; is the application of the left operator on the right operator
+in <a href="hilbert_space.html">Hilbert space</a> in form of the sandwich formula
+</p>
+<center><img src="formula_rotation_sandwich.png" height="22" width="178"></center>
+<p>
+that results from the <a href="equation_of_motion.html">equation of motion</a>. Such an operation always
+results in another product operator and conserves the total angular momentum.
+<a href="relaxation.html">Relaxation</a> destroys magnetisation and thus violates the group axioms, resulting in
+a semigroup.<br>
+The application of product operators is usually written with the applied operator on top of a reaction arrow.
+The equation <op>Ix</op> &bull; <op>Iz</op> = <op>-Iy</op> appears as the first of the three following examples.
+</p>
+<center><img src="formula_operator_group.png" height="91" width="174"></center>
+<p>
+The identity element <op>E/2</op> is the normalised identity matrix with the dimension of the spin system.
+</p>
+</div>
+
+</body>
+</html>

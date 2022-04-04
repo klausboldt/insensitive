@@ -1,0 +1,75 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Matrix diagonalisation
+</h1>
+</div>
+
+<div>
+<p>
+The calculation of the <a href="matrix_operators.html">matrix representation</a> of an operator for the 
+temporal evolution in NMR involves the exponential of a matrix, as described by the 
+<a href="equation_of_motion.html">equation of motion</a>. In the case of a diagonal <a href="matrix.html">
+matrix</a> this can be derived from the series expansion as a Taylor series.
+</p>
+<center><img src="formula_taylor_series.png" height="38" width="297"></center>
+<p>
+The exponential of the <a href="coupling.html">weak coupling operator</a> <i>&pi;J</i> <op>2IzSz</op> 
+represented by the <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a>
+</p>
+<center><img src="formula_weak_matrix.png" height="85" width="300"></center>
+<p>
+is given by the exponential of the diagonal elements:
+</p>
+<center><img src="formula_weak_exponential.png" style="width:100%; max-width:422px;"></center>
+<p>
+The strong coupling involves a flipflop exchange between the energy levels <i>&alpha;&beta;</i> and 
+<i>&beta;&alpha;</i> and has off-diagonal elements that are non-zero.
+</p>
+<center><img src="formula_strong_matrix.png" height="85" width="300"></center>
+<p>
+The exponential of this matrix can only be calculated after diagonalisation. This is done in two steps. First 
+the <a href="quantum_mechanics.html">eigenvalue equation</a> for the matrix must be solved.
+</p>
+<center><img src="formula_eigenequation.png" height="14" width="71"></center>
+<p>
+In the second step an eigendecomposition or is performed, which transforms the matrix into its eigenbasis
+(called a similarity transformation) by the sandwich formula
+</p>
+<center><img src="formula_matrix_decomposition.png" height="17" width="105"></center>
+<p>
+Every matrix operator is diagonal in its eigenbasis with the eigenvalues <i>&lambda;</i> as diagonal elements.
+</p>
+<center><img src="formula_diagonal_matrix.png" height="98" width="196"></center>
+<p>
+The exponential can be calculated as shown above and the matrix decomposition is reversed:
+</p>
+<center><img src="formula_exponential_decomposition.png" height="22" width="190"></center>
+<p>
+The columns of the diagonalisation matrix <b>X</b> are the eigenvectors of <b>A</b>:
+</p>
+<center><img src="formula_transformation_matrix.png" height="87" width="197"></center>
+<p>
+If the matrix <b>A</b> is hermitian or unitary the inverse transformation matrix <b>X</b><sup>-1</sup> is equal
+to its adjoint (complex conjugate and transpose) matrix <b>X</b><sup>&dagger;</sup>.<br>
+<!--<br>
+The eigenequation in Insensitive is solved by Householder reduction and an QL algorithm with implicit shifts. 
+The matrix inversion is performed after LU decomposition. The algorithms are taken from William H. Press, Saul 
+A. Teukolsky, William T. Vetterling, Brian P. Flannery <i>Numerical Recipies</i>, Cambridge University Press, 
+Cambridge, 3rd edition, <b>2007</i>.-->
+</p>
+</div>
+
+</body>
+</html>

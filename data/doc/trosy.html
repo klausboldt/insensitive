@@ -1,0 +1,54 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+TROSY
+</h1>
+</div>
+
+<div>
+<p>
+In a heteronuclear spin system of an <i>I</i> and an <i>S</i> spin, e.g. a <a href="coupling.html">
+coupled</a> spin pair of a <sup>1</sup>H and a <sup>15</sup>N nucleus in a protein backbone, the 
+<i>S</i> spin is subject to <a href="dipolar_coupling.html">dipolar coupling</a> and 
+<a href="chemical shift.html">chemical shift anisotropy</a>. The magnetic fields due to the proton 
+<a href="spin.html">spin</a> orientation and the electron ring currents are always opposed if the proton
+is in its <i>&beta;</i> state and point in the same direction if it is in its <i>&alpha;</i> state, 
+independent from the molecule's orientation to the external magnetic field. Dipolar 
+<a href="relaxation.html">relaxation</a> of the hetero spin is therefore dependent on the state of the 
+coupling partner and causes a doublet with significantly different line widths. The peak caused by 
+coupling to a proton in <i>&beta;</i> state is narrowed, while the linewidth for the spin coupled to a 
+proton in <i>&alpha;</i> state is increased. This effect is more pronounced at high magnetic fields.
+</p>
+<p>
+The transverse relaxation optimised spectroscopy (TROSY) removed the effects of line broadening in the 
+spectrum by acquiring the <a href="fid.html">FID</a> without <a href="decoupling.html">decoupling</a> 
+and then designing the <a href="pulse_sequences.html">pulse sequence</a> in a way that the magnetisation
+is stored in slowly decaying <a href="coherences.html">coherences</a>. If decoupling was applied, the 
+line width would be averaged and caused undecipherable spectra even if half of the coherences gave sharp
+peaks. The family of TROSY sequences is the basis for measuring large proteins with very long 
+correlation times <i>&tau;<sub>c</sub></i>.
+</p>
+<p>
+TROSY spectra start from a state of <a href="longitudinal_two_spin_order.html">longitudinal two-spin 
+order</a> <op>&plusmn;2IzSz</op>, which is created by a 90&deg;<sub><i>x</i></sub> <a href="pulse.html">
+pulse</a> on the <i>I</i> spins, followed by a <a href="spin_echo_sandwich.html">spin echo sandwich</a>
+on both spins with a total duration of 1/(2<i>J<sub>IS</sub></i>), and a second 90&deg; pulse with a
+&plusmn;90&deg; <a href="phase.html">phase</a> shift. The TROSY sequence can be included in experiments 
+like the <a href="hsqcph.html">HSQC</a> (minus the decoupling pulses), where the broad signals are then 
+removed by <a href="phase_cycling.html">phase cycling</a>.
+</p>
+</div>
+
+</body>
+</html>

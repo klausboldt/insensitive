@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                E.COSY
+            </h1>
+        </div>
+        
+        <div>
+        <p>
+            The exclusive COSY or E.COSY experiment is designed to yield correlation spectra, which resolve
+            even small <a href="coupling.html">coupling constants</a> in the cross peaks. In this it is similar
+            to the COSY-45 or <a href="zfilter.html">z-COSY</a>, but shows less distortion from dispersive diagonal
+            peaks and quantitative suppression of unwanted signals. It is a difference spectrum of a double and a
+            triple quantum filtered <a href="cosyqf.html">COSY</a> spectrum (<a href="dqf_cosy.html">DQF-COSY</a>
+            and TQF-COSY).
+        </p>
+        <center><img src="pp_dqfcosy.png" width="268" height="176"></center>
+        <p>
+            The normal (DQF) and complementary (TQF) component are based on the same pulse sequence, but differ in
+            their <a href="phase_cycling.html">phase cycles</a>. The DQF-COSY has 4 steps, assuming use of
+            the <a href="pure_phase_spectra.html">States method</a> for data aquisition.
+        </p>
+        <center><p>
+            <table width="300px" border="1" cellpadding="2">
+                <tr>
+                    <th>Step</th>
+                    <th><i>&phi;</i><sub>1</sub></th>
+                    <th><i>&phi;</i><sub>2</sub></th>
+                    <th><i>&phi;</i><sub>3</sub></th>
+                    <th><i>&phi;</i><sub>rec</sub></th>
+                </tr>
+                <tr>
+                    <td align="center">1</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">2</td>
+                    <td align="right">90&deg;</td>
+                    <td align="right">90&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">3</td>
+                    <td align="right">180&deg;</td>
+                    <td align="right">180&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">4</td>
+                    <td align="right">270&deg;</td>
+                    <td align="right">270&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+            </table>
+            </p></center>
+        <p>
+            The TQF-COSY consists of two more cycles to select <a href="coherence_pathways.html">coherence
+            pathways</a> via triple quantum coherences.
+        </p>
+        <center><p>
+            <table width="300px" border="1" cellpadding="2">
+                <tr>
+                    <th>Step</th>
+                    <th><i>&phi;</i><sub>1</sub></th>
+                    <th><i>&phi;</i><sub>2</sub></th>
+                    <th><i>&phi;</i><sub>3</sub></th>
+                    <th><i>&phi;</i><sub>rec</sub></th>
+                </tr>
+                <tr>
+                    <td align="center">1</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">2</td>
+                    <td align="right">60&deg;</td>
+                    <td align="right">60&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">3</td>
+                    <td align="right">120&deg;</td>
+                    <td align="right">120&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">4</td>
+                    <td align="right">180&deg;</td>
+                    <td align="right">180&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">5</td>
+                    <td align="right">240&deg;</td>
+                    <td align="right">240&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">6</td>
+                    <td align="right">300&deg;</td>
+                    <td align="right">300&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+            </table>
+            </p></center>
+        <p>
+            Three coupled spins are necessary for the E.COSY to work. The spectrum will then appear with simplified
+            multiplet structure of the cross peaks, which only show half of the signals of the standard COSY
+            spectrum. They can be used to measure exact J-coupling between the spins.
+        </p>
+        <center><img src="img_ecosy.png" width="288" height="84"></center>
+        <p>
+            Due to the necessity of acquiring two sets of data the sensitivity of the experiment is decreased 2-fold
+            compared to the DQF-COSY, and 4-fold compared to a normal COSY spectrum. The experiment can be
+            generalised to more than three spins.
+        </p>
+        </div>
+        
+    </body>
+</html>

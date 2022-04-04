@@ -1,0 +1,62 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Spherical Tensors
+</h1>
+</div>
+
+<div>
+<p>
+An alternative way to calculate <a href="product_operator_formalism.html">product operators</a> from the 
+<a href="density_matrix.html">density matrix</a> is to use spherical harmonics for the operator basis 
+instead of the cartesian basis matrices <op>E/2</op>, <op>Iz</op>, <op>Ix</op> and <op>Iy</op>. As with 
+the cartesian basis 4<sup><i>n</i></sup> basis matrices are needed for a system of <i>n</i> spins. For one
+spin the basis matrices are the identity <a href="matrix.html">matrix</a>
+</p>
+<center><img src="formula_identity_matrix.png" height="44" width="131"></center>
+<p>
+the Zeeman order population with the coherence order 0
+</p>
+<center><img src="formula_iz_matrix.png" height="44" width="129"></center>
+<p>
+the positive shift operator with the coherence order +1
+</p>
+<center><img src="formula_iplus_matrix.png" height="44" width="134"></center>
+<p>
+and the negative shift operator with the coherence order -1
+</p>
+<center><img src="formula_iminus_matrix.png" height="44" width="120"></center>
+<p>
+Products of operators like <op>I1<sup>+</sup>I2<sup>+</sup></op>, <op>I1<sup>+</sup>I2<sup>-</sup></op>, 
+<op>I1<sup>+</sup>I2z</op> or <op>I1zI2z</op> are used to represent interactions between spins.
+</p>
+<p>
+The spherical tensor basis does not have a geometric interpretation like the vector model. They are based 
+on the spherical harmonics <i>Y<sub>l,m</sub></i> that are known from the quantum mechanical rotator and 
+the angular components of the hydrogen atom orbitals. Their usefulness comes from the fact that the 
+<a href="coherences.html">coherence order</a> can be easily calculated as the sum of all coherence orders 
+of the basis operators in the product operator. Of the examples above the operator 
+<op>I1<sup>+</sup>I2<sup>+</sup></op> is of the order 2, <op>I1<sup>+</sup>I2z</op> is of the order 1 and 
+<op>I1<sup>+</sup>I2<sup>-</sup></op> is of the order 0.
+</p>
+<center><img src="img_spherical_harmonics.png" style="width:100%; max-width:600px;"></center>
+<p>
+All base matrices are real, the orientation of the magnetic moments must therefore be given by a complex 
+factor <i>A</i>&sdot;e<sup><i>i&phi;</sup></i> with the magnitude <i>A</i> and the imaginary 
+<a href="phase.html">phase</a> <i>&phi;</i>.
+</p>
+</div>
+
+</body>
+</html>

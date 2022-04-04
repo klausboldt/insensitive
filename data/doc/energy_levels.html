@@ -1,0 +1,107 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+    
+<body>
+        
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+        
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Energy level diagrams
+</h1>
+</div>
+        
+<div>
+<p>
+In a magnetic field the possible energy eigenstates of a <a href="spin.html">spin</a> 1/2 split up into 
+to energy levels, called Zeeman splitting. The levels are denominated <i>&alpha;</i> for the lower state 
+and <i>&beta;</i> for the higher state. In a system of more than one spin each energy level corresponds 
+to one configuration of each spin in the system, e.g. <i>&alpha;&beta;&alpha;</i> in a system of three 
+spins.<br>
+In the very simple energy level description of NMR peaks in the spectrum are treated as transitions 
+between states. The energy levels of a spin system reveal the relative positions of the eigenstates on 
+an energy scale, the Zeeman splitting and transition energies. This model treats peaks in the spectrum as 
+transitions between states. A transition between two levels where only one spin is changed corresponds to 
+an observable, <a href="single_quantum_coherence.html">Single-quantum transition</a>. The energy level 
+diagrams do not account for <a href="coherences.html">coherences</a>, superposition states and phenomena 
+such as <a href="coherence_transfer.html">coherence transfer</a>.
+</p>
+<p>
+For a <a href="coupling.html">weakly coupled</a> spin system of two spins the energy diagram can be constructed by first 
+drawing the splitting of one spin into the levels <i>&alpha;</i> and <i>&beta;</i> and then splitting these 
+levels according to the second spin's <a href="larmor_frequency.html">resonance frequency</a>. This yields 
+four energy levels with four observable transitions, each two with the same energy difference.
+</p>
+<center><img src="img_energylevels_weak.png" height="230" width="300"></center>
+<p>
+The coupling interaction increases or decreases the energy values and creates the typical doublet that 
+splits symmetrically around the spins' resonance energies.
+</p>
+<p>
+If two spins are magnetically equivalent, the splitting leads to two degenerate eigenstates. In this case 
+the states <i>&alpha;&beta;</i> and <i>&beta;&alpha;</i> mix. The system is best described in the 
+<a href="singlet_triplet_basis.html">singlet-triplet basis</a>, for which the Hamiltonian matrix takes diagonal
+form. The system comprises of three energy levels forming a triplet state
+</p>
+<center><img src="formula_triplet.png" height="91" width="223"></center>
+<p>
+and one level forming a singlet state.
+</p>
+<center><img src="formula_singlet.png" height="42" width="212"></center>
+<p>
+The transition between triplet and singlet states is spin forbidden, which leads to the disappearance of 
+two transitions in the spectrum. The doublet of each coupling partner collapses to a single line.
+</p>
+<center><img src="img_energylevels_equivalent.png" height="336" width="300"></center>
+<p>
+In the case of strong coupling the mixing between the <i>&alpha;&beta;</i> and <i>&beta;&alpha;</i> states 
+is incomplete with the degree of mixing described by the angle <i>&xi;</i>.
+</p>
+<center><img src="formula_xi.png" height="42" width="128"></center>
+<p>
+The energy levels can no longer be assigned to well defined states of each spin, since the two spins are
+indistinguishable. Intead, both antiparallel states of the Zeeman basis contribute to each energy level.
+</p>
+<center><img src="formula_mixed_states.png" height="38" width="232"></center>
+<p>
+This results in two transitions being less probable in comparison to the other two. In the spectrum one observes
+the 'roofing' effect of strongly coupled doublets, where the peaks that are further apart in a pair of coupled
+spins appear weaker than the peaks that are closer in energy.
+</p>
+<center><img src="img_energylevels_strong.png" height="314" width="300"></center>
+<p>
+The spectral lines in a strongly coupled doublet are no longer symmetrically arranged around the resonance energy.
+The shift of the partially mixed energy levels is given by the strong coupling parameter.
+</p>
+<center><img src="formula_strong_coupling_parameter.png" height="22" width="114"></center>
+<p>
+with
+</p>
+<center><img src="formula_strong_coupling_delta.png" height="18" width="133"></center>
+<p>
+The transition probability <i>P</i> between two states <i>&psi;</i> and <i>&phi;</i> is the absolute square
+of the off-diagonal matrix element of the <op>Ix</op> operator for the transition between both states.
+</p>
+<center><img src="formula_transition_probability_xi.png" height="23" width="149"></center>
+<p>
+The signal intensity at the resonance frequency is proportional to
+</p>
+<center><img src="formula_signal_intensity.png" height="19" width="152"></center>
+<p>
+The limits for large and small <i>&xi;</i> are the cases of weak coupling and magnetically equivalent spins,
+respectively.
+</p>
+<p>
+An in-depth description of energy levels and transitions can be found in:<br>
+A. D. Bain, D. A. Fletcher, P. Hazendonk, What Is a Transition?, <i>Conc. Magn. Reson.</i> <b>1998</b>,
+<i>10A</i> (2), 86-98.
+</p>
+</div>
+        
+</body>
+</html>

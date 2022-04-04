@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CouplingMatrix</key>
+	<data>
+	zcxMQAAAgD4AAAAAAAAAAArXoz4AAGDApHC9Ps3MzD4K16M+CtejPpqZmT7sUTg+mpmZ
+	PpqZmT6amZk+AADAvw==
+	</data>
+	<key>DensityMatrix</key>
+	<data>
+	lv1/PgAAAABR+Eatvy8LrnIP0qxv4zMuMnEKoWSzriAzsg4ucqs6rbXJBCFnFY2gPbGW
+	nxNiOx8Ib8wfwObwHxc0Fa6OS4As9bWEHwBZDB+YGRwh+eBznzWnm5142IMcDFpMnrR1
+	ah9YZw6bpVWnnERZlJumZdKcdAAAgEIAAIBz+Eat2y8LLhr9/z0UroIyyTaJsdqKW7EX
+	YlUtblkKLoOc5TIVYdkyUhggrcSTD66/sqqsokIZLcF9zCBQBcKgSv6BMbqsnK/dxYst
+	gt0PrgFK6KsPWosrQ4v+nwLyFiG2UQUr/PuFKwlyup91kG4eHUKbn+wjAiDoE4IS9lgu
+	kkIM0qxB4zOucUy2seXQHDEb/f89SGGgMsWo163w5hSuRQunsIHo4TJ2fEcqH+O+Kw2K
+	F678S5ArFwXOncZ4i54oyH8xpT1rMOqs0ausQaurU9CCrUiYE67+a2kfHE6Nn5cKPKsq
+	IcCrNgzLnRBAzx0lVkef1zanHglRVxCaKFES6vsSomQQk6GmYVUtW1kKrkSo162S5hQu
+	NJJ6qCr+jiQXLSUsWE6HrHRtjaXP93GmEEuepnICXqYgVQItzKUxLufxUyqWVxopXsoc
+	pEsBQaQSOTCkl6g2pLzHAS6oYJ0tOaHvI+tA1iNbd9kqXtivKVjCs6ubX7As098fn0kU
+	kp/ksQ4uiao6LW/pIzPvUvix7ILbMfuLsLLTLSUsOU6HLO78/z0Kt7Czf2oNrr4Y0CxC
+	PyUttAUUrl1q3yBYVt4gpU3hMu5+XDP01CGrUjdfrC4pQyzGYUosx8wVICNbJiDL3FAs
+	MrYkri+73p6WizWgmju0oCz7CqHHkM6TEVFAE5LflSA+OdQgdxkgraGTDy7ogkcqVOS+
+	qy/ehaU3AXMmVWoNrn8X0Kz/bd+lWEpXpKj37aT5fqkk2vfbrILpBq60z7+rRR1ArHtI
+	56RgvDyl6LPFor23EiKyK9krRUG8qt0W2yMwlGkjE6H9LZ9isi3pbUOr3pnoq1MPESE1
+	UQ6gKa6OoBtag6H+sqqslkIZrWCKF66zR5CrNVKdpo/JYCaHPyUtuQUULrQy9KQ78Zyk
+	9AGzps84uyLlz7etME/+LQ3Ihav0Tk4sqAX4oluSkyHzTNmkZkgopUchLityREMsCZ/7
+	I6DplCMj4VArnwchrIMfxy1G2OutmBNNnQIiHJ8EfbOUr6ublM02hSE/XNUgXdWaoegZ
+	x6HaVQIt8KUxrmHKX58qmPcgwffbrLLpBi6oz7et5U7+rY77/72Fa5yyT4U8n+IEeZ7X
+	lx2rZKQALPaAlKu8AkWs1rnDM5ELAjRwfMWpdpOjKmBzSLLRNpaw0W7NsTQV8THBvRWs
+	/4AiLis0Fa6ISoCsybuJMfXoOTD61I8xIkjNsHfxUyrmVxqpwEHNMrB6UbOQz7+rwRxA
+	LMzHhatOTk6s0x2DH/mdQ59a/P894XqWMabrBy4Eo/gstBs3rgky0SzLGHqht0AZIKr4
+	4CuZpAcuwg3cISaJvSBOBiAhGiRfIV8eiBS7YMkUoY9Bn0I0kB/TxYstq90PLg6t0atf
+	Qasr2HodpBy4RCQ01SGrPzdfLAbo7qSfdzolow/rootnoaGvlh2rKaQArFfrBy5Mofis
+	QbOMJ1+G16LDBuyjSlsFJMiYBq6dBTgte+L3pc+Dw6UZFRQu562brHhyT624s7apoF1f
+	IUGkSaE40B2h2xD5n2BK6KuhWYurHNCCrYGYEy5Poy6kR4w5JC8pQyxGYkqsSxK9oqZS
+	2qGO7syk2cYrJceAlKsMAkUs9Rs3rmkx0awPfMmjNNMYpCOGPSckzY+kNMJKLuXGHi3X
+	m0mlsLfJpTdohqxJa04qvAGTrUgn3K0I7mKh5V+zILc/FRRDLgsRLYX+H6lgCiHQLaCf
+	skcMniDIAS7JYJ2t89/hn/P95h/iLNkr/UC8KpcfLiu+QkOsr3i9M+7gBLRj2uogmbmT
+	n/GYBq4kBjitTMJKLnrFHq1s/f+9KVyiMjzh1Ko2PuasaOWRL0M2b7Ki3qezIuwRsypz
+	H677g9ctSmbHHfYxTB9+UgUrG/yFqzYMPKvVIsArt13uIwwP1aOA3VAserYkLjFJ3iO+
+	QmCjJf8EJJuPk6NafsWpLpSjqr/14CuEpAeuAQX8pZIVviVDxVelRQrGJbbS1KqfPuYs
+	WzYiKCJOXCQTzGMtxvwQrj4y4C2xlbSt5+KdobqVA6J8CfYREFahkvqLlh8o2AUeP6PW
+	HVk+BB7kd9kq3/avqQ1I55z8oC6diKD9LQhisq3k4lArjwYhLK7pQ7JR264wpluOnXCc
+	q59LFRQuB66bLMlnhqx+X06qBL6dsMmJhzLEy2MtqfwQLlj9/72kcH0yHLfGMuAtvLFc
+	w9UtQTrErS8ZuxIFr96SkrxPH6sx/R9sP1wfZjANHxLCs6sbYLCsc0bcIK9nxaDpaUOr
+	fJnoK7ofxy1/1+stgvbSsb+L87GUd/wgalUEodFyT63hq7YpIgKTrdMn3C1h9qGzIaQi
+	MyMy4C06lbQtym/UMtbnejEQ/f+9exQ+sC9hRixOv/atWQAAAB8AAIBVZpYbmwk0nLFz
+	KZyBoZqcKegMH2Cefp87G1OeefoCHijDFqEGDiCgG86iH+B4p56fvhWsz4AirkstASDl
+	gbMfKUkxH/Owo58eIBahNxyjoDJzH66jg9etWAeZoFLi7yBTw9UtpDrELb5hRiw4v/Yt
+	ov1/vgAAAAA=
+	</data>
+	<key>GyroForI</key>
+	<integer>0</integer>
+	<key>GyroForS</key>
+	<integer>1</integer>
+	<key>ISSFileVersion</key>
+	<string>Insensitive Spin System 0.9.13</string>
+	<key>SpinTypeArray</key>
+	<integer>0</integer>
+	<key>Spins</key>
+	<integer>4</integer>
+</dict>
+</plist>

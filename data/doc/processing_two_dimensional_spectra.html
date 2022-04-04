@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Processing of 2D spectra
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            In order to go through all effects that can occur in a <a href="two_dimensional_spectra.html">
+            2D spectrum</a>, start with a homonuclear system of three spins. Set the 
+            <a href="larmor_frequency.html">Larmor frequencies</a> to <i>&Omega;</i><sub>1</sub> = 3.2 Hz, 
+            <i>&Omega;</i><sub>2</sub> = -2.7 Hz and <i>&Omega;</i><sub>3</sub> = 0.3 Hz. Create a spin 
+            system with a linear topology by setting the <a href="coupling.html">coupling</a> constants 
+            to <i>J</i><sub>12</sub> = 0.25 Hz and <i>J</i><sub>23</sub> = 0.37 Hz. Spins 1 and 3 should
+            not couple. These settings make use of the whole spectral width if the dwell time is set to 0.1 s.
+            In Insensitive for Mac OS X this spin system is supplied in the <typewriter>Examples</typewriter> 
+            folder as <typewriter>3 Spins (AMX).iss</typewriter>.
+            </p>
+            <center><img src="img_spin_system_homonuclear.png" style="width:100%; max-width:360px;"></center>
+            <p>
+            The simplest 2D spectrum is the <a href="cosyqf.html">COSY</a> spectrum, which shows the 
+            original spectrum along the diagonal and cross peaks between all spins that couple directly.
+            The experiment consists of two 90&deg; pulses, separated by a delay time <i>t</i><sub>1</sub>, 
+            followed by the spectrum acquisition.
+            </p>
+            <center><img src="img_pulse_sequence.png" style="width:100%; max-width:533px;"></center>
+            <p>
+            Open the Pulse Sequence window, press "Record" and apply in that order a 
+            90&deg;<sub>x</sub> pulse, a free evolution with a delay time of 1 s and another 
+            90&deg;<sub>x</sub> pulse. Finish the recording by pressing "Acquire" to obtain a 1D spectrum
+            with the independent time variable <i>t</i><sub>2</sub>. Recording of the pulse sequence will 
+            stop automatically. The resulting 1D spectrum shows a distorted mixture of in-phase and 
+            <a href="antiphase_magnetization.html">antiphase</a> peaks.
+            </p>
+            <center><img src="img_cosy_1D.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            In order to acquire a 2D spectrum, another time variable needs to be introduced. This is the 
+            variable delay time <i>t</i><sub>1</sub>, which can be chosen from the pull down menu in the 
+            Pulse Sequence window as the only option. Selecting it marks the evolution time in blue. When 
+            clicking on "2D Spectrum" the acquisition starts. When all data points are recorded, the 
+            two dimensional <a href="fid.html">FID</a> (called SER for "serial FID") is displayed in the 
+            Spectrum window. Clicking on "FFT (t<sub>2</sub>)" <a href="fourier_transformation.html">
+            Fourier transforms</a> every row of the spectrum, leading to an array of spectra
+            with different <a href="phase.html">phases</a>. The fully transformed 2D spectrum can be 
+            obtained by pressing "FFT (t<sub>1</sub> + t<sub>2</sub>)". The resulting spectrum shows a
+            square array of peaks with the original 1D spectrum overlaid in the middle. This artefact is
+            caused by spin <a href="relaxation.html">relaxation</a> back to <i>z</i>-magnetisation during
+            <i>t</i><sub>1</sub>, which is turned into transverse magnetisation by the second pulse. 
+            </p>
+            <center><img src="img_cosy_folded_artifacts.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            It can be easily removed by recording the spectrum a second time, but with the phase of the 
+            first pulse and the receiver shifted by 180&deg;. In this procedure, called 
+            <a href="phase_cycling.html">phase cycling</a>, the two spectra are added together. The 
+            artefacts in both spectra have opposing phases and are cancelled out, while the rest of the 
+            spectrum adds up. Change the number of phase cycles to 2 and enter "180" as the phase 
+            in the second row of the table for "Phase 1" and "Receiver", then retake the spectrum.
+            </p>
+            <center><img src="img_cosy_folded.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            It becomes obvious now that the spectrum is mirrored at the horizontal axis in the centre of 
+            the spectrum. This is caused by the fact that while the receiver can differentiate between 
+            clockwise and anticlockwise <a href="precession.html">precession</a> by taking complex value
+            FIDs (recording both <i>x</i> and <i>y</i> values), the method is blind for this when 
+            varying <i>t</i><sub>1</sub>. Every frequency will feature as both positive and negative 
+            values. One can try to get rid of it by symmetrisation, where the absolute value spectrum is 
+            mirrored at one of the diagonal axes and only the larger value is used at both side of the 
+            diagonal. This still leaves artefacts, so two additional phase cycles are used to remove one 
+            of the mirror images. Raise the number of phase cycles to 4 and enter the values "90" and "270"
+            for "Phase 1" and "270" and "90" for "Receiver", respectively. After 2D Fourier transformation 
+            the spectrum should resemble a COSY spectrum with the diagonal from the top right to the 
+            bottom left.
+            </p>
+            <center><img src="img_cosy.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            This is called an N-type spectrum, because only negative <a href="coherences.html">coherences</a>
+            contribute to the signal. The P-type spectrum, which is mirrored along the other diagonal, can 
+            be obtained by changing the last phase cycles to "90" and "270" for "Phase 1" and "90" and 
+            "270" for "Receiver".
+            </p>
+            <p>
+            Another problem arises from the fact that the spectrum cannot be phase corrected along the 
+            indirect <i>t</i><sub>1</sub> axis. In the phase modulated way the spectra have been acquired 
+            so far, the peaks have a phase-twist <a href="lineshapes.html">line shape</a>, a mix of pure
+            absorption and dispersion line shape, which broadens all peaks. This can be circumvented by
+            acquiring an <a href="pure_phase_spectra.html">amplitude modulated</a> spectrum. There are several
+            ways to achieve this; the States method employed here requires two sets of spectra, the second having
+            the phases of all pulses before <i>t</i><sub>1</sub> shifted by 90&deg;. The real components
+            of these spectra are either purely composed of cosine or sine waves and are combined as real 
+            and imaginary parts in a new data set, which is Fourier transformed to yield a spectrum with 
+            peaks in pure absorption or dispersion mode. To use the States method select "States" from the 
+            "Detection" pull down menu in the Pulse Sequence window. This method already accounts for the 
+            selection of either N- or P-type coherences, and only the first two phase cycles are needed for
+            each of the datasets. The final <a href="pulse_sequences.html">pulse sequence</a> can be found 
+            in the <typewriter>Examples</typewriter> folder of Insensitive for Max OS X as 
+            <typewriter>COSY.ipp</typewriter>.
+            </p>
+            <center><img src="img_cosy_states.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            As can be seen from this procedure, the removal of every artefact requires the number of 
+            datasets to be doubled, decreasing the overall sensitivity of the method. Even with these 
+            measures in place the diagonal peaks in a COSY spectrum have a 90&deg; phase shift in 
+            relation to the cross peaks, and one of them will have broad dispersion line shapes. The 
+            <a href="dqf_cosy.html">DQF-COSY</a> experiment was devised to yield a 2D correlation spectrum
+            with all peaks in absorption mode.
+            </p>
+            <p>
+            This tutorial only applies for Insensitive for Mac OS X. Unfortunately, the calculations are 
+            too demanding of the processing power of iOS devices.
+            </p>
+        </div>
+        
+    </body>
+</html>

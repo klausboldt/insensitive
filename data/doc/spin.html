@@ -1,0 +1,75 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32">
+Spin
+</h1>
+</div>
+
+<div>
+<p>
+'Spin' is a fundamental property of all matter like rest mass or electrical charge. Is is often 
+described as a particle's rotational momentum <i>S</i> around its own axis (hence the name) and is 
+associated with a magnetic dipole moment <i>&mu;<sub>s</sub></i> of the particle. In contrary to a normal 
+rotational momentum like an electron's orbital momentum, the spin's quantum number <i>s</i> is constant 
+for a class of particles and may take half integer values (1/2 in case of an electron or a proton):
+</p>
+<center><img src="formula_spin.png" height="23" width="125"></center>
+<p>
+Not only is the spin's absolute value quantised, but its possible orientations as well. 
+<a href="quantum_mechanics.html">Quantum mechanics</a> states that the spin vector's projection on any 
+axis (e.g. z-direction) can only take values between <i>s</i> and <i>-s</i> in integer steps. These 
+different states are degenerate in the absence of a magnetic field but split up when a magnetic field is 
+applied. This is called Zeeman splitting and is proportional to the magnetic field. The spin 
+projection is defined by the projection quantum number <i>m<sub>s</sub></i>.
+</p>
+<center><img src="formula_spin_orientation.png" height="16" width="78"></center>
+<p>
+The cartesian components of any angular momentum do not <a href="quantum_mechanics.html">commute</a>. If 
+one orientation <i>m<sub>s</sub></i> is known, the other two components are completely uncertain. 
+<br>
+After a magnetic field <b>B</b><sub>0</sub> (usually in <i>z</i>-direction) is applied, spins-1/2 will 
+<a href="relaxation.html">relax</a> over time into one of two possible Zeeman states with 
+<i>m<sub>s</sub></i> = 1/2 (<i>&alpha;</i>) or <i>m<sub>s</sub></i> = -1/2 (<i>&beta;</i>) in a Boltzmann 
+distribution.
+</p>
+<center><img src="formula_boltzmann.png" height="42" width="81"></center>
+<p>
+In a magnetic field the orientation quantisation forces the spins in an angle to the magnetic field 
+vector. The force towards the <i>z</i>-direction causes the rotational axis of the spins to 
+<a href="precession.html">precess</a> around <b>B</b><sub>0</sub> with an angular frequency 
+<i>&omega;</i><sup>0</sup> determined by the spin's <a href="gyromagnetic_ratio.html">gyromagnetic 
+ratio</a> <i>&gamma;</i> and the magnetic field strength <i>B</i><sub>0</sub> called the 
+<a href="larmor_frequency.html">Larmor frequency</a>. 
+</p>
+<p>
+The <a href="matrix_operators.html">operators</a> for the three spin orientations <i>S<sub>x</sub></i>, 
+<i>S<sub>y</sub></i> and <i>S<sub>z</sub></i> for a spin with <i>s</i> = 1/2 can be expressed by the 
+three 2 x 2 Pauli <a href="matrix.html">matrices</a>.
+</p>
+<center><img src="formula_spin_matrix.png" height="144" width="132"></center>
+<p>
+The diagonal elements represent the <i>&alpha;</i> and <i>&beta;</i> states. The off-diagonal elements 
+are <a href="coherences.html">coherences</a>, superpositions of both states where the complex 
+coefficients are in phase. 
+</p>
+<p>
+In the case of more complex nuclei the spin is understood as the total angular momentum <i>I</i> of all 
+constituent protons and neutrons, which are in turn total angular moments of fundamental particles, the 
+quarks. In NMR the nuclear spin is usually referring to the ground state. It is this property that is 
+responsible for the NMR signal.
+</p>
+</div>
+
+</body>
+</html>

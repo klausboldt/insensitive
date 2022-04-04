@@ -1,0 +1,121 @@
+Version 0.9.34 included the following new features and fixes:
+
+- The code base was ported to use the GTK+ 3.0 libraries instead of Cocoa
+- 1D Spectra can now be plotted with a baseline near zero on the y axis
+- Improved scaling of the density matrix
+- Separated magnitude calculation and symmetrisation of 2D spectra
+- Corrected the widths of the Gauss and sinc pulse shape
+- Improved the display of pulse shapes when off-resonance effects are ignored
+- The presentation mode has been temporarily disabled
+
+Version 0.9.33 included the following new features and fixes:
+
+- Bug fixes to the simulation of single spin trajectories
+- Single spins trajectories are now available in presentations
+- Bug fixes for the presentations window
+- Updates *.spinlecture file format cannot be read by older versions
+- Noise level can now be set in the Spectrum view
+
+Version 0.9.32 includes the following new features and fixes:
+
+- Added simulation of single spin trajectories
+- Added some new commands for the command line
+
+Version 0.9.31 includes the following new features and fixes:
+
+- Fixes a bug in signing the Sparkle Framework that prevented the program to
+  from launching
+- Added possibility to draw window function in 1D FID
+
+Version 0.9.30 includes the following new features and fixes:
+
+- Fixes for some critical bugs that have appeared in newer versions of macOS
+- Added several new heteronuclei
+
+Version 0.9.29 includes the following new features and fixes:
+
+- Step-wise execution of pulse sequences (hold ALT and run the pulse sequence
+  to start with the first step. The "Play" icon changes to a foot step symbol.)
+- More options editing pulse sequences
+- Traficante window function
+- Improved spectrum parameters and export of pulse sequences
+
+Version 0.9.28 includes the following new features and fixes:
+
+- Much better export of pulse sequences to Bruker pulse programs
+- Fixed a bug that crashed DOSY spectrum analysis
+- New application icon
+
+Version 0.9.27 includes the following new features and fixes:
+
+- The interface has been redesigned using less separate windows. The user
+  now experiences a clearer work flow of creating a spin system, manipulating
+  the spin state, applying a pulse sequence, and processing the spectrum.
+- Fixed a number of crucial bugs mainly concerning the correct execution of
+  pulse sequences and gradients
+- Insensitive now saves the current pulse sequence when closing the
+  application and restores it the next time
+- New tutorial page on shaped pulses and rewritten user manual
+
+Version 0.9.26 includes the following new features and fixes:
+
+- Reworked pulse shape display that shows the correct excitation profiles
+- Proper behaviour for DANTE pulse trains
+- BURP pulses now automatically set the pulse angle they were designed for
+- Added some more toolbar buttons for the tutorial window
+- Bugfixes
+
+Version 0.9.25 includes the following new features and fixes:
+
+- Command line for Bruker-style commands (XWin-NMR, TopSpin) and direct
+  application of product operators
+- Bugfixes
+
+Version 0.9.24 includes the following new features and fixes:
+
+- Full support for soft pulses with off-resonance effects
+- Pulse duration, strength, and frequency settings
+- Selection of shaped pulses, including Gauss, Sinc, BURP, and DANTE
+- Spin vector traces during pulses and evolution (grapefruit diagrams)
+- Individual active spin selection is no longer used in pulse sequences
+- I and S spins can no longer be detected simultaneuously
+- Pulse Shaper window no longer controls pulse excitation profile
+- Old pulse behaviour can be enabled in application preferences
+- updates to *.ipp and *.spinlecture file formats (backwards compatible)
+
+Version 0.9.23 includes JCAMP-DX export for 1D spectra.
+
+Version 0.9.22 includes the following new features and fixes:
+
+- States-TPPI detection
+- A new spectrum window with cleaner controls, scale bars, and grid
+- Automatic peak picking
+- Tilting for J-resolved and SECSY spectra
+- DOSY transformation
+- Bruker-style spectrum report
+- Additions to the tutorial
+
+Version 0.9.21 fixes a bug that occurred when acquiring 2D spectra.
+
+Version 0.9.20 includes bugfixes and corections.
+
+Version 0.9.19 includes the following new features and fixes:
+
+- Set coupling constants by drag and drop
+- Optional random jitter of the Larmor frequency
+- Shows receiver phase only if the pulse sequence includes acquisition
+- Bring version number up to iOS version
+
+Version 0.9.15 includes several bugfixes and corrections.
+
+Version 0.9.14 includes the following new features:
+
+- A presentation editor that can create life slides for use in talks
+  and lectures
+- Save and open spectra
+- Save current spin state in *.iss files
+- Apodisation by pseudo-echo transformation
+- Select gyromagnetic ratios for I and S spins
+- Does not display unaffected spins in pulse sequence
+- Rotate spin systems
+- Bugfixes, additions to the tutorial

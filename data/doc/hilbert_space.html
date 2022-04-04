@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+                </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Hilbert space
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            Hilbert space is a generalisation of Euclidian space to finite or infinite number of 
+            dimensions and real or complex vectors. It is employed for the mathematical description of 
+            <a href="quantum_mechanics.html">quantum mechanics</a>. The description of quantum states
+            as vectors in Hilbert space gives the model an algebraic structure with means to measure distances,
+            lengths and angles. Furthermore, it guarantees the use of the techniques of calculus on functions
+            in <i>H</i>.
+            </p>
+            <p>
+            Every Hilbert space <i>H</i> has an orthonormal basis. This means that any vector <b>a</b> 
+            in an <i>n</i>-dimensional Hilbert space can be constructed from <i>n</i> linear independent 
+            basis vectors <b>e</b><sub><i>i</i></sub> with a normalised absolute value of 1. The basis 
+            is required to be complete with no points in space missing.
+            </p>
+            <p>
+            There exists an inner product in <i>H</i>, which associates a pair of vectors 
+            <b>a</b> and <b>b</b> with a real or complex number. 
+            </p>
+            <center><img src="formula_inner_product.png" height="19" width="149"></center>
+            <p>
+            The inner product is linear in its first argument and turns into its complex conjugate when 
+            the argument order is reversed. The inner product of a vector <b>a</b> with itself is always 
+            larger than 0 and vanishes if <b>a</b> is the null vector.
+            </p>
+            <center><img src="formula_inner_product_rules.png" height="99" width="192"></center>
+            <p>
+            A norm is defined for a Hilbert space, which allows for the measurement of a vector's length,
+            the distance between points, and the angle between two vectors. Hilbert space is therefore 
+            both an inner product space and a complete metric space.
+            </p>
+            <center><img src="formula_norm.png" height="23" width="107"></center>
+            <p>
+            For real numbers the inner product is the multiplication of two numbers, for complex numbers
+            the inner product is the multiplication of one number <i>z</i><sub>1</sub> with the complex 
+            conjugate of the second number, <i>z</i><sub>2</sub>*. In Euclidian space this 
+            operation is the dot product.
+            </p>
+            <center><img src="formula_dot_product.png" height="79" width="154"></center>
+            <p>
+            In Euclidian geometry the three cartesian coordiantes <b>e</b><sub><i>x</i></sub>, 
+            <b>e</b><sub><i>y</i></sub> and <b>e</b><sub><i>z</i></sub> span a three dimensional 
+            Hilbert space. In quantum mechanics the <i>n</i> eigenstates of a quantum mechanical system span an 
+            <i>n</i>-dimensional Hilbert space, where the dimensionality of the Hilbert space is equal 
+            to the number of eigenstates. <i>n</i> may be infinite. For isolated <a href="spin.html">
+            spins</a> the dimensionality of the Hilbert space is finite, 2 in the case of single spins
+            1/2 and 4 in the case of two <a href="coupling.html">coupled</a> spins. Interactions with 
+            the surroundings, i.e. in spin <a href="relaxation.html">relaxation</a>, increases the 
+            number of possible states. Relaxation is therefore often treated in a semi-classical 
+            approximation.<br>
+            <br>
+            Each normalised basis vector corresponds to a pure eigenstate, which is fully 
+            <a href="populations.html">populated</a>.
+            </p>
+            <center><img src="formula_basis_vectors.png" height="44" width="181"></center>
+            <p>
+            If the system is in a superposition state, the vector components are the coefficients in a 
+            linear combination of eigenstates. The absolute value of a vector must always be unity to 
+            fulfil the requirements of quantum mechanics that the described object exists.
+            </p>
+            <center><img src="formula_vector_states.png" height="44" width="169"></center>
+            <p>
+            <a href="coherences.html">Coherences</a> are superpositions, in which the coherent states 
+            are equally populated and running in <a href="phase.html">phase</a>. The phase factor is 
+            generally a complex number.
+            </p>
+            <center><img src="formula_coherence_vectors.png" height="44" width="282"></center>
+            <p>
+            The complex vector components of mixed states do not necessarily have a straightforward,
+            graphical interpretation, but fulfil the eigenvalue equations for the respective cartesian
+            <a href="matrix_operators.html">operators</a>.
+            </p>
+            <center><img src="formula_hilbert_eigenvalue.png" height="85" width="137"></center>
+            <p>
+            The metric of Hilbert space makes it possible to measure observables of the quantum 
+            mechanical state, as well as the probabilities with which they are measured.
+            </p>
+            <p><b>Liouville Space</b></p>
+            <p>
+            Since they work on vectors in a complex metric space, each operator has a representation as
+            a square, hermitian <a href="matrix.html">matrix</a>. Operators that work on vectors in Hilbert
+            space can in turn be subject to transformations. The <a href="density_matrix.html">density
+            operator</a> for example, which gives the probability density for a state in an ensemble, evolves
+            over time due to <a href="precession.html">precession</a>, <a href="coupling.html">coupling</a> and
+            <a href="relaxation.html">relaxation</a>. Transformations of the operators of Hilbert space form
+            an analogous algebra called Liouville space with superoperators working on the operators in <i>H</i>.
+            The superoperators also have a matrix representation that can be found by turning the
+            <i>n</i> x <i>n</i> operator matrices column-wise into a single column vector. The superoperators
+            are <i>n</i><sup>2</sup> x <i>n</i><sup>2</sup> matrices. The application of a superoperator on
+            an operator vector in Liouville space corresponds to a two-sided
+            <a href="matrix_multiplication.html">matrix multiplication</a> in Hilbert space.
+            </p>
+            <center><img src="formula_superoperator.png" height="28" width="216"></center>
+            <p>
+            The hamiltonian in Liouville space can be constructed by taking the commutator of the hamiltonian in
+            Hilbert space with the identity matrix.
+            </p>
+            <center><img src="formula_liouville_hamiltonian.png" height="24" width="178"></center>
+            <p>
+            Superoperators are denoted by a double hat. Vectors in Liouville space are written in analogy to
+            the bra-ket notation with round brackets. The <a href="equation_of_motion.html">equation of motion</a>
+            in superoperator space is called the Liouville-von Neumann equation.
+            </p>
+        </div>
+        
+    </body>
+</html>

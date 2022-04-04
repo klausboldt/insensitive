@@ -1,0 +1,52 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+HETCOR
+</h1>
+</div>
+
+<div>
+<p>
+The HETeronuclear CORrelation spectroscopy or H,X-COSY is the heteronuclear analogue to the 
+<a href="cosyqf.html">COSY</a> experiment. It shows <sup>1</sup><i>J</i>-couplings between protons and a 
+hetero nucleus, usually <sup>13</sup>C (Bruker code: hxcoqf). Due to detection on the X-nucleus the 
+faster, proton-detected <a href="hmqcqf.html">HMQC</a> or <a href="hsqcph.html">HSQC</a> experiments are 
+preferred.
+</p>
+<center><img src="pp_hxcoqf.png" width="310" height="273"></center>
+<p>
+Set up a two-spin system with one I-spin with a chemical shift of <i>&Omega;</i><sub>1</sub> = 0.5 Hz and
+an S-spin with a chemical shift of <i>&Omega;</i><sub>2</sub> = 0.25 Hz. Set the coupling constant to 
+<i>J</i> = 0.5 Hz.
+</p>
+<p>
+The first pulse creates transverse magnetisation of the I-spins of which only the scalar coupling evolves 
+due to the <a href="spin_echo_sandwich.html">spin echo sandwich</a> over the evolution time 
+<i>t</i><sub>1</sub>. This is followed by an evolution time that is optimised to match half the coupling 
+constant <i>J</i> and creates pure <a href="antiphase_magnetization.html">antiphase magnetisation</a> of 
+the I-spin in y-direction. The product operator terms at this point are <op>-2I1yS2z - 0.25 S2z</op>.
+A simultaneous 90&deg;-pulse on both I- and S-spins creates in-phase magnetisation of the S-spin that is 
+modulated by the chemical shift <i>&Omega;</i><sub>2</sub> and transfers the antiphase magnetisation from 
+the I-spin to the S-spin over an intermediate state of <a href="longitudinal_two_spin_order.html">
+longitudinal two-spin order</a>. The product operators should now be <op>0.25 S2y + 2I1zS2y</op>. The 
+antiphase term is modulated by the chemical shift <i>&Omega;</i><sub>1</sub> of Spin 1 and gives rise to 
+cross peaks in the spectrum. The transferred magnetisation is enhanced by the <a href="ineptnd.html">INEPT
+transfer</a>. The magnetisation is allowed to evolve into in-phase magnetisation over a time &tau; = 1/3 
+<i>J</i> and the <a href="fid.html">FID</a> is acquired. The experiment uses <a href="phase_cycling.html">
+phase cycling</a> to suppress the in-phase signals.
+</p>
+</div>
+
+</body>
+</html>

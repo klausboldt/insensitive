@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Coherence Pathways
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            A radiofrequency <a href="pulse.html">pulse</a> changes <a href="coherences.html">coherences</a>
+            in a spin system from one coherence order to another. After the first pulse, which creates
+            only <a href="single_quantum_coherence.html">singe quantum coherences</a> from the state of
+            thermal equilibrium, every pulse is in principle capable of <a href="coherence_transfer.html">
+            transforming</a> every coherence into every other coherence possible in that spin system. The most
+            convenient way to describe this is by using <a href="spherical_tensors.html">spherical tensor
+            operators</a>, which directly display the coherence order.
+            </p>
+            <p>
+            A coherence pathway is the sequence of coherence orders that the magnetisation evolves through
+            during a <a href="pulse_sequences.html">pulse sequence</a>. All experiments start with zero order
+            coherence (<i>z</i>-magnetisation) and should end with a coherence order of -1, which is by convention
+            the one that is detected by the <a href="fid.html">quadrature detector</a>. Without
+            quadrature detection the +1 coherences would be equally detectable, all higher orders are not
+            correlated with observable magnetisation.
+            </p>
+            <p>
+            For an NMR experiment it is not desirable to allow every possible coherence pathway to evolve.
+            If one considers the <a href="noesyph.html">NOESY</a> and <a href="dqf_cosy.html">DQF-COSY</a>
+            experiments, both have essentially the same pulse sequence of three pulses divided by delay times
+            of varying length.
+            </p>
+            <p>
+            <center><p><b>NOESY</b></p></center>
+            <center><img src="pp_noesyph.png" width="310" height="169"></center>
+            <p>
+            <br>
+            <center><p><b>DQF-COSY</b></p></center>
+            </p>
+            <center><img src="pp_dqfcosy.png" width="268" height="176"></center>
+            <p>
+            The outcome of the experiment is decided by a correct selection of coherence pathways, usually
+            done by <a href="phase_cycling.html">phase cycling</a>, <a href="gradients.html">pulsed field
+            gradients</a>, or a combination of both.
+            </p>
+            <p>
+            The coherence pathway is displayed like a musical score below the pulse sequence with the coherences
+            being drawn as black lines that switch the order with each pulse. The diagrams are usually idealised
+            and show only the relevant pathways for the experiment. Depending on the spin system, delay times
+            and settings the results from the computations can vary.
+            </p>
+            <p>
+            For a spin system with <i>n</i> spins there are 2<i>n</i>+1 possible coherences orders, negative
+            and positive orders and the zero order coherence. For a pulse sequence of <i>p</i> pulses the
+            maximal number of possible coherence pathways is (2<i>n</i>+1)<sup><i>p</i></sup>. This number of
+            calculations needs to be performed for every phase cycle in order to get a complete description of
+            the coherence pathways. While the number can be reduced by constraints like the original coherence
+            order being zero, the high number of computations limits the size of pulse sequences for which a
+            coherence pathway can be displayed in Insensitive.
+            </p>
+        </div>
+        
+    </body>
+</html>

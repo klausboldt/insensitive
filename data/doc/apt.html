@@ -1,0 +1,54 @@
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+APT
+</h1>
+</div>
+
+<div>
+<p>
+The <i>Attached Proton Test</i> is a simple method for <sup>13</sup>C NMR that combines signal enhancement 
+by <a href="decoupling.html">decoupling</a> with the ability to determine the number of protons that are 
+attached to each carbon atom.
+</p>
+<center><img src="pp_jmod.png" width="247" height="135"></center>
+<p>
+At the beginning the experiment a proton decoupling sequence is applied to the <a href="spin.html">spin</a> 
+system, which transfers magnetisation from the more sensitive I spins to the insensitive S spins via 
+<a href="noe.html">nuclear Overhauser enhancement</a>.<br>
+<br>
+The <a href="pulse_sequences.html">pulse sequence</a> begins with a 90&deg; pulse from <i>x</i>-direction on 
+the S spins, which creates transverse magnetisation. The proton decoupling is then shut off, and the spins are 
+allowed to evolve for a period that is approximately the inverse of the CH 
+<sup>1</sup><i>J</i>-<a href="coupling.html">coupling</a> constant (c.a. 125 Hz or 8 ms). It is followed by a 
+180&deg; pulse from <i>x</i> and another delay of <i>J</i><sup>-1</sup>, while proton decoupling is turned on. 
+This creates a <a href="spin_echo_sandwich.html">spin echo</a> and refocusses the magnetisation.<br>
+Depending on the number of couplings, the magnetisation will be oriented either along <op>-Iy</op> 
+(CH<sub>3</sub>, CH) or <op>Iy</op> (CH<sub>2</sub>, C). This results in primary and tertiary carbon atoms 
+giving positive signals, while secondary and quaternary carbon atoms give rise to negative signals.
+</p>
+<p>
+The APT sequence that is used in routine experiments includes a first pulse with an optimal Ernst angle 
+&lt; 90&deg;, which allows for a higher repetition rate of the experiment. Since the 180&deg; pulse then 
+inverts the magnetisation to have a component along <op>-Iz</op>, another 180&deg; pulse must be applied to 
+guarantee fast <a href="relaxation.html">relaxation</a>.
+</p>
+<center><img src="pp_apt.png" width="298" height="133"></center>
+<p>
+The APT experiment is slightly less sensitive than the similar <a href="dept.html">DEPT</a> sequence, but 
+is able to show all possible carbon configurations in one experiment.
+</p>
+</div>
+
+</body>
+</html>

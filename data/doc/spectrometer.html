@@ -1,0 +1,69 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Spectrometer
+</h1>
+</div>
+
+<div>
+<p>
+The NMR spectrometer consists of a large, superconducting magnet, which is immersed in liquid helium.
+The helium tank is located inside a bath of liquid nitrogen to prevent the helium from evaporating. The 
+superconducting coils of modern NMR magnets are made of (NbTaTi)<sub>3</sub>Sn wires surrounded by a layer of 
+Cu. The current is injected into the magnet once when the spectrometer is set up and then runs continuously 
+without losses as long as the coil is cooled to 4.2 K.<br>
+Inside the long, centre bore the magnetic field is homogeneous with a field strength of 11.7 T for a 500 MHz 
+spectrometer. Smaller shim coils inside the bore are used to correct field inhomogenieties.
+</p>
+<p>
+The probe head, which contains the rf- and receiver coils, is inserted from the bottom into the homogeneous 
+region of the magnetic field. Additionally, the probe head includes a preamplifier and optionally a sample 
+spinner, temperature regulation and coils for <a href="gradients.html">gradient fields</a>. The sample is 
+inserted into the centre bore and resides inside the probe head during the measurement.
+</p>
+<center><img src="img_spectrometer.png" style="width:60%; max-width:399px;"></center>
+<p>
+In order to perform high resolution NMR the signal must be locked to a frequency in order to correct small 
+shifts of the magnetic field during the acquisition of the <a href="fid.html">FID</a>. This is usually done by 
+constantly measuring the deuterium signal of the solvent, which does not interfere with the actual spectrum.
+</p>
+<p>
+<a href="pulse.html">rf-Pulses</a> and signal detection is performed with the same coil. The unit that 
+directs the strong pulses to the coil and the weak signals from the coils to the detector unit is called the 
+duplexer. The direction from which the pulse is transmitted is controlled by <a href="phase.html">phase 
+shifting</a> the pulse frequency.
+</p>
+<p>
+The acquired signal must then be converted into a digital signal with the analogue/digital-converter (ADC). 
+The electronics of current ADCs is not able to convert the high frequencies of the raw signal. The quadrature 
+receiver therefore combines the signal with an electronically created reference frequency. Effectively, this 
+is a transformation from the laboratory frame to the <a href="rotating_frame.html">rotating frame</a>.
+</p>
+<center><img src="formula_omega_zero.png" width="115" height="17"></center>
+<p>
+In order to distinguish between frequencies of the same absolute value but different sign relative to the 
+reference frequency the quadrature detection results in a sine and a cosine signal, which can be interpreted 
+as the real and imaginary part of a complex signal. The cosine part can be seen as the signal's projection onto
+the <i>y</i>-axis, while the sine part is the <i>x</i>-component of the signal. Between <i>x</i>- and 
+<i>y</i>-component exists a phase shift of 90&deg;.
+</p>
+<center><img src="img_spectrometer_photo.png" style="width:100%; max-width:343px;"></center>
+<p>
+The pre-amplified, complex signal is sent to the NMR console, where the information is processed into the 
+FID and recorded on a workstation.
+</p>
+</div>
+
+</body>
+</html>

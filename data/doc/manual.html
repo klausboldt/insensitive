@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                User's Manual
+            </h1>
+        </div>
+        
+        <div>
+        <p>
+        Insensitive (Incredible Nuclear Spin EvolutioN SImulation Tool Intended for Visual Education) is a
+        simulation of nuclear magnetic resonance spectroscopy on the level of a <a href="spin.html">spin</a>
+        ensemble <a href="density_matrix.html">density matrix</a>. Every step in the simulation can be controlled,
+        a fact that is highly instructive, but can on occasion require less efficient algorithms than simulations
+        aimed at realistic spectra of complete molecules. A complete simulation usually consists of four distinct
+        steps:
+        </p>
+        <ol>
+            <li>Set up a <a href="spineditor.html">spin system</a></li>
+            <li>Manipulate the <a href="spin_manipulation.html">spin state</a></li>
+            <li>Record and run a <a href="pulse_sequence_manual.html">pulse sequence</a></li>
+            <li>Acquire and process a <a href="spectrum.html">spectrum</a></li>
+        </ol>
+        <p>
+        Each of these steps is handled in a dedicated panel in the main window of the application. Each panel can
+        be accessed via a button in the toolbar of the main window.
+        </p>
+        <center><img src="img_toolbar.png" style="width:100%; max-width:640px;"></center>
+        <p>
+        The toolbar consists of 10 buttons. The first two reset the spin state to thermal equilibrium and undo the
+        last action applied to the spin system. The next four (Spin System, Spin State, Pulse Sequence, Spectrum)
+        access the main steps of the simulation. Five more buttons access additional windows that control advanced
+        functions in Insensitive: the <a href="spin_manipulation.html">Matrix Composer</a> to directly manipulate
+        the density matrix, the <a href="settings.html">Pulse Shape</a> module to view and edit the
+        <a href="shaped_pulses.html">pulse shape</a> and excitation profiles, the <a href="single_spins.html">Single
+        Spins</a> module to help visualise the translation between the behaviour of single spins and the ensemble
+        magnetisation described by the density matrix, the <a href="presentation.html"> Presentation Editor</a> that
+        allows to build simple full screen presentations including all available models and animations, and finally
+        this Tutorial help file.
+        </p>
+        <p><b>Command Line Shortcuts</b></p>
+        <p>
+        In addition to the graphical user interface Insensitive offers a command line at the bottom of the main
+        window. Many commands from Bruker NMR applications (XWin-NMR, TopSpin) are available in Insensitive in
+        addition to a number of proprietary commands. A list of available commands is given
+        <a href="commandline.html">here</a>.
+        </p>
+        <p><b>Acknowledgements</b></p>
+        <p>
+        The software is licensed under the <a href="license.html">MIT license</a>. The author is thankful for a
+        number of images depicting the extended <a href="vector_model.html">vector model</a> for the
+        <a href="product_operator_formalism.html">product operators</a> provided by David P. Goldenberg.<br>
+        <br>
+        Some aspects of NMR cannot be simulated by Insensitive due to the way the program is written. These
+        <a href="limitations.html">limitations</a> include chemical shift aniostropies and recovery of
+        magnetisation lost to field inhomogeneities after a refocussing pulse.<br>
+        <br>
+        The author has no professional relationship with the Bruker company. The use of Bruker-style formats
+        (command line, pulse programs, parameter list) is a result of his familiarity with these programs and the
+        wide-spread use of this equipment in all institutes in which he has worked.
+        </p>
+        </div>
+        
+    </body>
+</html>

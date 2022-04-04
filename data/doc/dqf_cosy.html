@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                DQF-COSY
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            The Double Quantum Filtered <a href="cosyqf.html">COSY</a> experiment uses a third 90&deg; 
+            <a href="pulse.html">pulse</a> after the COSY sequence to show those signals in the spectrum 
+            that have been converted to <a href="multi_quantum_coherence.html">double quantum 
+            coherences</a> after the second pulse. 
+            </p>
+            <center><img src="pp_dqfcosy.png" width="268" height="176"></center>
+            <p>
+            This technique causes all diagonal and cross peaks to appear in pure absorption mode in the 
+            spectrum.
+            </p>
+            <center><img src="img_dqfcosy_states.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            To select the coherence pathway for an N-type spectrum a 4 step <a href="phase_cycling.html">
+            phase cycle</a> can be used that varies the phase of the first and third pulse 
+            <i>&phi;</i><sub>1</sub> = {0&deg;, 90&deg;, 180&deg;, 270&deg;} and <i>&phi;</i><sub>2</sub> =
+            {0&deg;, 90&deg;, 180&deg;, 270&deg;} and the receiver phase <i>&phi;</i><sub>rec</sub> = 
+            {0&deg;, 180&deg;} while keeping <i>&phi;</i><sub>3</sub> constant at 0&deg;.
+            </p>
+            <center><p>
+            <table width="300px" border="1" cellpadding="2">
+                <tr>
+                    <th>Step</th>
+                    <th><i>&phi;</i><sub>1</sub></th>
+                    <th><i>&phi;</i><sub>2</sub></th>
+                    <th><i>&phi;</i><sub>3</sub></th>
+                    <th><i>&phi;</i><sub>rec</sub></th>
+                </tr>
+                <tr>
+                    <td align="center">1</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">2</td>
+                    <td align="right">90&deg;</td>
+                    <td align="right">90&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">3</td>
+                    <td align="right">180&deg;</td>
+                    <td align="right">180&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">0&deg;</td>
+                </tr>
+                <tr>
+                    <td align="center">4</td>
+                    <td align="right">270&deg;</td>
+                    <td align="right">270&deg;</td>
+                    <td align="right">0&deg;</td>
+                    <td align="right">180&deg;</td>
+                </tr>
+            </table>
+            </p></center>
+            <p>
+            The number of phase cycles is further increased to eight when using the
+            <a href="pure_phase_spectra.html">States method</a> to create pure phase spectra.<br>
+            To select the coherence pathway by <a href="gradients.html">pulsed field gradients</a> three 
+            gradient pulses have to be applied, which reduces the number of phase cycles to 2, which also need
+            to be acquired in an amplitude modulated mode.
+            </p>
+            <center><img src="pp_dqfcosy_gradients.png" width="304" height="167"></center>
+            <p>
+            The first two PFGs select the +1 and +2 coherences after the first two pulses respectively,
+            while the third PFG with three times the strength of the first two gradient pulses dephases 
+            all but the -1 coherences.
+            </p>
+        </div>
+        
+    </body>
+</html>
+                

@@ -1,0 +1,49 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Adiabatic pulses
+</h1>
+</div>
+
+<div>
+<p>
+An important concept in <a href="quantum_mechanics.html">quantum mechanics</a> is the adiabatic theorem: If 
+a system is subjected to a slow and gradual change the wave function can adept to the changing conditions. At 
+the end of the perturbation the system is in an eigenstate of the final Hamiltonian that corresponds to the 
+initial eigenstate it started with.<br>
+A rapid change of the Hamiltonian, as it is the case with the strong <a href="pulse.html">rf-pulses</a> in NMR,
+does not allow the system to adapt to the changed conditions. The result is a linear combination of states that
+reproduces the probability density of the initial state.
+</p>
+<p>
+Adiabatic pulses perform the gradual change of the spin system by modulating the amplitude and frequency or 
+<a href="phase.html">phase</a> of the <b>B</b><sub>1</sub>-field during the pulse. Additionally to 
+<b>B</b><sub>1</sub> a magnetisation component along the <i>z</i>-axis affect the <a href="spin.html">
+spins</a>, which depends on the offset &Delta;<i>&omega;</i> of the pulse frequency to the reference frequency 
+of the <a href="rotating_frame.html">rotating frame</a>. The effective magnetic field at a specific time 
+<i>t</i> is 
+</p>
+<center><img src="formula_adiabatic_pulse.png" height="42" width="147"></center>
+<p>
+where <i>&gamma;</i> is the <a href="gyromagnetic_ratio.html">gyromagnetic ratio</a> and 
+<b>e</b><sub><i>z</i></sub> the unit vector along the <i>z</i>-axis. This causes the spins to move on a 
+complicated trajectory, depending on their <a href="larmor_frequency.html">Larmor frequency</a>. Still, 
+different spins end up with the same magnetisation after the pulse. The advantage of adiabatic pulses over 
+rectangular pulses is their insensitivity to losses in pulse quality due to inhomogenic 
+<b>B</b><sub>1</sub>-fields.
+</p>
+</div>
+
+</body>
+</html>

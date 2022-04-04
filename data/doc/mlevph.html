@@ -1,0 +1,67 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+TOCSY
+</h1>
+</div>
+
+<div>
+<p>
+In a <a href="cosyqf.html">COSY</a> spectrum where two <a href="chemical_shift.html">chemical shifts</a> 
+cannot be resolved the assignment of two separate spin systems which are not <a href="coupling.html">
+<i>J</i>-coupled</a> to each other becomes difficult. Good examples for this kind of systems are peptides 
+and glycosides where the coupling information is not transferred between monomer units. The TOCSY 
+spectrum shows cross peaks between all spins in a spin network and can be used in these cases to assign 
+complete spin networks.
+</p>
+<center><img src="pp_mlevph.png" width="310" height="99"></center>
+<p>
+The <a href="pulse_sequences.html">pulse sequence</a> is comparable to the COSY sequence, but instead of 
+the second 90&deg;-pulse a <a href="spin_lock.html">spin lock</a> sequence is applied. During this phase 
+the spins are held constant in the <a href="rotating_frame.html">rotating frame</a> and the chemical 
+shifts are suppressed. If the Hartmann-Hahn condition is fulfilled and all spins experience the same 
+<b>B</b><sub>1</sub>-field the spins are strongly coupled during the spin lock sequence. The then possible
+flip-flop exchange between the <i>&alpha;&beta;</i> and <i>&beta;&alpha;</i> levels causes the 
+magnetisation to flow between all coupled spins.
+</p>
+<p>
+To fulfil the Hartmann-Hahn condition in the homonuclear TOCSY experiment one needs to apply the same 
+field strength to all coupled spins. This puts high demands on the spectrometer hardware: The wider the 
+spectral range of the pulse should be the higher the pulse power needs to be. A long high power 
+irradiation can heat up the sample and destroy the electronics in the sample head.
+<br><br>
+Usually pulse sequences instead of continuous wave irradiation are used for the TOCSY experiment. The 
+simplest one is a sequence of closely separated 180&deg;<sub>y</sub>-pulses. The time between pulses 
+should be short to not allow <a href="precession.html">precession</a> while the total length of the 
+spin lock sequence should be long compared to 1/<i>J</i>.
+</p>
+<p>
+A more sophisticated sequence is the MLEV-17 sequence, which is constructed from blocks of 
+90&deg;<sub>x</sub>-180&deg;<sub>y</sub>-90&deg;<sub>x</sub> pulses (R) and the inverted sequence 
+90&deg;<sub>-x</sub>-180&deg;<sub>-y</sub>-90&deg;<sub>-x</sub> (r) in a supercycle RRrr rRRr rrRR RrrR. 
+The sequence is ended with a 60&deg;<sub>x</sub>-pulse to invert possible phase errors and repeated to 
+ensure a coherence transfer over the whole spin system.
+</p>
+<p>
+The effects of the spin lock in the TOCSY experiment is best understood by setting up a linear spin system of 
+three I spins with large differences in chemical shifts and different coupling constants. Disable dipolar 
+relaxation to suppress effects from the <href="roesyph.html">ROESY</a> experiment. Apply the 90&deg; pulse to 
+only the first spin. The spin lock is applied by enabling I spin decoupling. Perform the sequence first without
+and then with strong coupling. Only in the latter case will the magnetisation be transferred to the other 
+spins.
+</p>
+</div>
+
+</body>
+</html>

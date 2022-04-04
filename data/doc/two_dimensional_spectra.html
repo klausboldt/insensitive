@@ -1,0 +1,78 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+2D Spectra
+</h1>
+</div>
+
+<div>
+<p>
+Two-dimensional spectra are acquired by repeating the <a href="pulse_sequences.html">pulse sequence</a> of the 
+experiment and recording the <a href="fid.html">FID</a>, while an evolution time <i>t</i><sub>1</sub> after the 
+initial preparation period is systematically varied. 
+</p>
+<center><img src="pp_2D_experiment.png" height="56" width="310"></center>
+<p>
+<i>t</i><sub>1</sub> is called the indirect time domain and introduces a <a href="phase.html">phase shift</a> 
+between the consecutive FIDs. A mixing period follows, in which <a href="coherence_transfer.html">coherence 
+transfer</a> between spins takes place. The time variable for the free induction decay is called the direct 
+time domain <i>t</i><sub>2</sub>. The time-domain spectra can be plotted as follows.
+</p>
+<center><img src="img_FFT2D_tt.png" style="width:100%; max-width:600px;"></center>
+<p>
+To process the data, the <a href="fourier_transformation.html">Fourier transformation</a> of each of the FIDs 
+must be calculated. This results in a row of spectra in the direct frequency domain <i>F</i><sub>2</sub> with a 
+systematic variation of the phase, as mentioned above. The signal intensity becomes weaker with longer 
+<i>t</i><sub>1</sub> times.
+</p>
+<center><img src="img_FFT2D_Ft.png" style="width:100%; max-width:600px;"></center>
+<p>
+A Fourier transformation of the signals with equal <a href="larmor_frequency.html">Larmor frequency</a> as a 
+function of <i>t</i><sub>1</sub> results in a spectrum in the indirect frequency domain <i>F</i><sub>1</sub>. 
+For computational reasons the resolution of the <i>F</i><sub>1</sub>-domain is usually lower than for the
+directly observed <i>F</i><sub>2</sub>-domain.
+</p>
+<center><img src="img_FFT2D_FF.png" style="width:100%; max-width:600px;"></center>
+<p>
+The frequency at which the peak appears in the <i>F</i><sub>2</sub>-domain depends on the spin's Larmor 
+frequency in the <i>t</i><sub>2</sub>-domain, while the frequency in the <i>F</i><sub>1</sub>-domain depends on 
+the frequency of the magnetisation during the delay <i>t</i><sub>1</sub>.
+</p>
+<p>
+There exist two classes of two-dimensional spectra. In correlated spectra like the <a href="cosyqf.html">
+COSY</a>-experiment the spectrum shows cross peaks between correlated spins, if the magnetisation evolves 
+with the <a href="larmor_frequency.html">Larmor frequency</a> of one spin during <i>t</i><sub>1</sub> and 
+with the Larmor frequency of a second spin after the mixing period during <i>t</i><sub>2</sub>. Contrary 
+to this, resolved spectra display two independent aspects of a spectrum along the two dimensions. 
+<a href="j_resolved.html"><i>J</i>-Resolved</a> spectra for example separate the spin 
+<a href="coupling.html">coupling</a> from their <a href="chemical_shift.html">chemical shifts</a> and 
+facilitate <a href="spectrum_resolution.html">resolving</a> overlapping multiplets.
+</p>
+<p>
+The Fourier transformation of the indirect time domain cannot discriminate between clockwise and 
+counterclockwise precession as the direct time domain with quadrature detection. This causes the 2D 
+spectrum to be mirrored at the centre frequency. The mirrored signals can be removed by 
+<a href="phase_cycling.html">phase cycling</a>, <a href="gradients.html">pulsed field gradients</a>
+or taking <a href="pure_phase_spectra.html">amplitude modulated</a> spectra. All steps of the 
+<a href="processing_two_dimensional_spectra.html">processing</a> can be simulated in Insensitive.
+</p>
+<p>
+An overview over the most important 2D techniques can be found in: H. Kessler, M. Gehrke, Ch. Griesinger,
+Two-Dimensional NMR Spectroscopy: Background and Overview of the Experiments, <i>Angew. Chem. Int. Ed.</i>
+<b>1988</b>, <i>27</i>, 490-536.
+</p>
+</div>
+
+</body>
+</html>

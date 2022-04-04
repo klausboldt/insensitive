@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Shaped Pulses
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            A radiofrequency <a href="pulse.html">pulse</a> in NMR is normally assumed to be of approximately
+            rectangular shape, i.e. the <b>B</b><sub>1</sub> field with frequency &Omega;<sup>0</sup> is switched
+            on with a constant power &gamma;<b>B</b><sub>1</sub> for a specific time <i>t</i> and then turned off
+            again. Such a field that has limited duration has a finite frequency spectrum based on
+            <a href="quantum_mechanics.html">Heisenberg's Uncertainty Principle</a>. The spectrum can be calculated
+            from the pulse shape using <a href="fourier_transformation.html">Fourier transformation</a>. A rectangular
+            function transforms into sinc(</>x</i>) = sin(<i>x</i>)/<i>x</i>, which implies that the
+            field experienced by spins with a <a href="larmor_frequency.html">Larmor frequency</a> with an offset from
+            &Omega;<sup>0</sup> undergoes frequency-dependent oscillations. 
+            </p>
+            <center><img src="img_ft_sinc.png" style="width:100%; max-width:550px;"></center>
+            <p>
+            The excitation profile does not match the Fourier transformation of the pulse shape exactly, because one
+            has to consider off-resonance effects: if the frequency of the rf-field does not match the Larmor
+            frequency of a <a href="spin.html">spin</a> exactly the spin will experience both the <b>B</b><sub>1</sub>
+            and <b>B</b><sub>0</sub> field with a ratio defined by the resonance offset. Aside from a smaller
+            <a href="flip_angle.html">flip angle</a> than for an on-resonance spin the magnetisation will also
+            acquire a <a href="phase.html">phase shift</a>. In the Pulse Shape module this excitation profile of a
+            pulse can be plotted as either absolute <i>M<sub>xy</sub></i> magnetisation and phase shift, as
+            <i>M<sub>x</sub></i> and <i>M<sub>y</sub></i> components, and as the residual <i>M<sub>z</sub></i>
+            magnetisation.
+            </p>
+            <center><img src="img_excitation_profile.png" height="172" width="355"></center>
+            <p>
+            For full excitation of a whole spectrum short, hard, rectangular pulses can cover the complete spectral
+            range. Off-resonance effects are more severe for nuclei with a wider range of <a href="chemical_shift.html">
+            chemical shifts</a> (e.g. <sup>13</sup>C compared to <sup>1</sup>H). This is reflected in slightly
+            smaller signal intensities far away from the spectrum centre. The phase shift for large frequency offsets
+            can be easily corrected using first order phase correction. However, for selective, soft pulses the
+            off-resonance oscillations of the excitation profile poses a problem due to unwanted, weak excitation of
+            the whole spectrum. This can be circumvented by <i>shaped pulses</i>.
+            </p>
+            <p><b>Gauss pulses</b></p>
+            <p>
+            The Fourier transform of a Gauss function is again a Gauss function. The width in the frequency domain is
+            reciprocal to the one in time domain, which implies that with a long Gauss pulse a limited range of the
+            spectrum can be excited, while no unwanted excitation occurs outside that range. The disadvantage is that
+            the excitation profile of a Gauss pulse causes excitations with different intensities and strong phase
+            shifts across the width of the Gauss profile.
+            </p>
+            <center><img src="img_ft_gauss.png" style="width:100%; max-width:550px;"></center>
+            <p>
+            </p>
+            <p><b>Sinc pulses</b></p>
+            <p>
+            Reciprocity of the Fourier transformation implies that the excitation profile of a sinc(<i>x</i>) pulse
+            shape will be a rectangular function. This allows for selective excitation of a limited range of the
+            spectrum with near constant intensity. However, the spins still experience a strong frequency-dependent
+            phase shift.
+            </p>
+            <p><b>BURP pulses</b></p>
+            <p>
+            Approximately rectangular excitation profiles with small phase shifts have been achieved with the so-called
+            BURP pulses. These have complex shapes composed of several sine and cosine functions and complex trajectories
+            of the magnetisation vectors. They have been conceived by reverse engineering the desired excitation profile.
+            Several versions exist for 90&deg; excitation (E-BURP, U-BURP) and 180&deg; inversion (I-BURP, RE-BURP) pulses.
+            </p>
+            <center><img src="img_eburp.png" style="width:100%; max-width:550px;"></center>
+            <p>
+            </p>
+            <p><b>DANTE pulse train</b></p>
+            <p>
+            Very selective pulses have been realised using the DANTE sequence (Delay Alternating Nutation Tailored
+            Excitation). It is composed of equally spaced, short pulses that together cause on-resonance spins to
+            flip for the desired angle. In the periods between the short pulses off-resonance spins will precess
+            around <op>Iz</op> and effects of the pulse is averaged out. For a narrower excitation profile a
+            larger number of shorter pulses is required. Additionally to the on-resonance excitation additional
+            regions of the spectrum get excited, which appear at distances of 1/&Delta;<i>t</i> from the resonance
+            frequency, with &Delta;<i>t</i> being the period between two pulses. This can also be understood by
+            looking at the Fourier transformation of a comb function (equally spaced &delta;-functions), which is
+            again a comb function.
+            </p>
+            <center><img src="img_ft_comb.png" style="width:100%; max-width:550px;"></center>
+        </div>
+        
+    </body>
+</html>

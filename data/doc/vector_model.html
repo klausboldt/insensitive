@@ -1,0 +1,91 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Vector model
+</h1>
+</div>
+<div>
+<p>
+<a href="spin.html">Spin</a> was first derived from the magnetic moment inherent to charged elementary 
+particles, caused by an intrinsic rotational momentum. It is usually pictured as the normal vector 
+perpendicular to the plane of rotation, following the right hand rule. To measure such a magnetic moment 
+the system has to be brought into an external magnetic field <b>B</b><sub>0</sub>, which as a convention
+defines the <i>z</i>-axis of the coordinate system. For isolated spins the behaviour of their magnetic
+moments as a function of time (including <a href="relaxation.html">relaxation</a>) is described by the 
+Bloch equations:
+</p>
+<center><img src="formula_bloch.png" style="width:100%; max-width:357px;"></center>
+<p>
+The <a href="gyromagnetic_ratio.html">gyromagnetic ratio</a> <i>&gamma;</i> is the proportionality factor
+between the magnetic moment and spin. As a result of <a href="quantum_mechanics.html">quantum mechanics</a>
+there exist two possible orientations of a spin 1/2 to the external field, <i>&alpha;</i> and
+<i>&beta;</i>, with a slight <a href="energy_levels.html">energy difference</a>. In thermal equilibrium 
+that leads to a small excess of spins <a href="populations.html">populating</a> the <i>&alpha;</i>-state, 
+following the Boltzman distribution.  
+</p>
+<center><img src="formula_boltzmann.png" height="42" width="81"></center>
+<p>
+It is this excess magnetisation that gives rise to the weak signal in the NMR experiment.<br> Also as a 
+consequence from quantum mechanics the magnetic moments cannot align perfectly with the external field, 
+which causes the normal vectors to <a href="precession.html">precess</a> around the <b>B</b><sub>0</sub> 
+axis on the surface of a cone, either parallel or antiparallel to the <i>z</i>-axis. Its 
+<a href="larmor_frequency.html">angular frequency</a> is determined by the difference of the two energy 
+levels.<br> The NMR experiment is always measured in a large ensemble of spins. Most of them cancel out, the 
+excess magnetisation of spins distributed equally around the cone's surface gives rise to a magnetisation 
+vector parallel to the +<i>z</i>-axis, while the orientation in <i>x</i>- or <i>y</i>-direction is random 
+and averages to zero. This is the signal displayed in Insensitive. The <a href="single_spins.html">Single
+Spins</a> module allows to visualise the trajectory of individual spins.
+</p>
+<center><img src="img_vector_model.png" style="width:100%; max-width:640px;"></center>
+<p>
+Following from Heisenberg's uncertainty principle, if the orientation of a spin along one axis 
+is known, the other two cartesian components become completely indeterminable. This happens for 
+example by applying the field <b>B</b><sub>0</sub>. This means that if a single spin's 
+<i>z</i>-magnetisation is determined to be either +1/2 or -1/2 one will measure either one of these values 
+for the <i>x</i>- or <i>y</i>-component with equal probability. A <a href="pulse.html">pulse</a> of 
+radio frequency irradiation can rotate the average magnetisation by providing another principal axis the 
+spins precess around. A 90&deg;<sub>x</sub> pulse from the <i>x</i>-direction rotates the spins around the 
+axis of incidence for 90&deg;, resulting in an average magnetisation along -<i>y</i>. After the 
+pulse has ended and the field is again dominated by <b>B</b><sub>0</sub> the system has equally populated 
+<i>&alpha;</i> and <i>&beta;</i> levels, but a finite probability of any single spin vector rotating in 
+<a href="phase.html">phase</a> with the others. This is called <a href="coherences.html">coherence</a>.
+Only magnetisation in the <i>x</i>,<i>y</i>-plane can be detected.
+</p>
+<p>
+Each kind of spin, depending on its <a href="chemical_shift.html">chemial shift</a> and the state of the 
+spins it <a href="coupling.html">couples</a> with, give rise to one vector in Insensitive's vector model.
+It can be <a href="settings.html">chosen</a> between three display modes, either as individual spins, as 
+expectation values of magnetisation, where <a href="antiphase_magnetization.html">antiphase terms</a>
+collapse to zero, and as the total average magnetisation seen by the detector.
+</p>
+<p>
+Of all representations in this application the vector model has the largest restrictions, but it has its 
+advantages because of the intuitive geometric interpretation of spin states (or magnetic moments) as 
+vectors.  The limits of the vector model are reached when <a href="coherence_transfer.html">coherence 
+transfer</a> takes place. This transfer of magnetisation between two coupled spins involves states that 
+have no net magnetisation. They only describe the orientation of spins in relation to other spins in a 
+coupled system and not to the external magnetic field. Still they are crucial in explaining most 
+two-dimensional experiments like the <a href="cosyqf.html">H,H-COSY</a>. Note that Insensitive only 
+simulates the spin ensemble, never the single spins pictured above!
+</p>
+<p>
+An in-depth description of the vector model and its relation to the <a href="product_operator_formalism.html">
+product operator formalism</a> can be found in:<br>
+D. P. Goldenberg, The Product Operator Formalism: A Physical and Graphical Interpretation, <i>Conc. Magn.
+Reson.</i> <b>2010</b>, <i>36A</i> (2), 49-83.
+</p>
+</div>
+
+</body>
+</html>

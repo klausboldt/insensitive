@@ -1,0 +1,44 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Free induction decay
+</h1>
+</div>
+
+<div>
+<p>
+If a spin system with observable, transverse magnetisation is left alone the magnetisation vectors will 
+<a href="precession.html">precess</a> around the z-axis, <a href="coupling.html">coupling</a> between 
+spins will create and destroy <a href="antiphase_magnetization.html">antiphase magnetisation</a> and 
+<a href="relaxation.html">relaxation</a> will return the system to thermal equilibrium. If this signal is 
+detected by measuring the induction in a receiver coil, one acquires a dampened sine and cosine 
+signal called the <i>free induction decay</i> or FID. The time constant of the dampening is the 
+transversal relaxation time <i>T</i><sub>2</sub><sup>*</sup>.<br>
+The NMR spectrum is the <a href="fourier_transformation.html">Fourier transform</a> of the FID.
+</p>
+<p><b>Quadrature detection</b></p>
+<p>
+In order to tell the difference between clockwise and counterclockwise precession relative to the 
+reference frequency in the <a href="rotating_frame.html">rotating frame</a>, it is necessary to 
+detect a complex signal with two orthogonal detectors in the <i>x</i>,<i>y</i>-plane. In the actual 
+<a href="spectrometer.html">spectrometer</a> hardware this is implemented by splitting the receiver 
+signal in two and <a href="phase.html">phase</a> shifting one of them by 90&deg;. This method is called 
+quadrature detection. The phase shift works fine for directly detected FIDs, but has to be introduced
+by other <a href="pure_phase_spectra.html">methods</a> for the indirect time variable in 
+<a href="two_dimensional_spectra.html">2D spectra</a>.
+</p>
+</div>
+
+</body>
+</html>

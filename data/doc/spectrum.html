@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+                </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Processing a Spectrum
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            Once data acquisition ist started from the <a href="spin_manipulation.html">Spin State</a> panel
+            or a <a href="pulse_sequence_manual.html">pulse sequence</a> with spectrum acquisition is started
+            Insensitive will change to the spectrum display. This consists of three elements: the 1D or 2D graph
+            of the spectrum, a list of parameters in Bruker style of the right hand side of the window,
+            and five panels at the bottom that offer functions for spectrum processing. By clicking and dragging the
+            mouse over the spectrum in frequency domain a cursor will appear that allows to read the exact frequency
+            at the mouse position.
+            </p>
+            <center><img src="img_spectrumdisplay.png" border="1" style="width:100%; max-width:637px;"></center>
+            
+            <p><b>Fourier Transformation</b></p>
+            <p>
+            A freshly acquired pectrum will be displayed as the <a href="fid.html">free induction decay</a> in
+            time domain. The panel "Fourier Transformation" offers three buttons for 1D spectra: "FID" or "SER" will
+            return to the spectrum in time domain, "FFT" calculates the <a href="fourier_transformation.html">Fourier
+            transformation</a> of the spectrum, and "Magnitude" will display the absolute value spectrum in
+            frequency domain. If a 2D spectrum has been recorded instead of one FFT button two buttons will be
+            shown that allow Fourier transformation of the <i>t</i><sub>2</sub> dimension and of both the
+            <i>t</i><sub>1</sub> and <i>t</i><sub>2</sub> dimensions. A spectrum that is mirrored at the horizontal
+            axis can be symmetrised along the main diagonal to only show N-type coherences by holding the Alt key and
+            clicking "Symmetrise", while only P-type coherences along the antidiagonal are retained
+            when holding Shift-Alt and computing the absolute value spectrum.
+            </p>
+            <center><img src="img_spectrumdisplay_2D.png" border="1" style="width:100%; max-width:637px;"></center>
+            
+            <p><b>Apodisation</b></p>
+            <p>
+            The FID can be modified by a choice of <a href="window_function.html">window functions</a> from a popup
+            button in the "Apodisation" panel. The selected function is multiplied with the time domain data before
+            Fourier transformation. The Lorentz-Gauss and pseudo-echo transformations involve
+            <a href="convolution_theorem.html">deconvolution</a> of the original decay with an exponential decay with
+            a decay constant taken from the <i>T</i><sub>2</sub> time in the settings. Additional options are shown
+            for these functions, which allow to set an arbitrary full width at half maximum for the gauss peak as
+            well as a time shift. The latter allows to show the change from gaussian apodisation (0) to a full
+            pseudo-echo transformation (50 % of the length of the FID).
+            </p>
+            <p><b>Plot Style</b></p>
+            <p>
+            In the "Plot Style" panel the appearance of the spectrum can be set. By checking "Real part" and
+            "Imaginary part" the simulated spectrum will display both the real (red) and imaginary (green) part of
+            the signal after quadrature detection. "Integral" also displays the integrated spectrum (blue). "Grid"
+            displays a grid over the spectrum graph. "Line width" sets the boldness of the graph in a 1D plot,
+            while "2D Plot style" offers the choice of three display modes for 2D spectra: a contour plot, a stacked
+            plot of traces that resembles a 3D projection, and a rasterised plot in which positive signals appear
+            blue and negative signals appear red. Scrolling up and down with the mouse over the spectrum plot
+            resized the magnitude of the spectrum.<br>
+            If a 2D spectrum has been acquired using the States or TPPI method the option "Amplitude modulation"
+            allows to select whether the real or imaginary data sets will be used. This will determine whether the
+            diagonal or cross peaks of a spectrum will appear in pure absorption mode.
+            </p>
+            <p><b>Phase Correction</b></p>
+            <p>
+            Two sliders in the "Phase Correction" panel allow zero and first order phase correction
+            (&phi;<sub>0</sub> and &phi;<sub>1</sub>) in both time and frequency domain. In the frequency domain the
+            pivot point for first order phase correction can be set by changing the third slider. The arrow button
+            on the right hand side resets the phase shifts and pivot point to zero.
+            </p>
+            <p><b>Data Analysis</b></p>
+            <p>
+            The "Data Analysis" panel offers specialised tools for automatic peak picking (1D), tilting of the spectrum,
+            for <a href="secsyqf.html">SECSY</a> and <a href="j_resolved.html">J-resolved</a> spectra, and for
+            processing of <a href="stegp1f.html">DOSY</a> spectra. The field labelled "S/N" determines
+            the signal-to-noise ratio above which a peak is recognised during peak picking.
+            </p>
+            <p><b>Saving and exporting spectra</b></p>
+            <p>
+            Spectra can be opened and saved as *.igg files using the "File" menu. The displayed data can also be
+            exported as universally readable files. The file type (comma separated *.csv files, tab separated
+            *.dat files, JCAMP-DX *.jdx files) can be selected from the Preferences panel.
+            </p>
+        </div>
+        
+    </body>
+</html>
+

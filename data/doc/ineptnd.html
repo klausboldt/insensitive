@@ -1,0 +1,67 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+INEPT
+</h1>
+</div>
+
+<div>
+<p>
+The Insensitive Nuclei Enhanced by Polarisation Transfer experiment is used to transfer magnetisation 
+from a sensitive nucleus (normally <sup>1</sup>H) to a less sensitive nucleus via scalar coupling 
+(Bruker code: ineptnd). The maximum efficiency for magnetisation transfer is larger than via 
+<a href="noe.html">NOE</a> during <a href="decoupling.html">decoupling</a>. The delay has to be 
+optimised for each coupling constant. A complete magnetisation transfer from <op>I</op> to <op>S</op> 
+spins is possible if the delay time is <i>&tau;</i> = 1/(2<i>J</i>).
+</p>
+<center><img src="pp_ineptnd.png" width="278" height="342"></center>
+<p>
+Set up a two-spin system consisting of an I-spin and an S-spin with a coupling constant of 0.25 Hz. Set 
+the chemical shifts to <i>&Omega;<sub>I</sub></i> = 0.3 Hz and <i>&Omega;<sub>S</sub></i> = -0.7 Hz, with 
+a distance <i>r</i> = 0.2 nm.
+</p>
+<p>
+The magnetisation of a certain spin depends on the <a href="gyromagnetic_ratio.html">gyromagnetic 
+ratio</a> of the nucleus. The magnetic moment of <sup>13</sup>C is about 1/4 the moment of <sup>1</sup>H. 
+The equilibrium state is thus defined by the terms <op>I1z + 0.25 S2z</op>.<br>
+A 90&deg;-pulse on the I-spin creates transverse magnetisation. This is followed by a 
+<a href="spin_echo_sandwich.html">spin echo sandwich</a> with 180&deg;-pulses on both spin types. In this 
+period only the coupling and no <a href="chemical_shift.html">chemical shift</a> evolves. Before the 
+second 90&deg;-pulse the spin system is in a state of <a href="antiphase_magnetization.html">
+antiphase magnetisation</a> <op>-2I1xS2z - 0.25 S2z</op>. The 90&deg;<sub>y</sub>-pulse on the I-spins 
+creates an intermediate state of <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a> 
+<op>2I1zS2z - 0.25 S2z</op> which is transformed into the antiphase term <op>-2I1zS2y + 0.25 S2y</op> 
+by the 90&deg;<sub>x</sub>-pulse on the S-spins. Since the magnetisation started on I-spins the amplitude 
+is still that of the sensitive nuclei. The result is an antiphase doublet added to the weaker in-phase 
+doublet of the S-spins. The difference in peak height can be removed by <a href="phase_cycling.html">phase
+cycling</a>.
+</p>
+<p>
+Because of the antiphase <a href="lineshapes.html">line shapes</a>, decoupling can be performed during
+the sequence. The antiphase lines would collapse to zero, removing every trace of the gained signal. The 
+INEPT sequence has therefore been extended to let the spins return to in-phase magnetisation with 
+another spin echo sandwich before acquisition (Bruker code: ineptrd). However, this happens on the cost of 
+enhancement due to <a href="relaxation.html">relaxation</a> during the longer 
+<a href="pulse_sequences.html">pulse sequence</a>.
+</p>
+<center><img src="pp_ineptrd.png" style="width:100%; max-width:380px;"></center>
+<p>
+The INEPT transfer sequence can be found in many heteronuclear NMR experiments like the 
+<a href="hsqcph.html">HSQC</a>, where it is used to transfer magnetisation both to the insensitive 
+nuclei and back to the more sensitive ones for detection.
+</p>
+</div>
+
+</body>
+</html>

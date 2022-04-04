@@ -1,0 +1,98 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Density matrix
+</h1>
+</div>
+
+<div>
+<p>
+In a large spin ensemble as in the NMR experiment the average spin state must be calculated using statistical 
+<a href="quantum_mechanics.html">quantum mechanics</a>. This is done by expressing the expectation value for an 
+operator <i>&Omega;</i> of the spin system <i>&psi;</i> as a weighted sum with the statistical weight 
+<i>P</i>(<i>&psi;</i>) over the spin ensemble. <i>&psi;</i> may be an eigenstate or a mixed state, a linear 
+combination of eigenstates.
+</p>
+<center><img src="formula_weighted_ensemble.png" height="40" width="195"></center>
+<p>
+The sum of the ket-bra products over all eigenstates <i>i</i>, <i>j</i>, ... of <i>&Omega;</i> in 
+<a href="hilbert_space.html">Hilbert space</a> yields in the identity <a href="matrix.html">matrix</a> 
+with the dimension of the spin system. 
+</p>
+<center><img src="formula_ket_bra.png" height="39" width="95"></center>
+<p>
+This introduces an orthonormal basis for the expression of the spin system. Since multiplication with 
+the identity matrix does not change the expression for the expectation value it can be expanded as 
+</p>
+<center><img src="formula_density_basis.png" height="100" width="300"></center>
+<p>
+The density operator <i>&rho;</i> is defined as the integral over the ket-bra product of the average spin state
+multiplied with the statistical weight for each state.
+</p>
+<center><img src="formula_density_operator.png" height="40" width="172"></center>
+<p>
+Taking the last two expressions, the term for the expectation value can be simplified to
+</p>
+<center><img src="formula_density_simplified.png" height="41" width="172"></center>
+<p>
+As shown above, the sum of the ket-bra products over all <i>j</i> yields the unit matrix. Hence, the above equation is the same as taking the trace of the matrix product of the density matrix with the operator's matrix representation.
+</p>
+<center><img src="formula_density_matrix_trace.png" height="33" width="110"></center>
+<p>
+Thus the density matrix is a convenient way to calculate the ensemble average of any expectation value of 
+<i>&psi;</i>. One only needs to know the density matrix, which is easy for example in the case of the state of 
+thermal equilibrium. Once known, any operation can be performed on the density matrix. The 
+<a href="equation_of_motion.html">equation of motion</a> for the density operator is derived from the 
+definition as the ket-bra product of the average spin state.
+</p>
+<center><img src="formula_liouville_derivative.png" height="104" width="300"></center>
+<p>
+and is therefore the <a href="quantum_mechanics.html">commutator</a> of the density operator with the system's 
+Hamiltonian.
+</p>
+<center><img src="formula_liouville_equation.png" height="38" width="174"></center>
+<p>
+This differential equation is called the Liouville-von Neumann equation or density operator equation. Its 
+solution is the sandwich formula
+</p>
+<center><img src="formula_rotation_sandwich.png" height="22" width="178"></center>
+<p>
+with the rotational operator <i>R</i>(&plusmn;<i>&theta;</i>) being the exponential of the Hamiltonian. 
+It describes a <a href="matrix_operators.html">matrix transformation</a> of the density matrix.
+</p>
+<p>
+The density matrix becomes increasingly complex with larger spin systems. For one spin the matrix is 
+actually quite easy to read: The matrix diagonal elements are the relative populations (more precisely, 
+the population probability densities) of the <a href="energy_levels.html">energy levels</a> <i>&alpha;</i>
+(top left) and <i>&beta;</i> (bottom right). This is equivalent to magnetisation in <i>z</i>- and 
+-<i>z</i>-direction.
+</p>
+<center><img src="img_density_matrix_display.png" style="width:100%; max-width:487px;"></center>
+<p>
+The off-diagonal elements are complex numbers, each pair of matrix elements mirrored at the 
+diagonal being complex conjugates of each other, carrying the same information. They describe 
+<a href="coherences.html">coherences</a> between the two states (or in other words, <i>x</i>- and 
+<i>y</i>-magentisation). The <i>x</i>,<i>y</i>-plane can be translated directly into the complex plane
+of the coherences, where <i>x</i> is the real and <i>y</i> the imaginary part. The density matrix 
+above translates to the <a href="product_operator_formalism.html">product operators</a> 
+0.95 <op>Ix</op> - 0.31 <op>Iy</op>.
+</p>
+<!--</p>
+<center><img src="formula_expectation_value.png" height="49" width="172"></center>
+<p>-->
+
+</div>
+
+</body>
+</html>

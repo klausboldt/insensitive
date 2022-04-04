@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/klausboldt/insensitive">
+    <file>insensitive-window.ui</file>
+    <file>insensitive-pulseshaper.ui</file>
+    <file>insensitive-tutorial.ui</file>
+    <file>insensitive-singlespins.ui</file>
+    <file>insensitive-composer.ui</file>
+    <file>insensitive-composer-row.ui</file>
+    <file>insensitive-preferences.ui</file>
+  </gresource>
+</gresources>

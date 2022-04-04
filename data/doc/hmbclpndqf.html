@@ -1,0 +1,52 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+HMBC
+</h1>
+</div>
+
+<div>
+<p>
+The Heteronuclear Multi-Bond Correlation experiment records correlations between protons and heteronuclear
+spins with more than one bond in between. It works similar to the <a href="hmqcqf.html">HMQC 
+experiment</a>. The number of bonds which can be seen in the spectrum is set by the fixed delay time 
+<i>&tau;</i> = 1/(2<i>J<sub>IS</sub></i>). The intensity of the correlation peaks are proportional to 
+sin<sup>2</sup>(<i>&pi;J<sub>IS</sub>&tau;</i>). Since <i>J<sub>IS</sub></i> for multi-bond 
+<a href="coupling.html">coupling</a> covers a much wider range than for single bonds the parameter needs 
+to be adjusted for the correlations of interest.
+</p>
+<center><img src="pp_hmbclpndqf.png" style="width:100%; max-width:375px;"></center>
+<p>
+The <a href="pulse_sequences.html">pulse sequence</a> starts with a 90&deg;<sub>x</sub>-pulse on the 
+I-spins to create transverse megnetization, followed by a 90&deg;<sub>x</sub>-pulse on the S-spins after a 
+short delay that is set to match the single-bond coupling constants and converts these 
+<a href="antiphase_magnetization.html">antiphase terms</a> into <a href="multi_quantum_coherence.html">
+multi-quantum coherences</a> at a time when the long-range correlations have not yet significantly 
+evolved. Another 90&deg;<sub>x</sub>-pulse on the S-spins after the delay time <i>&tau;</i> then converts
+the antiphase terms of interest into multi-quantum coherences as in the HMQC experiment. 
+</p>
+<p>
+This is followed by the variable delay time <i>t</i><sub>1</sub> with a 180&deg;<sub>x</sub>-pulse on the 
+I-spins in the middle to form a <a href="spin_echo_sandwich.html">spin echo sandwich</a>. Only the 
+<a href="chemical_shift.html">chemical shifts</a> evolve over this period. A last 
+90&deg;<sub>x</sub>-pulse on the S-spins converts the double-quantum coherences back to antiphase 
+magnetisation which is immediately detected. The HMBC experiment cannot be run with broadband 
+<a href="decoupling.html">decoupling</a> and therefore shows <i>J</i>-couplings in the cross peaks. The 
+magnetisation that results from the single-bond multi-quantum coherences needs to be removes by 
+<a href="phase_cycling.html">phase cycling</a>.
+</p>
+</div>
+
+</body>
+</html>

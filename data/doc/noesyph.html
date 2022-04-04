@@ -1,0 +1,113 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+NOESY
+</h1>
+</div>
+
+<div>
+<p>
+The NOESY is a <a href="two_dimensional_spectra.html">2D technique</a> to measure intramolecular distances 
+employing the <a href="noe.html">Nuclear Overhauser Effect</a> (NOE). It is based on the exchange of 
+magnetisation via <a href="dipolar_coupling.html">dipole-dipole coupling</a> during <a href="relaxation.html">
+relaxation</a> of the spins back to thermal equilibrium.
+</p>
+<p>
+The pulse sequence consists of three 90&deg;-pulses. The first and second pulse are separated by the 
+variable time <i>t</i><sub>1</sub>, followed by a constant mixing time <i>&tau;</i><sub>m</sub>, the 
+third pulse and the acquisition of the <a href="fid.html">FID</a>.
+</p>
+<center><img src="pp_noesyph.png" width="310" height="169"></center>
+<p>
+Set up a two-spin system of I-spins with <i>&Omega;</i><sub>1</sub> = 0 Hz and 
+<i>&Omega;</i><sub>2</sub> = 5.5 Hz. Set up no scalar coupling and set the distance between the two spins
+to 0.27 nm. Make sure that dipolar coupling is selected in the Settings. For better understanding at first 
+only apply relaxation during the mixing time <i>&tau;</i><sub>m</sub>.
+</p>
+<p>
+After the first pulse coherences between the two spin states are created, which start to precess in the 
+transverse plane depending on their respective <a href="chemical_shift.html">chemical shifts</a>. The 
+<a href="product_operator_formalism.html">product operators</a> at this time are
+</p>
+<p>
+- <op>I1y</op> cos(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub></i>) 
++ <op>I1x</op> sin(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub></i>)<br>
+- <op>I2y</op> cos(<i>&Omega;</i><sub>2</sub><i>t</i><sub>1</sub></i>) 
++ <op>I2x</op> sin(<i>&Omega;</i><sub>2</sub><i>t</i><sub>1</sub></i>)
+</p>
+<p>
+The second 90&deg;<sub>-x</sub>-pulse turns <i>y</i>- into -<i>z</i>-magnetisation and -<i>y</i>- into 
+<i>z</i>-magnetisation:
+</p>
+<p>
++ <op>I1z</op> cos(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub></i>)
++ <op>I1x</op> sin(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub></i>)<br>
++ <op>I2z</op> cos(<i>&Omega;</i><sub>2</sub><i>t</i><sub>1</sub></i>)
++ <op>I2x</op> sin(<i>&Omega;</i><sub>2</sub><i>t</i><sub>1</sub></i>)
+</p>
+<p>
+During the relaxation period that follows the second pulse the cross-relaxation between spin 1 and 2 
+causes magnetisation transfer following the Solomon equations.
+</p>
+<center><img src="formula_solomon_equation.png" style="width:100%; max-width:403px;"></center>
+<p>
+Omitting the <i>x</i>-magnetisation terms which will be suppressed by <a href="phase_cycling.html">phase 
+cycling</a> the spin system will relax with the transverse relaxation rate &lambda;, the transition 
+amplitude 
+</p>
+<p>
+<i>a</i><sub>diag</sub> = cosh(<i>R</i><sub>cross</sub><i>&tau;</i><sub>m</sub>) 
+exp(-<i>R</i><sub>auto</sub><i>&tau;</i><sub>m</sub>)
+</p>
+<p>
+which will cause the diagonal peaks, and the transition amplitude
+</p>
+<p>
+<i>a</i><sub>cross</sub> = sinh(<i>R</i><sub>cross</sub><i>&tau;</i><sub>m</sub>) 
+exp(-<i>R</i><sub>auto</sub><i>&tau;</i><sub>m</sub>)
+</p>
+<p>
+which will cause the cross peaks, to the product operator term
+</p>
+<p>
++ <op>I1z</op> <i>a</i><sub>diag</sub>(<i>&tau;</i><sub>m</sub>) 
+cos(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub></i>) exp(-&lambda;<i>t</i><sub>1</sub>)<br>
++ <op>I1z</op> <i>a</i><sub>cross</sub>(<i>&tau;</i><sub>m</sub>) 
+cos(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub></i>) exp(-&lambda;<i>t</i><sub>1</sub>)<br>
++ <op>I2z</op> <i>a</i><sub>diag</sub>(<i>&tau;</i><sub>m</sub>) 
+cos(<i>&Omega;</i><sub>2</sub><i>t</i><sub>1</sub></i>) exp(-&lambda;<i>t</i><sub>1</sub>)<br>
++ <op>I2z</op> <i>a</i><sub>cross</sub>(<i>&tau;</i><sub>m</sub>) 
+cos(<i>&Omega;</i><sub>2</sub><i>t</i><sub>1</sub></i>) exp(-&lambda;<i>t</i><sub>1</sub>)
+</p>
+<p>
+The last pulse turns the longitudinal magnetisation back into the transverse plane for detection. 
+The magnetisation which is transferred via <i>a</i><sub>cross</sub> from spin 1 to spin 2 depends only on 
+the transverse magnetisation of spin 1 up to the second pulse and only evolves with the Larmor frequency 
+of spin 2 after the mixing. It can therefore give rise to a peak at <i>&Omega;</i><sub>1</sub> in the 
+<i>F</i><sub>1</sub>-domain and at <i>&Omega;</i><sub>2</sub> in the <i>F</i><sub>2</sub>-domain after 
+<a href="two_dimensional_spectra.html">2D-Fourier transformation</a>.
+</p>
+<p>
+Both diagonal and cross peaks in the NOESY spectrum appear with an absorption <a href="lineshapes.html">line
+shape</a>. For molecules with short correlation times <i>&tau;<sub>c</sub></i> the cross peaks have the opposite
+sign of the diagonal peaks, while larger molecules with long correlation times have the same sign for all peaks.
+For medium sized molecules the peaks can disappear completely. In this case the <a href="roesyph.html">ROESY</a>
+experiment can be used to determine intramolecular distances. For <i>J</i>-coupled spins the NOESY spectrum
+shows <a href="cosyqf.html">COSY</a> artefacts, which have dispersive line shapes.
+</p>
+
+</div>
+
+</body>
+</html>

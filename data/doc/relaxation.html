@@ -1,0 +1,158 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Relaxation
+</h1>
+</div>
+
+<div>
+<p>
+Any spin system that is not in the equilibrium state will relax back to its Boltzmann distribution. This
+happens via two mechanisms called <i>spin-lattice relaxation</i> and <i>spin-spin relaxation</i>. 
+<br><br>
+The spin-lattice relaxation is an enthalpic process by which the spins exchange energy with their 
+surrounding medium. This can be pictured as a movement of the spins back into the direction of the 
+external magnetic field <b>B</b><sub>0</sub> with the time constant <i>T</i><sub>1</sub>. It is therefore 
+also called <i>longitudinal relaxation</i> or <i>T</i><sub>1</sub><i>-relaxation</i>.
+</p>
+<p>
+The spin-spin relaxation in an entropic process and is characterised by the spins' loss of coherence. The 
+off-diagonal elements of the <a href="density_matrix.html">density matrix</a> and thus all coherences are
+reduced exponentially with the time constant <i>T</i><sub>2</sub>. The spin-spin relaxation is also called
+<i>transverse relaxation</i> or <i>T</i><sub>2</sub><i>-relaxation</i>.
+</p>
+<center><img src="formula_t2_relaxation.png" width="184" height="23"></center>
+<p>
+Relaxation is due to statistical fluctuations in the magnetic field that one spin 
+experiences at a certain time. This can be caused by the rotational movements of molecules and 
+<a href="dipolar_coupling.html">dipole-dipole couplings</a> between closely separated spins. 
+If a spin is in the <i>&alpha;</i>-state at time <i>t</i>, it experiences a slightly different field at 
+<i>t</i> + </i>&tau;</i>, under which the spin state takes the form of a superposition 
+<i>c</i><sub>1</sub><i>&alpha;</i> + <i>c</i><sub>2</sub><i>&beta;</i>. The coefficient <i>c</i><sub>2</sub> is
+the probability for the spin to change state.<br>
+Statistical fluctuations are mathematically described by the autocorrelation function
+</p>
+<center><img src="formula_autocorrelation.png" width="196" height="19"></center>
+<p>
+which gives the time average of the difference between a spacial component of one spin's magnetisation 
+<i>B</i><sub>x</sub> at a certain time <i>t</i> and <i>B</i><sub>x</sub> at the time <i>t</i> + 
+<i>&tau;</i>. In case the random fluctuations are on a shorter time scale than <i>&tau;</i>, 
+G(<i>&tau;</i>) averages to zero. The autocorrelation function is usually assumed to take a simple, 
+exponential form: 
+</p>
+<center><img src="formula_autocorrelation_exponential.png" width="158" height="22"></center>
+<p>
+The constant <i>&tau;<sub>c</sub></i> is called the <i>correlation time</i>. A molecule that rotates fast 
+experiences fast fluctuations and is therefore characterised by a rapidly decaying autocorrelation 
+function and a short <i>&tau;<sub>c</sub></i>. A slowly rotating molecule on the other hand has a large 
+correlation time and a slowly decaying autocorrelation function.
+</p>
+<p>
+The dependance of the transition probability between two spin states is given by the spectral density 
+function. Its normalised form is defined as the <a href="fourier_transformation.html">Fourier 
+transform</a> of the autocorrelation function.
+</p>
+<center><img src="formula_spectral_density.png" width="136" height="37"></center>
+<p>
+Short correlation times result in a broad spectral density while long correlation times lead to a narrow 
+spectral density. The transition probability between two states <i>&alpha;</i> and <i>&beta;</i> can 
+then be calculated from the local magnetic field squared, the spectral density at the spin's 
+<a href="larmor_frequency.html">Larmor frequency</a>, the <a href="gyromagnetic_ratio.html">gyromagnetic 
+ratio</a> of the nucleus and the difference of the populations in equilibrium defined by the Boltzmann 
+equation.
+</p>
+<center><img src="formula_transition_probability.png" width="250" height="23"></center>
+<p>
+The very small Boltzmann factor B is important to consider when describing the individual spins, but can be 
+omitted from the calculations when only the excess ensemble magnetisation is of interest.<br>
+<br>
+The master equation for the longitudinal relaxation returns the difference of the population vector
+<b>P</b> from thermal equilibrium <b>P</b><sub>0</sub>.
+</p>
+<center><img src="formula_t1_relaxation.png" width="189" height="38"></center>
+<p>
+For a simple, classical description the transition probability <i>W</i> = -1/<i>T</i><sub>1</sub>. For a 
+more accurate treatment of relaxation one has to consider the mechanisms that induce transitions 
+on a microscopic scale. In systems with spins larger than 1/2 the quadrupolar interactions often play the 
+dominant role. In case of only spins 1/2 the possible mechanisms are dipole-dipole couplings, 
+<a href="chemical_shift.html">chemical shift anisotropies</a> of tumbling molecules in solution and spin 
+rotation. Dipole-dipole coupling is usually the most important mechanism with CSA becoming more important
+at large <b>B</b><sub>0</sub>-fields.
+</p>
+<center><img src="img_two_level.png" height="263" width="300"></center>
+<p>
+While through-space dipolar couplings average to zero in isotropic liquids they do cause relaxation by 
+allowing transitions between energy levels. The single quantum transition probability for one spin state
+is the sum of all transition probabilities to every other spin with which it couples. It depends on the dipolar
+coupling constant <i>b</i> and the spectral density at the spin's resonance frequency. 
+</p>
+<center><img src="formula_W1_transition.png" width="183" height="46"></center>
+<p>
+The double-quantum transition causes two spins to flip between the <i>&alpha;&alpha;</i> and the 
+<i>&beta;&beta;</i> state. It depends on the spectral density at the sum of both spins' 
+resonance frequencies.
+</p>
+<center><img src="formula_W2_transition.png" width="195" height="37"></center>
+<p>
+The zero-quantum transition causes two spins to flip between the <i>&alpha;&beta;</i> and the 
+<i>&beta;&alpha;</i> state. It depends on the spectral density at the at the difference of the two spins' 
+resonance frequencies.
+</p>
+<center><img src="formula_W0_transition.png" width="204" height="37"></center>
+<p>
+Dipole-dipole couplings are not capable of inducing more than two spin flips per transition. The 
+zero- and double-quantum transitions play a crucial role in the transfer of magnetisation between 
+two spins known as the <a href="noe.html">nuclear Overhauser effect</a> (NOE).
+</p>
+<p>
+For the two-spin system shown above the relaxation <a href="matrix.html">matrix</a> <b>W</b> is given 
+below. For clarity, the difference between <i>W</i><sub>1</sub> probabilities for different spins are 
+omitted in this equation.
+</p>
+<center><img src="formula_two_spin_relaxation_matrix.png" style="width:100%; max-width:505px;"></center>
+<p>
+The transverse relaxation must always be equal to or faster than the longitudinal relaxation. While 
+<i>T</i><sub>2</sub> always decreases with increasing correlation times (i.e. larger molecules or higher 
+viscosity of the solvent) <i>T</i><sub>1</sub> has a minimum for medium sized molecules in non-viscous 
+solutions near room temperature.
+</p>
+<center><img src="img_relaxation_times.png" style="width:100%; max-width:600px;"></center>
+<p>
+In a two-spin system the relaxation times can be calculated from the transition probabilities. The longitudinal
+relaxation time is
+</p>
+<center><img src="formula_T1.png" width="300" height="37"></center>
+<p>
+while the transverse relaxation time is
+</p>
+<center><img src="formula_T2_1QT.png" width="300" height="73"></center>
+<p>
+for a single-quantum transition,
+</p>
+<center><img src="formula_T2_2QT.png" width="295" height="77"></center>
+<p>
+for a double-quantum transition and
+</p>
+<center><img src="formula_T2_ZQT.png" width="292" height="77"></center>
+<p>
+for a zero-quantum transition.
+</p>
+<p>
+An in-depth description of relaxation theory can be found in: M. Goldman, Formal Theory of Spin-Lattice
+Relaxation, <i>J. Magn. Reson.</i> <b>2001</b>, <i>149</i> (2), 160-187.
+</p>
+</div>
+
+</body>
+</html>

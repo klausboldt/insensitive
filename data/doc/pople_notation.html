@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Pople Notation
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            The Pople notation is a way of describing <a href="spin.html">spin</a> systems and
+            <a href="coupling.html">coupling</a> patterns with a simple letter code. It is named after its
+            inventor John Pople and is used to distinguish strongly and weakly coupled systems, and
+            <a href="energy_levels.html">magnetically equivalent</a> spins. For weakly coupled spins the
+            <a href="chemical_shift.html">chemical shift</a> difference is much larger than the coupling constant,
+            while the two are of the same size for strongly coupled spins. The spins are expressed as letters, whose
+            distance in the latin alphabet symbolised the relative chemical shift. The letters used tend to be
+            limited to A, B, N, M, X, Y.
+            </p>
+            <center><img src="img_poplenotation.png" style="width:80%; max-width:640px"></center>
+            <p>
+            Strongly coupled systems can lead to complex peak patterns that cannot be analysed manually, but
+            require help by computer simulation. These systems, in which &Delta;&nu;/<i>J</i> (all in Hz) is smaller
+            than 5, are called second order spectra. A larger <a href="spectrometer.html">spectrometer</a>
+            frequency will increase the separation between peaks and thereby simplify the spectrum.
+            </p>
+            <center>
+                <p>
+                <table width="300" border="1" cellpadding="2">
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Coupling pattern</th>
+                    </tr>
+                    <tr>
+                        <td align="center">AX</td>
+                        <td align="left">Two weakly coupled spins</td>
+                    </tr>
+                    <tr>
+                        <td align="center">AB</td>
+                        <td align="left">Two strongly coupled spins</td>
+                    </tr>
+                    <tr>
+                        <td align="center">A<sub>2</sub></td>
+                        <td align="left">Two magnetically equivalent spins</td>
+                    </tr>
+                    <tr>
+                        <td align="center">AA'</td>
+                        <td align="left">Two spins that are chemically, but not magnetically equivalent</td>
+                    </tr>
+                    <tr>
+                        <td align="center">AMX</td>
+                        <td align="left">Three weakly coupled spins</td>
+                    </tr>
+                    <tr>
+                        <td align="center">ABX</td>
+                        <td align="left">Two spins whose peaks are closely spaced and one nucleus with a more
+                            distant peak</td>
+                    </tr>
+                    <tr>
+                        <td align="center">A<sub>2</sub>X</td>
+                        <td align="left">Two magnetically equivalent spins weakly coupled to a third spin
+                        (<i>e.g.</i> a non-diastereotopic CH<sub>2</sub> group)</td>
+                    </tr>
+                    <tr>
+                        <td align="center">AA'XX'</td>
+                        <td align="left">Two weakly coupled pairs of chemically equivalent spins
+                            (<i>e.g.</i> 1,1-difluoroethylene)</td>
+                    </tr>
+                    <tr>
+                        <td align="center">AA'BB'</td>
+                        <td align="left">Two strongly coupled pairs of chemically equivalent spins
+                            (<i>e.g. p</i>-substituted aromatic rings)</td>
+                    </tr>
+                </table>
+                </p>
+            </center>
+            <p>
+            It is important to note the difference between chemical and magnetical equivalence: chemical equivalence
+            is observed if two or more spins have the same chemical shift, or, in other words, if the spins can
+            change place by a symmetry operation of the molecule. To be magnetically equivalent they must also have
+            the same <i>J</i> coupling to all coupled spins in the system.<br>
+            In 1,1-difluoroethylene each proton has different coupling constants to the fluorine in <i>cis</i> and
+            <i>trans</i> position. Swapping the protons will also change the coupling to each fluorine nucleus.
+            This leads to a AA'XX' pattern. In 1,1-difluoroallene the coupling constants to both fluorine nuclei is
+            the same, the proton (and fluorine) spins are magnetically equivalent, and the signals appear as a
+            A<sub>2</sub>X<sub>2</sub> pattern.
+            </p>
+        </div>
+        
+    </body>
+</html>

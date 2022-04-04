@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                J-Resolved Spectroscopy
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            The <i>J</i>-resolved <a href="two_dimensional_spectra.html">2D spectra</a> differ from most 
+            common 2D methods in that they do not correlate different spins by 
+            <a href="coherence_transfer.html">coherence transfer</a>. Instead, resolved spectra display 
+            different variables along the two axes, in this case <a href="chemical_shift.html">
+            chemical shift</a> and <a href="coupling.html"><i>J</i>-coupling</a>.
+            </p>
+            <p>
+            The <a href="pulse_sequences.html">pulse sequence</a> consists of a 90&deg; pulse creating
+            obeservable <a href="coherences.html">coherences</a>, followed by a 
+            <a href="spin_echo_sandwich.html">spin echo sandwich</a> with a 180&deg; pulse in the 
+            centre of the variable evolution time <i>t</i><sub>1</sub> and the spectrum acquisition
+            time <i>t</i><sub>2</sub>.
+            </p>
+            <center><img src="pp_jresolved.png" style="width:100%; max-width:304px;"></center>
+            <p>
+            The 180&deg; pulse refocusses the chemical shift, so that the apparent evolution after 
+            <i>t</i><sub>1</sub> for each coherence amounts to half the coupling constant. Peaks in the 
+            <i>F</i><sub>1</sub> domain appear at <a href="precession.html">precession</a> frequencies 
+            of &plusmn;1/2 <i>J</i>, while the spectrum spreads normally in the  <i>F</i><sub>2</sub> 
+            domain.
+            </p>
+            <center><img src="img_jresolved_skewed.png" style="width:100%; max-width:718px;"></center>
+            <p>
+            The spectrum can be skewed to align the peaks of one multiplet at the chemical shift 
+            frequency in <i>F</i><sub>2</sub>. The splitting due to <i>J</i>-coupling is then solely 
+            displayed in the indirect domain and the two variables are separated for easy interpretation.
+            </p>
+        </div>
+        
+    </body>
+</html>

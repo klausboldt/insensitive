@@ -1,0 +1,73 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+DOSY
+</h1>
+</div>
+
+<div>
+<p>
+The Diffusion Ordered SpectroscopY is a method to determine diffusion coefficients and hydrodynamic 
+radii in a mixture of molecules using <a href="gradients.html">pulsed field gradients</a>.
+</p>
+<center><img src="pp_stegp1f.png" width="303" height="158"></center>
+<p>
+The pulse sequence of a simple DOSY experiment begins with a 90&deg;<sub>x</sub>-pulse, which creates 
+transversal magnetisation. This is followed by a pulsed field gradient in z-direction. It dephases the 
+spins during the gradient duration <i>&delta;</i>, depending on their position in the sample tube and 
+thereby marks them with their position at that time. Afterwards the magnetisation is stored as 
+longitudinal magnetisation by a 90&deg;<sub>-x</sub>-pulse. This reduced loss of information by 
+<a href="relaxation.html"><i>T</i><sub>2</sub>-relaxation</a>. During a delay time &Delta; the spins 
+are allowed to diffuse through the sample solution, until the magnetisation is brought back into the 
+transverse plane by another 90&deg;<sub>x</sub>-pulse. Another gradient pulse refocuses the spins and 
+causes a stimulated spin echo. The <a href="fid.html">FID</a> is acquired when the spin echo reaches its 
+maximum.
+</p>
+<p>
+If the diffusion time &Delta; between the beginning of the two gradient pulses is varied systematically, 
+the signal strength reduces according to the diffusion rate <i>k<sub>D</sub></i> of the molecules. Fitting
+the decay of the signal strength to the Stejskal-Tanner expression as a function of &Delta; results in a
+pseudo-2D spectrum with the <a href="zg.html"><sup>1</sup>H-spectra</a> of the sample mixture separated
+along the indirect axis.
+</p>
+<center><img src="formula_diffusion_fit.png" height="24" width="244"></center>
+<p>
+Here, <i>S</i> is the signal intensity, <i>S</i><sub>0</sub> the signal intensity in the absence of a 
+gradient, <i>D</i> the diffusion coefficient, <i>&gamma;</i> the <a href="gyromegnetic_ratio.html">
+gyromagnetic ratio</a> and <i>G</i> the gradient strength. The hydrodynamic radius can be calculated from
+<i>D</i> with the Stokes-Einstein equation.
+</p>
+<p><b>DOSY Tool Box</b></p>
+<p>
+Insensitive offers a basic tool set to transform raw 2D decay data into a DOSY spectrum, using a simple method
+for fitting discrete diffusion coefficients (SPLMOD). The necessary steps need to be performed separately to
+show the difference to normal 2D NMR processing:
+<ol>
+    <li>Plot the first trace of the 2D data set at <i>t</i><sub>1</sub> = 0. This data is equal to a
+        normal 1D NMR spectrum.</li>
+    <li>Identify all peaks in the spectrum by performing peak picking.</li>
+    <li>Fit the peaks to lorentzian lines to determine their width.</li>
+    <li>Fit the decay of each peak maximum to a monoexponential function to retrieve the diffusion
+        constant <i>D<sub>A</sub></i> and the standard deviation.</li>
+    <li>Plot each combination of peak position and diffusion constant as a single peak in a 2D spectrum.</li>
+</ol>
+</p>
+<p>
+The peaks and decay curves are fitted using a Levenberg-Marquardt algorithm. It is important to let the signals
+decay to zero. A fitting a truncated decay will result in artificially small diffusion constants will large errors.
+</p>
+</div>
+
+</body>
+</html>

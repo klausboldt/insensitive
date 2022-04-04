@@ -1,0 +1,12 @@
+# List of source files which contain translatable strings.
+src/insensitive.h
+src/insensitive-window.c
+src/insensitive-controller.c
+src/insensitive-library.c
+src/insensitive-pulsesequence.c
+src/insensitive-settings.c
+src/insensitive-spinsystem.c
+src/insensitive-pulseshaper.c
+src/insensitive-singlespins.c
+src/insensitive-tutorial.c
+src/insensitive-composer.c

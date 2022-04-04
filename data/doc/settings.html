@@ -1,0 +1,119 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Settings
+</h1>
+</div>
+
+<div>
+<p>
+The Settings panel offers to change all parameters that do not directly concern the spin system, which is set 
+up in the <a href="spineditor.html">Spin Network Editor</a>.
+</p>
+
+<p><b>Pulse settings</b></p>
+<p>
+In the pulse settings the <a href="flip_angle.html">flip angle</a> and <a href="phase.html">phase</a>
+of the <a href="pulse.html">rf-pulses</a> can be set, either by entering the angles as a numerical value 
+between 0 and 360&deg; or by setting the slider in intervals of 15&deg;. Alternatively to the flip angle pulse
+duration, strength, and frequency can be set to manipulate the pulse bandwidth. Presets suitable for spins
+that are resonant between -10 and +10 Hz can be selected by clicking "Hard", "Soft", or "Selective". To create
+shaped pulses a number of standard pulse envelopes can be selected from the Shape menu. The pulse will only be
+applied to the spins which are set to be resonant at the bottom of the panel, which overrules the resonance
+conditions set above. Resonance can be set for single spins as well as for groups of spins of
+the same spin type (I or S).
+<br><br>
+The "Pulse Shape" module, which can be opened from the main window's toolbar, displays the pulse envelope and
+corresponding excitation profile of the selected pulse shape.
+The left panel shows the pulse shape and allows to set the pulse duration &Delta;<i>t</i>, either numerically or
+by changing the slider. The right panel displays the pulse's power spectrum and allows to set the pulse's
+resonance frequency <i>&Omega;</i> at which the flip angle is equal to the one set in the settings. If
+off-resonance effects are disabled in the preferences the <a href="fourier_transformation.html">Fourier transform</a>
+of the pulse shape is used as an approximation to calculate the flip angle.
+</p>
+<center><img src="img_pulse_shaper.png" style="width:100%; max-width:540px;"></center>
+
+<p><b>Free evolution settings</b></p>
+<p>
+In this panel the spins' behaviour during free evolution can be set. "Strong coupling" activates strong 
+coupling between spins of the same type. "Dipolar relaxation" activates <a href="relaxation.html">
+relaxation</a> via <a href="dipolar_coupling.html">dipole-dipole couplings</a> in a system of two or more 
+spins. By checking "Animation" <a href="chemical_shift.html">chemical shifts</a> and <a href="coupling.html">
+scalar couplings</a> will be continuously applied to the spin system and is displayed as an animation. If 
+"Relaxation with evolution" is checked, relaxation will be taken into account for free evolution, both when 
+clicking the "Free Evolution" button and during animation. The delay time is the step width for which 
+<a href="precession.html">precession</a>, coupling and relaxation is applied when the respective buttons 
+are pressed.<br>
+<br>
+Relaxation is simulated either empirically by applying the relaxation constants <i>T</i><sub>1</sub> and 
+<i>T</i><sub>2</sub> ("Dipolar relaxation" off) or by calculating the relaxation times from the dipolar 
+coupling constants and the correlation time <i>&tau;</i><sub>c</sub> ("Dipolar relaxation" on). The latter is 
+necessary to simulate the <a href="noe.html">nuclear Overhauser effect</a>. <i>T</i><sub>2</sub> must be 
+smaller or equal to <i>T</i><sub>1</sub>. Depending on the settings either the relaxation times or 
+<i>&tau;</i><sub>c</sub> is not used for the simulation.<br>
+By activating "Random jitter" Insensitive simulates dephasing through random fluctuations of the Lamor
+frequency, which can be caused by diffusion and inhomogenieties of the magnetic field. The coherence
+cannot be refocussed by <a href="spin_echo_sandwich.html">spin echo sandwiches</a>, because the simulation is
+<a href="limitations.html">limited</a> by the density matrix approach.<br>
+<br>
+There are two possible ways to achieve <a href="decoupling.html">decoupling</a> in Insensitive: If
+"Decoupling I-Spins/S-Spin" is checked, 180&deg; pulses with a 90&deg; phase shift to the phase set in the
+pulse settings will be applied during coupling and free evolution. This constantly refocusses the selected
+spin type and reverses the effects of <i>J</i>-coupling. Alternatively, a <a href="spin_lock.html">spin lock</a>
+field can be applied, which works as a continuous rf-field on both spin types. In this case the precession will
+happen around the axis perpendicular to the set pulse phase. In order to observe the <a href="noe.html">ROE</a>
+with <i>T</i><sub>1<i>&rho;</i></sub> relaxation or <a href="solid_state_nmr.html">cross polarisation</a>
+"dipolar relaxation" has to be checked as well.
+</p>
+    
+<p><b>Gradient settings</b></p>
+<p>
+<a href="gradients.html">Pulsed field gradients</a> along the <i>z</i>-axis will be applied with a 
+strength and duration set in this panel. The values for gradient strength may vary between +32000 and 
+-32000. When enabling "Diffusion" the loss of magnetisation from dephasing due to diffuion in the gradient
+field is accounted for.
+</p>
+
+<p><b>Acquisition settings</b></p>
+<p>
+Insensitive is able to acquire one-dimensional spectra. The FID will be recorded for the 2<sup>n</sup> 
+data points spaced by the dwell time, which determines the spectral width and resolution of the spectrum. 
+The "Noise level" setting simulates random noise, which is added to the spectrum. The number entered in the 
+percentage of the noise compared to the signal of one uncoupled spin of type I.<br>
+<br>
+If "Zero filling" is activated a row of zeros will be appended to the acquired FID, effectively doubling 
+the spectral resolution. Changing "Zero filling" or the number of data points will reset the spectrum 
+window.<br>
+<br>
+Acquisition of the spectrum is started by pressing the "Acquire" button on the Spin State panel.
+If "after next pulse" is checked the acquisition will be started after the next rf-pulse.
+</p>
+
+<p><b>Display setting</b></p>
+<p>
+From the "Vectors" popup button it can be chosen to display all observable coherences each as a single 
+vector, the magnetic moments of each spin or the total angular momentum that is recorded as the 
+<a href="fid.html">free induction decay</a> as one single vector for each spin type. When selecting 
+"moments" pure <a href="antiphase_magnetization.html">antiphase magnetisation</a> will collapse to zero.<br>
+The <a href="product_operators_formalism.html">product operators</a> can be set to be displayed either in 
+cartesian or spherical operator basis.<br>
+The observable "simple" <a href="single_quantum_coherence.html">single-quantum coherences</a> are marked in the
+density matrix if "Colour 1st order coherences" is checked. (-1)-coherences are marked in green while 
+(+1)-coherences are marked in red.<br>
+"Font size" allows to display the density matrix in different sizes.
+</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Antiphase magnetisation
+</h1>
+</div>
+
+<div>
+<p>
+Antiphase magnetisation is a state that is created within free evolution of two <a href="coupling.html">
+coupled</a> spins. It represents the coherence of one spin (red vectors) linked to the 
+<a href="populations.html">population</a> of the coupling partner (blue vectors) and is denoted as the product 
+of a transverse magnetisation operator with an operator for z-magnetisation, e.g. <op>2I1xI2z</op>. 
+</p>
+<center><img src="img_vectors_antiphase.png" height="209" width="200"></center>
+<p>
+In the vector model of a spin ensemble this equals two magnetisation vectors in opposite directions, which 
+cancel each other out. One vector results from spin 1 bound to spin 2 in <i>&alpha;</i>-state and causes the 
+spins to <a href="precession.html">precess</a> faster than an uncoupled spin 1, while the second vector 
+corresponds to spin 1 bound to spin 2 in <i>&beta;</i>-state, resulting in a precession that is 
+slower than an unbound spin 1. This leads to the typical splitting of the coupled spin into a doublet.
+</p>
+<center><img src="formula_2ixiz_matrix.png" height="87" width="240"></center>
+<p>
+Although antiphase magnetisation is not associated with a finite magnetic moment, it is made up of only 
+simple single-quantum coherences and evolves into observable, transverse magnetisation over time.
+</p>
+<center><img src="img_antiphase_peaks.png" style="width:100%; max-width:600px;"></center>
+<p>
+The name comes from the fact that the peak shape depends on the state of the spin system at the time the
+<a href="fid.html">acquisition</a> is started. A state of in-phase magnetisation like the 
+<a href="coherences.html">coherence</a> <op>-I1y</op> causes a normal doublet, where both peaks have the same 
+sign and <a href="phase.html">phase</a>, while antiphase magnetisation <op>2I1yI2z</op> results in a 
+characteristic doublet with the two peaks having opposite signs. Antiphase peaks cannot be converted to 
+in-phase peaks by phase correction.
+</p>
+</div>
+
+</body>
+</html>

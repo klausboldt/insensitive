@@ -1,0 +1,46 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+CPMG
+</h1>
+</div>
+
+<div>
+<p>
+The transverse <a href="relaxation.html">relaxation</a> can be divided into the entropic dephasing with 
+the relaxation time <i>T</i><sub>2</sub> and a contribution of magnetic field inhomogenieties which enhance
+the dephasing and decrease the relaxation time to a smaller value <i>T</i><sub>2</sub><sup>*</sup>. It is 
+this time constant that determines the dampening of the <a href="fid.html">free induction decay</a>. To 
+measure <i>T</i><sub>2</sub> the Carr-Purcell-Meiboom-Gill sequence has been devised, which begins with a 
+90&deg;<sub>x</sub> pulse that creates transverse magnetisation. These <a href="coherences.html">coherences</a> 
+start to <a href="precession.html">precess</a> and relax. In the middle of a variable time <i>&tau;</i> a 
+180&deg;<sub>y</sub>-pulse is applied to the system. This <a href="spin_echo_sandwich.html">spin echo
+sandwich </a> refocusses the spins. Acquisition of the FID begins after <i>&tau;</i> at the maximum of the
+spin echo.
+</p>
+<center><img src="pp_hahn_echo.png" width="280" height="108"></center>
+<p>
+By increasing number of 180&deg; pulses one generates a number of spin echoes, which have a decreasing
+maximum intensity.
+</p>
+<center><img src="pp_cpmg.png" style="width:100%; max-width:404px;"></center>
+<p>
+Through the spin echo the system regains only the magnetisation lost to inhomogenieties in the magnetic 
+field. The transverse relaxation time <i>T</i><sub>2</sub> appears therefore as the decay time of the 
+spin echo intensities as a function of <i>&tau;</i>.
+</p>
+</div>
+
+</body>
+</html>

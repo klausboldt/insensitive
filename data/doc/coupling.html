@@ -1,0 +1,91 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+<i>J</i>-Coupling
+</h1>
+</div>
+
+<div>
+<p>
+Different spins in a molecule do not <a href="precession.html">precess</a> independently. If one spin can 
+have different energy states depending on which state a nearby spin is in these to spins are coupled.
+There are two basic mechanisms by which information between coupled spins is exchanged: <i>J</i>-coupling 
+and <a href="dipolar_coupling.html">dipolar coupling</a>.
+</p>
+<p>
+The <i>J</i>-coupling is an interaction through chemical bonds that dominates the coupling terms in 
+isotropic liquids: In a magnetic field a nuclear spin is oriented in one possible eigenstate. An electron 
+nearby tends to be antiparallel to the nuclear spin, owing to the Fermi interaction between the two 
+particles. The bond's second electron must be of opposite spin following Pauli's exclusion principle. 
+The second electron defines the preferred orientation of the bound nucleus and gives rise to a small excess
+of antiparallel oriented nuclear spins that are directly bound. Coupling over more bonds can be explained
+by Hund's rule which states that electron spins close to a nucleus tend to be ordered in parallel. The 
+information is thus transported over to the next bond.
+Since only s-electrons have finite probability to be near the nucleus the <i>J</i>-coupling increases with
+increasing s-character of the chemical bond.
+</p>
+<center><img src="img_scalar_coupling.png"></center>
+<p>
+The coupling between two spins is given by the 3 x 3 real coupling tensor <b>J</b> in units of Hertz that 
+depends on the molecular orientation to the external magnetic field.
+</p>
+<center><img src="formula_coupling_tensor.png" height="65" width="192"></center>
+<p>
+The spin Hamiltonian for the coupling is then written as
+</p>
+<center><img src="formula_coupling.png" height="22" width="159"></center>
+<p>
+In isotropic liquids the tensor averages to the scalar coupling constant <i>J</i> that is equal to the 
+average of the tensor's diagonal elements. One distinguishes between two cases:
+</p>
+<p>
+The weak coupling regime applies to all heteronuclear couplings as well as homonuclear couplings if the 
+difference in <a href="larmor_frequency.html">Larmor frequencies</a> is much larger than the coupling. 
+</p>
+<center><img src="formula_weak_coupling.png" height="21" width="142"></center>
+<p>
+In this case the coupling depends only on the component of the magnetisation along the external field. 
+</p>
+<center><img src="formula_coupling_weak.png" height="22" width="136"></center>
+<p>
+The product operator that represents scalar coupling in the weak coupling case is the 
+<a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a> <op>2&pi;<i>J</i> I1zI2z</op>.
+</p>
+<p>
+The strong coupling between homonuclear spins with small frequency separation depends on all spatial
+components of the magnetisation vector. In this case the two states |<i>&alpha;&beta;</i>> and 
+|<i>&beta;&alpha;</i>> are close enough in energy that a flip-flop exchange between the two
+<a href="energy_levels.html">energy levels</a> can happen.
+</p>
+<center><img src="formula_coupling_strong.png" height="22" width="146"></center>
+<p>
+Strong coupling leads to a distortion of the peak amplitude with the spectral lines of the spin pair that 
+are closer to each other becoming stronger while the ones further apart become weaker ('roofing' effect).
+</p>
+<center><img src="img_roofing_effect.png" style="width:100%; max-width:500px;"></center>
+<p>
+Scalar coupling transforms in-phase <a href="coherences.html">coherences</a> into 
+<a href="antiphase_magnetization.html">antiphase magnetisation</a> and back into in-phase magnetisation during 
+periods of free evolution.
+</p>
+<center><img src="img_vectors_coupling.png" style="width:100%; max-width:600px;"></center>
+<p>
+The coupling of spin 1 (red vectors) to spin two (blue vectors) leads to two distinct resonance frequencies, 
+<i>&Omega;</i><sup>0</sup> + 0.5 <i>J</i> and <i>&Omega;</i><sup>0</sup> - 0.5 <i>J</i>, depending on whether 
+the coupled spin is in the <i>&alpha;</i>- or <i>&beta;</i>-state.
+</p>
+</div>
+
+</body>
+</html>

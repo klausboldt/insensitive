@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="insensitive">
+	<schema id="com.klausboldt.insensitive" path="/com/klausboldt/insensitive/">
+	</schema>
+</schemalist>

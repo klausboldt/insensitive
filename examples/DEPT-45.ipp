@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IPPFileVersion</key>
+	<string>Insensitive Pulse Program 0.9.7</string>
+	<key>Name</key>
+	<string>dept45</string>
+	<key>PhaseCycles</key>
+	<integer>4</integer>
+	<key>PhaseCyclingArray</key>
+	<array>
+		<real>90</real>
+		<real>0.0</real>
+		<real>0.0</real>
+		<real>0.0</real>
+		<real>90</real>
+		<real>0.0</real>
+		<real>90</real>
+		<real>0.0</real>
+		<real>180</real>
+		<real>0.0</real>
+		<real>90</real>
+		<real>180</real>
+		<real>270</real>
+		<real>0.0</real>
+		<real>90</real>
+		<real>0.0</real>
+		<real>90</real>
+		<real>0.0</real>
+		<real>270</real>
+		<real>0.0</real>
+		<real>270</real>
+		<real>0.0</real>
+		<real>90</real>
+		<real>180</real>
+	</array>
+	<key>PulseSequence</key>
+	<array>
+		<data>
+		AAAAAAAAtEIAAAAAAQAAAAAAAQABAAAA
+		</data>
+		<data>
+		AQAAAFK4Hj8AAAAAAAAAsAAAAAAAQAAA
+		</data>
+		<data>
+		AAAAAAAANEMAAAAAAQAAAAAAAQABAAAA
+		</data>
+		<data>
+		AAAAAAAAtEIAAAAABgAAAAAAAAEAAQAA
+		</data>
+		<data>
+		AQAAAFK4Hj8AAAAAAAAA0AAAAAAAQAAN
+		</data>
+		<data>
+		AAAAAAAANEIAAAAAAQAAAAAAAQABAABw
+		</data>
+		<data>
+		AAAAAAAANEMAAAAABgAAAAAAAAEAAQAA
+		</data>
+		<data>
+		AQAAAFK4Hj8AAAAAAQAAAAAAAAABAAAA
+		</data>
+		<data>
+		AwAAAAAAAIAAAAAAAAAA0AEAAAH/fwAA
+		</data>
+	</array>
+	<key>PurePhaseDetectionMethod</key>
+	<integer>0</integer>
+	<key>VariableEvolutionTime</key>
+	<integer>0</integer>
+</dict>
+</plist>

@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Creating a Spin System
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            To begin the simulation a spin system has to be created. At first launch of Insensitive this consists of
+            two spins of spin type I with a <a href="larmor_frequency.html">Larmor frequency</a> of <i>&Omega;</i> = 0 Hz
+            (in the <a href="rotating_frame.html">rotating frame</a>) and no <a href="coupling.html">scalar coupling</a>.
+            The default distance between the spins is <i>r</i> = 0.30 nm, which corresponds to a
+            <a href="dipolar_coupling.html">dipolar coupling</a> constant of <i>b</i> = -4450.69 Hz. To create an
+            instructive simulation these parameters need to be adjusted. Spin systems, including the current spin state,
+            can be opened and saved as Insensitive Spin System (*.iss) files using the "File" menu.
+            </p>
+            <p><b>Setting the spin number</b></p>
+            <p>
+            A maximum of 4 <a href="spin.html">spins</a> of two possible spin types, I and S, can be simulated. The
+            number is limited by computing power of state-of-the-art computers. Click "Add Spin"/"Remove Spin" or edit the
+            text field labelled "Spins" to change the number of spin in the spin system. "Remove Spin" removes the selected
+            spin indicated by a blue glow. The spin system is displayed as
+            red (I spins) and blue (S spins) spheres, which are connected by straight lines that symbolise coupling. The
+            user can select whether the connections display scalar coupling (<i>J</i>), dipolar coupling (<i>b</i>), or
+            distance (<i>r</i>).
+            </p>
+            <center><img src="img_spinsystem.png" border="1" style="width:100%; max-width:637px;"></center>
+            
+            <p><b>Energy Levels</b></p>
+            <p>
+            On the right hand side the <a href="energy_levels.html">energy levels</a> of all spins are
+            displayed as black lines, as well as observable single quantum transitions between states as red arrows.
+            The transition arrows do no distiguish between degenerate levels. The levels are labelled with the spin states
+            &alpha; or &beta; for each participating spin, or, in the case of strong coupling, as a wave function &psi; with
+            a running number. For magnetically equivalent spins the symbols from the <a href="singlet_triplet_basis.html">
+            singlet-triplet basis</a> are being used.
+            </p>
+            
+            <p><b>Setting the spin type</b></p>
+            <p>
+            The spin type can be changed between I and S by double tapping the respective spin icon.
+            The spin types for I and S can be assigned to a number of common nuclei: <sup>1</sup>H, <sup>13</sup>C,
+            <sup>15</sup>N, <sup>19</sup>F, <sup>29</sup>Si, and <sup>31</sup>P. The standard setting is <sup>1</sup>H
+            and <sup>13</sup>C for I and S spins, respectively. This setting will affect the
+            <a href="gyromagnetic_ratio.html">gyromagnetic ratio</a> of the spins, but natural abundance will be ignored.
+            Note that <sup>15</sup>N and <sup>29</sup>Si have a negative gyromagnetic ratio.
+            </p>
+            
+            <p><b>Setting the Larmor frequency</b></p>
+            <p>
+            A spin is selected by single clicking the spin icon. To change the Larmor frequency (and thus the
+            <a href="chemical_shift.html">chemical shift</a>) of the active spin enter the new value in the text field
+            indicated by <i>&Omega;</i> and press enter. The units can be displayed in Hertz or degrees per second (which
+            can be set with the popup button "Units").
+            </p>
+            
+            <p><b>Setting the coupling constants</b></p>
+            <p>
+            To set up coupling constants or spin-spin distances first enter the value for the constant that is currently
+            being displayed  (<i>J</i>, <i>b</i> or <i>r</i>). Then click one spin and drag a connector to the coupling
+            partner to set the value. Alternatively, if only two spins are present the value can be set by pressing enter.
+            If the distance is set the dipolar coupling constant will be calculated automatically and vice versa.
+            </p>
+            
+            <p><b>Resetting and rotating the spin system</b></p>
+            <p>
+            Clicking "Reset Spins" will reset all spin types to I and set the chemical shifts and coupling constants to
+            0 Hz and the distance between spins to 0.30 nm. "Rotate" will change the indices of the spins so that spin 1
+            becomes spin 2 and so on, with the highest index being set to 1.
+            </p>
+            
+            <p><b>Considerations</b></p>
+            <p>
+            Avoid setting the frequencies to integer values, as the spin system will appear unchanged after the default
+            delay time <i>&tau;</i> = 1.0 s. For an instructional simulation it is advisable to set the frequencies to
+            values that are smaller than typical chemical shifts and coupling constants (e.g. <i>&Omega;</i><sub>1</sub> =
+            0.2 Hz, <i>&Omega;</i><sub>2</sub> = -0.7 Hz, <i>J</i> = 0.25 Hz). This way the free evolution is easy to
+            observe in steps and the effects of strong coupling are most pronounced. A good starting value for the
+            spin-spin distance is 0.3 nm between two I spins, 0.2 nm between I and S spins and 0.13 nm between two S spins.
+            For acquiring the spectrum set the dwell time to 0.1 s and the data poits to 512 (with zero filling) or 1024
+            (without zero filling) for good spectral resolution.
+            </p>
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,77 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+DEPT
+</h1>
+</div>
+
+<div>
+<p>
+The Distortionless Enhancement by Polarisation Transfer experiment is used to differentiate between 
+carbon atoms with different numbers of attached protons. It is similar to the <a href="ineptnd.html">
+INEPT</a> experiment in that it is enhances the signal strength by transfer of magnetisation from the 
+protons to the carbon atoms. Due to the magnetisation transfer it is more sensitive than the
+<a href="apt.html">APT</a> experiment, which otherwise shows the same information.
+</p>
+<center><img src="pp_dept.png" width="273" height="300"></center>
+<p>
+The <a href="pulse_sequences.html">pulse sequence</a> starts with a 90&deg;<sub>x</sub>-pulse on the 
+I-spins, creating transversal magnetisation, which is allowed to evolve for a delay <i>&tau;</i>/2 =
+1/(2<i>J</i>).
+</p>
+<p>
+- <op>I1y</op> cos(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) cos(<i>&pi;J<sub>IS</sub>&tau;</i>/2)<br>
++ <op>2I1xS2z</op> cos(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) sin(<i>&pi;J<sub>IS</sub>&tau;</i>/2)<br>
++ <op>I1x</op> sin(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) cos(<i>&pi;J<sub>IS</sub>&tau;</i>/2)<br>
++ <op>2I1yS2z</op> sin(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) sin(<i>&pi;J<sub>IS</sub>&tau;</i>/2)
+</p>
+<p>
+A 180&deg;<sub>x</sub>-pulse inverts the I-spins' <i>y</i>- and <i>z</i>-components, while a simultaneous 
+90&deg;<sub>x</sub>-pulse on the S-spins creates <a href="multi_quantum_coherence.html">multi-quantum 
+coherences</a>.
+</p>
+<p>
++ <op>I1y</op> cos(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) cos(<i>&pi;J<sub>IS</sub>&tau;</i>/2)<br>
+- <op>2I1xS2y</op> cos(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) sin(<i>&pi;J<sub>IS</sub>&tau;</i>/2)<br>
++ <op>I1x</op> sin(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) cos(<i>&pi;J<sub>IS</sub>&tau;</i>/2)<br>
++ <op>2I1yS2y</op> sin(<i>&Omega;</i><sub>1</sub><i>&tau;</i>/2) sin(<i>&pi;J<sub>IS</sub>&tau;</i>/2)
+</p>
+<p>
+After another delay time of <i>&tau;</i>/2 the proton chemical shifts are refocused. The S-spins are then 
+inverted with a 180&deg;<sub>x</sub>-pulse while the I-spins are rotated around a variable angle 
+<i>&theta;</i> which reverts the multi-quantum coherences back to antiphase magnetisation. A third delay 
+of <i>&tau;</i>/2 lets the antiphase terms decay to pure, transversal magnetisation to allow for 
+<a href="decoupling.html">decoupling</a>.
+</p>
+<p>
+The intensity of the <sup>13</sup>C signals depends on the <a href="flip_angle.html">flip angle</a> <i>&theta;</i>. 
+These are different for different configurations of the carbon atom (CH blue, CH<sub>2</sub> violet, 
+CH<sub>3</sub> red):
+</p>
+<center><img src="img_dept_angle.png" style="width:100%; max-width:802px;"></center>
+<p>
+An angle of <i>&theta;</i> = 135&deg; causes CH and CH<sub>3</sub> signals to have positive absorption 
+lines while CH<sub>2</sub> have negative absorption lines. A 90&deg; angle only shows CH groups, while a 
+45&deg; pulse causes all protonated carbon atoms to appear as positive absorption lines. All three variations
+need to be combined to yield unambiguous data. Quaternary carbon atoms and signals from deuterated solvents are
+removed by <a href="phase_cycling.html">phase cycling</a>.
+</p>
+<p>
+The similar <a href="pendant.html">PENDANT</a> experiment (Polarisation ENhancement During Attached 
+Nucleus Testing) also shows quaternary carbon atoms.
+</p>
+</div>
+
+</body>
+</html>

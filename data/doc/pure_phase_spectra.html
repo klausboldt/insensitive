@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+                </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Pure Phase 2D Spectra
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            In <a href="two_dimensional_spectra.html">2D spectra</a> the frequency information in the 
+            indirect dimension <i>t</i><sub>1</sub> can be coded in two possible ways, as phase or 
+            amplitude modulation. The problem with phase modulated spectra as obtained from a single 2D
+            acquisition is that absorption and dispersion <a href="lineshapes.html">line shapes</a> mix after
+            2D <a href="fourier_transformation.html">Fourier transformation</a>, resulting in the undesirable
+            phase-twist line shape with broad bases. This cannot be <a href="phase.html">phase corrected</a>.
+            A work-around is to record an amplitude modulated spectrum, in which the real and imaginary part
+            along the indirect dimension evolve purely as cosine and sine, respectively.
+            </p>
+            <p><b>States method</b></p>
+            <p>
+            The Ruben-States-Haberkorn method realises amplitude modulation by recording two 
+            sets of data, one with the original <a href="pulse_sequences.html">pulse sequence</a> and one 
+            where the preparation pulses before <i>t</i><sub>1</sub> are shifted by 90&deg;. After Fourier 
+            transformation along <i>t</i><sub>2</sub> the real (or imaginary) parts of each data set are
+            either sine or cosine modulated. Either pair is combined to form a new complex spectrum and
+            Fourier transformed along <i>t</i><sub>1</sub> to yield pure absorption or dispersion line
+            shapes. This method already implements quadrature detection in the indirect dimension, making
+            <a href="phase_cycling.html">phase cycling</a> to remove peaks mirrored at the centre frequency
+            obsolete. This can be easily <a href="processing_two_dimensional_spectra.html">illustrated</a>
+            with Insensitive at the example of a <a href="cosyqf.html">COSY</a> spectrum.
+            </p>
+            <p><b>TPPI</b></p>
+            <p>
+            The time proportional phase incrementation or Marion-W&uuml;thrich method employs real instead
+            of complex Fourier transformation and introduces frequency discrimination by shifting the 
+            preparation pulse phase each time the variable evolution time <i>t</i><sub>1</sub> is 
+            increased.
+            </p>
+            <center><img src="formula_tppi.png" style="width:100%; max-width:357px;"></center>
+            <p>
+            Since a phase shift <i>&phi;</i> of 90&deg; turns a cosine modulation into a sine modulation, 
+            if <i>&phi;</i>(<i>t</i><sub>1</sub>) = <i>&omega;</i><sub>shift</sub><i>t</i><sub>1</sub>, the 
+            whole spectrum is shifted towards higher frequencies. By setting the shift to half the 
+            spectral width (90&deg; for every step of <i>t</i><sub>1</sub>) one can create a spectrum 
+            with no negative frequencies and thus eliminate the mirror peaks without moving the 
+            spectrometer frequency from the spectrum's centre. The so treated spectrum is amplitude 
+            modulated, but in order to keep the same <a href="spectrum_resolution.html">resolution</a> as 
+            the untreated spectrum one must acquire twice the amount of data points by doubling the number 
+            of scans, with half the step size (dwell time) in the indirect time domain. This effectively 
+            doubles the amount of data and leaves half of the acquired spectrum empty to be discarded. 
+            Insensitive automatically adjusts these parameters when <a href="manual.html">selecting</a> 
+            TPPI as the detection method.
+            </p>
+            <p><b>States-TPPI</b></p>
+            <p>
+            Both methods above lead to pure absorption line shapes and emulate quadrature detection in the
+            indirect time domain. Still, strong artefacts appear at the centre of the <i>t</i><sub>1</sub>
+            coordinate, which result from exitation of spins that have relaxed during the variable delay
+            time. To get rid of these two phase cycles can be employed with a phase shift of 180&deg; for all
+            pulses before <i>t</i><sub>1</sub> as well as the receiver. The phase shift reverses only the
+            phase of the unwanted signals, which cancel out between the two runs.<br>
+            <br>
+            The same results are reached by running an experiment using the States method, but shifting
+            the phases of all pulses before <i>t</i><sub>1</sub> and the receiver by 180&deg; every
+            step of <i>t</i><sub>1</sub>, or twice the value employed for TPPI. After complex Fourier
+            transformation only the artefacts are shifted out of the relevant spectral range. No
+            extra phase cycling is needed, but the number of data points has to be doubled to retain
+            spectral resolution.
+            </p>
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Equation of motion
+</h1>
+</div>
+
+<div>
+<p>
+If a wave function is an eigenfunction of the Hamiltonian it does not change over time, except for a 
+complex <a href="phase.html">phase factor</a>. If this is not the case as with a superposition state, 
+where the coefficients of the linear combination change as well. The equation of motion or time-dependent 
+Schr&ouml;dinger equation can be used to calculate its evolution in time. 
+</p>
+<center><img src="formula_equation_of_motion_natural.png" height="38" weight="105"></center>
+<p>
+If this first order differential equation is solved one gets an exponential factor that expresses the 
+temporal evolution of a wave function.
+</p>
+<center><img src="formula_exponential_operator.png" height="22" weight="180"></center>
+<p>
+This exponential operator looks very similar to the rotational operator given below. The Hamiltonian is 
+substituted by a cartesian component of a spin angular momentum operator while the time <i>t</i> is 
+substituted by an angle <i>&beta;</i>. 
+</p>
+<center><img src="formula_rotational_operator.png" height="22" weight="162"></center>
+<p>
+In any rotational motion the time of free evolution can be easily converted to an angle be applying the
+formula <i>&omega;</i><sup>0</sup><i>t</i> = <i>&beta;</i> with <i>&omega;</i><sup>0</sup> being the spin's
+<a href="larmor_frequency.html">Larmor frequency</a>.
+The Hamiltonian of a simple spin-1/2 can be written as the spin angular momentum operator multiplied by 
+<i>&omega;</i><sup>0</sup>. Thus, a temporal evolution of a nuclear spin that is not in an eigenstate of 
+the current spin Hamiltonian can be described as a rotation around a fixed axis. This can be both free 
+<a href="precession.html">precession</a>  as well as <a href="pulse.html">rf-pulses</a>.
+</p>
+<p>
+The temporal evolution of the <a href="density_matrix.html">density operator</a> <i>&rho;</i>, being the 
+ensemble average ket-bra product of the spin system, is described by the Liouville-von Neumann equation:
+</p>
+<center><img src="formula_liouville_equation.png" height="38" width="174"></center>
+<p>
+Its solution is the rotational sandwich formula
+</p>
+<center><img src="formula_rotation_sandwich.png" height="22" width="178"></center>
+<p>
+The exponential of an operator's <a href="matrix.html">matrix</a> representation can be easily calculated if 
+the matrix is in its base-diagonal form, where the diagonal matrix elements are the operator's eigenvalues and 
+all off-diagonal matrix elements are zero. Then the matrix exponential is simply calculated by taking the 
+exponential of the eigenvalues.
+</p>
+</div>
+
+</body>
+</html>

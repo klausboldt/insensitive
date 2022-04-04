@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+                </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Line shapes
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            The exponential decay of the <a href="fid.html">FID</a> causes the spectral lines to appear
+            in the shape of a Lorentzian function after <a href="fourier_transformation.html">Fourier
+            transformation</a>, following the <a href="convolution_theorem.html">convolution theorem</a>.
+            </p>
+            <center><img src="formula_lorentzian.png" style="width:100%; max-width:174px;"></center>
+            <p>
+            The resulting complex function has a real and an imaginary part, which need to be plotted separately.
+            </p>
+            <center><img src="img_ft_lorenzian.png" style="width:100%; max-width:550px;"></center>
+            <p>
+            The real part has the appearance of a typical spectral peak and is called an <i>absorption line</i>
+            for historical reasons. (Sometimes the term <i>emission line</i> is found for a downwards
+            pointing signal, but <i>negative absorption line</i> should be used to avoid confusion with actual
+            emission processes.) The absorption line width (full width at half maximum) is determined by the
+            parameter <i>&lambda;</i> as <i>w</i> = 2<i>&lambda;</i>.
+            </p>
+            <center><img src="formula_real_lorentzian.png" style="width:100%; max-width:186px;"></center>
+            <p>
+            The imaginary part features a zero passage at <i>&Omega;</i><sub>0</sub> and appears much broarder.
+            This peak shape is called a dispersion line. It is responsible for a significant overlap of spectral
+            lines in <a href="two_dimensional_spectra.html">2D spectra</a> such as the
+            <a href="cosyqf.html">COSY</a> spectrum.
+            </p>
+            <center><img src="formula_imag_lorentzian.png" style="width:100%; max-width:186px;"></center>
+            <p>
+            Mixed <a href="phase.html">phase</a> line shapes appear when the FID is acquired from a state where
+            the spins are not in a pure <op>Iy</op> or <op>Ix</op> state.
+            </p>
+            <p>
+            The line shape can be changed to a Gauss peak by means of the <a href="window_function.html">
+            Lorentz-Gauss transformation</a>.
+            </p>
+            <center><img src="formula_gaussian.png" style="width:100%; max-width:161px;"></center>
+            <p>
+            This line shape is narrower at the base than the Lorentzian and leads to better
+            peak separation. A complete removal of dispersion signals for absolute value spectra is possible
+            with the gaussian <a href="window_function.html">Pseudo-echo transformation</a>.
+            </p>
+            <center><img src="formula_gaussian_width.png" style="width:100%; max-width:111px;"></center>
+            <p>
+            The full width at half maximum is determined by the standard deviation <i>&sigma;</i>.
+            </p>
+        </div>
+        
+    </body>
+</html>

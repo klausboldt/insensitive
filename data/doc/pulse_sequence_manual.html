@@ -1,0 +1,111 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Recording a Pulse Sequence
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            NMR experiments are performed by applying a sequence of <a href="pulses.html">rf-pulses</a> to the
+            spin system, separated by time delays and ending with acquisition of the <a href="fid.html">free
+            induction decay</a>. This can be
+            done manually in Insensitive using the <a href="spin_manipulation.html">Spin State</a> panel.
+            Alternatively pulse sequences can be recorded and then applied to a spin system in a single step. The
+            Pulse Sequence panel handles recording, display, editing, and running of pulse sequences.
+            </p>
+            <p>
+            Pulses are displayed as red squares (or different shapes for shaped pulses) with an indexed phase &phi;.
+            Pulses field gradients are shown as green lobes. Decoupling sequences are indicated by wide, light red
+            bars, while data acquisition is symbolised by a decaying sine wave. Delay times &tau; are also numbered
+            and labelled.
+            </p>
+            <center><img src="img_pulsesequence.png" border="1" style="width:100%; max-width:637px;"></center>
+            <p>
+            Click "Record" to start recording pulses, evolution times and gradients applied to the spin system.
+            This will automatically switch to the Spin State panel and the recorded pulse sequence will appear in
+            a separate window. During recording the separate application of chemical shifts and coupling is disabled.
+            Recording is stopped by either clicking "Stop" or by starting acquisition of a spectrum, which ends
+            a pulse sequence. The previous pulse sequence is deleted when recording is started again and unsaved
+            sequences are discarded. The complete sequence can be applied to the spin system by clicking the "Play"
+            button. If the pulse sequence ends with acquisition the display will automatically change to the
+            <a href="spectrum.html">Spectrum</a> panel and a spectrum is displayed. If no FID is recorded the pulse
+            sequence is simply applied to the spin system in its current state (no phase cycling is used) and the
+            resulting spin state will be displayed in the Spin State panel.<br>
+            When holding the ALT key when clicking "Play" the pulse sequence can be executed step-wise. For this only
+            the first row of the phase cycling table is used and t<sub>1</sub> of a 2D sequence is not incremented.
+            Insensitive will switch to the Spin State panel and the pulse sequence is shown in a separate window.
+            The current position in the pulse sequence is shown by a yellow diamond. Further steps can be applied by
+            clicking the button with the footprint icon. The resulting spectrum acquired at the end of step-wise
+            execution is always a 1D spectrum.
+            </p>
+            <p><b>Editing pulse sequences</b></p>
+            <p>
+            Once a pulse sequence has been recorded it can be edited by clicking on pulses, delays or gradients.
+            The element to be edited is then marked in yellow and the actions bar at the top of the window changes
+            to a text field and a menu to select the property to be changed. For pulses the pulse shape, flip angle,
+            pulse duration and strength, the resonance frequency, and whether decoupling sequences are applied on
+            other channels can be changed. For gradients duration and strength can be edited, while for evolution
+            periods the delay time and decoupling sequences can be changed. For the FID the detection channel and
+            decoupling during detection can be edited. The values is changed in the pulse sequence when pressing
+            enter or clicking "OK"
+            </p>
+            <p><b>2D Spectra</b></p>
+            <p>
+            <a href="two_dimensional_spectra.html">2D spectra</a> require a second time variable, which is
+            systematically incremented to acquire arrayed spectra. This variable evolution time can be selected
+            from the menu labelled "t<sub>1</sub> =", which includes a list of all evolutions times
+            &tau;<sub><i>i</i></sub> in the pulse sequence, as well as every pair of delays
+            &tau;<sub><i>i</i></sub> + &tau;<sub><i>j</i></sub> of equal duration before and after a pulse. A 1D
+            spectrum is acquired if t<sub>1</sub> is set to FID, otherwise Insensitive will automatically acquire an
+            arrayed 2D spectrum. The incremented evolution time is marked in blue in the pulse sequence.
+            </p>
+            <p><b>Phase cycling table</b></p>
+            <p>
+            The table below the pulse sequence allows to set the required <a href="phase_cycling.html">phase cycles</a>.
+            Phases can be entered as absolute angles or in modulo 90 notation (0 &equiv; 0&deg;, 1 &equiv; 90&deg;,
+            2 &equiv; 180&deg;, 3 &equiv; 270&deg;). A column for each pulse and the receiver phase of the detector
+            is shown. The number of phase cycles can be entered in the text field in the action bar at the top of
+            the window.<br>
+            <br>
+            By selecting "Coherence Transfer Pathway" from the menu at the right hand side of the action bar the
+            phase cycling table can be changed to a diagram of the <a href="coherence_pathways.html">coherence
+            transfer pathways</a> for the current pulse sequence and spin system. This operation requires
+            (2<i>n</i>+1)<sup><i>p</i></sup> computational cycles for <i>n</i> spins and <i>p</i> pulses and may take
+            a lot of time. The cut off value for the maximum number of computed steps can be set in the pereferences.
+            </p>
+            <p><b>Pure phase spectra</b></p>
+            <p>
+            In order to acquire 2D spectra with pure absorption line shape and <a href="pure_phase_spectra.html">
+            amplitude modulation</a> one of several standard acquisition methods can be selected from the
+            "Modulation" menu: "States", "TPPI", and "States-TPPI". These methods acquire twice the amount of data
+            (four times in the case of States-TPPI), which will be reflected in the acquisition time. Acquiring 2D
+            spectra takes a lot of time. The simulation time can be reduced if computation-intensive options are
+            disabled, e.g. strong coupling or dipolar relaxation, or if the number of data points is reduced.
+            </p>
+            <p><b>Saving pulse sequences</b></p>
+            <p>
+            Pulse Sequences can be opened and saved as Insensitive Pulse Program (*.ipp) files using the "File" menu.
+            By selecting "Pulse Program Code" from the menu at the right hand side of the action bar the recorded
+            pulse sequence can be translated into code for Bruker spectrometers. This is only possible if the
+            pulse sequence closes with spectrum acquisition. The text file can be exported from the "File" menu and
+            is intended purely for educational purposes. It may be incomplete or contain errors. Do not use it on a
+            real spectrometer without checking the code with an experienced and authorised person. The author takes
+            absolutely no warranty for damaged equipment!
+            </p>
+        </div>
+        
+    </body>
+</html>
+        

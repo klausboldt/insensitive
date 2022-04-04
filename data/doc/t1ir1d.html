@@ -1,0 +1,39 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Inversion-Recovery
+</h1>
+</div>
+
+<div>
+<p>
+The Inversion-Recovery experiment can be used to measure <i>T</i><sub>1</sub> times. 
+</p>
+<center><img src="pp_t1ir1d.png" width="273" height="108"></center>
+<p>
+The sequence starts with a 180&deg;-pulse that inverts the populations to <op>-Iz</op>. During the 
+delay time <i>&tau;</i> that follows the spins are allowed to relax until a 90&deg;-pulse creates 
+observable, transverse magnetisation and the <a href="fid.html">FID</a> is acquired. The magnitude and 
+sign of the peaks in the spectrum depend on the longitudinal <a href="relaxation.html">relaxation</a> rate
+of each spin. If <i>&tau;</i> is systematically varied, the peak intensity as a function of <i>&tau;</i> 
+is proportional to the <i>z</i>-magnetisation just before the second pulse.
+</p>
+<center><img src="formula_inversion_recovery.png" height="33" width="187"></center>
+<p>
+The <i>T</i><sub>1</sub> times can be calculated by fitting the curve.
+</p>
+</div>
+
+</body>
+</html>

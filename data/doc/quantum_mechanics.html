@@ -1,0 +1,140 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Quantum mechanics
+</h1>
+</div>
+
+<div>
+<p>
+The discovery that led to the development of quantum mechanics was, that on an atomic scale energy <i>E</i> 
+seems to be exchanged only in multiples of Planck's constant <i>h</i> = 6.626 &middot; 10<sup>-34</sup> J. 
+</p>
+<center><img src="formula_planck_energy.png" height="13" width="61"></center>
+<p>
+This led to the conclusion that a quantum mechanical entity (e.g. an electron, a photon or an atomic 
+nucleus) takes both the form of a wave and a particle, depending on which property is measured 
+and how. The relationship between both aspects is given by the <i>de Broglie</i> relation:
+</p>
+<center><img src="formula_de_broglie.png" height="41" width="46"></center>
+<p>
+Here, <i>&lambda;</i> is the wavelength and <i>p</i> the momentum, which are quantities that correspond 
+to either wave or particle. The physical system is described as a wave function &Psi;, the absolute 
+square of which is proportional to the position probability density.<br>
+Physical properties are replaced by operators, which, applied to the wave function, give the measurable 
+quantity in form of an eigenvalue equation.
+</p>
+<center><img src="formula_eigenvalue_equation.png" height="18" width="76"></center>
+<p>
+In this equation &Psi; is called an eigenfunction of the operator &Omega; and <i>&omega;</i> the 
+eigenvalue that corresponds to the eigenfunction. If a quantum mechanical system is in a state that is 
+described by an eigenfunction, the measured value will be the corresponding eigenvalue. If the system's 
+state is composed of a linear combination of any possible eigenfunctions (called a 
+mixed state or superposition state), the measured value will be one of the possible eigenvalues. The 
+probability with which it is measured is defined by the coefficient to the corresponding eigenfunction 
+in the linear combination. The mean value for the measurement is called the expectation value.
+</p>
+<p>
+From the wave-particle duality follows one of the most fundamental relations in quantum mechanics that 
+is known as the uncertainty principle: It is physically impossible to measure certain pairs of physical 
+properties <i>p</i> and <i>q</i> with infinite precision, e.g. the position <i>x</i> and momentum <i>p</i>. 
+The product of the uncertainties &Delta;<i>x</i> and &Delta;<i>p</i> with which two observables are 
+measured is always larger or equal to <i>h</i>/4&pi;. The unit of the product <i>pq</i> is that of an 
+action or a rotational momentum [Js].
+</p>
+<center><img src="formula_heisenberg.png" height="38" width="88"></center>
+<p>
+This is always the case when the order in which two operators that represent the physical properties are 
+applied to one another is not interchangeable. One says the operators do not commute. The difference 
+between the two possible products gives the reduced Planck constant multiplied by the imaginary unit 
+<i>i</i> and is called the commutator of the two operators:
+</p>
+<center><img src="formula_commutator.png" height="19" width="169"></center>
+<p>
+If one of two non-commuting quantities is precisely known, the measurement of the second quantity will 
+result in completely arbitrary eigenvalues of the second operator.
+</p>
+<p><b>Schr&ouml;dinger equation</b></p>
+<p>
+A special operator is the Hamiltonian, the eigenvalues of which are the energy states of the system. The 
+eigenvalue equation is called the Schr&ouml;dinger equation and takes the time-independent form
+</p>
+<center><img src="formula_schroedinger_equation.png" height="21" width="78"></center>
+<p>
+The Hamiltonian is conveniently written in natural units by dividing the standard Hamiltonian by 
+<i>h</i>/2&pi;. Its eigenvalues are then measured in angular frequency <i>&omega;</i> which is directly 
+measured in the NMR experiment.
+</p>
+<center><img src="formula_schroedinger_natural.png" height="21" width="75"></center>
+<p>
+The time-dependent form is called the <a href="equation_of_motion.html">equation of motion</a>. Every 
+system that is not an eigenstate of the Hamiltonian will evolve over time into one of the eigenstates.
+</p>
+<center><img src="formula_equation_of_motion.png" height="38" width="109"></center>
+<p><b>Matrix mechanics</b></p>
+<p>
+A different approach to describe quantum mechanics can be derived from the fact that the commutator 
+follows the rules of <a href="matrix_multiplication.html">matrix multiplication</a>. Every operator can 
+be constructed as a square, hermitian <a href="matrix.html">matrix</a> with the diagonal elements denoting 
+quantum states of the system and the off-diagonal elements representing transitions between states. If the 
+matrix is in diagonal form the diagonal elements are the operator's eigenvalues. The operators work on vectors 
+in <a href="hilbert_space.html">Hilbert space</a>, an <i>n</i>-dimensional, complex vector space with as 
+many dimensions as possible states in the quantum system. In the eigenvalue equation the operator is 
+applied to the eigenvector, comprising of the coefficients for each eigenstate, and results in the 
+eigenvalue multiplied with the eigenvector.
+</p>
+<center><img src="formula_eigenvector.png" height="44" width="216"></center>
+<p>
+Two operators commute if they have the same set of
+eigenvectors. Two non-commuting operators cannot both have the same set of eigenvectors. One of them is
+therefore bound to change the quantum state when a measurement of both quantities is applied, thus resulting
+in Heisenberg's prediction that both quantities cannot be determined with absolute accuracy.
+</p>
+<p><b>Dirac notation</b></p>
+<p>
+Each state can be unambiguously defined by a set of quantum numbers. These are integer values 
+(half-integer in the case of <a href="spin.html">spin</a>). A quantum mechanical state in Hilbert space 
+depending on the quantum number <i>n</i> can thus be written as
+</p>
+<center><img src="formula_ket.png" height="19" width="107"></center>
+<p>
+called "ket-<i>n</i>". The complex conjugate (and transpose in case of matrix mechanics) value is called 
+"bra-<i>n</i>" and written as
+</p>
+<center><img src="formula_bra.png" height="19" width="107"></center>
+<p>
+The bra-ket already implies normalisation over infinite space.
+</p>
+<center><img src="formula_normalization.png" height="40" width="177"></center>
+<p>
+Matrix elements are in general complex numbers and are represented as bra-operator-ket products
+</p>
+<center><img src="formula_matrix_element.png" height="22" width="119"></center>
+<p>
+in which the ket and bra quantum numbers identify the row and column index of the operator matrix 
+<i>&Omega;</i>.<br>
+<br>
+The ket-bra product forms a square matrix with the matrix element that is defined by the quantum numbers 
+of the ket and the bra being 1 and the rest being 0. 
+</p>
+<center><img src="formula_ket_bra.png" height="39" width="95"></center>
+<p>
+The sum of all ket-bra products of the same quantum numbers is equal to the identity matrix with the 
+dimension of the quantum mechanical system. It plays an important role in the construction of the 
+<a href="density_matrix.html">density operator</a>.
+</p>
+</div>
+
+</body>
+</html>

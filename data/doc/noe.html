@@ -1,0 +1,86 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Nuclear Overhauser Effect
+</h1>
+</div>
+
+<div>
+<p>
+The Nuclear Overhauser Effect or NOE is the enhancement of one spin's signal due to magnetisation transfer
+via cross <a href="relaxation.html">relaxation</a> in a dipolar coupled spin system. In the steady state 
+NOE one transition between two spins in an AX system is selectively saturated by an <a href="pulse.html">
+rf-pulse</a>. This disturbs the equilibrium population, and the system will start to relax to a new 
+equilibrium state. If <a href="dipolar_coupling.html">dipolar couplings</a> are present the populations 
+will be replenished or depleted through double-quantum transitions <i>W</i><sub>2</sub> (small molecules) 
+or zero-quantum transitions <i>W</i><sub>0</sub> (large molecules).
+</p>
+<center><img src="img_noe.png" style="width:100%; max-width:640px;"></center>
+<p>
+The transfer of magnetisation between spins is described by the Solomon equations, which can be derived
+from the relaxation <a href="matrix.html">matrix</a> by <a href="matrix_diagonalization.html">
+transformation</a> into a basis of Zeeman eigenstates. For two-spin system they are given by:
+</p>
+<center><img src="formula_solomon_equation.png" style="width:100%; max-width:403px;"></center>
+<p>
+<i>R</i><sub>auto</sub> is called the auto relaxation constant which defines the leakage of 
+magnetisation to the lattice.
+</p>
+<center><img src="formula_auto_relaxation.png" width="195" height="16"></center>
+<p>
+The cross relaxation constant <i>R</i><sub>cross</sub> expresses the exchange of magnetisation between 
+two dipolar coupled spins.
+</p>
+<center><img src="formula_cross_relaxation.png" width="139" height="16"></center>
+<p>  
+Depending on the size of the molecules (more precisely, the correlation time <i>&tau;<sub>c</sub></i>) the 
+magnetisation of the second spin will be enhanced or reduced. For medium sized molecules the zero- and 
+double-quantum transition probabilities cancel and the NOE is not observable.<br>
+In the fast motion limit the efficiency 
+<i>&epsilon;</i><sub>NOE</sub> = <i>&gamma;</i><sub>I</sub>/2<i>&gamma;</i><sub>S</sub> is given by the 
+quotient of <a href="gyromagnetic_ratio.html">gyromagnetic ratios</a> of the coupled spins.
+</p>
+<center><img src="img_noe_roe.png" style="width:100%; max-width:600px;"></center>
+<p>
+The disappearing NOE for medium-sized molecules can be circumvented by measuring relaxation during the 
+application of a <a href="spin_lock.html">spin lock</a> field. Under these conditions the spins are held 
+constant along the axis of an applied rf-field in the <i>x</i>,<i>y</i>-plane of the 
+<a href="rotating_frame.html">rotating frame</a> and kept from <a href="precession.html">precessing</a>.
+Under the influence of this <a href="decoupling.html">decoupling</a> field the spins relax with 
+a time constant <i>T</i><sub>1<i>&rho;</i></sub> towards equal <a href="populations.html">population</a> 
+of <i>&alpha;</i> and <i>&beta;</i> states and zero magnetisation.
+</p>
+<center><img src="formula_solomon_equation_roe.png" style="width:100%; max-width:330px;"></center>
+<p>
+This is called the rotating frame Overhauser effect (ROE) with the auto and cross relaxation constants
+</p>
+<center><img src="formula_auto_relaxation_roe.png" width="215" height="23"></center>
+<p>
+and
+</p>
+<center><img src="formula_cross_relaxation_roe.png" width="160" height="23"></center>
+<p>
+Since both <i>W</i><sub>0</sub> and <i>W</i><sub>2</sub> have positive coefficients the ROE never 
+disappears for any correlation time.
+</p>
+<p>
+Since the dipolar coupling and hence the cross relaxation is proportional to the distance 
+<i>r</i><sup>-6</sup> the NOE and ROE can be used for measuring distances between spins. This is done in 
+the <a href="noesyph.html">NOESY</a> and <a href="roesyph.html">ROESY</a> experiments. Furthermore, the NOE 
+is employed for signal enhancement during heteronuclear <a href="decoupling.html">decoupling</a>.
+</p>
+</div>
+
+</body>
+</html>

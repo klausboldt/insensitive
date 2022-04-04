@@ -1,0 +1,78 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+Chemical shift
+</h1>
+</div>
+
+<div>
+<p>
+A spin's <a href="larmor_frequency.html">Larmor frequency</a> does not only depend on the external 
+magnetic field <b>B</b><sub>0</sub> but also on the chemical environment that surrounds the spin. High 
+electron density can shield a nucleus from <b>B</b><sub>0</sub>, while electron withdrawing groups 
+deshield a nucleus. The effect is due to circular electron currents that are induced by the external 
+magnetic field and generate a field <b>B</b><sub>induced</sub>. 
+</p>
+<center><img src="formula_cs_field.png" height="17" width="131"></center>
+<p>
+The induced field can both weaken or strengthen the effective field due to diamagnetic and paramagnetic 
+contributions, respectively. The shift in <a href="precession.html">precession</a> frequencies is small 
+but large enough to be measured. This makes NMR such a useful tool for the determination of chemical 
+structures.
+</p>
+<center><img src="formula_chemical_shift.png" height="36" width="98"></center>
+<p>
+To make the value device independent, chemical shift <i>&delta;</i> is usually given in ppm relative to the 
+<a href="spectrometer.html">spectrometer</a> frequency as an offset to a standard. In case of <sup>1</sup>H 
+and <sup>13</sup>C NMR tetramethyl silane (TMS) is used as a standard.
+</p>
+<p>
+The chemical shift depends on the relative orientation of <b>B</b><sub>0</sub> to the molecule of the 
+measured spin. If one defines a principal coordinate system in which the molecule is rigid, independent from 
+its orientation to <b>B</b><sub>0</sub>, the chemical shift tensor <b>&delta;</b> takes a diagonal form.
+</p>
+<center><img src="formula_principal_cs_tensor.png" height="65" width="192"></center>
+<p>
+The chemical shift in isotropic liquids is averaged to the isotropic chemical shift <i>&delta;</i> that is
+equal to the average of the tensor's diagonal elements.
+</p>
+<p><b>Chemical shift anisotropy</b></p>
+<p>
+The orientation dependence or chemical shift anisotropy is expressed by the angle &Theta; between the 
+coordinate of a principal tensor element and <b>B</b><sub>0</sub>.
+</p>
+<center><img src="formula_cs_anisotropy.png" height="22" width="180"></center>
+<p>
+The chemical shift anisotropy plays a role when the spins cannot rotate freely in the magnetic field and 
+the chemical environment varies with the spins' orientation to the <b>B</b><sub>0</sub>-field. Strong 
+effects can be observed in aromatic groups, where the magnetic field induces circular currents in the 
+&pi;-system. Spins in plane with the electron current are strongly deshielded and shifted to lower fields, 
+while spins directly on top or below the ring are shifted to higher fields.
+</p>
+<center><img src="img_chemical_shift.png" height="261" width="300"></center>
+<p>
+In <a href="solid_state_nmr.html">solid state</a> samples this leads to a distribution of chemical shifts 
+that appears as a broad peak shape with steep sides. The principal elements of the chemical shift tensor 
+coincide the low-field and high-field end of the signal (<i>&delta;<sub>XX</sub></i> and 
+<i>&delta;<sub>YY</sub></i>) and the centre maximum (<i>&delta;<sub>ZZ</sub></i>).
+</p>
+<center><img src="img_powder_pattern.png" height="156" width="240"></center>
+<p>
+In axial symmetric, prolate molecules the centre peak coincides with the low field flank of the powder 
+pattern. In axial symmetric, oblate molecules the centre peak coincides with the high field edge.
+</p>
+</div>
+
+</body>
+</html>

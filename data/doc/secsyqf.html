@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+                </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                SECSY
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            The <a href="spin_echo_sandwich.html">spin echo</a> correlation spectroscopy (SECSY) is 
+            a correlation technique similar to the <a href="cosyqf.html">COSY</a>. It was designed to 
+            decrease the spectrum size in the days when storage was precious and is interesting for 
+            historical reasons only. In the <a href="pulse_sequences.html">pulse sequence</a> a second 
+            90&deg; <a href="pulse.html">pulse</a> is centered in the middle of the variable evolution 
+            time <i>t</i><sub>1</sub>. 
+            </p>
+            <center><img src="pp_secsyqf.png" width="292" height="153"></center>
+            <p>
+            The SECSY spectrum can be derived from the 2D <a href="j_resolved.html"><i>J</i>-resolved</a> 
+            spectrum, which employs a <a href="flip_angle.html">flip angle</a> of 180&deg; instead of a 
+            90&deg; for the pulse during the indirect evolution time. This refocuses the 
+            <a href="chemical_shift.html">chemical shift</a> during <i>t</i><sub>1</sub>, so that only 
+            half the <a href="coupling.html">coupling constant</a> &plusmn;1/2 <i>J</i> survives as the 
+            apparent <a href="precession.html">precession</a> frequency. The peaks are therefore split by 
+            the coupling constant along the <i>F</i><sub>1</sub> domain.
+            </p>
+            <p>
+            With a 90&deg; angle for the second pulse the magnetisation components of both coupled spins 
+            are mixed, leading to four possible apparent precession frequencies during <i>t</i><sub>1</sub>: 
+            0 Hz, &plusmn;1/2 <i>J</i>, &plusmn;1/2 &Delta;<i>&Omega;</i>, and 
+            &plusmn;1/2 (&Delta;<i>&Omega;</i> &plusmn; <i>J</i>).
+            </p>
+            <p>
+            The evolution during <i>t</i><sub>2</sub> is analogous to the COSY experiment. Both spectra 
+            display the same information, but in SECSY the autocorrelated peaks appear along the centre of 
+            the <i>F</i><sub>1</sub> axis, as in a <i>J</i>-resolved spectrum. The cross peaks appear at
+            the difference of the chemical shift values of the coupling spins.
+            </p>
+            <center><img src="img_secsy.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            Post acquisition the spectrum can be skewed to transform the horizontal peaks into diagonal 
+            shape. 
+            </p>
+            <center><img src="img_secsy_skewed.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            This creates the same geometry as the COSY spectrum of the same spin system.
+            </p>
+            <center><img src="img_secsy_cosy.png" style="width:100%; max-width:600px;"></center>
+            <p>
+            Due to the compression along the <i>F</i><sub>1</sub> axis the data can be acquired with 
+            two thirds the <a href="spectrum_resolution.html">spectral width</a> of a full COSY spectrum 
+            while retaining the same information. Today digital storage is not a concern and the SECSY 
+            experiment is no longer in use.
+            </p>
+            <!--
+            <p>
+            The <a href="product_operator_formalism.html">product operators</a> just after the second 
+            pulse are the same as for the COSY sequence with the only difference that the evolution time 
+            is only <i>t</i><sub>1</sub>/2.
+            </p>
+            <p>
+            - <op>I1z</op> cos(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub>/2) cos(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2)<br>
+            - <op>2I1xI2y</op> cos(<i>&Omega;</i><sub>1</sub><i>t</i><sub>1</sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2)<br>
+            + <op>I1x</op> sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2)<br>
+            - <op>2I1zI2y</op> sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2)
+            </p>
+            <p>
+            The terms -<op>I1z</op> and -<op>2I1xI2y</op> are unaffected by evolution after the pulse and 
+            will be ignored. The <op>I1x</op> term will evolve for another <i>t</i><sub>1</sub>/2 into:
+            </p>
+            <p>
+            + <op>I1x</op> sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2) cos(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2)<br>
+            + <op>2I1yI2z</op> sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2) cos(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2)<br>
+            + <op>I1y</op> sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2) sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2)<br>
+            - <op>2I1xI2z</op> sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2) sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2)
+            </p>
+            <p>
+            Additionally, there is magnetisation of spin 1 just before the acquisition of the direct time 
+            domain <i>t</i><sub>2</sub> that has been <a href="coherence_transfer.html">transferred</a> 
+            from spin 2 by the second pulse (-<op>I2y</op> &rarr; <op>2I1zI2y</op> &rarr; -<op>2I1yI2z</op>).
+            </p>
+            <p>
+            - <op>2I1yI2z</op> sin(<i>&Omega;</i><sub>2</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2) cos(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2)<br>
+            + <op>I1x</op> sin(<i>&Omega;</i><sub>2</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2) cos(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2)<br>
+            + <op>2I1xI2z</op> sin(<i>&Omega;</i><sub>2</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2) sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) cos(<i>&pi;J</i><sub>12</sub>t<sub><i>1</i></sub>/2)<br>
+            + <op>I1y</op> sin(<i>&Omega;</i><sub>2</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2) sin(<i>&Omega;</i><sub>1</sub>t<sub><i>1</i></sub>/2) sin(<i>&pi;J</i><sub>12</sub><i>t</i><sub>1</sub>/2)
+            </p>
+            -->
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                BIRD and TANGO pulses
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            The BIRD and TANGO blocks are sequences that can be found as part of larger
+            <a href="pulse_sequences.html">pulse sequences</a>. They are designed to distinguish between
+            protons bound to <sup>12</sup>C and <sup>13</sup>C atoms.
+            </p>
+            <p><b>The BIRD pulse</b></p>
+            <p>
+            The BIRD sequence inverts protons attached to <sup>12</sup>C atoms while leaving those bound to
+            NMR-active <sup>13</sup>C nuclei unaffected. This created a 180&deg; phase shift between the different
+            <i>I</i> spins.
+            </p>
+            <center><img src="pp_bird.png" width="241" height="162"></center></p>
+            <p>
+            The <a href="spin_echo_sandwich.html">spin echo</a> in the BIRD pulse refocusses the proton spins
+            that are not bound to an NMR-active nucleus and does not have any impact on the spin state apart
+            from <a href="relaxation.html">relaxation</a>. Any <i>S</i> spin will get inverted by the 180&deg;
+            pulse as well. The terms
+            </p>
+            <p>
+            - <op>I1y</op> cos(<i>&Omega;t<sub>1</sub></i>) cos(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
+            + <op>2I1xI2z</op> cos(<i>&Omega;t<sub>1</sub></i>) sin(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
+            + <op>I1x</op> sin(<i>&Omega;t<sub>1</sub></i>) cos(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
+            + <op>2I1yI2z</op> sin(<i>&Omega;t<sub>1</sub></i>) sin(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)
+            </p>
+            <p>
+            before the refocussing pulse get turned into
+            </p>
+            <p>
+            - <op>I1y</op> cos(<i>&Omega;t<sub>1</sub></i>) cos(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
+            + <op>2I1xI2z</op> cos(<i>&Omega;t<sub>1</sub></i>) sin(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
+            - <op>I1x</op> sin(<i>&Omega;t<sub>1</sub></i>) cos(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)<br>
+            - <op>2I1yI2z</op> sin(<i>&Omega;t<sub>1</sub></i>) sin(<i>&pi;J<sub>12</sub>t<sub>1</sub></i>)
+            </p>
+            <p>
+            leading to a 180&deg; <a href="phase.html">phase shift</a> of any <i>I</i> spins that
+            are coupled to an <i>S</i> spin in comparison to uncoupled <i>I</i> spins.
+            </p>
+            <p><b>The TANGO pulse</b></p>
+            <p>
+            Depending on the phase of the last 135&deg; pulse the TANGO sequence selectively excites protons
+            bound to <sup>12</sup>C atoms (&phi; = 0&deg;) or protons bound to <sup>13</sup>C atoms (&phi; =
+            180&deg;). The carbon spins are inverted.
+            </p>
+            <center><img src="pp_tango.png" width="248" height="162"></center><p>
+            <p>
+            The spin echo in this block does essentially the same as in the BIRD pulse. The difference is that
+            due to the initial 45&deg; pulse there is an angle of 90&deg; between the coupled and uncoupled
+            <i>I</i> spins in the <i>y</i>,<i>z</i>-plane after the second delay, as opposed to 180&deg; for
+            the BIRD pulse. (The phase shift in the <i>x</i>,<i>y</i>-plane is 180&deg; for either block.)
+            The final 135&deg; pulse always turns one of the vectors back towards the <i>z</i>-axis while the
+            other will end up as fully observable <i>y</i>-magnetisation.
+            </p>
+        </div>
+        
+    </body>
+</html>

@@ -1,0 +1,97 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<meta name="viewport" content="width=320">
+</head>
+
+<body>
+
+<!--<div>
+<nb><a href="default.html">NMR Tutorial</a></nb>
+</div>-->
+
+<div>
+<h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+HSQC
+</h1>
+</div>
+
+<div>
+<p>
+The Heteronuclear Single-Quantum Correlation experiment is a two-dimensional method to record single-bond 
+correlation spectra between protons and hetero spins. It is very similar to the <a href="hmqcqf.html">
+HMQC</a> experiment, but is better suited for large molecules due to different <a href="relaxation.html">
+relaxation</a> behaviour. For the HSQC spectrum the magnetisation of the protons is being detected, which 
+results in higher signal strength compared to <a href="hxcoqf.html">heteronuclear COSY</a>.
+</p>
+<center><img src="pp_hsqcph.png" style="width:100%; max-width:478px;"></center>
+<p>
+Set up a two-spin system with one I-spin with a chemical shift of <i>&Omega;</i><sub>1</sub> = -1.8 Hz and
+an S-spin with a chemical shift of <i>&Omega;</i><sub>2</sub> = 2.5 Hz. Set the coupling constant to 
+<i>J</i> = 0.25 Hz.
+</p>
+<p>
+The HSQC experiment starts with a <a href="spin_echo_sandwich.html">spin echo sequence</a> during which 
+only the coupling evolves. After the spin echo the <a href="product_operator_formalism.html">product 
+operators</a> are:
+</p>
+<p>
++ <op>I1y</op> cos(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>)<br>
+- <op>2I1xS2z</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>)<br>
++ <op>S2z</op>
+</p>
+<p>
+A 90&deg;<sub>y</sub>-pulse on the I-spins and a 90&deg;<sub>x</sub>-pulse on the S-spins transfer the 
+<a href="antiphase_magnetization.html">antiphase magnetisation</a> from I to S via a state of 
+<a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a>. The S-spin magnetisation is 
+enhanced by the <a href="ineptnd.html">INEPT transfer</a>.
+</p>
+<p>
++ <op>I1y</op> cos(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>)<br>
+- <op>2I1zS2y</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>)<br>
++ <op>S2y</op>
+</p>
+<p>
+During the evolution time <i>t</i><sub>1</sub> a second spin echo sandwich is applied, this time only on 
+the I-spins to refocus the coupling.
+</p>
+<p>
+- <op>I1y</op> cos(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) cos(<i>&Omega;<sub>1</sub>t<sub>1</sub></i>)<br>
++ <op>I1x</op> cos(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) sin(<i>&Omega;<sub>1</sub>t<sub>1</sub></i>)<br>
++ <op>2I1zS2y</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) cos(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)<br>
+- <op>2I1zS2x</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) sin(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)<br>
++ <op>S2y</op> cos(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)<br>
+- <op>S2x</op> sin(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)
+</p>
+<p>
+A 90&deg;<sub>x</sub>-pulse on both I- and S-spins converts the antiphase magnetisation back to the 
+I-spins. This results in an antiphase term <op>2I1yS2z</op> and the <a href="multi_quantum_coherence.html">
+double-quantum coherence</a> <op>2I1yS2x</op> which will remain unobservable.
+</p>
+<p>
+- <op>I1z</op> cos(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) cos(<i>&Omega;<sub>1</sub>t<sub>1</sub></i>)<br>
++ <op>I1z</op> cos(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) sin(<i>&Omega;<sub>1</sub>t<sub>1</sub></i>)<br>
++ <op>2I1yS2z</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) cos(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)<br>
+- <op>2I1yS2x</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) sin(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)<br>
++ <op>S2z</op> cos(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)<br>
+- <op>S2x</op> sin(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>)
+</p>
+<p>
+For simpler and more intense signals it is useful to <a href="decoupling.html">decouple</a> the spins
+during acquisition of the <a href="fid.html">FID</a>. Since the antiphase signals which carry the 
+correlation information would collapse to zero when decoupled, they must be transformed back to single 
+quantum coherences by another spin echo sandwich. A delay time of 
+<i>&tau;</i><sub>2</sub> = 1/(4<i>J<sub>IS</sub></i>) causes maximal magnetisation on <op>I1y</op>.
+</p>
+<p>
+- <op>2I1yS2z</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) cos(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>) cos(<i>&pi;J<sub>IS</sub>&tau;<sub>2</sub></i>)<br>
++ <op>I1x</op> sin(<i>&pi;J<sub>IS</sub>&tau;<sub>1</sub></i>) cos(<i>&Omega;<sub>2</sub>t<sub>1</sub></i>) sin(<i>&pi;J<sub>IS</sub>&tau;<sub>2</sub></i>)
+</p>
+<p>
+All the signals from uncoupled protons, which overlap with the signals in the HSQC 
+spectrum, must be suppressed using <a href="phase_cycling.html">phase cycling</a>.
+</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,529 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+            <meta name="viewport" content="width=320">
+    </head>
+    
+    <body>
+        
+        <!--<div>
+         <nb><a href="default.html">NMR Tutorial</a></nb>
+         </div>-->
+        
+        <div>
+            <h1><img src="InsensitiveIcon.png" align="top" alt="NMR Tutorial" height="32" width="32"/>
+                Command Line
+            </h1>
+        </div>
+        
+        <div>
+            <p>
+            Insensitive offers a Bruker style command line at the bottom of the main window. A subset from the
+            commands known from the XWin-NMR and TopSpin applications are available for users familiar with these
+            programs to quickly access functions for spectrum acquisition, processing, and system variables.
+            The commands are not case-sensitive. A list of commands is given below, which take no arguments:
+            </p>
+            <p>
+            <table border="1" cellpadding="2">
+                <tr>
+                    <th bgcolor="#DDDDDD"><i>Command</i></th>
+                    <th bgcolor="#DDDDDD"><i>Function</i></th>
+                </tr>
+                <tr>
+                    <td align="left"><b>.co</b></td>
+                    <td align="left">Switch to contour mode for 2D spectra.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.gr</b></td>
+                    <td align="left">Toggle grid.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.im</b></td>
+                    <td align="left">Switch to heat map/pseudo colour/raster image mode for 2D spectra.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.imag</b></td>
+                    <td align="left">Change spectrum display to imaginary data.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.real</b></td>
+                    <td align="left">Change spectrum display to real data.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.sd</b></td>
+                    <td align="left">Shift spectrum baseline down (1D spectra).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.st</b></td>
+                    <td align="left">Switch to stacked/oblique mode for 2D spectra.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.su</b></td>
+                    <td align="left">Shift spectrum baseline up (1D spectra).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>.vr</b></td>
+                    <td align="left">Reset spectrum magnification.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>about</b></td>
+                    <td align="left">Show Insensitive version information.</td>
+                </tr>
+                <!--<tr>
+                    <td align="left"><b>apk</b></td>
+                    <td align="left">Automatic phase correction.</td>
+                 </tr>-->
+                <tr>
+                    <td align="left"><b>del</b></td>
+                    <td align="left">Clear all spectrum data and create empty dataset. (same as "edc" and "new")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>dosy2d</b></td>
+                    <td align="left">Process DOSY dataset (2D).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>dt</b></td>
+                    <td align="left">Calcutale first derivative of 1D spectral data.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>eda</b></td>
+                    <td align="left">Edit acquisition parameters/go to Spin State panel.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>edc</b></td>
+                    <td align="left">Clear all spectrum data and create empty dataset. (same as "new" and "del")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>eddosy</b></td>
+                    <td align="left">Open the dialog box for DOSY processing.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>edstruc</b></td>
+                    <td align="left">Open spin system editor panel.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>edcpul</b></td>
+                    <td align="left">View, edit, and export the current pulse sequence in text mode.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>edpul</b></td>
+                    <td align="left">Start recording a new pulse sequence.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ef</b></td>
+                    <td align="left">Apply exponential window function and Fourier transform 1D data.</td>
+                </tr>
+                <!--<tr>
+                    <td align="left"><b>efp</b></td>
+                    <td align="left">Apply exponential window function, Fourier transform, and phase correct 1D data.</td>
+                 </tr>-->
+                <tr>
+                    <td align="left"><b>ej</b></td>
+                    <td align="left">Reset spin system to standard values.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>em</b></td>
+                    <td align="left">Apply exponential window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>exit</b></td>
+                    <td align="left">Quit Insensitive.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>exportfile</b></td>
+                    <td align="left">Export spectrum data as CSV, DAT, or JCAMP-DX file.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>expt</b></td>
+                    <td align="left">Display acquisition time of the last experiment.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>fid</b></td>
+                    <td align="left">Display 1D or 2D free induction decay.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>fmc</b></td>
+                    <td align="left">Display 1D magnitude spectrum.</td>
+                </tr>
+                <!--<tr>
+                    <td align="left"><b>fp</b></td>
+                    <td align="left">Fourier transform and phase correct 1D data.</td>
+                </tr>-->
+                <tr>
+                    <td align="left"><b>ft</b></td>
+                    <td align="left">Fourier transform 1D data.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>gf</b></td>
+                    <td align="left">Apply gaussian window function and Fourier transform 1D data.</td>
+                </tr>
+                <!--<tr>
+                    <td align="left"><b>gfp</b></td>
+                    <td align="left">Apply gaussian window function, Fourier transform, and phase correct 1D data.</td>
+                </tr>-->
+                <tr>
+                    <td align="left"><b>gm</b></td>
+                    <td align="left">Apply gaussian window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>go</b></td>
+                    <td align="left">Acquire 1D spectrum from current spin state. (Same as "zg" with no pulse sequence loaded)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>halt</b></td>
+                    <td align="left">Stop acquisition. (same as "stop")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>help</b></td>
+                    <td align="left">Open the tutorial window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ij</b></td>
+                    <td align="left">Insert new sample/open spin system.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>int</b></td>
+                    <td align="left">Display or hide integrals in the spectrum.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>new</b></td>
+                    <td align="left">Clear all spectrum data and create empty dataset. (same as "edc" and "del")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>open</b></td>
+                    <td align="left">Open a spin system, pulse sequence, spectrum dataset, etc.</td>
+                </tr>
+                <!--<tr>
+                    <td align="left"><b>pk</b></td>
+                    <td align="left">Perform phase correction. (same as "phase")</td>
+                </tr>-->
+                <tr>
+                    <td align="left"><b>plot</b></td>
+                    <td align="left">Open the spectrum window. (same as "xwinplot")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>pp</b></td>
+                    <td align="left">Automatic peak picking. (same as "ppd")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ppd</b></td>
+                    <td align="left">Automatic peak picking using derivative-based algorithm.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ppg</b></td>
+                    <td align="left">Open pulse sequence panel. (same as "spdisp")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ptilt</b></td>
+                    <td align="left">Tilt spectrum by shifting the data along F2. Useful for J-resolved spectra. (same as "tilt")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ptilt1</b></td>
+                    <td align="left">Tilt spectrum by shifting the data along F1. Useful for SECSY spectra.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>pulprog</b></td>
+                    <td align="left">Open new pulse sequence.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>setres</b></td>
+                    <td align="left">Open preferences window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>sinm</b></td>
+                    <td align="left">Apply sine bell window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>spdisp</b></td>
+                    <td align="left">Open pulse sequence panel. (same as "ppg")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>stdisp</b></td>
+                    <td align="left">Open the pulse shape tool window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>stop</b></td>
+                    <td align="left">Stop acquisition. (Same as "halt")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>sym</b></td>
+                    <td align="left">Symmetrise COSY-type 2D spectrum about the diagonal, set to lowest (most negative) intensity.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>syma</b></td>
+                    <td align="left">Symmetrise phase-sensitive 2D spectrum about the diagonal, set to lowest absolute intensity.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>symj</b></td>
+                    <td align="left">Symmetrise J-resolved 2D spectrum about the horizontal axis through the middle of the spectrum, set to lowest (most negative) intensity.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>tm</b></td>
+                    <td align="left">Apply triangular/trapezoidal window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>tocsv</b></td>
+                    <td align="left">Save spectrum dataset as CSV text file.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>todat</b></td>
+                    <td align="left">Save spectrum dataset as DAT text file. (Same as "toasc")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>tojdx</b></td>
+                    <td align="left">Convert spectrum dataset to JCAMP-DX format (1D spectra only).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>totxt</b></td>
+                    <td align="left">Save spectrum dataset as a Bruker-style text file (imaginary data for 1D spectra only).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>traf</b></td>
+                    <td align="left">Apply Traficante window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>xf1</b></td>
+                    <td align="left">Fourier transform 2D data in F1.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>xfb</b></td>
+                    <td align="left">Fourier transform 2D in both F1 and F2.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>xfbm</b></td>
+                    <td align="left">Calculate magnitude spectrum in both F1 and F2 (2D).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>xwinplot</b></td>
+                    <td align="left">Open the spectrum window. (same as "plot")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>zg</b></td>
+                    <td align="left">Acquire spectrum, 1D or 2D, according to loaded pulse sequence. If no pulse sequence is available start 1D acquisition from current spin state (same as "go").</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>*2</b></td>
+                    <td align="left">Increase the intensity of the spectrum by a factor of 2.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>*8</b></td>
+                    <td align="left">Increase the intensity of the spectrum by a factor of 8.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>/2</b></td>
+                    <td align="left">Decrease the intensity of the spectrum by a factor of 2.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>/8</b></td>
+                    <td align="left">Decrease the intensity of the spectrum by a factor of 8.</td>
+                </tr>
+            </table>
+            </p>
+            <p>
+            A number of system variables can be changed by the following commands. Most take one argument, which
+            unless stated is a floating point value. Variables that are proprietary to Insensitive are marked with
+            and asterisk (*).
+            </p>
+            <p>
+            <table border="1" cellpadding="2">
+                <tr>
+                    <th bgcolor="#DDDDDD"><i>Variable</i></th>
+                    <th bgcolor="#DDDDDD"><i>Function</i></th>
+                </tr>
+                <tr>
+                    <td align="left"><b>D</b></td>
+                    <td align="left">Delay time in s.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>DW</b></td>
+                    <td align="left">Dwell time in s.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>FnMODE</b></td>
+                    <td align="left">Acquisition mode (2D). Possible values are NONE, States, TPPI, and States-TPPI.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>GB</b></td>
+                    <td align="left">Adjust maximum position for a gaussian window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>GPL</b></td>
+                    <td align="left">Gradient pulse power level (gradient strength). (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>GPT</b></td>
+                    <td align="left">Gradient pulse duration. (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>LB</b></td>
+                    <td align="left">Adjust width for a gaussian window function.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>NS</b></td>
+                    <td align="left">Number of scans (number of phase cycles).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>NUC1</b></td>
+                    <td align="left">Type of I-spin nucleus. Possible values are 1H, 13C, 15N, 19F, 29Si, and 31P.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>NUC2</b></td>
+                    <td align="left">Type of S-spin nucleus. Possible values are 1H, 13C, 15N, 19F, 29Si, and 31P.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>O1</b></td>
+                    <td align="left">Transmitter frequency offset (pulse frequency).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>PA</b></td>
+                    <td align="left">Pulse flip angle. (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>PH</b></td>
+                    <td align="left">Transmitter phase shift in degrees.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>PHC0</b></td>
+                    <td align="left">Zero order phase shift in degrees.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>PHC1</b></td>
+                    <td align="left">First order phase shift in degrees.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>PL</b></td>
+                    <td align="left">Pulse power level (pulse strength).</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>PT</b></td>
+                    <td align="left">Pulse duration. (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>SF</b></td>
+                    <td align="left">Spectrometer frequency (simulating a 500 MHz spectrometer). This command takes no argument.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>SI</b></td>
+                    <td align="left">Size of real spectrum. Number of data points be rounded down to the closest power of 2.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>SP</b></td>
+                    <td align="left">Shaped pulse waveform. Possible values are RECT, SQUA, GAUSS, SINC, EBURP1, EBURP2, IBURP1, IBURP2, UBURP, REBURP, and DANTE.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>SW</b></td>
+                    <td align="left">Sweep width. (Same as "SWH")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>SWH</b></td>
+                    <td align="left">Sweep width in Hz. (Same as "SW")</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>T1</b></td>
+                    <td align="left">T1 relaxation time. (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>T2</b></td>
+                    <td align="left">T2 relaxation time. (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>TC</b></td>
+                    <td align="left">Correlation time <i>&tau;</i><sub>c</sub> for dipolar relaxation. (*)</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>TD</b></td>
+                    <td align="left">Size of fid (sum of real and imaginary data points for each dimension). This command takes no argument.</td>
+                </tr>
+            </table>
+            </p>
+            <p>
+            Actions on the spin system can be issued using the following propietary commands in Insensitive or by applying
+            <a href="product_operator_formalism.html">product operators</a> directly, optionally preceded by a
+            numerical factor. The available product operators for pulses are <op>Ix</op>, <op>Iy</op>, <op>Sx</op>,
+            <op>Sy</op>, and derived operators for specific spins in the form of e.g. <op>I1x</op> or <op>S2y</op>.
+            The numerical factor is given in units of 1&deg;. If no coefficient is given, a 90&deg; pulse is assumed.
+            Insensitive also understands "pi" and &pi; = 180&deg;, &pi;/2 = 90&deg;, and &pi;/4 = 45&deg;.
+            For <a href="chemical_shift.html">chemical shift</a> the
+            operators <op>Iz</op> and <op>Sz</op> (and spin-specific operators like e.g. <op>I1z</op>) can be used
+            for the given delay time. <a href="coupling.html">J-coupling</a> is applied using the operators for
+            <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a>, e.g. <op>2I1zI2z</op>,
+            <op>2I2zS3z</op>, <op>4I1zI2zS4z</op>, or <op>8I1zI2zS3zS4z</op>. Alternatively the operators
+            <op>IzIz</op>, <op>SzSz</op>, and <op>IzSz</op> perform coupling for I-spins, S-spins, and all spins,
+            respectively.
+            </p>
+            <p>
+            <table border="1" cellpadding="2">
+                <tr>
+                    <th bgcolor="#DDDDDD"><i>Command</i></th>
+                    <th bgcolor="#DDDDDD"><i>Function</i></th>
+                </tr>
+                <tr>
+                    <td align="left"><b>anim</b></td>
+                    <td align="left">Start animation of precession using current settings. The command takes one optional argument: "stop" or "halt" ends the animation, "start" does the same as no argument.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>animr</b></td>
+                    <td align="left">Start animation of precession, including relaxation.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>animnr</b></td>
+                    <td align="left">Start animation of precession, excluding relaxation.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>cs</b></td>
+                    <td align="left">Chemical shift only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>eq</b></td>
+                    <td align="left">Return to thermal equilibrium.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>jc</b></td>
+                    <td align="left">J-coupling only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>mcdisp</b></td>
+                    <td align="left">Open density matrix composer window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>relax</b></td>
+                    <td align="left">Relaxation only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>prec</b></td>
+                    <td align="left">Free precession performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>precr</b></td>
+                    <td align="left">Free precession including relaxation performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>precnr</b></td>
+                    <td align="left">Free precession without relaxation performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>pfg</b></td>
+                    <td align="left">A pulsed field gradient is issued.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>pulse</b></td>
+                    <td align="left">An rf-pulse is issued. The command optionally takes one or two parameters, flip angle and phase in degrees. The phase may be given as "x", "y", "-x", or "-y".</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ssdisp</b></td>
+                    <td align="left">Open individual spin precession window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>step</b></td>
+                    <td align="left">Execute pulse sequence step-wise.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>undo</b></td>
+                    <td align="left">Undo the last action on the spin system.</td>
+                </tr>
+            </table>
+            </p>
+        </div>
+        
+    </body>
+</html>

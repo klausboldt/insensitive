@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Insensitive
+X-GNOME-FullName=Insensitive
+GenericName=Incredible Nuclear Spin EvolutioN SImulation Tool Intended for Visual Education
+Comment=NMR Spin Dynamics Simulation
+Exec=insensitive
+Icon=com.klausboldt.insensitive
+X-Flatpak=com.klausboldt.insensitive
+Terminal=false
+Type=Application
+Categories=Science;Education;
+StartupNotify=true
+StartupWMClass=insensitive
+NoDisplay=false
+Exec=insensitive
+
