@@ -224,11 +224,11 @@ void insensitive_controller_perform_single_dimension_fourier_transform(Insensiti
                                                                        DSPSplitComplex source,
                                                                        DSPSplitComplex destination,
                                                                        enum SpectrumDimension domain);
-void swap_states_spectra(gboolean realDataSet, DSPSplitComplex *sinModulated, DSPSplitComplex *cosModulated);
+void insensitive_controller_swap_states_spectra(gboolean realDataSet, DSPSplitComplex *sinModulated, DSPSplitComplex *cosModulated);
 void insensitive_controller_fourier_transform_2D_spectrum_along_T2(InsensitiveController *self);
 void insensitive_controller_fourier_transform_2D_spectrum_along_T2_and_T1(InsensitiveController *self);
 void insensitive_controller_absolute_value_spectrum(InsensitiveController *self);
-void insensitive_controller_spectrum_symmetrization(InsensitiveController *self, enum Symmetrization symmetrize, gboolean magnitude);
+void insensitive_controller_spectrum_symmetrization(InsensitiveController *self, enum Symmetrization symmetrize, unsigned int spectrumDomain);
 
 enum WindowFunctionType insensitive_controller_get_windowFunction(InsensitiveController *self);
 void insensitive_controller_set_windowFunction(InsensitiveController *self, enum WindowFunctionType type);

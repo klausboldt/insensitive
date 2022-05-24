@@ -173,7 +173,8 @@ enum ExportFormat {
     CSV,
     DAT,
     JDX,
-    TXT
+    TXT,
+    PNG
 };
 
 

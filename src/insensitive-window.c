@@ -2756,9 +2756,9 @@ void export_pulse_program(GtkMenuItem *menuitem, gpointer user_data)
     gint result, len;
     GtkWidget *dialog, *chooser;
 
-    if(insensitive_pulsesequence_get_number_of_elements(window->controller->pulseSequence) > 0) {
+    if (insensitive_pulsesequence_get_number_of_elements(window->controller->pulseSequence) > 0) {
         pp = insensitive_controller_export_pulseSequence(window->controller, "<no name>");
-        if(pp != NULL) {
+        if (pp != NULL) {
             chooser = gtk_file_chooser_dialog_new("Export Bruker Pulse Program",
                                                   (GtkWindow *)window,
                                                   GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -2766,7 +2766,7 @@ void export_pulse_program(GtkMenuItem *menuitem, gpointer user_data)
                                                   "Export", GTK_RESPONSE_ACCEPT,
                                                   NULL);
             name = insensitive_controller_get_pulseSequence_name(window->controller);
-            if(name != NULL && strlen(name) > 0)
+            if (name != NULL && strlen(name) > 0)
                 gtk_file_chooser_set_current_name((GtkFileChooser *)chooser, name);
             gtk_widget_show_all(chooser);
             result = gtk_dialog_run((GtkDialog *)chooser);
@@ -4916,7 +4916,7 @@ void on_sym_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
         if(shows_2D_spectrum(window)) {
             window->scaling = 1;
             window->shows2DFrequencyDomain = TRUE;
-            insensitive_controller_spectrum_symmetrization(window->controller, SYM, window->domainOf2DSpectrum == 3);
+            insensitive_controller_spectrum_symmetrization(window->controller, SYM, window->domainOf2DSpectrum);
         } else {
             alert_for_invalid_fourier_transform(window, 2);
         }
@@ -4934,7 +4934,7 @@ void on_syma_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
         if(shows_2D_spectrum(window)) {
             window->scaling = 1;
             window->shows2DFrequencyDomain = TRUE;
-            insensitive_controller_spectrum_symmetrization(window->controller, SYMA, window->domainOf2DSpectrum == 3);
+            insensitive_controller_spectrum_symmetrization(window->controller, SYMA, window->domainOf2DSpectrum);
         } else {
             alert_for_invalid_fourier_transform(window, 2);
         }
@@ -4952,7 +4952,7 @@ void on_symj_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
         if(shows_2D_spectrum(window)) {
             window->scaling = 1;
             window->shows2DFrequencyDomain = TRUE;
-            insensitive_controller_spectrum_symmetrization(window->controller, SYMJ, window->domainOf2DSpectrum == 3);
+            insensitive_controller_spectrum_symmetrization(window->controller, SYMJ, window->domainOf2DSpectrum);
         } else {
             alert_for_invalid_fourier_transform(window, 2);
         }
@@ -5613,6 +5613,12 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 		if (insensitive_settings_get_exportFormat(window->controller->settings) == TXT)
 			current_filter = filter;
 		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
+        filter = gtk_file_filter_new();
+		gtk_file_filter_add_pattern(filter, "*.png");
+		gtk_file_filter_set_name(filter, "Portable Network Graphic (PNG)");
+		if (insensitive_settings_get_exportFormat(window->controller->settings) == PNG)
+			current_filter = filter;
+		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
 		gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(chooser), current_filter);
 		gtk_widget_show_all(chooser);
 		result = gtk_dialog_run((GtkDialog *)chooser);
@@ -5628,12 +5634,16 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 				insensitive_settings_set_exportFormat(window->controller->settings, JDX);
 			else if (!strcmp(gtk_file_filter_get_name(filter), "Bruker-style export (TXT)"))
 				insensitive_settings_set_exportFormat(window->controller->settings, TXT);
+            else if (!strcmp(gtk_file_filter_get_name(filter), "Portable Network Graphic (PNG)"))
+				insensitive_settings_set_exportFormat(window->controller->settings, PNG);
 			filename = gtk_file_chooser_get_filename((GtkFileChooser *)chooser);
 			t2DataPoints = insensitive_settings_get_dataPoints(window->controller->settings);
 			data = window->displayedData;
 			csv = g_string_new("");
 			timestep = insensitive_settings_get_dwellTime(window->controller->settings);
-			if (window->twoDimensionalSpectrum) {
+            if (insensitive_settings_get_exportFormat(window->controller->settings) == PNG) {
+                printf("Exporting spectra as image files is not yet implemented.\n");
+            } else if (window->twoDimensionalSpectrum) {
 				t1DataPoints = indirect_datapoints(insensitive_controller_get_detectionMethod(window->controller), t2DataPoints);
 				switch (window->domainOf2DSpectrum) {
 				case FID:

@@ -1697,10 +1697,10 @@ gboolean animationTimerEvent(gpointer user_data)
         if(self->dwellTimeFraction == steps) {
             self->dwellTimeFraction = 0;
         }
-    } else {
-        return FALSE;
-    }
-	return TRUE;
+    } /*else {
+        return G_SOURCE_CONTINUE; //G_SOURCE_REMOVE; <- That would cause animation to be stopped instead of interrupted!
+    }*/
+	return G_SOURCE_CONTINUE;
 }
 
 
@@ -5063,7 +5063,7 @@ void insensitive_controller_perform_single_dimension_fourier_transform(Insensiti
 }
 
 
-void swap_states_spectra(gboolean realDataSet, DSPSplitComplex *sinModulated, DSPSplitComplex *cosModulated)
+void insensitive_controller_swap_states_spectra(gboolean realDataSet, DSPSplitComplex *sinModulated, DSPSplitComplex *cosModulated)
 {
     float *temp;
     if(realDataSet) {
@@ -5093,7 +5093,7 @@ void insensitive_controller_fourier_transform_2D_spectrum_along_T2(InsensitiveCo
     if(self->detectionMethodOfCurrentSpectrum == States) {
         insensitive_controller_perform_single_dimension_fourier_transform(self, self->fidStates, self->spectrum1DStates, F2);
         // Swap spectra to form pure phase 2D spectra:
-        swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
+        insensitive_controller_swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
     }
     t2DataPoints = insensitive_settings_get_dataPoints(self->settings);
     t1DataPoints = indirect_datapoints(self->detectionMethodOfCurrentSpectrum, t2DataPoints);
@@ -5127,7 +5127,7 @@ void insensitive_controller_fourier_transform_2D_spectrum_along_T2_and_T1(Insens
             // Perform FFT on cosine modulated spectra
             insensitive_controller_perform_single_dimension_fourier_transform(self, self->fidStates, self->spectrum1DStates, F2);
             // Swap spectra to form pure phase 2D spectra:
-            swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
+            insensitive_controller_swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
             // Perform 2D FFT
             insensitive_controller_perform_single_dimension_fourier_transform(self, self->spectrum1D, self->spectrum2D, F1);
             // Rearrange spectrum if States-TPPI method was used
@@ -5258,7 +5258,7 @@ void insensitive_controller_absolute_value_spectrum(InsensitiveController *self)
 }
 
 
-void insensitive_controller_spectrum_symmetrization(InsensitiveController *self, enum Symmetrization symmetrize, gboolean magnitude)
+void insensitive_controller_spectrum_symmetrization(InsensitiveController *self, enum Symmetrization symmetrize, unsigned int spectrumDomain)
 {
     unsigned int t1DataPoints, t2DataPoints, totalDataPoints, center;
     unsigned int i, x, y, position1, position2, denominator, indirectSize;
@@ -5270,20 +5270,25 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
     totalDataPoints = t1DataPoints * t2DataPoints;
     set_indirect_dataPoints((InsensitiveWindow *)self->displayController, t1DataPoints);
     if (symmetrize == SYMJ) {
-        if (magnitude) {
-            insensitive_controller_absolute_value_spectrum(self);
+        switch (spectrumDomain) {
+        case 3:
             squareSpectrum.realp = self->spectrumSymmetrized.realp;
             squareSpectrum.imagp = self->spectrumSymmetrized.imagp;
-        } else {
+            break;
+        case 0:
+        case 1:
             insensitive_controller_fourier_transform_2D_spectrum_along_T2_and_T1(self);
+            /* Fallthrough: if no 2D FFT has been performed, do so and proceed with spectrumDomain == 2 */
+        case 2:
             squareSpectrum.realp = self->spectrum2D.realp;
             squareSpectrum.imagp = self->spectrum2D.imagp;
+            break;
         }
-        for (y = 0; y < t1DataPoints / 2; y++)
+        for (y = 0; y < t1DataPoints / 2; y++) {
             for (x = 0; x < t2DataPoints; x++) {
                 // lowest, most negative intensity
                 position1 = y * t2DataPoints + x;
-                position2 = (t1DataPoints - y) * t2DataPoints + x;
+                position2 = (t1DataPoints - (y + 1)) * t2DataPoints + x;
                 if (insensitive_settings_get_showImaginaryPart(self->settings)) {
                     abs1 = squareSpectrum.imagp[position1];
                     abs2 = squareSpectrum.imagp[position2];
@@ -5299,7 +5304,8 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
                     self->spectrumSymmetrized.imagp[position1] = squareSpectrum.imagp[position2];
                 }
             }
-    } else /*if (self->detectionMethodOfCurrentSpectrum == None)*/ {
+        }
+    } else /* symmetrisation along diagonal */ {
         // Create a square spectrum
         center = t2DataPoints / 2;
         symmetricSER.realp = malloc(t2DataPoints * t2DataPoints * sizeof(float));
@@ -5333,7 +5339,7 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
                 // Fourth quadrant of the spectrum
                 else if ((x >= center) && (y >= center))
                     position2 = (y - center) * t2DataPoints + x - center;
-                if (magnitude) {
+                if (spectrumDomain == 3) {
                     squareSpectrum.realp[position2] = hypotf(symmetricSER.realp[position1], symmetricSER.imagp[position1]);
                     squareSpectrum.imagp[position2] = hypotf(symmetricSER.realp[position1], symmetricSER.imagp[position1]);
                 } else {
@@ -5405,7 +5411,6 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
         }
         free(symmetricSER.realp);
         free(symmetricSER.imagp);
-    /* } else { */
     }
     set_complex_spectrum((InsensitiveWindow *)self->displayController,
                          self->spectrumSymmetrized, t2DataPoints, totalDataPoints);
