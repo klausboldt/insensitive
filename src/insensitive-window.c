@@ -490,11 +490,6 @@ void on_open_file_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GtkWidget *chooser;
-    gint result;
-    gchar *filename;
-    xmlDoc *doc = NULL;
-    xmlNode *root, *first_child, *node;
-    gboolean fileTypeRecognised = FALSE;
     GtkFileFilter *filter;
 
     chooser = gtk_file_chooser_dialog_new("Open Insensitive File...",
@@ -521,6 +516,18 @@ void on_open_file_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
     gtk_file_filter_set_name(filter, "Insensitive spectra (IGG)");
     gtk_file_filter_add_pattern(filter, "*.igg");
     gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
+    open_file(chooser, window);
+}
+
+
+void open_file(GtkWidget *chooser, InsensitiveWindow *window)
+{
+    gint result;
+    gchar *filename;
+    xmlDoc *doc = NULL;
+    xmlNode *root, *first_child, *node;
+    gboolean fileTypeRecognised = FALSE;
+
     gtk_widget_show_all(chooser);
     result = gtk_dialog_run((GtkDialog *)chooser);
     if (result == GTK_RESPONSE_ACCEPT) {
@@ -6786,7 +6793,20 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 	}
 	// IJ
 	else if (!g_strcmp0(word[0], "ij") && number_of_words == 1) {
+        GtkWidget *chooser;
+        GtkFileFilter *filter;
 
+        chooser = gtk_file_chooser_dialog_new("Open Spin System...",
+                                              (GtkWindow *)window,
+                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+                                              "Cancel", GTK_RESPONSE_CANCEL,
+                                              "Open", GTK_RESPONSE_ACCEPT,
+                                              NULL);
+        filter = gtk_file_filter_new();
+        gtk_file_filter_set_name(filter, "Insensitive spin system (ISS)");
+        gtk_file_filter_add_pattern(filter, "*.iss");
+        gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
+        open_file(chooser, window);
 	}
 	// INT
 	else if (!g_strcmp0(word[0], "int") && number_of_words == 1) {
@@ -7103,7 +7123,20 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 	}
 	// PULPROG
 	else if (!g_strcmp0(word[0], "pulprog") && number_of_words == 1) {
+        GtkWidget *chooser;
+        GtkFileFilter *filter;
 
+        chooser = gtk_file_chooser_dialog_new("Open Pulse Program...",
+                                              (GtkWindow *)window,
+                                              GTK_FILE_CHOOSER_ACTION_OPEN,
+                                              "Cancel", GTK_RESPONSE_CANCEL,
+                                              "Open", GTK_RESPONSE_ACCEPT,
+                                              NULL);
+        filter = gtk_file_filter_new();
+        gtk_file_filter_set_name(filter, "Insensitive pulse programs (IPP)");
+        gtk_file_filter_add_pattern(filter, "*.ipp");
+        gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
+        open_file(chooser, window);
 	}
 	// PULSE
 	else if (!g_strcmp0(word[0], "pulse") && number_of_words <= 3) {
