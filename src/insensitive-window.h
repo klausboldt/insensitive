@@ -117,8 +117,8 @@ struct _InsensitiveWindow {
     InsensitivePulseShaper *pulse_shaper_window;
     InsensitiveComposer *matrix_composer_window;
 
-    cairo_surface_t             *pulseSequence_surface;
-    GtkDrawingArea      *pulseSequence_drawingarea;
+    cairo_surface_t     *pulseSequence_surface;
+    GtkDrawingArea      *pulseSequence_drawingarea, *pulseSequenceStep_drawingarea;
     GtkNotebook         *bottomDisplay_notebook;
     GtkComboBoxText     *detectionMethod_combobox, *bottomDisplay_combobox;
     GtkComboBoxText     *phaseCycles_combobox, *evolutionTimes_combobox;
@@ -145,6 +145,8 @@ struct _InsensitiveWindow {
     GtkToggleButton     *pp_edit_fid_idetect_radiobutton, *pp_edit_fid_sdetect_radiobutton;
     GtkToggleButton     *pp_edit_fid_idecoupling_checkbox, *pp_edit_fid_sdecoupling_checkbox, *pp_edit_fid_spinlock_checkbox;
     GtkButton           *pp_edit_fid_ok_button;
+    GtkWindow           *step_window;
+    GtkButton           *stepWindow_button;
 
     cairo_surface_t     *spectrum_surface;
     GtkDrawingArea      *spectrum_drawingarea;

@@ -160,6 +160,7 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 
 	/* Pulse sequence */
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseSequence_drawingarea);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseSequenceStep_drawingarea);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, evolutionTimes_combobox);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, detectionMethod_combobox);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, phaseCycles_combobox);
@@ -196,6 +197,8 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_fid_sdecoupling_checkbox);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_fid_spinlock_checkbox);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_fid_ok_button);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, step_window);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, stepWindow_button);
 
 	/* Spectrum*/
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spectrum_drawingarea);
@@ -464,7 +467,8 @@ static void insensitive_window_init(InsensitiveWindow *self)
     free(str);
     set_dataPoints_label(self, 0, insensitive_settings_get_dataPoints(self->controller->settings));
 
-    gtk_widget_hide((GtkWidget *)self->dosyToolBox_window);
+    gtk_widget_hide(GTK_WIDGET(self->step_window));
+    gtk_widget_hide(GTK_WIDGET(self->dosyToolBox_window));
     set_2D_mode(self, FALSE);
     show_spectrumParameters_textview(self, FALSE);
     update_spectrum_parameter_panel(self);
@@ -622,6 +626,8 @@ void quit_insensitive(InsensitiveWindow *window)
     insensitive_settings_save_defaults(window->controller->settings);
     gtk_widget_destroy((GtkWidget *)window->pulse_shaper_window);
     gtk_widget_destroy((GtkWidget *)window->matrix_composer_window);
+    cairo_surface_destroy(window->pulseSequence_surface);
+    cairo_surface_destroy(window->spectrum_surface);
 }
 
 
@@ -937,8 +943,10 @@ void on_equilibrium_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
-	if (insensitive_controller_get_currentStepInPulseSequence(window->controller))
+	if (insensitive_controller_get_currentStepInPulseSequence(window->controller)) {
         insensitive_controller_set_currentStepInPulseSequence(window->controller, 0);
+        gtk_widget_hide(GTK_WIDGET(window->step_window));
+    }
 	insensitive_controller_return_to_thermal_equilibrium(window->controller);
 }
 
@@ -1064,16 +1072,27 @@ void on_undo_button_clicked(GtkButton *button, gpointer user_data)
 
 void on_notebook_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
-	GtkNotebook *notebook = user_data;
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+    InsensitiveController *controller = window->controller;
+	GtkNotebook *notebook = window->mainwindow_notebook;
+    unsigned int page;
 
 	if (!strcmp(gtk_tool_button_get_label(toolbutton), "Spin System\0"))
-		gtk_notebook_set_current_page(notebook, 0);
+        page = 0;
 	else if (!strcmp(gtk_tool_button_get_label(toolbutton), "Spin State\0"))
-		gtk_notebook_set_current_page(notebook, 1);
+		page = 1;
 	else if (!strcmp(gtk_tool_button_get_label(toolbutton), "Pulse Sequence\0"))
-		gtk_notebook_set_current_page(notebook, 2);
+		page = 2;
 	else if (!strcmp(gtk_tool_button_get_label(toolbutton), "Spectrum\0"))
-		gtk_notebook_set_current_page(notebook, 3);
+		page = 3;
+    gtk_notebook_set_current_page(notebook, page);
+
+    if(page == 1 && (insensitive_controller_get_isRecordingPulseSequence(controller)
+                     || insensitive_controller_get_currentStepInPulseSequence(controller) > 0)
+       && !insensitive_controller_get_acquisitionIsInProgress(controller))
+        gtk_widget_show(GTK_WIDGET(window->step_window));
+    else
+        gtk_widget_hide(GTK_WIDGET(window->step_window));
 }
 
 
@@ -2563,10 +2582,19 @@ void update_pulseSequence(InsensitiveWindow *window)
 {
     InsensitiveController *controller = window->controller;
     InsensitivePulseSequence *pulsesequence = controller->pulseSequence;
+    int width, height;
 
     if(!window->acquisitionIsBeingPerformed && GTK_IS_WINDOW(window)) {
+        width = gtk_widget_get_allocated_width(GTK_WIDGET(window->pulseSequence_drawingarea));
+        height = gtk_widget_get_allocated_height(GTK_WIDGET(window->pulseSequence_drawingarea));
+        if (window->pulseSequence_surface != NULL)
+            cairo_surface_destroy(window->pulseSequence_surface);
+        window->pulseSequence_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+        create_pulseSequence_view(window, width, height);
+
         resize_pulseSequence_view(window);
         set_needs_display(window->pulseSequence_drawingarea);
+        set_needs_display(window->pulseSequenceStep_drawingarea);
         if(insensitive_pulsesequence_get_number_of_elements(pulsesequence) > 0)
             enable_pulseSequence_play_button(window, TRUE);
         else
@@ -2580,7 +2608,6 @@ void update_pulseSequence(InsensitiveWindow *window)
         close_coherencePathway(window);
         display_pulseProgram_code(window);
     }
-    //[displayController updateImageOfPulseSequence:[[NSImage alloc] initWithData:[pulseSequenceView dataWithPDFInsideRect:[pulseSequenceView bounds]]]];
 }
 
 
@@ -2611,6 +2638,7 @@ void resize_pulseSequence_view(InsensitiveWindow *window)
     }
     gtk_widget_set_size_request(GTK_WIDGET(window->pulseSequence_drawingarea), (int)width, -1);
     gtk_widget_set_size_request(GTK_WIDGET(window->coherencePathway_drawingarea), (int)width, -1);
+    gtk_widget_set_size_request(GTK_WIDGET(window->pulseSequenceStep_drawingarea), (int)(0.707 * width), -1);
 }
 
 
@@ -2619,6 +2647,7 @@ void redraw_pulseSequence(InsensitiveWindow *window)
     //[self finishEditingSequenceElement:self];
     resize_pulseSequence_view(window);
     set_needs_display(window->pulseSequence_drawingarea);
+    set_needs_display(window->pulseSequenceStep_drawingarea);
 }
 
 
@@ -3137,6 +3166,9 @@ void on_step_button_clicked(GtkButton *button, gpointer user_data)
             start_progress_indicator(window);
             insensitive_controller_interrupt_coherencePathway_calculation(controller);
             set_user_controls_enabled(window, FALSE);
+            gtk_widget_hide(GTK_WIDGET(window->step_window));
+        } else {
+            gtk_widget_show(GTK_WIDGET(window->step_window));
         }
         insensitive_controller_perform_next_step_of_pulseSequence(controller);
         update_pulseSequence(window);
@@ -3538,7 +3570,8 @@ void edit_sequence_element(InsensitiveWindow *window, int index)
                 gtk_toggle_button_set_active(window->pp_edit_fid_idetect_radiobutton, TRUE);
             break;
         }
-        set_needs_display(window->pulseSequence_drawingarea);
+        update_pulseSequence(window);
+        //set_needs_display(window->pulseSequence_drawingarea);
     }
 }
 
@@ -3884,7 +3917,6 @@ void on_editing_pulsesequence_finished(gpointer sender, gpointer user_data)
         }
         set_openedFileState_for_pulseSequence(window, FileOpenedAndChanged, NULL);
         cancel_editing_sequence_element(window);
-        //[self resizePulseSequenceView];
         display_pulseProgram_code(window);
         erase_coherencePathway(window);
         close_coherencePathway(window);
@@ -3898,7 +3930,8 @@ void cancel_editing_sequence_element(InsensitiveWindow *window)
     if(window->editedElement != NULL && gtk_notebook_get_current_page(window->pp_edit_notebook) != 0) {
         gtk_notebook_set_current_page(window->pp_edit_notebook, 0);
         window->editedElement = NULL;
-        set_needs_display(window->pulseSequence_drawingarea);
+        update_pulseSequence(window);
+        //set_needs_display(window->pulseSequence_drawingarea);
     }
 }
 
@@ -4992,7 +5025,7 @@ void on_dosyToolbox_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
-    gtk_widget_show((GtkWidget *)window->dosyToolBox_window);
+    gtk_widget_show(GTK_WIDGET(window->dosyToolBox_window));
 }
 
 
@@ -6107,32 +6140,6 @@ void update_spectrum_parameter_panel(InsensitiveWindow *window)
 	}
 	gtk_text_buffer_set_text(window->spectrumParameters_textbuffer, parameterString->str, parameterString->len);
 }
-
-
-/*- (void)adjustParameterViewToScrollbarSettings:(id)sender
-{
-    // If scrollbars are always visible (OS X version < 10.7 or legacy behaviour) the parameters drawer must
-    // be 15 pixels wider. This workaround does not react to changed settings while the program is running.
-#ifndef __UNIVERSAL_PPC_10_5__
-    if(floor(kCFCoreFoundationVersionNumber) < kCFCoreFoundationVersionNumber10_7 ||
-       [[parameterScrollView verticalScroller] scrollerStyle] == NSScrollerStyleLegacy) {
-#endif
-        NSRect frame = [parameterPanelDrawer frame];
-        parameterScrollbarShift = 15.0;
-        frame.size.width += parameterScrollbarShift;
-        frame.origin.x -= parameterScrollbarShift;
-        [parameterPanelDrawer setFrame:frame];
-#ifndef __UNIVERSAL_PPC_10_5__
-    } else {
-        NSRect frame = [parameterPanelDrawer frame];
-        frame.size.width -= parameterScrollbarShift;
-        frame.origin.x += parameterScrollbarShift;
-        [parameterPanelDrawer setFrame:frame];
-        parameterScrollbarShift = 0.0;
-    }
-#endif
-    [self updateSpectrumParameterPanel];
-}*/
 
 
 void show_spectrumParameters_textview(InsensitiveWindow *window, gboolean value)
@@ -7452,6 +7459,11 @@ void execute_command(GtkEntry *entry, gpointer user_data)
     // TOJDX
 	else if (!g_strcmp0(word[0], "tojdx") && number_of_words == 1) {
         insensitive_settings_set_exportFormat(window->controller->settings, JDX);
+        export_spectrum(NULL, window);
+    }
+    // TOPNG
+	else if (!g_strcmp0(word[0], "topng") && number_of_words == 1) {
+        insensitive_settings_set_exportFormat(window->controller->settings, PNG);
         export_spectrum(NULL, window);
     }
     // TOTXT or TOCSV
@@ -9145,14 +9157,26 @@ void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
     width = gtk_widget_get_allocated_width(widget);
     height = gtk_widget_get_allocated_height(widget);
 
-    if (window->pulseSequence_surface != NULL)
-        cairo_surface_destroy(window->pulseSequence_surface);
-    window->pulseSequence_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-    create_pulseSequence_view(window, width, height);
-
     cairo_set_source_surface(cr, window->pulseSequence_surface, 0, 0);
 	cairo_rectangle(cr, 0, 0, width, height);
 	cairo_fill(cr);
+}
+
+
+void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+{
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+    int width, height;
+
+    width = gtk_widget_get_allocated_width(window->pulseSequence_drawingarea);
+    height = gtk_widget_get_allocated_height(window->pulseSequence_drawingarea);
+
+    if (window->pulseSequence_surface != NULL) {
+        cairo_scale(cr, 0.707, 0.707);
+        cairo_set_source_surface(cr, window->pulseSequence_surface, 0, 0);
+	    cairo_rectangle(cr, 0, 0, width, height);
+	    cairo_fill(cr);
+    }
 }
 
 
