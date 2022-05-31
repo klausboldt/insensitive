@@ -117,6 +117,7 @@ struct _InsensitiveWindow {
     InsensitivePulseShaper *pulse_shaper_window;
     InsensitiveComposer *matrix_composer_window;
 
+    cairo_surface_t             *pulseSequence_surface;
     GtkDrawingArea      *pulseSequence_drawingarea;
     GtkNotebook         *bottomDisplay_notebook;
     GtkComboBoxText     *detectionMethod_combobox, *bottomDisplay_combobox;
@@ -145,6 +146,7 @@ struct _InsensitiveWindow {
     GtkToggleButton     *pp_edit_fid_idecoupling_checkbox, *pp_edit_fid_sdecoupling_checkbox, *pp_edit_fid_spinlock_checkbox;
     GtkButton           *pp_edit_fid_ok_button;
 
+    cairo_surface_t     *spectrum_surface;
     GtkDrawingArea      *spectrum_drawingarea;
     GtkStack            *spectrum_tools_stack;
     GtkWidget           *fourier_stack_child;
@@ -547,6 +549,7 @@ void set_energy_values(InsensitiveWindow *window, float *array, unsigned int lev
                        GPtrArray *names, int *transitions, float *probabilities);
 void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+void create_pulseSequence_view(InsensitiveWindow *window, int width, int height);
 void add_label_for_element(cairo_t *cr, enum SequenceType type, float x, float y, int index);
 int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, float mousePosition);
 void on_pulseSequence_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data);

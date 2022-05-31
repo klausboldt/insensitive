@@ -5649,7 +5649,7 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 			csv = g_string_new("");
 			timestep = insensitive_settings_get_dwellTime(window->controller->settings);
             if (insensitive_settings_get_exportFormat(window->controller->settings) == PNG) {
-                printf("Exporting spectra as image files is not yet implemented.\n");
+                cairo_surface_write_to_png(window->spectrum_surface, filename);
             } else if (window->twoDimensionalSpectrum) {
 				t1DataPoints = indirect_datapoints(insensitive_controller_get_detectionMethod(window->controller), t2DataPoints);
 				switch (window->domainOf2DSpectrum) {
@@ -9139,11 +9139,30 @@ void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 
 void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
-	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
-	InsensitiveController *controller = window->controller;
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+    int width, height;
+
+    width = gtk_widget_get_allocated_width(widget);
+    height = gtk_widget_get_allocated_height(widget);
+
+    if (window->pulseSequence_surface != NULL)
+        cairo_surface_destroy(window->pulseSequence_surface);
+    window->pulseSequence_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    create_pulseSequence_view(window, width, height);
+
+    cairo_set_source_surface(cr, window->pulseSequence_surface, 0, 0);
+	cairo_rectangle(cr, 0, 0, width, height);
+	cairo_fill(cr);
+}
+
+
+void create_pulseSequence_view(InsensitiveWindow *window, int width, int height)
+{
+	cairo_t *cr = cairo_create(window->pulseSequence_surface);
+    InsensitiveController *controller = window->controller;
 	InsensitivePulseSequence *pulseSequence = controller->pulseSequence;
 	SequenceElement *lastElement;
-	float width, height, factor, x;
+	float factor, x;
 	unsigned int i, selected, numberOfElements;
 	int colorPulseSandwich = 0, pulseIndex = 0, delayIndex = 0, gradientIndex = 0;
 	float currentPosition = 60, stepWidth, heightOfRectangle;
@@ -9154,8 +9173,6 @@ void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	gboolean sequenceInvolvesISpins = FALSE, sequenceInvolvesSSpins = FALSE, sequenceInvolvesGradients = FALSE;
 	SequenceElement *currentElement;
 
-	width = gtk_widget_get_allocated_width(widget);
-	height = gtk_widget_get_allocated_height(widget);
 	factor = height / 283; //267;
 	numberOfElements = insensitive_pulsesequence_get_number_of_elements(pulseSequence);
 	lastElement = insensitive_pulsesequence_get_last_element(pulseSequence);
@@ -9949,7 +9966,26 @@ void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_da
 void draw_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
-	unsigned int i, x, y;
+    int width, height;
+
+    width = gtk_widget_get_allocated_width(widget);
+    height = gtk_widget_get_allocated_height(widget);
+
+    if (window->spectrum_surface != NULL)
+        cairo_surface_destroy(window->spectrum_surface);
+    window->spectrum_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    create_graph_view(window, width, height);
+
+    cairo_set_source_surface(cr, window->spectrum_surface, 0, 0);
+	cairo_rectangle(cr, 0, 0, width, height);
+	cairo_fill(cr);
+}
+
+
+void create_graph_view(InsensitiveWindow *window, int surface_width, int surface_height)
+{
+	cairo_t *cr = cairo_create(window->spectrum_surface);
+    unsigned int i, x, y;
     int *peak, pos;
     float stepSizeX, stepSizeY, deflection;
     float current_x, current_y;
@@ -9963,8 +9999,8 @@ void draw_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
     float freq1, freq2;
     float lastValueOutOfRange;
 
-    width = gtk_widget_get_allocated_width(widget);
-	height = gtk_widget_get_allocated_height(widget);
+    width = surface_width;
+    height = surface_height;
     origin_x = 0.0;
     origin_y = 0.0;
 
