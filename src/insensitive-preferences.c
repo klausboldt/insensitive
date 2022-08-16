@@ -44,7 +44,7 @@ struct _InsensitivePreferences
     InsensitiveSettings     *settings;
 
     GtkToggleButton         *playSound_checkbox, *offResonance_checkbox, *allowShiftCoupling_checkbox;
-    GtkToggleButton         *csv_radiobutton, *dat_radiobutton, *jdx_radiobutton, *txt_radiobutton;
+    GtkToggleButton         *csv_radiobutton, *dat_radiobutton, *jdx_radiobutton, *txt_radiobutton, *png_radiobutton;
     GtkScale                *coherence_pathway_scale;
     GtkAdjustment           *coherence_pathway_adjustment;
     GtkLabel                *coherence_pathway_label;
@@ -76,6 +76,7 @@ static void insensitive_preferences_class_init(InsensitivePreferencesClass *klas
     gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, dat_radiobutton);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, jdx_radiobutton);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, txt_radiobutton);
+    gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, png_radiobutton);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, coherence_pathway_scale);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, coherence_pathway_adjustment);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePreferences, coherence_pathway_label);
@@ -157,6 +158,9 @@ void insensitive_preferences_set_controller(InsensitivePreferences *self, gpoint
         break;
     case TXT:
         gtk_toggle_button_set_active(self->txt_radiobutton, TRUE);
+        break;
+    case PNG:
+        gtk_toggle_button_set_active(self->png_radiobutton, TRUE);
     }
     max_calcs = insensitive_settings_get_maxCoherenceCalculations(self->settings);
     gtk_adjustment_set_value(self->coherence_pathway_adjustment, max_calcs);
@@ -211,6 +215,8 @@ void on_export_radiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_d
         insensitive_settings_set_exportFormat(self->settings, JDX);
     else if(radiobutton == self->txt_radiobutton)
         insensitive_settings_set_exportFormat(self->settings, TXT);
+    else if(radiobutton == self->png_radiobutton)
+        insensitive_settings_set_exportFormat(self->settings, PNG);
 }
 
 
