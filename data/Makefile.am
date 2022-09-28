@@ -1,6 +1,7 @@
 ## Process this file with automake to generate a Makefile.in
 SUBDIRS = doc \
 	icons \
+	icons/hicolor/16x16/actions \
 	icons/hicolor/24x24/actions \
 	icons/hicolor/32x32/actions \
 	icons/hicolor/48x48/actions \

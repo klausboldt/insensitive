@@ -38,6 +38,34 @@ foreach icon: [
 endforeach
 
 foreach icon: [
+  'insensitive-acquisition',
+  'insensitive-equilibrium',
+  'insensitive-remove',
+  'insensitive-evolution',
+  'insensitive-reset',
+  'insensitive-add',
+  'insensitive-gradient',
+  'insensitive-undo',
+  'insensitive-chemicalshift',
+  'insensitive-pulse',
+  'insensitive-coupling',
+  'insensitive-relaxation',
+  'insensitive-peakpicking',
+  'insensitive-hideparameters',
+  'insensitive-play',
+  'insensitive-record',
+  'insensitive-stop',
+  'insensitive-step',
+  'insensitive-trash'
+]
+  icon_dir = join_paths('hicolor', '16x16', 'actions')
+  install_data(
+    join_paths(icon_dir, ('@0@.png').format(icon)),
+    install_dir: join_paths(get_option('datadir'), 'icons', icon_dir)
+  )
+endforeach
+
+foreach icon: [
   'insensitive-spinsystem',
   'insensitive-spinstate',
   'insensitive-pulsesequence',
