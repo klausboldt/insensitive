@@ -32,7 +32,7 @@ foreach file: [
   'H-C-C_HXCO.igg',
 ]
   install_data(
-    file, install_dir: join_paths(get_option('datadir'), 'insensitive', 'examples', 'Spectra')
+    file, install_dir: join_paths(get_option('datadir'), 'insensitive', 'examples', 'spectra')
   )
 endforeach
 
@@ -80,7 +80,7 @@ foreach file: [
   'z-COSY.ipp',
 ]
   install_data(
-    file, install_dir: join_paths(get_option('datadir'), 'insensitive', 'examples', 'Pulse Programs')
+    file, install_dir: join_paths(get_option('datadir'), 'insensitive', 'examples', 'pulse_programs')
   )
 endforeach
 
@@ -107,6 +107,6 @@ foreach file: [
   '4_Spins_INADEQUATE.iss',
 ]
   install_data(
-    file, install_dir: join_paths(get_option('datadir'), 'insensitive', 'examples', 'Spin Systems')
+    file, install_dir: join_paths(get_option('datadir'), 'insensitive', 'examples', 'spin_systems')
   )
 endforeach

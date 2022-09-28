@@ -2,7 +2,7 @@
 
 examplesdir = $(datadir)/@PACKAGE@/examples
 
-examples_DATA = 13C_decoupled.ipp \
+examples_files = 13C_decoupled.ipp \
 	13C_inverse_gated_decoupling.ipp \
 	1H.ipp \
 	1_Spin.iss \
@@ -92,9 +92,9 @@ examples_DATA = 13C_decoupled.ipp \
 	TQF-COSY.ipp \
 	z-COSY.ipp
 
-EXTRA_DIST = $(examples_DATA) meson.build
+EXTRA_DIST = $(examples_files) meson.build
 
-install-data-local: $(examples_DATA)
+install-data-local: $(examples_files)
 	$(mkinstalldirs) $(examplesdir) $(examplesdir)/spin_systems $(examplesdir)/pulse_programs $(examplesdir)/spectra
 	for file in $(top_builddir)/examples/*.iss ; do \
 	basefile=`basename "$$file"`; \
