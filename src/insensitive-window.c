@@ -1,6 +1,6 @@
 /* insensitive-window.c
  *
- * Copyright 2021 Klaus Boldt
+ * Copyright 2021-2022 Klaus Boldt
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -1144,7 +1144,7 @@ void on_about_menu_item_activate(GtkMenuItem *item, gpointer *user_data)
 
 	gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(dialog), "Insensitive");
 	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), insensitive_version);
-	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), "© 2011-2021 Klaus Boldt");
+	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), "© 2011-2022 Klaus Boldt");
 	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog), "NMR Simulation Tool");
 	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), "https://sourceforge.net/projects/insensitive/");
 	gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(dialog), "com.klausboldt.insensitive");
