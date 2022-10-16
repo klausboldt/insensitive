@@ -34,9 +34,6 @@
 #include "insensitive-settings.h"
 
 
-extern void set_needs_display(gpointer view);
-
-
 struct _InsensitivePulseShaper
 {
 	GtkWindow           parent_instance;
@@ -166,8 +163,8 @@ void insensitive_pulse_shaper_refreshGraphs(InsensitivePulseShaper *self)
 				self->frequencyDomainData.imagp[i] = pulsePowerSpectrum.imagp[i];
 			}
 		}
-		set_needs_display(self->timeDomain_drawingarea);
-		set_needs_display(self->frequencyDomain_drawingarea);
+		gtk_widget_queue_draw((GtkWidget *)self->timeDomain_drawingarea);
+		gtk_widget_queue_draw((GtkWidget *)self->frequencyDomain_drawingarea);
 	}
 }
 

@@ -537,7 +537,6 @@ void show_command_error(GtkWidget *widget, gpointer window);
 void alert_for_invalid_fourier_transform(InsensitiveWindow *window, unsigned int dimension);
 
 /* Drawing */
-void set_needs_display(gpointer view);
 gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 void draw_vector_to_context(InsensitiveSettings *settings, cairo_t *cr,

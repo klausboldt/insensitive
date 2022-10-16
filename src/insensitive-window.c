@@ -284,6 +284,21 @@ static void insensitive_window_init(InsensitiveWindow *self)
 	self->spin_checkbox_array[2] = self->spin3_checkbox;
 	self->spin_checkbox_array[3] = self->spin4_checkbox;
 
+    self->keywordTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "plum",
+                                                  "foreground", "#A80D91", NULL);
+    self->commentTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "clover",
+                                                  "foreground", "#1F8005", NULL);
+    self->numberTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "blueberry",
+                                                 "foreground", "#1C00Cf", NULL);
+    self->stringTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "cayenne",
+                                                 "foreground", "#C41A17", NULL);
+    self->variableTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "eggplant",
+                                                   "foreground", "#5C2699", NULL);
+    self->preprocessorTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "mocha",
+                                                       "foreground", "#633821", NULL);
+    self->filenameTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "sky",
+                                                   "foreground", "#A6C9ff", NULL);
+
     icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-ispin", 48, GTK_ICON_LOOKUP_FORCE_REGULAR);
     self->ispin_image = cairo_image_surface_create_from_png(gtk_icon_info_get_filename(icon_info));
     g_clear_object(&icon_info);
@@ -472,21 +487,6 @@ static void insensitive_window_init(InsensitiveWindow *self)
     set_2D_mode(self, FALSE);
     show_spectrumParameters_textview(self, FALSE);
     update_spectrum_parameter_panel(self);
-
-    self->keywordTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "plum",
-                                                  "foreground", "#A80D91", NULL);
-    self->commentTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "clover",
-                                                  "foreground", "#1F8005", NULL);
-    self->numberTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "blueberry",
-                                                 "foreground", "#1C00Cf", NULL);
-    self->stringTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "cayenne",
-                                                 "foreground", "#C41A17", NULL);
-    self->variableTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "eggplant",
-                                                   "foreground", "#5C2699", NULL);
-    self->preprocessorTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "mocha",
-                                                       "foreground", "#633821", NULL);
-    self->filenameTag = gtk_text_buffer_create_tag(self->pulseProgram_textbuffer, "sky",
-                                                   "foreground", "#A6C9ff", NULL);
 }
 
 
@@ -875,14 +875,14 @@ void spin_state_was_changed(InsensitiveWindow *window)
 		if (insensitive_settings_get_vectorDiagramType(controller->settings) == VectorDiagramGrapefruit) {
             //[iSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
 		}
-        set_needs_display(window->iSpinVector_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->iSpinVector_drawingarea);
 	} else if (insensitive_spinsystem_get_number_of_ispins(controller->spinSystem) == 0) {
 		gtk_widget_set_visible((GtkWidget *)window->iSpinVector_drawingarea, FALSE);
 		gtk_widget_set_visible((GtkWidget *)window->sSpinVector_drawingarea, TRUE);
 		if (insensitive_settings_get_vectorDiagramType(controller->settings) == VectorDiagramGrapefruit) {
 			//[sSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
 		}
-        set_needs_display(window->sSpinVector_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->sSpinVector_drawingarea);
 	} else {
 		gtk_widget_set_visible((GtkWidget *)window->iSpinVector_drawingarea, TRUE);
 		gtk_widget_set_visible((GtkWidget *)window->sSpinVector_drawingarea, TRUE);
@@ -890,13 +890,13 @@ void spin_state_was_changed(InsensitiveWindow *window)
 			//[iSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
 			//[sSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
 		}
-        set_needs_display(window->iSpinVector_drawingarea);
-        set_needs_display(window->sSpinVector_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->iSpinVector_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->sSpinVector_drawingarea);
 	}
 	free_vector_coordinates(vectorCoordinates);
 
 	// Density matrix
-    set_needs_display(window->matrix_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->matrix_drawingarea);
 
 	// Print product operator string
 	postring = insensitive_controller_get_productOperatorString(controller);
@@ -929,7 +929,7 @@ void spin_number_was_changed(InsensitiveWindow *window)
     gtk_spin_button_set_value(window->spinNumber_spinbutton, insensitive_spinsystem_get_spins(window->controller->spinSystem));
     insensitive_controller_return_to_thermal_equilibrium(window->controller);
     insensitive_controller_calculate_energy_levels(window->controller);
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2267,7 +2267,7 @@ void on_scalarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 
     if(insensitive_spinsystem_get_spins(window->controller->spinSystem) == 2)
         insensitive_controller_set_jCouplingConstant_between_spins(window->controller, 0, 1, atof(gtk_entry_get_text(entry)));
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
     set_openedFileState_for_spinSystem(window, FileOpenedAndChanged, NULL);
 }
 
@@ -2278,7 +2278,7 @@ void on_dipolarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 
     if(insensitive_spinsystem_get_spins(window->controller->spinSystem) == 2)
         insensitive_controller_set_dipolarCouplingConstant_between_spins(window->controller, 0, 1, atof(gtk_entry_get_text(entry)));
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
     set_openedFileState_for_spinSystem(window, FileOpenedAndChanged, NULL);
 }
 
@@ -2289,7 +2289,7 @@ void on_distanceConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 
     if(insensitive_spinsystem_get_spins(window->controller->spinSystem) == 2)
         insensitive_controller_set_distance_between_spins(window->controller, 0, 1, atof(gtk_entry_get_text(entry)));
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
     set_openedFileState_for_spinSystem(window, FileOpenedAndChanged, NULL);
 }
 
@@ -2301,7 +2301,7 @@ void set_larmorFrequency(InsensitiveWindow *window, float value)
 	sprintf(string, "%.2f", value * insensitive_controller_get_unitConversion(window->controller));
 	gtk_entry_set_text(window->chemicalShift_entry, string);
 	g_free(string);
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2312,7 +2312,7 @@ void set_scalarConstant(InsensitiveWindow *window, float value)
 	sprintf(string, "%.2f", value);
 	gtk_entry_set_text(window->scalarConstant_entry, string);
 	g_free(string);
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2323,7 +2323,7 @@ void set_dipolarConstant(InsensitiveWindow *window, float value)
 	sprintf(string, "%.2f", value);
 	gtk_entry_set_text(window->dipolarConstant_entry, string);
 	g_free(string);
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2334,7 +2334,7 @@ void set_distanceConstant(InsensitiveWindow *window, float value)
 	sprintf(string, "%.2f", value);
 	gtk_entry_set_text(window->distanceConstant_entry, string);
 	g_free(string);
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2428,7 +2428,7 @@ void set_chemicalShift_units_to_degreesPerSecond(InsensitiveWindow *window, gboo
         gtk_combo_box_set_active((GtkComboBox *)window->chemicalShift_units_combobox, 0);
         gtk_label_set_text(window->chemicalShift_unit_label, "Hz     ");
     }
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2446,7 +2446,7 @@ void on_displayedConstant_combobox_changed(GtkComboBox *combobox, gpointer user_
     default:
         window->displayedConstant = ScalarConstant;
     }
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -2593,8 +2593,8 @@ void update_pulseSequence(InsensitiveWindow *window)
         create_pulseSequence_view(window, width, height);
 
         resize_pulseSequence_view(window);
-        set_needs_display(window->pulseSequence_drawingarea);
-        set_needs_display(window->pulseSequenceStep_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->pulseSequenceStep_drawingarea);
         if(insensitive_pulsesequence_get_number_of_elements(pulsesequence) > 0)
             enable_pulseSequence_play_button(window, TRUE);
         else
@@ -2646,8 +2646,8 @@ void redraw_pulseSequence(InsensitiveWindow *window)
 {
     //[self finishEditingSequenceElement:self];
     resize_pulseSequence_view(window);
-    set_needs_display(window->pulseSequence_drawingarea);
-    set_needs_display(window->pulseSequenceStep_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->pulseSequenceStep_drawingarea);
 }
 
 
@@ -3571,7 +3571,7 @@ void edit_sequence_element(InsensitiveWindow *window, int index)
             break;
         }
         update_pulseSequence(window);
-        //set_needs_display(window->pulseSequence_drawingarea);
+        //gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
     }
 }
 
@@ -3931,7 +3931,7 @@ void cancel_editing_sequence_element(InsensitiveWindow *window)
         gtk_notebook_set_current_page(window->pp_edit_notebook, 0);
         window->editedElement = NULL;
         update_pulseSequence(window);
-        //set_needs_display(window->pulseSequence_drawingarea);
+        //gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
     }
 }
 
@@ -4261,7 +4261,7 @@ gpointer calculate_coherence_paths(gpointer user_data)
                 }
             }
         }
-    set_needs_display(window->coherencePathway_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->coherencePathway_drawingarea);
 }
 
 
@@ -4495,7 +4495,7 @@ void on_lineWidth_entry_activate(GtkEntry *entry, gpointer user_data)
         window->lineWidth = 0.5;
     else
         window->lineWidth = value;
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
     insensitive_settings_set_spectrumLineWidth(window->controller->settings, window->lineWidth);
 }
 
@@ -4568,7 +4568,7 @@ void on_pivotPoint_adjustment_value_changed(GtkAdjustment *adjustment, gpointer 
             window->drawPivotPoint = TRUE;
         window->removePivotPointTimerNr = g_timeout_add(1000, removePivotPointTimerEvent, window);
     }
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -4578,7 +4578,7 @@ gboolean removePivotPointTimerEvent(gpointer user_data)
 
     window->drawPivotPoint = FALSE;
     window->hideYCursor = FALSE;
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 
     return FALSE;
 }
@@ -4692,7 +4692,7 @@ void set_show_windowFunction(InsensitiveWindow *window, gboolean value)
         window->gaussianWidth = insensitive_controller_get_gaussianWidth(window->controller);
         window->gaussianShift = insensitive_controller_get_gaussianShift(window->controller);
     }
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -4711,7 +4711,7 @@ void on_shiftBaseline_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_
 
     window->shiftedBaseline = gtk_toggle_button_get_active(window->shiftBaseline_checkbox);
     if (!window->twoDimensionalSpectrum)
-        set_needs_display(window->spectrum_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -4733,7 +4733,7 @@ void on_grid_checkbox_toggled(GtkToggleButton *button, gpointer user_data)
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
     insensitive_settings_set_showGrid(window->controller->settings, gtk_toggle_button_get_active(button));
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -4756,7 +4756,7 @@ void on_plotStyle_combobox_changed(GtkComboBox *combobox, gpointer user_data)
        && insensitive_settings_get_showImaginaryPart(window->controller->settings))
         insensitive_controller_set_showImaginaryPart(window->controller, FALSE);
     set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -5086,7 +5086,7 @@ void on_auto_peak_picking_button_clicked(GtkButton *button, gpointer user_data)
         else
             dataset = !insensitive_settings_get_showRealPart(window->controller->settings) ? 1 : 0;
         window->numberOfPeaks = insensitive_controller_determine_peak_list(window->controller, window->peaks, dataset);
-        set_needs_display(window->spectrum_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         update_spectrum_parameter_panel(window);
 
         if(button == window->dosyPickPeaks_button) {
@@ -6333,7 +6333,7 @@ void recalculate_graph(InsensitiveWindow *window)
             }
         }
     }
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -7574,35 +7574,35 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 	else if (!g_strcmp0(word[0], ".vr") && number_of_words == 1) {
         if(insensitive_controller_get_spectrumDataAvailable(window->controller)) {
             reset_magnification(window);
-            set_needs_display(window->spectrum_drawingarea);
+            gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         }
 	}
 	// *2
 	else if (!g_strcmp0(word[0], "*2") && number_of_words == 1) {
         if(insensitive_controller_get_spectrumDataAvailable(window->controller)) {
             set_magnification(window, window->magnification * 2);
-            set_needs_display(window->spectrum_drawingarea);
+            gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         }
 	}
 	// *8
 	else if (!g_strcmp0(word[0], "*8") && number_of_words == 1) {
         if(insensitive_controller_get_spectrumDataAvailable(window->controller)) {
             set_magnification(window, window->magnification * 8);
-            set_needs_display(window->spectrum_drawingarea);
+            gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         }
 	}
 	// /2
 	else if (!g_strcmp0(word[0], "/2") && number_of_words == 1) {
         if(insensitive_controller_get_spectrumDataAvailable(window->controller)) {
             set_magnification(window, window->magnification / 2);
-            set_needs_display(window->spectrum_drawingarea);
+            gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         }
 	}
 	// /8
 	else if (!g_strcmp0(word[0], "/8") && number_of_words == 1) {
         if(insensitive_controller_get_spectrumDataAvailable(window->controller)) {
             set_magnification(window, window->magnification / 8);
-            set_needs_display(window->spectrum_drawingarea);
+            gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         }
 	}
 	// Ix
@@ -8012,13 +8012,6 @@ gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gp
 //   // //////  /////// //  /  // // // //  // //   ///
 //   // //   // //   // // /// // // //  // // //    //
 //////  //   // //   //  /// ///  // //   ////  //////
-
-void set_needs_display(gpointer view)
-{
-    //if (GDK_IS_WINDOW(view))
-        gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)view), NULL, TRUE);
-}
-
 
 gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
@@ -8843,7 +8836,7 @@ void on_spinEditor_drawingarea_button_release_event(GtkWidget *widget, GdkEventB
         }
     }
     window->spinEditor_drawLine = FALSE;
-    set_needs_display(window->spinEditor_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
 }
 
 
@@ -8854,7 +8847,7 @@ void on_spinEditor_drawingarea_motion_notify_event(GtkWidget *widget, GdkEventBu
     if (window->spinEditor_drawLine) {
         window->spinEditor_linkTarget_x = event->x;
         window->spinEditor_linkTarget_y = event->y;
-        set_needs_display(window->spinEditor_drawingarea);
+        gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
     }
 }
 
@@ -8909,7 +8902,7 @@ void set_energy_values(InsensitiveWindow *window, float *array, unsigned int lev
         strcpy(nameCopy, g_ptr_array_index(names, i));
         g_ptr_array_add(window->levelNamesOrig, nameCopy);
     }
-    set_needs_display(window->energyLevel_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->energyLevel_drawingarea);
 }
 
 
@@ -10734,7 +10727,7 @@ gboolean on_spectrum_drawingarea_scroll_event(GtkWidget *widget, GdkEventScroll 
             window->magnification += 0.1 * event->delta_y;
             if (window->magnification < 0.01)
                 window->magnification = 0.01;
-            set_needs_display(window->spectrum_drawingarea);
+            gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
         }
     return FALSE;
 }
@@ -10747,7 +10740,7 @@ void on_spectrum_drawingarea_button_press_event(GtkWidget *widget, GdkEventButto
     window->drawCursor = TRUE;
     window->cursorX = event->x;
     window->cursorY = event->y;
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -10756,7 +10749,7 @@ void on_spectrum_drawingarea_button_release_event(GtkWidget *widget, GdkEventBut
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
     window->drawCursor = FALSE;
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }
 
 
@@ -10766,5 +10759,5 @@ void on_spectrum_drawingarea_motion_notify_event(GtkWidget *widget, GdkEventButt
 
     window->cursorX = event->x;
     window->cursorY = event->y;
-    set_needs_display(window->spectrum_drawingarea);
+    gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
 }

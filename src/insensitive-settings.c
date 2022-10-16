@@ -387,120 +387,6 @@ gchar* insensitive_settings_defaults_as_string(InsensitiveSettings *self)
 }
 
 
-/* - (NSDictionary *)settingsAsNSDictionary */
-/* { */
-/*     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init]; */
-
-/*     [dictionary setValue:[NSNumber numberWithFloat:flipAngle] forKey:@"FlipAngle"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:pulseDuration] forKey:@"PulseDuration"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:pulseStrength] forKey:@"PulseStrength"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:phase] forKey:@"Phase"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:pulseArray] forKey:@"PulseArray"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:pulseLength] forKey:@"PulseLength"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:pulseFrequency] forKey:@"PulseFrequency"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:pulseEnvelope] forKey:@"PulseEnvelope"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:excitationProfile] forKey:@"ExcitationProfile"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:strongCoupling] forKey:@"StrongCoupling"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:dipolarRelaxation] forKey:@"DipolarRelaxation"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:relaxationWithEvolution] forKey:@"RelaxationWithEvolution"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:T1] forKey:@"T1"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:T2] forKey:@"T2"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:correlationTime] forKey:@"CorrelationTime"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:delay] forKey:@"Delay"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:dephasingJitter] forKey:@"DephasingJitter"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:iDecoupling] forKey:@"IDecoupling"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:sDecoupling] forKey:@"SDecoupling"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:spinlock] forKey:@"Spinlock"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:gradientStrength] forKey:@"GradientStrength"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:gradientDuration] forKey:@"GradientDuration"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:diffusion] forKey:@"Diffusion"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:dataPoints] forKey:@"DataPoints"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:dwellTime] forKey:@"DwellTime"]; */
-/*     [dictionary setValue:[NSNumber numberWithFloat:noiseLevel] forKey:@"NoiseLevel"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:zeroFilling] forKey:@"ZeroFilling"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:showRealPart] forKey:@"ShowRealSpectrum"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:showImaginaryPart] forKey:@"ShowImaginarySpectrum"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:showIntegral] forKey:@"Integral"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:detectISpins] forKey:@"DetectISpins"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:detectSSpins] forKey:@"DetectSSpins"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:vectorDisplayType] forKey:@"VectorDisplayType"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:operatorBasis] forKey:@"OperatorBasis"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:color1stOrderCoherences] forKey:@"ColoredMatrix"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:matrixDisplayType] forKey:@"MatrixDisplayType"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:allowShiftAndCouplingButtons] forKey:@"AllowShiftAndCouplingButtons"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:playSoundAfterAcquisition] forKey:@"PlaySound"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:vectorDiagramType] forKey:@"2DVectorMode"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:larmorFrequencyInDegreesPerSeconds] forKey:@"LarmorFrequencyInDegreesPerSeconds"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:showMatrix] forKey:@"ShowMatrix"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:detectionMethod] forKey:@"PurePhaseDetectionMethod"]; */
-/*     [dictionary setValue:[NSNumber numberWithInt:exportFormat] forKey:@"ExportFormat"]; */
-/*     [dictionary setValue:[NSNumber numberWithBool:ignoreOffResonanceEffectsForPulses] forKey:@"OffResonancePulses"]; */
-/*     [dictionary setValue:[NSNumber numberWithInteger:gyroCodeI] forKey:@"GyroICode"]; */
-/*     [dictionary setValue:[NSNumber numberWithInteger:gyroCodeS] forKey:@"GyroSCode"]; */
-
-/*     return dictionary; */
-/* } */
-
-
-/* - (void)loadSettingsFromNSDictionary:(NSDictionary *)dictionary */
-/* { */
-/*     [self setFlipAngle:[[dictionary valueForKey:@"FlipAngle"] floatValue]]; */
-/*     // Pulse length and duration may not be saved in old versions of spinlecture file format */
-/*     // Fall back to values that ensure hard pulses! */
-/*     if([dictionary objectForKey:@"PulseDuration"] == nil) */
-/*         [self setPulseDuration:0.1]; */
-/*     else */
-/*         [self setPulseDuration:[[dictionary valueForKey:@"PulseDuration"] floatValue]]; */
-/*     if([dictionary objectForKey:@"PulseStrength"] == nil) */
-/*         [self setPulseStrength:[self flipAngle] / 36]; */
-/*     else */
-/*         [self setPulseStrength:[[dictionary valueForKey:@"PulseStrength"] floatValue]]; */
-/*     [self setPhase:[[dictionary valueForKey:@"Phase"] floatValue]]; */
-/*     [self setPulseArray:[[dictionary valueForKey:@"PulseArray"] intValue]]; */
-/*     //[self setPulseLength:[[dictionary valueForKey:@"PulseLength"] floatValue]]; */
-/*     [self setPulseFrequency:[[dictionary valueForKey:@"PulseFrequency"] floatValue]]; */
-/*     [self setPulseEnvelope:[[dictionary valueForKey:@"PulseEnvelope"] intValue]]; */
-/*     [self setExcitationProfile:(enum ExcitationProfile)[[dictionary valueForKey:@"ExcitationProfile"] intValue]]; */
-/*     [self setStrongCoupling:[[dictionary valueForKey:@"StrongCoupling"] boolValue]]; */
-/*     [self setDipolarRelaxation:[[dictionary valueForKey:@"DipolarRelaxation"] boolValue]]; */
-/*     [self setRelaxationWithEvolution:[[dictionary valueForKey:@"RelaxationWithEvolution"] boolValue]]; */
-/*     [self setT1:[[dictionary valueForKey:@"T1"] floatValue]]; */
-/*     [self setT2:[[dictionary valueForKey:@"T2"] floatValue]]; */
-/*     [self setCorrelationTime:[[dictionary valueForKey:@"CorrelationTime"] floatValue]]; */
-/*     [self setDelay:[[dictionary valueForKey:@"Delay"] floatValue]]; */
-/*     [self setDephasingJitter:[[dictionary valueForKey:@"DephasingJitter"] boolValue]]; */
-/*     [self setSpinlock:[[dictionary valueForKey:@"Spinlock"] boolValue]]; */
-/*     [self setIDecoupling:[[dictionary valueForKey:@"IDecoupling"] boolValue]]; */
-/*     [self setSDecoupling:[[dictionary valueForKey:@"SDecoupling"] boolValue]]; */
-/*     [self setGradientStrength:[[dictionary valueForKey:@"GradientStrength"] floatValue]]; */
-/*     [self setGradientDuration:[[dictionary valueForKey:@"GradientDuration"] floatValue]]; */
-/*     [self setDiffusion:[[dictionary valueForKey:@"Diffusion"] boolValue]]; */
-/*     [self setDataPoints:[[dictionary valueForKey:@"DataPoints"] intValue]]; */
-/*     [self setDwellTime:[[dictionary valueForKey:@"DwellTime"] floatValue]]; */
-/*     [self setNoiseLevel:[[dictionary valueForKey:@"NoiseLevel"] floatValue]]; */
-/*     [self setZeroFilling:[[dictionary valueForKey:@"ZeroFilling"] boolValue]]; */
-/*     [self setShowRealPart:[[dictionary valueForKey:@"ShowRealSpectrum"] boolValue]]; */
-/*     [self setShowImaginaryPart:[[dictionary valueForKey:@"ShowImaginarySpectrum"] boolValue]]; */
-/*     [self setShowIntegral:[[dictionary valueForKey:@"Integral"] boolValue]]; */
-/*     [self setDetectISpins:[[dictionary valueForKey:@"DetectISpins"] boolValue]]; */
-/*     [self setDetectSSpins:[[dictionary valueForKey:@"DetectSSpins"] boolValue]]; */
-/*     [self setVectorDisplayType:[[dictionary valueForKey:@"VectorDisplayType"] intValue]]; */
-/*     [self setOperatorBasis:[[dictionary valueForKey:@"OperatorBasis"] intValue]]; */
-/*     [self setColor1stOrderCoherences:[[dictionary valueForKey:@"ColoredMatrix"] boolValue]]; */
-/*     [self setMatrixDisplayType:[[dictionary valueForKey:@"MatrixDisplayType"] intValue]]; */
-/*     [self setAllowShiftAndCouplingButtons:[[dictionary valueForKey:@"AllowShiftAndCouplingButtons"] boolValue]]; */
-/*     [self setPlaySoundAfterAcquisition:[[dictionary valueForKey:@"PlaySound"] boolValue]]; */
-/*     [self setVectorDiagramType:[[dictionary valueForKey:@"2DVectorMode"] intValue]]; */
-/*     [self setLarmorFrequencyInDegreesPerSeconds:[[dictionary valueForKey:@"LarmorFrequencyInDegreesPerSeconds"] boolValue]]; */
-/*     [self setShowMatrix:[[dictionary valueForKey:@"ShowMatrix"] boolValue]]; */
-/*     [self setDetectionMethod:[[dictionary valueForKey:@"PurePhaseDetectionMethod"] intValue]]; */
-/*     [self setExportFormat:[[dictionary valueForKey:@"ExportFormat"] intValue]]; */
-/*     [self setIgnoreOffResonanceEffectsForPulses:[[dictionary valueForKey:@"OffResonancePulses"] boolValue]]; */
-/*     [self setGyroCodeI:[[dictionary valueForKey:@"GyroICode"] integerValue]]; */
-/*     [self setGyroCodeS:[[dictionary valueForKey:@"GyroSCode"] integerValue]]; */
-/* } */
-
-
 void insensitive_settings_save_spinsystem(InsensitiveSettings *self, gpointer spinsystem)
 {
     InsensitiveSpinSystem *ss = (InsensitiveSpinSystem *)spinsystem;
@@ -528,15 +414,15 @@ void insensitive_settings_load_spinsystem(InsensitiveSettings *self, gpointer sp
     GError *err = NULL;
 
 	spins = g_key_file_get_integer(self->defaultSettings, ss_group, "Spins", &err);
-    if (err == NULL) {
+    if (err == NULL)
 		insensitive_spinsystem_set_spins(ss, spins);
+    else
         g_clear_error(&err);
-	}
     spinTypeArray = g_key_file_get_integer(self->defaultSettings, ss_group, "SpinTypeArray", &err);
-	if (err == NULL) {
+	if (err == NULL)
 		insensitive_spinsystem_set_spintypearray(ss, spinTypeArray);
+    else
 		g_clear_error(&err);
-	}
     couplingMatrix_double = g_key_file_get_double_list(self->defaultSettings, ss_group, "CouplingMatrix", &size, &err);
     if (err == NULL && size > 0) {
         couplingMatrix = malloc(size * sizeof(float));
@@ -544,8 +430,8 @@ void insensitive_settings_load_spinsystem(InsensitiveSettings *self, gpointer sp
             couplingMatrix[i] = couplingMatrix_double[i];
         insensitive_spinsystem_substitute_couplingmatrix(ss, couplingMatrix);
         free(couplingMatrix);
+    } else
         g_clear_error(&err);
-    }
 }
 
 
@@ -609,32 +495,32 @@ void insensitive_settings_load_pulsesequence(InsensitiveSettings *self, gpointer
             g_ptr_array_add(pp, element);
         }
         insensitive_controller_substitute_pulseSequence(controller, pp);
-        g_clear_error(&err);
         phaseCycles = g_key_file_get_integer(self->defaultSettings, pp_group, "PhaseCycles", &err);
         if (err == NULL) {
-		    g_clear_error(&err);
             phase_list = g_key_file_get_string_list(self->defaultSettings, pp_group, "PhaseCyclingArray", &size, &err);
             if (err == NULL) {
-                g_clear_error(&err);
                 phaseCyclingArray = g_ptr_array_new();
                 for (i = 0; i < size; i++)
                     g_ptr_array_add(phaseCyclingArray, phase_list[i]);
                 insensitive_controller_substitute_phaseCyclingArray(controller, phaseCyclingArray, phaseCycles);
-            }
+            } else {
+				g_clear_error(&err);
+			}
+	    } else {
+	        g_clear_error(&err);
 	    }
         variableEvolutionTime = g_key_file_get_integer(self->defaultSettings, pp_group, "VariableEvolutionTime", &err);
-        if (err == NULL) {
-		    g_clear_error(&err);
+        if (err == NULL)
             insensitive_controller_set_variableEvolutionTime(controller, variableEvolutionTime);
-        }
-        name = g_key_file_get_string(self->defaultSettings, pp_group, "Name", &err);
-        if (err == NULL) {
+        else
 		    g_clear_error(&err);
+        name = g_key_file_get_string(self->defaultSettings, pp_group, "Name", &err);
+        if (err == NULL)
             insensitive_controller_set_name_for_pulseSequence(controller, name);
-        }
+        else
+		    g_clear_error(&err);
         detectionMethod = g_key_file_get_integer(self->defaultSettings, pp_group, "PurePhaseDetectionMethod", &err);
         if (err == NULL) {
-		    g_clear_error(&err);
             insensitive_controller_set_detectionMethod(controller, detectionMethod);
             if (insensitive_controller_get_variableEvolutionTime(controller) == 0) {
                 gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, FALSE);
@@ -643,12 +529,16 @@ void insensitive_settings_load_pulsesequence(InsensitiveSettings *self, gpointer
                 gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, TRUE);
                 insensitive_controller_set_detectionMethod(window->controller, detectionMethod);
             }
-        }
-        set_recording_button_clicked(window, FALSE);
-        erase_coherencePathway(window);
-        close_coherencePathway(window);
-        update_pulseSequence(window);
+        } else {
+			g_clear_error(&err);
+		}
+    } else {
+        g_clear_error(&err);
     }
+    set_recording_button_clicked(window, FALSE);
+    erase_coherencePathway(window);
+    close_coherencePathway(window);
+    update_pulseSequence(window);
 }
 
 
@@ -885,7 +775,7 @@ DSPSplitComplex insensitive_settings_get_pulseShape(InsensitiveSettings *self)
 
 void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 {
-	int i, j, n, centre;
+	int i, n, centre;
 	float A, B, factor, frequency, width;
 
 	switch (self->pulseEnvelope) {
