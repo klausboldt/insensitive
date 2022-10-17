@@ -8428,7 +8428,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	}
 	// Axis labels
 	cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
-	cairo_select_font_face(cr, "Arial", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+	cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 	cairo_set_font_size(cr, 20);
 	if (showXYPlane) {
 		cairo_move_to(cr, origin_x - 0.352 * width - 20, origin_y + 0.352 * height + 15);
@@ -8701,6 +8701,8 @@ gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data
 			    cairo_stroke(cr);
                 cairo_set_source_rgba(cr, 0.25, 0.25, 0.25, 1.0);
                 cairo_select_font_face(cr, "Lucida Grande", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+			    if (!cairo_get_font_face(cr))
+				    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
                 cairo_set_font_size(cr, 10);
                 sprintf(label, "%.2f %s", constant, unit);
                 cairo_text_extents (cr, label, &extents);
@@ -8729,6 +8731,8 @@ gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data
     	cairo_paint(cr);
         cairo_set_source_rgba(cr, 0.25, 0.25, 0.25, 1.0);
         cairo_select_font_face(cr, "Lucida Grande", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+	    if (!cairo_get_font_face(cr))
+			  cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
         cairo_set_font_size(cr, 12);
         sprintf(label, "Spin %d", n + 1);
         cairo_text_extents (cr, label, &extents);
@@ -9262,6 +9266,8 @@ void create_pulseSequence_view(InsensitiveWindow *window, int width, int height)
 	// Rescale the labels (I, S, Gz)
 	cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
 	cairo_select_font_face(cr, "Verdana", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+    if (!cairo_get_font_face(cr))
+	    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 	cairo_set_font_size(cr, 24 * factor);
 	if (sequenceInvolvesISpins) {
 		cairo_move_to(cr, 22 * factor, window->I_line - 10 * factor);
@@ -9858,6 +9864,8 @@ void add_label_for_element(cairo_t *cr, enum SequenceType type, float x, float y
 
 	cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
 	cairo_select_font_face(cr, "LucidaGrande", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    if (!cairo_get_font_face(cr))
+		cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 	cairo_set_font_size(cr, 12);
 	cairo_text_extents(cr, string_with_indices, &extents);
 	cairo_move_to(cr, x - (extents.width + extents.x_bearing) / 2, y);

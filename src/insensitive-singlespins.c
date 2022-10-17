@@ -154,7 +154,7 @@ void on_B0_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
         if(!gtk_toggle_button_get_active(self->B1_checkbox))
             self->fieldAxis = NoField;
     }
-    gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)self->single_spins_drawingarea), NULL, TRUE);
+    gtk_widget_queue_draw((GtkWidget *)self->single_spins_drawingarea);
 }
 
 
@@ -173,7 +173,7 @@ void on_B1_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
         if(!gtk_toggle_button_get_active(self->B0_checkbox))
             self->fieldAxis = NoField;
     }
-    gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)self->single_spins_drawingarea), NULL, TRUE);
+    gtk_widget_queue_draw((GtkWidget *)self->single_spins_drawingarea);
 }
 
 
@@ -198,7 +198,7 @@ void on_rotatingFrame_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_
             self->fieldAxis = NoField;
         }
     }
-    gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)self->single_spins_drawingarea), NULL, TRUE);
+    gtk_widget_queue_draw((GtkWidget *)self->single_spins_drawingarea);
 }
 
 
@@ -291,7 +291,7 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
             }
         }
     }
-    gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)self->single_spins_drawingarea), NULL, TRUE);
+    gtk_widget_queue_draw((GtkWidget *)self->single_spins_drawingarea);
 
     return self->timer_is_running;
 }
@@ -315,7 +315,7 @@ void on_numberOfSpins_adjustment_value_changed(GtkAdjustment *adjustment, gpoint
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 
     self->numberOfSpins = (unsigned int)gtk_adjustment_get_value(adjustment);
-    gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)self->single_spins_drawingarea), NULL, TRUE);
+    gtk_widget_queue_draw((GtkWidget *)self->single_spins_drawingarea);
 }
 
 
@@ -350,7 +350,7 @@ void create_zeeman_state(GtkButton *button, gpointer user_data)
         self->phase = X_RF_CONE_ROTATION;
     else
         self->phase = 0.0;
-    gdk_window_invalidate_rect(gtk_widget_get_window((GtkWidget *)self->single_spins_drawingarea), NULL, TRUE);
+    gtk_widget_queue_draw((GtkWidget *)self->single_spins_drawingarea);
 }
 
 

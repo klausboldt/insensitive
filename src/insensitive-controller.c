@@ -182,7 +182,6 @@ static void insensitive_controller_init(InsensitiveController *self)
 	self->dosyParameters = NULL;
 	self->windowFunction = WFNone;
 
-
 	self->selectableDelayNames = calloc(4 * 6, sizeof(gchar *));
 	self->selectableDelayValues = malloc(4 * 6 * sizeof(float));
 

@@ -146,204 +146,237 @@ void insensitive_settings_load_defaults(InsensitiveSettings *self)
 		self->flipAngle = standardFlipAngle;
 		g_clear_error(&err);
 	}
-
 	self->pulseDuration = g_key_file_get_double(keyfile, group, "PulseDuration", &err);
 	if (err != NULL) {
 		self->pulseDuration = standardPulseDuration;
 		g_clear_error(&err);
 	}
-
 	self->pulseStrength = g_key_file_get_double(keyfile, group, "PulseStrength", &err);
 	if (err != NULL) {
 		self->pulseStrength = standardPulseStrength;
 		g_clear_error(&err);
 	}
-
 	self->phase = g_key_file_get_double(keyfile, group, "Phase", &err);
 	if (err != NULL) {
 		self->phase = standardPhase;
 		g_clear_error(&err);
 	}
-
 	self->pulseArray = g_key_file_get_integer(keyfile, group, "PulseArray", &err);
 	if (err != NULL) {
 		self->pulseArray = standardPulseArray;
 		g_clear_error(&err);
 	}
-
 	self->pulseLength = g_key_file_get_double(keyfile, group, "PulseLength", &err);
 	if (err != NULL) {
 		self->pulseLength = standardPulseLength;
 		g_clear_error(&err);
 	}
-
 	self->pulseFrequency = g_key_file_get_double(keyfile, group, "PulseFrequency", &err);
 	if (err != NULL) {
 		self->pulseFrequency = standardPulseFrequency;
 		g_clear_error(&err);
 	}
-
 	self->pulseEnvelope = (enum PulseEnvelope)g_key_file_get_integer(keyfile, group, "PulseEnvelope", &err);
 	if (err != NULL) {
 		self->pulseEnvelope = Rectangle;
 		g_clear_error(&err);
 	}
-
 	self->excitationProfile = (enum ExcitationProfile)g_key_file_get_double(keyfile, group, "ExcitationProfile", &err);
 	if (err != NULL) {
 		self->excitationProfile = Mxy_Phase;
 		g_clear_error(&err);
 	}
-
 	self->pulsePowerSpectrum = malloc(0.5 * pulsePowerSpectrumResolution * sizeof(float));
 	self->pulseShape.realp = malloc(pulseShapeResolution * sizeof(float));
 	self->pulseShape.imagp = malloc(pulseShapeResolution * sizeof(float));
 	insensitive_settings_create_pulseShape(self);
-
 	self->strongCoupling = g_key_file_get_boolean(keyfile, group, "StrongCoupling", NULL);
+	if (err != NULL) {
+		self->strongCoupling = FALSE;
+		g_clear_error(&err);
+	}
 	self->dipolarRelaxation = g_key_file_get_boolean(keyfile, group, "DipolarRelaxation", NULL);
+	if (err != NULL) {
+		self->dipolarRelaxation = FALSE;
+		g_clear_error(&err);
+	}
 	self->animates = FALSE;
 	self->relaxationWithEvolution = g_key_file_get_boolean(keyfile, group, "RelaxationWithEvolution", NULL);
-
+	if (err != NULL) {
+		self->relaxationWithEvolution = FALSE;
+		g_clear_error(&err);
+	}
 	self->T1 = g_key_file_get_double(keyfile, group, "T1", &err);
 	if (err != NULL) {
 		self->T1 = standardT1;
 		g_clear_error(&err);
 	}
-
 	self->T2 = g_key_file_get_double(keyfile, group, "T2", &err);
 	if (err != NULL) {
 		self->T2 = standardT2;
 		g_clear_error(&err);
 	}
-
 	self->correlationTime = g_key_file_get_double(keyfile, group, "CorrelationTime", &err);
 	if (err != NULL) {
 		self->correlationTime = standardCorrelationTime;
 		g_clear_error(&err);
 	}
-
 	self->delay = g_key_file_get_double(keyfile, group, "Delay", &err);
 	if (err != NULL) {
 		self->delay = standardDelay;
 		g_clear_error(&err);
 	}
-
 	self->dephasingJitter = g_key_file_get_boolean(keyfile, group, "DephasingJitter", NULL);
+	if (err != NULL) {
+		self->dephasingJitter = FALSE;
+		g_clear_error(&err);
+	}
 	self->iDecoupling = g_key_file_get_boolean(keyfile, group, "IDecoupling", NULL);
+	if (err != NULL) {
+		self->iDecoupling = FALSE;
+		g_clear_error(&err);
+	}
 	self->sDecoupling = g_key_file_get_boolean(keyfile, group, "SDecoupling", NULL);
+	if (err != NULL) {
+		self->sDecoupling = FALSE;
+		g_clear_error(&err);
+	}
 	self->spinlock = g_key_file_get_boolean(keyfile, group, "Spinlock", NULL);
-
+	if (err != NULL) {
+		self->spinlock = FALSE;
+		g_clear_error(&err);
+	}
 	self->gradientStrength = g_key_file_get_double(keyfile, group, "GradientStrength", &err);
 	if (err != NULL) {
 		self->gradientStrength = standardGradientStrength;
 		g_clear_error(&err);
 	}
-
 	self->gradientDuration = g_key_file_get_double(keyfile, group, "GradientDuration", &err);
 	if (err != NULL) {
 		self->gradientDuration = standardGradientDuration;
 		g_clear_error(&err);
 	}
-
 	self->diffusion = g_key_file_get_boolean(keyfile, group, "Diffusion", NULL);
-
+	if (err != NULL) {
+		self->diffusion = FALSE;
+		g_clear_error(&err);
+	}
 	self->dataPoints = g_key_file_get_double(keyfile, group, "DataPoints", &err);
 	if (err != NULL) {
 		self->dataPoints = standardDataPoints;
 		g_clear_error(&err);
 	}
-
 	self->dwellTime = g_key_file_get_double(keyfile, group, "DwellTime", &err);
 	if (err != NULL) {
 		self->dwellTime = standardDwellTime;
 		g_clear_error(&err);
 	}
-
 	self->noiseLevel = g_key_file_get_double(keyfile, group, "NoiseLevel", &err);
 	if (err != NULL) {
 		self->noiseLevel = standardNoiseLevel;
 		g_clear_error(&err);
 	}
-
 	self->zeroFilling = g_key_file_get_boolean(keyfile, group, "ZeroFilling", NULL);
-
+	if (err != NULL) {
+		self->zeroFilling = FALSE;
+		g_clear_error(&err);
+	}
 	self->showRealPart = g_key_file_get_boolean(keyfile, group, "ShowRealSpectrum", &err);
 	if (err != NULL) {
 		self->showRealPart = TRUE;
 		g_clear_error(&err);
 	}
 	self->showImaginaryPart = g_key_file_get_boolean(keyfile, group, "ShowImaginarySpectrum", NULL);
+	if (err != NULL) {
+		self->showImaginaryPart = FALSE;
+		g_clear_error(&err);
+	}
 	self->showIntegral = g_key_file_get_boolean(keyfile, group, "Integral", NULL);
+	if (err != NULL) {
+		self->showIntegral = FALSE;
+		g_clear_error(&err);
+	}
 	self->showWindowFunction = g_key_file_get_boolean(keyfile, group, "ShowWindowFunction", NULL);
-
+	if (err != NULL) {
+		self->showWindowFunction = FALSE;
+		g_clear_error(&err);
+	}
 	self->detectISpins = g_key_file_get_boolean(keyfile, group, "DetectISpins", &err);
 	if (err != NULL) {
 		self->detectISpins = TRUE;
 		g_clear_error(&err);
 	}
 	self->detectSSpins = g_key_file_get_boolean(keyfile, group, "DetectSSpins", NULL);
-
+	if (err != NULL) {
+		self->detectSSpins = FALSE;
+		g_clear_error(&err);
+	}
 	self->vectorDisplayType = (enum VectorDisplayType)g_key_file_get_integer(keyfile, group, "VectorDisplayType", &err);
 	if (err != NULL) {
 		self->vectorDisplayType = standardVectorDisplayType;
 		g_clear_error(&err);
 	}
-
 	self->operatorBasis = (enum OperatorBasis)g_key_file_get_double(keyfile, group, "OperatorBasis", &err);
 	if (err != NULL) {
 		self->operatorBasis = standardOperatorBasis;
 		g_clear_error(&err);
 	}
-
 	self->color1stOrderCoherences = g_key_file_get_boolean(keyfile, group, "ColoredMatrix", &err);
 	if (err != NULL) {
 		self->color1stOrderCoherences = TRUE;
 		g_clear_error(&err);
 	}
-
 	self->matrixDisplayType = (enum MatrixDisplayType)g_key_file_get_double(keyfile, group, "MatrixDisplayType", &err);
 	if (err != NULL) {
 		self->matrixDisplayType = standardMatrixDisplayType;
 		g_clear_error(&err);
 	}
-
 	self->allowShiftAndCouplingButtons = g_key_file_get_boolean(keyfile, group, "AllowShiftAndCouplingButtons", NULL);
+	if (err != NULL) {
+		self->allowShiftAndCouplingButtons = FALSE;
+		g_clear_error(&err);
+	}
 	self->playSoundAfterAcquisition = g_key_file_get_boolean(keyfile, group, "PlaySound", NULL);
+	if (err != NULL) {
+		self->playSoundAfterAcquisition = FALSE;
+		g_clear_error(&err);
+	}
 	self->vectorDiagramType = (enum VectorDiagramType)g_key_file_get_integer(keyfile, group, "", NULL);
+	if (err != NULL) {
+		self->vectorDiagramType = VectorDiagram3D;
+		g_clear_error(&err);
+	}
 	self->larmorFrequencyInDegreesPerSeconds = g_key_file_get_boolean(keyfile, group, "LarmorFrequencyInDegreesPerSeconds", NULL);
-
+	if (err != NULL) {
+		self->larmorFrequencyInDegreesPerSeconds = FALSE;
+		g_clear_error(&err);
+	}
 	self->showMatrix = g_key_file_get_boolean(keyfile, group, "ShowMatrix", &err);
 	if (err != NULL) {
 		self->showMatrix = TRUE;
 		g_clear_error(&err);
 	}
-
     self->matrixFont = g_key_file_get_string(keyfile, group, "MatrixFont", &err);
 	if (err != NULL) {
         self->matrixFont = malloc(6 * sizeof(gchar));
-		strcpy(self->matrixFont, "Times");
+		strcpy(self->matrixFont, "Sans");
 		g_clear_error(&err);
 	}
-
 	self->detectionMethod = (enum PurePhaseDetectionMethod)g_key_file_get_integer(keyfile, group, "PurePhaseDetectionMethod", &err);
 	if (err != NULL) {
 		self->detectionMethod = None;
 		g_clear_error(&err);
 	}
-
 	self->exportFormat = (enum ExportFormat)g_key_file_get_integer(keyfile, group, "ExportFormat", &err);
 	if (err != NULL) {
 		self->exportFormat = CSV;
 		g_clear_error(&err);
 	}
-
 	self->ignoreOffResonanceEffectsForPulses = g_key_file_get_boolean(keyfile, group, "OffResonancePulses", &err);
     if (err != NULL) {
 		self->ignoreOffResonanceEffectsForPulses = FALSE;
 		g_clear_error(&err);
 	}
-
 	self->gyroCodeI = g_key_file_get_integer(keyfile, group, "GyroICode", &err);
 	if (err != NULL) {
 		self->gyroCodeI = 0;
@@ -354,25 +387,21 @@ void insensitive_settings_load_defaults(InsensitiveSettings *self)
 		self->gyroCodeS = 1;
 		g_clear_error(&err);
 	}
-
 	self->signalToNoiseThreshold = g_key_file_get_double(keyfile, group, "SignalToNoiseThreshold", &err);
 	if (err != NULL) {
 		self->signalToNoiseThreshold = standardSignalToNoiseThreshold;
 		g_clear_error(&err);
 	}
-
     self->showGrid = g_key_file_get_boolean(keyfile, group, "DisplayGridForSpectrum", &err);
 	if (err != NULL) {
 		self->showGrid = TRUE;
 		g_clear_error(&err);
 	}
-
     self->maxCoherenceCalculations = g_key_file_get_double(keyfile, group, "MaxCoherenceCalculations", &err);
 	if (err != NULL) {
 		self->maxCoherenceCalculations = standardMaxCoherenceCalculations;
 		g_clear_error(&err);
 	}
-
     self->spectrumLineWidth = g_key_file_get_double(keyfile, group, "SpectrumLineWidth", &err);
 	if (err != NULL) {
 		self->spectrumLineWidth = 1.0;

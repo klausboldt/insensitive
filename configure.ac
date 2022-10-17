@@ -91,6 +91,7 @@ AC_CONFIG_FILES([
 	data/Makefile
 	data/doc/Makefile
 	data/icons/Makefile
+	data/icons/hicolor/16x16/actions/Makefile
 	data/icons/hicolor/24x24/actions/Makefile
 	data/icons/hicolor/32x32/actions/Makefile
 	data/icons/hicolor/48x48/actions/Makefile
