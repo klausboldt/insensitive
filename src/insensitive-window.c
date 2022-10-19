@@ -273,7 +273,7 @@ static void insensitive_window_init(InsensitiveWindow *self)
     display = gdk_display_get_default();
     screen = gdk_display_get_default_screen(display);
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
+    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
 
 	gtk_notebook_set_show_tabs(self->mainwindow_notebook, FALSE);
 	show_mainWindow_notebook_page(self, 1);

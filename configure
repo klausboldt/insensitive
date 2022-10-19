@@ -11006,7 +11006,7 @@ LIBS="$LAPACK_LIBS $BLAS_LIBS $FLIBS $LIBS"
 
 ac_config_headers="$ac_config_headers insensitive-config.h"
 
-ac_config_files="$ac_config_files Makefile src/Makefile po/Makefile.in po/Makefile data/Makefile data/doc/Makefile data/icons/Makefile data/icons/hicolor/24x24/actions/Makefile data/icons/hicolor/32x32/actions/Makefile data/icons/hicolor/48x48/actions/Makefile data/icons/hicolor/16x16/apps/Makefile data/icons/hicolor/24x24/apps/Makefile data/icons/hicolor/32x32/apps/Makefile data/icons/hicolor/64x64/apps/Makefile data/icons/hicolor/128x128/apps/Makefile data/icons/hicolor/256x256/apps/Makefile data/icons/hicolor/512x512/apps/Makefile examples/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile po/Makefile.in po/Makefile data/Makefile data/doc/Makefile data/icons/Makefile data/icons/hicolor/16x16/actions/Makefile data/icons/hicolor/24x24/actions/Makefile data/icons/hicolor/32x32/actions/Makefile data/icons/hicolor/48x48/actions/Makefile data/icons/hicolor/16x16/apps/Makefile data/icons/hicolor/24x24/apps/Makefile data/icons/hicolor/32x32/apps/Makefile data/icons/hicolor/64x64/apps/Makefile data/icons/hicolor/128x128/apps/Makefile data/icons/hicolor/256x256/apps/Makefile data/icons/hicolor/512x512/apps/Makefile examples/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -11750,6 +11750,7 @@ do
     "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
     "data/doc/Makefile") CONFIG_FILES="$CONFIG_FILES data/doc/Makefile" ;;
     "data/icons/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/Makefile" ;;
+    "data/icons/hicolor/16x16/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/16x16/actions/Makefile" ;;
     "data/icons/hicolor/24x24/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/24x24/actions/Makefile" ;;
     "data/icons/hicolor/32x32/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/32x32/actions/Makefile" ;;
     "data/icons/hicolor/48x48/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/48x48/actions/Makefile" ;;

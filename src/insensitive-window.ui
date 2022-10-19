@@ -4535,7 +4535,7 @@ ph31=0 2 0 2 0 0 0 0
                 <property name="column-spacing">5</property>
                 <child>
                   <object class="GtkScrolledWindow">
-                    <property name="name">grey_scrollview</property>
+                    <property name="name">grey_textview</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="margin-end">5</property>
@@ -4547,7 +4547,7 @@ ph31=0 2 0 2 0 0 0 0
                     <property name="propagate-natural-height">True</property>
                     <child>
                       <object class="GtkTextView" id="spectrumParameters_textview">
-                        <property name="name">grey_scrollview</property>
+                        <property name="name">grey_textview</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="editable">False</property>
