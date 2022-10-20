@@ -5,7 +5,7 @@ Visual Education) is a simulation of the nuclear magnetic resonance (NMR)
 experiment for educational purposes. It allows to interact with every step 
 from spin precession to Fourier transformation and processing of acquired 1D 
 and 2D spectra. A paper on an earlier verion of Insensitive has been published
-in [Concepts in Magnetic Resonance][ConcMagnReson] (DOI:10.1002/cmr.a.20203).
+in [Concepts in Magnetic Resonance](https://onlinelibrary.wiley.com/doi/full/10.1002/cmr.a.20203) (DOI:10.1002/cmr.a.20203).
 
 Until version 0.9.33 Insensitive was written in Objective-C and based on 
 Apple's Cocoa framework. For version 0.9.34 it has been ported to C with GLib
