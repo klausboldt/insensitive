@@ -53,7 +53,7 @@ On Fedora-based systems, install the dependencies with
 
 ```
 yum install blas-devel lapack-devel fftw3-devel libxml2-devel \
-	        glib2-devel gtk3-devel webkit2gtk3-devel
+            glib2-devel gtk3-devel webkit2gtk3-devel
 ```
 
 ## Support
@@ -61,7 +61,7 @@ yum install blas-devel lapack-devel fftw3-devel libxml2-devel \
 Insensitive includes a tutorial and user manual, written in HTML, that can be 
 accessed from the graphical user interface. It includes practical examples and
 discusses the limitations of the simulation. Example files for useful spin
-systems, common pulse programs, and 1D and 2D spectra can be foiund in the
+systems, common pulse programs, and 1D and 2D spectra can be found in the
 `examples/` directory of the distribution. 
 
 Insensitive 0.9.13 made changes to the *.iss file format. Insensitive 0.9.24
@@ -80,11 +80,11 @@ Insensitive makes use of the Levenberg-Marquardt fitting algorithm written by
 
 ## License
 
-Copyright (C) 2009-2021 Klaus Boldt
+Copyright (C) 2009-2022 Klaus Boldt
 
 Licensed under the MIT License.
 
-[//]: # Reference links used in the body of this note
+## References
 
   [ConcMagnReson]; <https://onlinelibrary.wiley.com/doi/full/10.1002/cmr.a.20203>
   [Klaus Boldt]: <https://www.chemie.uni-konstanz.de/boldt/>
