@@ -17,14 +17,16 @@ file formats for spin systems, pulse programs, and spectra.
 The program supports both the Meson Build system and GNU Autotools. It can be 
 compiled and installed with the following commands:
 
-```meson build
+```
+meson build
 ninja -C build/
 ninja -C build/ install
 ```
 
 or, alternatively:
 
-```./configure
+```
+./configure
 make
 make install
 ```
@@ -42,13 +44,15 @@ make install
 
 On Ubuntu-based systems, install the dependencies with
 
-```sudo apt install libblas-dev liblapack-dev libfftw3-dev libxml2-dev \
+```
+sudo apt install libblas-dev liblapack-dev libfftw3-dev libxml2-dev \
                  libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev
 ```
 
 On Fedora-based systems, install the dependencies with
 
-```yum install blas-devel lapack-devel fftw3-devel libxml2-devel \
+```
+yum install blas-devel lapack-devel fftw3-devel libxml2-devel \
 	        glib2-devel gtk3-devel webkit2gtk3-devel
 ```
 
