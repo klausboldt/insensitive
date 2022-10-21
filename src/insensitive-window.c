@@ -6627,8 +6627,9 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 	else if ((!g_strcmp0(word[0], "exit") || !g_strcmp0(word[0], "quit")) && number_of_words == 1) {
         gtk_window_close((GtkWindow *)window);
 	}
-    // EXPORTFILE
-	else if (!g_strcmp0(word[0], "exportfile") && number_of_words == 1) {
+    // EXPORTFILE or TOPNG
+	else if ((!g_strcmp0(word[0], "exportfile") || !g_strcmp0(word[0], "topng")) && number_of_words == 1) {
+        insensitive_settings_set_exportFormat(window->controller->settings, PNG);
         export_spectrum(NULL, window);
     }
 	// EXPT
@@ -7461,12 +7462,7 @@ void execute_command(GtkEntry *entry, gpointer user_data)
         insensitive_settings_set_exportFormat(window->controller->settings, JDX);
         export_spectrum(NULL, window);
     }
-    // TOPNG
-	else if (!g_strcmp0(word[0], "topng") && number_of_words == 1) {
-        insensitive_settings_set_exportFormat(window->controller->settings, PNG);
-        export_spectrum(NULL, window);
-    }
-    // TOTXT or TOCSV
+    // TOTXT
 	else if (!g_strcmp0(word[0], "totxt") && number_of_words == 1) {
         insensitive_settings_set_exportFormat(window->controller->settings, TXT);
         export_spectrum(NULL, window);
