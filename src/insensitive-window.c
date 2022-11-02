@@ -8808,17 +8808,17 @@ void on_spinEditor_drawingarea_button_release_event(GtkWidget *widget, GdkEventB
 	center_spin_x[1] = 128;
 	center_spin_x[2] = width - 128 - 2 * icon_half_width;
 	center_spin_x[3] = center_spin_x[0];
-	center_spin_y[0] = 64;
+	center_spin_y[0] = 32;
 	center_spin_y[1] = height / 2 - icon_half_width;
 	center_spin_y[2] = center_spin_y[1];
-	center_spin_y[3] = height - 64 - 2 * icon_half_width;
+	center_spin_y[3] = height - 32 - 2 * icon_half_width;
 
     for (i = 0; i < maxNumberOfSpins; i++) {
         if ((event->x >= center_spin_x[i]) && (event->x <= center_spin_x[i] + icon_half_width * 1.5)
             && (event->y >= center_spin_y[i]) && (event->y <= center_spin_y[i] + icon_half_width * 1.5)) {
                 selected = insensitive_controller_get_selected_spin(window->controller);
                 if(i != selected) {
-                    switch(window->displayedConstant) {
+					switch(window->displayedConstant) {
                     case ScalarConstant:
                         value = atof(gtk_entry_get_text(window->scalarConstant_entry));
                         insensitive_controller_set_jCouplingConstant_between_spins(window->controller, selected, i, value);
