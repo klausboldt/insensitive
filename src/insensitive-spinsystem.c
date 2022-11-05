@@ -386,6 +386,8 @@ void insensitive_spinsystem_set_larmorfrequency_for_spin(InsensitiveSpinSystem *
 
 float insensitive_spinsystem_get_jcouplingconstant_between_spins(InsensitiveSpinSystem *self, unsigned int spinNumber1, unsigned int spinNumber2)
 {
+	if (spinNumber1 >= self->spins || spinNumber2 >= self->spins)
+		return 0;
 	if (spinNumber1 > spinNumber2)
 		return self->couplingMatrix[spinNumber2 * self->spins + spinNumber1];
 	else
@@ -411,6 +413,9 @@ float insensitive_spinsystem_get_dipolarcouplingconstant_between_spins(Insensiti
 {
 	float value, gyro1, gyro2;
 
+	if (spinNumber1 >= self->spins || spinNumber2 >= self->spins)
+		return 0;
+
 	gyro1 = (insensitive_spinsystem_get_spintype_for_spin(self, spinNumber1) == spinTypeI) ? self->absGyroI : self->absGyroS;
 	gyro2 = (insensitive_spinsystem_get_spintype_for_spin(self, spinNumber2) == spinTypeI) ? self->absGyroI : self->absGyroS;
 
@@ -425,6 +430,8 @@ float insensitive_spinsystem_get_dipolarcouplingconstant_between_spins(Insensiti
 
 float insensitive_spinsystem_get_distance_between_spins(InsensitiveSpinSystem *self, unsigned int spinNumber1, unsigned int spinNumber2)
 {
+	if (spinNumber1 >= self->spins || spinNumber2 >= self->spins)
+		return 0;
 	if (spinNumber1 > spinNumber2)
 		return self->couplingMatrix[spinNumber1 * self->spins + spinNumber2];
 	else

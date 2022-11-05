@@ -1736,7 +1736,7 @@ void insensitive_controller_calculate_energy_levels(InsensitiveController *self)
     gboolean stronglyCoupled;
 
     // Initialize energy level vector and transition array
-    maxNumberOfTransitions = size * (size - 1) / 2;
+    maxNumberOfTransitions = size * lb(size); //size * (size - 1) / 2;
     energyLevel = malloc(size * sizeof(float));
     transition = malloc(maxNumberOfTransitions * sizeof(int));
     transitionProbability = malloc(maxNumberOfTransitions * sizeof(float));
@@ -1775,19 +1775,22 @@ void insensitive_controller_calculate_energy_levels(InsensitiveController *self)
         g_ptr_array_add(spinSystem2, spin2);
         g_ptr_array_add(spinArray, spin2);
         g_ptr_array_add(spinSystemArray, spinSystem2);
-    }
+    } else
+	  free(spin2);
     if(spins > 2) {
         spinSystem3 = g_ptr_array_new();
         g_ptr_array_add(spinSystem3, spin3);
         g_ptr_array_add(spinArray, spin3);
         g_ptr_array_add(spinSystemArray, spinSystem3);
-    }
+    } else
+	  free(spin3);
     if(spins > 3) {
         spinSystem4 = g_ptr_array_new();
         g_ptr_array_add(spinSystem4, spin4);
         g_ptr_array_add(spinArray, spin4);
         g_ptr_array_add(spinSystemArray, spinSystem4);
-    }
+    } else
+	  free(spin4);
     // Group spins according to coupling information
     // I: spin that is currently considered
     // S: coupling partner to spin I

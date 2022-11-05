@@ -56,7 +56,6 @@ foreach icon: [
   'insensitive-record',
   'insensitive-stop',
   'insensitive-step',
-  'insensitive-trash'
 ]
   icon_dir = join_paths('hicolor', '16x16', 'actions')
   install_data(

@@ -19,7 +19,6 @@ icon_DATA = insensitive-acquisition.png \
 	insensitive-reset.png \
 	insensitive-step.png \
 	insensitive-stop.png \
-	insensitive-trash.png \
 	insensitive-undo.png
 
 EXTRA_DIST = $(icon_DATA)
@@ -29,3 +28,4 @@ install-data-local: $(icon_DATA)
 	for file in $(icon_DATA); do \
 	$(INSTALL_DATA) $(top_builddir)/data/icons/hicolor/16x16/actions/$$file $(icondir)/$$file; \
 	done
+

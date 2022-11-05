@@ -455,10 +455,11 @@ void insensitive_settings_load_spinsystem(InsensitiveSettings *self, gpointer sp
     couplingMatrix_double = g_key_file_get_double_list(self->defaultSettings, ss_group, "CouplingMatrix", &size, &err);
     if (err == NULL && size > 0) {
         couplingMatrix = malloc(size * sizeof(float));
-        for (i = 0; i <= size; i++)
+		for (i = 0; i < size; i++)
             couplingMatrix[i] = couplingMatrix_double[i];
         insensitive_spinsystem_substitute_couplingmatrix(ss, couplingMatrix);
         free(couplingMatrix);
+		free(couplingMatrix_double);
     } else
         g_clear_error(&err);
 }
@@ -485,10 +486,10 @@ void insensitive_settings_save_pulsesequence(InsensitiveSettings *self, gpointer
 		g_key_file_set_string_list(self->defaultSettings, pp_group, "PhaseCyclingArray",
 					   phase_list, phaseCyclingArray->len);
 		free(phase_list);
-		pp_code = malloc(size * sizeof(gchar *));
+		pp_code = malloc(size * sizeof(guchar *));
 		for (i = 0; i < size; i++)
 			pp_code[i] = g_base64_encode((const guchar *)insensitive_pulsesequence_get_element_at_index(pp, i),
-						     sizeof(SequenceElement));
+						 				 sizeof(SequenceElement));
 		g_key_file_set_string_list(self->defaultSettings, pp_group, "PulseSequence", pp_code, size);
 		for (i = 0; i < size; i++)
 			free(pp_code[i]);
@@ -1815,7 +1816,7 @@ void insensitive_settings_set_showGrid(InsensitiveSettings *self, gboolean value
 {
 	self->showGrid = value;
 	if (self->saveSettings)
-		g_key_file_set_boolean(self->defaultSettings, group, "DisplayGridForSpectrum", self->showMatrix);
+		g_key_file_set_boolean(self->defaultSettings, group, "DisplayGridForSpectrum", self->showGrid);
 }
 
 

@@ -1146,7 +1146,7 @@ void on_about_menu_item_activate(GtkMenuItem *item, gpointer *user_data)
 	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), insensitive_version);
 	gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), "© 2011-2022 Klaus Boldt");
 	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog), "NMR Simulation Tool");
-	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), "https://sourceforge.net/projects/insensitive/");
+	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), "https://github.com/klausboldt/insensitive");
 	gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(dialog), "com.klausboldt.insensitive");
 	gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(dialog), GTK_LICENSE_MIT_X11);
 	gtk_dialog_run(GTK_DIALOG(dialog));
@@ -2378,8 +2378,6 @@ void on_spinNumber_spinbutton_activate(GtkSpinButton *entry, gpointer user_data)
 
 void set_spin_number(InsensitiveWindow *window, unsigned int number)
 {
-	//gchar *string = malloc(2 * sizeof(gchar));
-
 	if(number < 2)
         gtk_widget_set_sensitive((GtkWidget *)window->removeSpin_button, FALSE);
     else
@@ -2390,9 +2388,7 @@ void set_spin_number(InsensitiveWindow *window, unsigned int number)
     else
         gtk_widget_set_sensitive((GtkWidget *)window->addSpin_button, TRUE);
 
-    //sprintf(string, "%d", number);
-	gtk_adjustment_set_value(window->spinNumber_adjustment, (float)number);
-	//g_free(string);
+    gtk_adjustment_set_value(window->spinNumber_adjustment, (gdouble)number);
 
     set_openedFileState_for_spinSystem(window, FileOpenedAndChanged, NULL);
 }
@@ -6139,6 +6135,7 @@ void update_spectrum_parameter_panel(InsensitiveWindow *window)
 		parameterString = g_string_new("No spectrum report available");
 	}
 	gtk_text_buffer_set_text(window->spectrumParameters_textbuffer, parameterString->str, parameterString->len);
+	g_string_free(parameterString, true);
 }
 
 
@@ -6210,6 +6207,7 @@ void set_maxDataPoints(InsensitiveWindow *window, unsigned int value)
         window->data.imagp[i] = 0;
         window->displayedData.realp[i] = 0;
         window->displayedData.imagp[i] = 0;
+		window->integral[i] = 0;
     }
     if((window->phase.realp == NULL) || (window->phase.imagp == NULL))
         set_phase_correction(window, 0.0, 0.0, 0.0);
