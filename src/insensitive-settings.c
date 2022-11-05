@@ -492,7 +492,7 @@ void insensitive_settings_save_pulsesequence(InsensitiveSettings *self, gpointer
 						 				 sizeof(SequenceElement));
 		g_key_file_set_string_list(self->defaultSettings, pp_group, "PulseSequence", pp_code, size);
 		for (i = 0; i < size; i++)
-			free(pp_code[i]);
+			g_free(pp_code[i]);
 		free(pp_code);
 		g_key_file_set_integer(self->defaultSettings, pp_group, "PurePhaseDetectionMethod",
 				       insensitive_controller_get_detectionMethod(controller));

@@ -107,7 +107,7 @@ void insensitive_pulsesequence_add_element(InsensitivePulseSequence *self, enum 
 {
 	SequenceElement *element;
 
-	element = malloc(sizeof(SequenceElement));
+	element = calloc(1, sizeof(SequenceElement));
 	element->type = type;
 	element->iDecoupling = insensitive_settings_get_iDecoupling(settings);
 	element->sDecoupling = insensitive_settings_get_sDecoupling(settings);
@@ -156,7 +156,7 @@ void insensitive_pulsesequence_add_sequence_element(InsensitivePulseSequence *se
 {
 	SequenceElement *element;
 
-	element = malloc(sizeof(SequenceElement));
+	element = calloc(1, sizeof(SequenceElement));
 	element->type = newElement->type;
 	element->time = newElement->time;
 	element->secondParameter = newElement->secondParameter;
