@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/insensitive-iss">
+        <comment>Insensitive Spin System</comment>
+        <glob pattern="*.iss"/>
+        <icon name="insensitive-iss"/>>
+        <generic-icon name="insensitive-iss"/>
+    </mime-type>
+    <mime-type type="application/insensitive-ipp">
+        <comment>Insensitive Pulse Program</comment>
+        <glob pattern="*.ipp"/>
+        <icon name="insensitive-ipp"/>>
+        <generic-icon name="insensitive-ipp"/>
+    </mime-type>
+    <mime-type type="application/insensitive-igg">
+        <comment>Insensitive Spectrum</comment>
+        <glob pattern="*.igg"/>
+        <icon name="insensitive-igg"/>>
+        <generic-icon name="insensitive-igg"/>
+    </mime-type>
+</mime-info>

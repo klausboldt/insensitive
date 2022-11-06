@@ -37,7 +37,8 @@
 G_DEFINE_TYPE(InsensitiveController, insensitive_controller, G_TYPE_OBJECT)
 
 
-InsensitiveController* insensitive_controller_new(){
+InsensitiveController* insensitive_controller_new()
+{
 	return (InsensitiveController *)g_object_new(INSENSITIVE_TYPE_CONTROLLER, NULL);
 }
 

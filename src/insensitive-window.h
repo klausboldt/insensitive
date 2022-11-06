@@ -242,7 +242,8 @@ G_DECLARE_FINAL_TYPE(InsensitiveWindow, insensitive_window, INSENSITIVE, WINDOW,
 G_END_DECLS
 
 void on_open_file_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data);
-void open_file(GtkWidget *chooser, InsensitiveWindow *window);
+void choose_file(GtkWidget *chooser, InsensitiveWindow *window);
+void open_file(InsensitiveWindow *window, gchar *filename);
 void show_open_file_error(InsensitiveWindow *window, gchar *filename);
 void on_preferences_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data);
 void quit_insensitive(InsensitiveWindow *window);

@@ -1,7 +1,6 @@
 To Do:
 
 - Energy level labels
-- Open via MIME types
 - Improve tutorial
 - Updates?
 - Hunt for memonry leaks
@@ -11,4 +10,3 @@ Known bugs:
 - pulseArray and pathways not updated
 - animation/relaxation with animation checkboxes not correctly initialised
 - show real/imag/integral not set in controller when spectrum is opened
-

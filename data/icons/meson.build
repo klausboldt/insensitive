@@ -95,3 +95,20 @@ foreach icon: [
     install_dir: join_paths(get_option('datadir'), 'icons', icon_dir)
   )
 endforeach
+
+foreach s: [16, 32, 128, 256]
+  s = '@0@x@0@'.format(s.to_string())
+  icon_dir = join_paths('hicolor', s, 'mimetypes')
+  install_data(
+    join_paths(icon_dir, 'insensitive-iss.png'),
+    install_dir: join_paths(get_option('datadir'), 'icons', icon_dir)
+  )
+  install_data(
+    join_paths(icon_dir, 'insensitive-ipp.png'),
+    install_dir: join_paths(get_option('datadir'), 'icons', icon_dir)
+  )
+  install_data(
+    join_paths(icon_dir, 'insensitive-igg.png'),
+    install_dir: join_paths(get_option('datadir'), 'icons', icon_dir)
+  )
+endforeach

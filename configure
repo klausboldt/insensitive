@@ -625,6 +625,8 @@ gt_needs=
 ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
+XDG_ICON_RESOURCE
+XDG_MIME
 POMAKEFILEDEPS
 top_builddir
 XML2_LIBS
@@ -11002,11 +11004,94 @@ _ACEOF
 
 
 
+# Extract the first word of "xdg-mime", so it can be a program name with args.
+set dummy xdg-mime; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_XDG_MIME+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $XDG_MIME in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_XDG_MIME="$XDG_MIME" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_XDG_MIME="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+XDG_MIME=$ac_cv_path_XDG_MIME
+if test -n "$XDG_MIME"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XDG_MIME" >&5
+$as_echo "$XDG_MIME" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+
+# Extract the first word of "xdg-icon-resource", so it can be a program name with args.
+set dummy xdg-icon-resource; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_XDG_ICON_RESOURCE+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $XDG_ICON_RESOURCE in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_XDG_ICON_RESOURCE="$XDG_ICON_RESOURCE" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_XDG_ICON_RESOURCE="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+XDG_ICON_RESOURCE=$ac_cv_path_XDG_ICON_RESOURCE
+if test -n "$XDG_ICON_RESOURCE"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XDG_ICON_RESOURCE" >&5
+$as_echo "$XDG_ICON_RESOURCE" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+
+
 LIBS="$LAPACK_LIBS $BLAS_LIBS $FLIBS $LIBS"
 
 ac_config_headers="$ac_config_headers insensitive-config.h"
 
-ac_config_files="$ac_config_files Makefile src/Makefile po/Makefile.in po/Makefile data/Makefile data/doc/Makefile data/icons/Makefile data/icons/hicolor/16x16/actions/Makefile data/icons/hicolor/24x24/actions/Makefile data/icons/hicolor/32x32/actions/Makefile data/icons/hicolor/48x48/actions/Makefile data/icons/hicolor/16x16/apps/Makefile data/icons/hicolor/24x24/apps/Makefile data/icons/hicolor/32x32/apps/Makefile data/icons/hicolor/64x64/apps/Makefile data/icons/hicolor/128x128/apps/Makefile data/icons/hicolor/256x256/apps/Makefile data/icons/hicolor/512x512/apps/Makefile examples/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile po/Makefile.in po/Makefile data/Makefile data/doc/Makefile data/icons/Makefile data/icons/hicolor/16x16/mimetypes/Makefile data/icons/hicolor/32x32/mimetypes/Makefile data/icons/hicolor/128x128/mimetypes/Makefile data/icons/hicolor/256x256/mimetypes/Makefile data/icons/hicolor/16x16/actions/Makefile data/icons/hicolor/24x24/actions/Makefile data/icons/hicolor/32x32/actions/Makefile data/icons/hicolor/48x48/actions/Makefile data/icons/hicolor/16x16/apps/Makefile data/icons/hicolor/24x24/apps/Makefile data/icons/hicolor/32x32/apps/Makefile data/icons/hicolor/64x64/apps/Makefile data/icons/hicolor/128x128/apps/Makefile data/icons/hicolor/256x256/apps/Makefile data/icons/hicolor/512x512/apps/Makefile examples/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -11750,6 +11835,10 @@ do
     "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
     "data/doc/Makefile") CONFIG_FILES="$CONFIG_FILES data/doc/Makefile" ;;
     "data/icons/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/Makefile" ;;
+    "data/icons/hicolor/16x16/mimetypes/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/16x16/mimetypes/Makefile" ;;
+    "data/icons/hicolor/32x32/mimetypes/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/32x32/mimetypes/Makefile" ;;
+    "data/icons/hicolor/128x128/mimetypes/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/128x128/mimetypes/Makefile" ;;
+    "data/icons/hicolor/256x256/mimetypes/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/256x256/mimetypes/Makefile" ;;
     "data/icons/hicolor/16x16/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/16x16/actions/Makefile" ;;
     "data/icons/hicolor/24x24/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/24x24/actions/Makefile" ;;
     "data/icons/hicolor/32x32/actions/Makefile") CONFIG_FILES="$CONFIG_FILES data/icons/hicolor/32x32/actions/Makefile" ;;

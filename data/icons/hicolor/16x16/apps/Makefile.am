@@ -9,3 +9,4 @@ EXTRA_DIST = $(icon_DATA)
 install-data-local: $(icon_DATA)
 	$(mkinstalldirs) $(icondir)
 	$(INSTALL_DATA) $(top_builddir)/data/icons/hicolor/16x16/apps/com.klausboldt.insensitive.png $(icondir)/com.klausboldt.insensitive.png
+

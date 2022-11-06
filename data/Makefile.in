@@ -303,6 +303,8 @@ USE_NLS = @USE_NLS@
 VERSION = @VERSION@
 WEBKIT2GTK_CFLAGS = @WEBKIT2GTK_CFLAGS@
 WEBKIT2GTK_LIBS = @WEBKIT2GTK_LIBS@
+XDG_ICON_RESOURCE = @XDG_ICON_RESOURCE@
+XDG_MIME = @XDG_MIME@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
@@ -363,6 +365,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = doc \
 	icons \
+	icons/hicolor/16x16/mimetypes \
+	icons/hicolor/32x32/mimetypes \
+	icons/hicolor/128x128/mimetypes \
+	icons/hicolor/256x256/mimetypes \
 	icons/hicolor/16x16/actions \
 	icons/hicolor/24x24/actions \
 	icons/hicolor/32x32/actions \
@@ -382,6 +388,7 @@ EXTRA_DIST = $(insensitive_DATA) \
 	com.klausboldt.insensitive.desktop.in \
 	com.klausboldt.insensitive.gschema.xml \
 	com.klausboldt.insensitive.appdata.xml.in \
+	com.klausboldt.insensitive.mime.xml \
 	meson.build
 
 all: all-recursive
@@ -654,7 +661,8 @@ info: info-recursive
 info-am:
 
 install-data-am: install-data-local install-insensitiveDATA
-
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 install-dvi: install-dvi-recursive
 
 install-dvi-am:
@@ -698,22 +706,24 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am: uninstall-insensitiveDATA
-
-.MAKE: $(am__recursive_targets) install-am install-strip
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
+.MAKE: $(am__recursive_targets) install-am install-data-am \
+	install-strip uninstall-am
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am check \
 	check-am clean clean-generic cscopelist-am ctags ctags-am \
 	distclean distclean-generic distclean-tags distdir dvi dvi-am \
 	html html-am info info-am install install-am install-data \
-	install-data-am install-data-local install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-insensitiveDATA \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs installdirs-am maintainer-clean \
+	install-data-am install-data-hook install-data-local \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-insensitiveDATA install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-insensitiveDATA
+	uninstall-hook uninstall-insensitiveDATA
 
 .PRECIOUS: Makefile
 
@@ -721,6 +731,39 @@ uninstall-am: uninstall-insensitiveDATA
 install-data-local: $(insensitive_DATA) $(desktop_DATA)
 	$(mkinstalldirs) $(insensitivedir) $(desktopdir)
 	$(INSTALL_DATA) $(top_builddir)/data/com.klausboldt.insensitive.desktop.in $(desktopdir)/com.klausboldt.insensitive.desktop
+
+install-data-hook: install-mime-database
+uninstall-hook: uninstall-mime-database
+
+install-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_ICON_RESOURCE)
+	$(XDG_MIME) install --novendor com.klausboldt.insensitive.mime.xml
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 16 icons/hicolor/16x16/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 16 icons/hicolor/16x16/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 16 icons/hicolor/16x16/mimetypes/insensitive-igg.png insensitive-igg
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 32 icons/hicolor/32x32/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 32 icons/hicolor/32x32/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 32 icons/hicolor/32x32/mimetypes/insensitive-igg.png insensitive-igg
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 128 icons/hicolor/128x128/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 128 icons/hicolor/128x128/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 128 icons/hicolor/128x128/mimetypes/insensitive-igg.png insensitive-igg
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) install --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-igg.png insensitive-igg
+
+uninstall-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_ICON_RESOURCE)
+	$(XDG_MIME) uninstall --novendor com.klausboldt.insensitive.mime.xml
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 16 icons/hicolor/16x16/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 16 icons/hicolor/16x16/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 16 icons/hicolor/16x16/mimetypes/insensitive-igg.png insensitive-igg
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 32 icons/hicolor/32x32/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 32 icons/hicolor/32x32/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 32 icons/hicolor/32x32/mimetypes/insensitive-igg.png insensitive-igg
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 128 icons/hicolor/128x128/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 128 icons/hicolor/128x128/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 128 icons/hicolor/128x128/mimetypes/insensitive-igg.png insensitive-igg
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-iss.png insensitive-iss
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-ipp.png insensitive-ipp
+	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-igg.png insensitive-igg
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

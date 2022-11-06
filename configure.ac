@@ -80,6 +80,11 @@ AC_SUBST([top_builddir])
 AC_SUBST([POMAKEFILEDEPS])
 AC_SUBST([XGETTEXT_EXTRA_OPTIONS])
 
+AC_PATH_PROG([XDG_MIME],[xdg-mime])
+AC_SUBST(XDG_MIME)
+AC_PATH_PROG([XDG_ICON_RESOURCE],[xdg-icon-resource])
+AC_SUBST(XDG_ICON_RESOURCE)
+
 LIBS="$LAPACK_LIBS $BLAS_LIBS $FLIBS $LIBS"
 
 AC_CONFIG_HEADERS([insensitive-config.h])
@@ -91,6 +96,10 @@ AC_CONFIG_FILES([
 	data/Makefile
 	data/doc/Makefile
 	data/icons/Makefile
+	data/icons/hicolor/16x16/mimetypes/Makefile
+	data/icons/hicolor/32x32/mimetypes/Makefile
+	data/icons/hicolor/128x128/mimetypes/Makefile
+	data/icons/hicolor/256x256/mimetypes/Makefile
 	data/icons/hicolor/16x16/actions/Makefile
 	data/icons/hicolor/24x24/actions/Makefile
 	data/icons/hicolor/32x32/actions/Makefile

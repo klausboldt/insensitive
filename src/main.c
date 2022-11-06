@@ -45,7 +45,7 @@ static void on_activate(GtkApplication *app)
 
 	/* Get the current window or create one if necessary. */
 	window = gtk_application_get_active_window(app);
-	if(window == NULL)
+	if (window == NULL)
 		window = g_object_new(INSENSITIVE_TYPE_WINDOW,
 		                      "application", app,
 		                      "default-width", 1024,
@@ -54,6 +54,29 @@ static void on_activate(GtkApplication *app)
 
 	/* Ask the window manager/compositor to present the window. */
 	gtk_window_present(window);
+}
+
+
+static void on_open(GApplication *app, GFile **files, gint n_files, const gchar *hint)
+{
+	GList *windows;
+	InsensitiveWindow *window;
+	int i;
+
+	g_assert(GTK_IS_APPLICATION(app));
+
+	window = INSENSITIVE_WINDOW(gtk_application_get_window_by_id(app, 1));
+	if (window == NULL)
+		window = g_object_new(INSENSITIVE_TYPE_WINDOW,
+		                      "application", app,
+		                      "default-width", 1024,
+		                      "default-height", 768,
+		                      NULL);
+
+	for (i = 0; i < n_files; i++)
+		open_file(window, g_file_get_path(files[i]));
+
+	gtk_window_present (GTK_WINDOW(window));
 }
 
 
@@ -72,7 +95,7 @@ int main(int argc, char *argv[])
 	 * application windows, integration with the window manager/compositor, and
 	 * desktop features such as file opening and single-instance applications.
 	 */
-	app = gtk_application_new("com.klausboldt.insensitive", G_APPLICATION_FLAGS_NONE);
+	app = gtk_application_new("com.klausboldt.insensitive", G_APPLICATION_HANDLES_OPEN);
 
 	/*
 	 * We connect to the activate signal to create a window when the application
@@ -84,6 +107,7 @@ int main(int argc, char *argv[])
 	 * our "on_activate" function to a GCallback.
 	 */
 	g_signal_connect(app, "activate", G_CALLBACK (on_activate), NULL);
+	g_signal_connect(app, "open", G_CALLBACK (on_open), NULL);
 
 	/*
 	 * Run the application. This function will block until the application

@@ -520,76 +520,83 @@ void on_open_file_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
     gtk_file_filter_set_name(filter, "Insensitive spectra (IGG)");
     gtk_file_filter_add_pattern(filter, "*.igg");
     gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
-    open_file(chooser, window);
+    choose_file(chooser, window);
 }
 
 
-void open_file(GtkWidget *chooser, InsensitiveWindow *window)
+void choose_file(GtkWidget *chooser, InsensitiveWindow *window)
 {
-    gint result;
-    gchar *filename;
+	gint result;
+	gchar *filename;
+
+	gtk_widget_show_all(chooser);
+    result = gtk_dialog_run((GtkDialog *)chooser);
+    if (result == GTK_RESPONSE_ACCEPT) {
+		filename = gtk_file_chooser_get_filename((GtkFileChooser *)chooser);
+		open_file(window, filename);
+		g_free(filename);
+	}
+	g_object_unref(chooser);
+}
+
+
+void open_file(InsensitiveWindow *window, gchar *filename)
+{
     xmlDoc *doc = NULL;
     xmlNode *root, *first_child, *node;
     gboolean fileTypeRecognised = FALSE;
 
-    gtk_widget_show_all(chooser);
-    result = gtk_dialog_run((GtkDialog *)chooser);
-    if (result == GTK_RESPONSE_ACCEPT) {
-        LIBXML_TEST_VERSION
-        filename = gtk_file_chooser_get_filename((GtkFileChooser *)chooser);
-        doc = xmlReadFile(filename, NULL, 0);
-        if (doc == NULL)
-            show_open_file_error(window, filename);
-        else {
-            root = xmlDocGetRootElement(doc);
-            if (root->type == XML_ELEMENT_NODE && !strcmp((char *)root->name, "plist")) {
-                first_child = root->children;
-                if (first_child->type == XML_TEXT_NODE && first_child->next->type == XML_ELEMENT_NODE) {
-                    if (!strcmp((char *)first_child->next->name, "dict")) {
-                        first_child = first_child->next->children;
-                        for (node = first_child; node; node = node->next) {
-                            if(node->type == XML_ELEMENT_NODE && !strcmp((char *)node->name, "key")) {
-                                if (!strcmp((char *)xmlNodeGetContent(node), "ISSFileVersion")) {
-                                   if (perform_open_spinSystem(window, first_child)) {
-                                       set_openedFileState_for_spinSystem(window, FileOpened, g_path_get_basename(filename));
-                                       show_mainWindow_notebook_page(window, 0);
-                                       fileTypeRecognised = TRUE;
-                                   } else
-                                       show_open_file_error(window, filename);
-                                   break;
-                                } else if(!strcmp((char *)xmlNodeGetContent(node), "IPPFileVersion")) {
-                                   if (perform_open_pulseProgram(window, first_child)) {
-                                       set_openedFileState_for_pulseSequence(window, FileOpened, g_path_get_basename(filename));
-                                       show_mainWindow_notebook_page(window, 2);
-                                       fileTypeRecognised = TRUE;
-                                   } else
-                                       show_open_file_error(window, filename);
-                                   break;
-                                } else if(!strcmp((char *)xmlNodeGetContent(node), "IGGFileVersion")) {
-                                   if (perform_open_spectrum(window, first_child)) {
-                                       set_openedFileState_for_spectrum(window, FileOpened, g_path_get_basename(filename));
-                                       show_mainWindow_notebook_page(window, 3);
-                                       fileTypeRecognised = TRUE;
-                                   } else
-                                       show_open_file_error(window, filename);
-                                   break;
-                                }
+    LIBXML_TEST_VERSION
+    doc = xmlReadFile(filename, NULL, 0);
+    if (doc == NULL)
+        show_open_file_error(window, filename);
+    else {
+        root = xmlDocGetRootElement(doc);
+        if (root->type == XML_ELEMENT_NODE && !strcmp((char *)root->name, "plist")) {
+            first_child = root->children;
+            if (first_child->type == XML_TEXT_NODE && first_child->next->type == XML_ELEMENT_NODE) {
+                if (!strcmp((char *)first_child->next->name, "dict")) {
+                    first_child = first_child->next->children;
+                    for (node = first_child; node; node = node->next) {
+                        if(node->type == XML_ELEMENT_NODE && !strcmp((char *)node->name, "key")) {
+                            if (!strcmp((char *)xmlNodeGetContent(node), "ISSFileVersion")) {
+                                if (perform_open_spinSystem(window, first_child)) {
+                                    set_openedFileState_for_spinSystem(window, FileOpened, g_path_get_basename(filename));
+                                    show_mainWindow_notebook_page(window, 0);
+                                    fileTypeRecognised = TRUE;
+                                } else
+                                    show_open_file_error(window, filename);
+                                break;
+                            } else if(!strcmp((char *)xmlNodeGetContent(node), "IPPFileVersion")) {
+                                if (perform_open_pulseProgram(window, first_child)) {
+                                    set_openedFileState_for_pulseSequence(window, FileOpened, g_path_get_basename(filename));
+                                    show_mainWindow_notebook_page(window, 2);
+                                    fileTypeRecognised = TRUE;
+                                } else
+                                   show_open_file_error(window, filename);
+                               break;
+                            } else if(!strcmp((char *)xmlNodeGetContent(node), "IGGFileVersion")) {
+                               if (perform_open_spectrum(window, first_child)) {
+                                   set_openedFileState_for_spectrum(window, FileOpened, g_path_get_basename(filename));
+                                   show_mainWindow_notebook_page(window, 3);
+                                   fileTypeRecognised = TRUE;
+                               } else
+                                   show_open_file_error(window, filename);
+                               break;
                             }
                         }
-                        if (!fileTypeRecognised)
-                            show_open_file_error(window, filename);
-                    } else
+                    }
+                    if (!fileTypeRecognised)
                         show_open_file_error(window, filename);
                 } else
                     show_open_file_error(window, filename);
             } else
                 show_open_file_error(window, filename);
-            xmlFreeDoc(doc);
-            xmlCleanupParser();
-        }
-        g_free(filename);
+        } else
+            show_open_file_error(window, filename);
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
     }
-    g_object_unref(chooser);
 }
 
 
@@ -6812,7 +6819,7 @@ void execute_command(GtkEntry *entry, gpointer user_data)
         gtk_file_filter_set_name(filter, "Insensitive spin system (ISS)");
         gtk_file_filter_add_pattern(filter, "*.iss");
         gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
-        open_file(chooser, window);
+        choose_file(chooser, window);
 	}
 	// INT
 	else if (!g_strcmp0(word[0], "int") && number_of_words == 1) {
@@ -7142,7 +7149,7 @@ void execute_command(GtkEntry *entry, gpointer user_data)
         gtk_file_filter_set_name(filter, "Insensitive pulse programs (IPP)");
         gtk_file_filter_add_pattern(filter, "*.ipp");
         gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
-        open_file(chooser, window);
+        choose_file(chooser, window);
 	}
 	// PULSE
 	else if (!g_strcmp0(word[0], "pulse") && number_of_words <= 3) {

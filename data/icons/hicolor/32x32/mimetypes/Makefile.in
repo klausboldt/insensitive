@@ -88,7 +88,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = data/icons/hicolor/32x32/actions
+subdir = data/icons/hicolor/32x32/mimetypes
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_compile_flag.m4 \
 	$(top_srcdir)/m4/ax_pthread.m4 $(top_srcdir)/m4/gettext.m4 \
@@ -303,17 +303,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-icondir = @datadir@/icons/hicolor/32x32/actions
-icon_DATA = insensitive-composer.png \
-	insensitive-matrixcomposer.png \
-	insensitive-presentation.png \
-	insensitive-pulsesequence.png \
-	insensitive-pulseshape.png \
-	insensitive-singlespins.png \
-	insensitive-spectrum.png \
-	insensitive-spinstate.png \
-	insensitive-spinsystem.png \
-	insensitive-tutorial.png
+icondir = @datadir@/icons/hicolor/32x32/mimetypes
+icon_DATA = insensitive-iss.png \
+	insensitive-ipp.png \
+	insensitive-igg.png
 
 EXTRA_DIST = $(icon_DATA)
 all: all-am
@@ -328,9 +321,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu data/icons/hicolor/32x32/actions/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu data/icons/hicolor/32x32/mimetypes/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu data/icons/hicolor/32x32/actions/Makefile
+	  $(AUTOMAKE) --gnu data/icons/hicolor/32x32/mimetypes/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -532,7 +525,7 @@ uninstall-am: uninstall-iconDATA
 install-data-local: $(icon_DATA)
 	$(mkinstalldirs) $(icondir)
 	for file in $(icon_DATA); do \
-	$(INSTALL_DATA) $(top_builddir)/data/icons/hicolor/32x32/actions/$$file $(icondir)/$$file; \
+	$(INSTALL_DATA) $(top_builddir)/data/icons/hicolor/32x32/mimetypes/$$file $(icondir)/$$file; \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
