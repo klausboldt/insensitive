@@ -2501,10 +2501,10 @@ void set_recording_button_clicked(InsensitiveWindow *window, gboolean value)
 
     if (value) {
         gtk_button_set_label(window->record_button, "Stop");
-        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-stop", 24, GTK_ICON_LOOKUP_FORCE_REGULAR);
+        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-stop", 16, GTK_ICON_LOOKUP_FORCE_REGULAR);
     } else {
         gtk_button_set_label(window->record_button, "Record");
-        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-record", 24, GTK_ICON_LOOKUP_FORCE_REGULAR);
+        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-record", 16, GTK_ICON_LOOKUP_FORCE_REGULAR);
     }
     gtk_button_set_image(window->record_button, gtk_image_new_from_file(gtk_icon_info_get_filename(icon_info)));
     g_clear_object(&icon_info);

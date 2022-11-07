@@ -16,7 +16,6 @@
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="icon-name">insensitive-add</property>
-    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="TBIconChemicalShift">
     <property name="visible">True</property>
@@ -77,19 +76,16 @@
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="icon-name">insensitive-remove</property>
-    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="TBIconResetConstants">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="icon-name">insensitive-reset</property>
-    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="TBIconRotate">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
     <property name="icon-name">insensitive-undo</property>
-    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="TBIconSingleSpins">
     <property name="visible">True</property>
