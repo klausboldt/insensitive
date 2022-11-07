@@ -15,6 +15,9 @@ if not destdir:
     print('Updating desktop database...')
     call(['update-desktop-database', '-q', path.join(datadir, 'applications')])
 
+    print('Updating mime database...')
+    call(['update-mime-database', '-q', path.join(datadir, 'mime')])
+
     print('Compiling GSettings schemas...')
     call(['glib-compile-schemas', path.join(datadir, 'glib-2.0', 'schemas')])
 
