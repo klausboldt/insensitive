@@ -32,6 +32,7 @@ EXTRA_DIST = $(insensitive_DATA) \
 install-data-local: $(insensitive_DATA) $(desktop_DATA)
 	$(mkinstalldirs) $(insensitivedir) $(desktopdir)
 	$(INSTALL_DATA) $(top_builddir)/data/com.klausboldt.insensitive.desktop.in $(desktopdir)/com.klausboldt.insensitive.desktop
+	$(UPDATE_DESKTOP_DATABASE) -q $(desktopdir)
 
 install-data-hook: install-mime-database
 uninstall-hook: uninstall-mime-database
@@ -50,6 +51,7 @@ install-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_ICO
 	$(XDG_ICON_RESOURCE) install --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-iss.png insensitive-iss
 	$(XDG_ICON_RESOURCE) install --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-ipp.png insensitive-ipp
 	$(XDG_ICON_RESOURCE) install --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-igg.png insensitive-igg
+	$(UPDATE_MIME_DATABASE) $(datadir)/mime
 
 uninstall-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_ICON_RESOURCE)
 	$(XDG_MIME) uninstall --novendor com.klausboldt.insensitive.mime.xml
@@ -65,3 +67,4 @@ uninstall-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_I
 	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-iss.png insensitive-iss
 	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-ipp.png insensitive-ipp
 	$(XDG_ICON_RESOURCE) uninstall --context mimetypes --size 256 icons/hicolor/256x256/mimetypes/insensitive-igg.png insensitive-igg
+	$(UPDATE_MIME_DATABASE) $(datadir)/mime

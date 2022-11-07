@@ -275,9 +275,6 @@ static void insensitive_window_init(InsensitiveWindow *self)
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
 
-	gtk_notebook_set_show_tabs(self->mainwindow_notebook, FALSE);
-	show_mainWindow_notebook_page(self, 1);
-
 	self->spin_checkbox_array = malloc(4 * sizeof(GtkToggleButton *));
 	self->spin_checkbox_array[0] = self->spin1_checkbox;
 	self->spin_checkbox_array[1] = self->spin2_checkbox;
@@ -487,6 +484,9 @@ static void insensitive_window_init(InsensitiveWindow *self)
     set_2D_mode(self, FALSE);
     show_spectrumParameters_textview(self, FALSE);
     update_spectrum_parameter_panel(self);
+
+	gtk_notebook_set_show_tabs(self->mainwindow_notebook, FALSE);
+	show_mainWindow_notebook_page(self, 1);
 }
 
 
@@ -646,8 +646,20 @@ void quit_insensitive(InsensitiveWindow *window)
 
 void show_mainWindow_notebook_page(InsensitiveWindow *self, unsigned int page)
 {
-    if (page < 4)
+	InsensitiveController *controller = self->controller;
+
+    if (page < 4) {
         gtk_notebook_set_current_page(self->mainwindow_notebook, page);
+
+		if (page == 1 && (insensitive_controller_get_isRecordingPulseSequence(controller)
+       					 || insensitive_controller_get_currentStepInPulseSequence(controller) > 0)
+   		    && !insensitive_controller_get_acquisitionIsInProgress(controller)) {
+    		gtk_widget_show(GTK_WIDGET(self->step_window));
+			gtk_widget_set_visible(self->stepWindow_button, !insensitive_controller_get_isRecordingPulseSequence(controller));
+		} else if (gtk_widget_is_visible(GTK_WIDGET(self->step_window))) {
+    		gtk_widget_hide(GTK_WIDGET(self->step_window));
+		}
+	}
 }
 
 
@@ -818,6 +830,7 @@ void set_user_controls_enabled(InsensitiveWindow *self, gboolean value)
 		gtk_widget_set_sensitive((GtkWidget *)self->relaxation_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->freeEvolution_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->gradient_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->step_button, FALSE);
 	} else {
 		gtk_widget_set_sensitive((GtkWidget *)self->pulse_button, TRUE);
 		if (insensitive_controller_allow_separate_shift_and_coupling(self->controller) && !self->controller->isRecordingPulseSequence) {
@@ -831,6 +844,7 @@ void set_user_controls_enabled(InsensitiveWindow *self, gboolean value)
 		gtk_widget_set_sensitive((GtkWidget *)self->relaxation_button, TRUE);
 		gtk_widget_set_sensitive((GtkWidget *)self->freeEvolution_button, TRUE);
 		gtk_widget_set_sensitive((GtkWidget *)self->gradient_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->step_button, TRUE);
 	}
 }
 
@@ -1064,6 +1078,10 @@ void on_acquire_button_clicked(GtkButton *button, gpointer user_data)
         start_progress_indicator(window);
         insensitive_controller_perform_acquisition(window->controller);
         enable_pulseSequence_play_button(window, FALSE);
+		if (insensitive_controller_get_currentStepInPulseSequence(window->controller)) {
+			insensitive_controller_set_currentStepInPulseSequence(window->controller, 0);
+			gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
+		}
         show_mainWindow_notebook_page(window, 3);
     }
 }
@@ -1080,8 +1098,6 @@ void on_undo_button_clicked(GtkButton *button, gpointer user_data)
 void on_notebook_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
-    InsensitiveController *controller = window->controller;
-	GtkNotebook *notebook = window->mainwindow_notebook;
     unsigned int page;
 
 	if (!strcmp(gtk_tool_button_get_label(toolbutton), "Spin System\0"))
@@ -1092,14 +1108,7 @@ void on_notebook_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_dat
 		page = 2;
 	else if (!strcmp(gtk_tool_button_get_label(toolbutton), "Spectrum\0"))
 		page = 3;
-    gtk_notebook_set_current_page(notebook, page);
-
-    if(page == 1 && (insensitive_controller_get_isRecordingPulseSequence(controller)
-                     || insensitive_controller_get_currentStepInPulseSequence(controller) > 0)
-       && !insensitive_controller_get_acquisitionIsInProgress(controller))
-        gtk_widget_show(GTK_WIDGET(window->step_window));
-    else
-        gtk_widget_hide(GTK_WIDGET(window->step_window));
+	show_mainWindow_notebook_page(window, page);
 }
 
 
@@ -2536,7 +2545,7 @@ void allow_spectrum_acquisition(InsensitiveWindow *window, gboolean value)
         gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, FALSE);
         insensitive_controller_set_detectionMethod(window->controller, None);
     } else {
-        gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, TRUE);
+        gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, value);
     }
     gtk_widget_set_sensitive((GtkWidget *)window->phaseCycles_combobox, value);
     //[acquire2DSpectrumButton setEnabled:value && [[evolutionTimesPopupButton selectedItem] tag] != 0];
@@ -3112,8 +3121,10 @@ void on_record_button_clicked(GtkButton *button, gpointer user_data)
 
     close_coherencePathway(window);
     insensitive_controller_toggle_recordingPulseSequence(window->controller);
-    if (insensitive_controller_get_isRecordingPulseSequence(window->controller))
+    if (insensitive_controller_get_isRecordingPulseSequence(window->controller)) {
         show_mainWindow_notebook_page(window, 1);
+		gtk_widget_show(GTK_WIDGET(window->step_window));
+	}
 }
 
 

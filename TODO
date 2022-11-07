@@ -1,12 +1,24 @@
-To Do:
+Roadmap for Insensitive (GTK)
+=============================
 
-- Energy level labels
-- Improve tutorial
-- Updates?
-- Hunt for memonry leaks
+Missing features not yet ported from the OSX version:
+-----------------------------------------------------
+- Energy level labels need to wrap if they are too long (use pango)
+- The tutorial needs to be adapted to the new Linux version
+- The application should look for available updates
 
 Known bugs:
-- a lot of memory leaks (e.g. during acquisition)
-- pulseArray and pathways not updated
-- animation/relaxation with animation checkboxes not correctly initialised
-- show real/imag/integral not set in controller when spectrum is opened
+-----------
+- A lot of memory leaks (valgrind --leak-check=full)
+- Coherence transfer is not updated when spin type is changed
+- Checkboxes are not set correctly on startup (pulseArray, relaxation, show real/imag/integral)
+
+Roadmap to version 1.0:
+-----------------------
+- Running versions for Windows, macOS (libwebkit2gtk needs to be replaced)
+
+Roadmap beyond version 1.0:
+---------------------------
+- Re-implement Presentation Mode (standard view as one of many presentations?)
+- Implement spins > 1/2
+- Irreducible spherical tensor operators (SpinDrops)
