@@ -6134,7 +6134,7 @@ void update_spectrum_parameter_panel(InsensitiveWindow *window)
 				LB = 1 / (2 * insensitive_settings_get_T2(window->controller->settings));
 				g_string_append_printf(parameterString, "\nLB %20.2f Hz", LB);
 			}
-			if (!(window->twoDimensionalSpectrum && i == 2)) {
+			if (!(window->twoDimensionalSpectrum && i == 1)) {
 				if (window->domainOf2DSpectrum == 3)
 					g_string_append(parameterString, "\nPH_mod               mc");
 				else {

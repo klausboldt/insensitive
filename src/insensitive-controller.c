@@ -3878,6 +3878,7 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
     gboolean channelI = FALSE, channelS = FALSE;
     gboolean iDecoupling = FALSE, sDecoupling = FALSE;
     gboolean f1Decoupling = FALSE, f2Decoupling = FALSE;
+	gboolean spinlock = FALSE;
     gboolean skip;
     unsigned int gradients = 0;
     float *gradientStrength;
@@ -3899,18 +3900,20 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
             // Check for the number of channels necessary
             for(i = 0; i < numberOfElements; i++) {
                 element = insensitive_pulsesequence_get_element_at_index(self->pulseSequence, i);
-                if(element->iDecoupling)
+				if(element->spinlock)
+                    spinlock = TRUE;
+                if(element->iDecoupling)// && !spinlock)
                     iDecoupling = TRUE;
-                if(element->sDecoupling)
+                if(element->sDecoupling)// && !spinlock)
                     sDecoupling = TRUE;
                 if(element->type == SequenceTypePulse
                    || (element->type == SequenceTypeEvolution && (element->iDecoupling || element->sDecoupling))
                    || (element->type == SequenceTypeFID && (element->iDecoupling || element->sDecoupling))) {
-                    if((element->activeISpins || element->selectiveIPulse) && !channelI) {
+                    if((element->activeISpins || element->selectiveIPulse) && !channelI && !spinlock && numberOfChannels < 2) {
                         channelI = TRUE;
                         numberOfChannels++;
                     }
-                    if((element->activeSSpins || element->selectiveSPulse) && !channelS) {
+                    if((element->activeSSpins || element->selectiveSPulse) && !channelS && !spinlock && numberOfChannels < 2) {
                         channelS = TRUE;
                         numberOfChannels++;
                     }
@@ -3918,8 +3921,9 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
                     gradientStrength[gradients] = element->secondParameter;
                     gradients++;
                 }
-                if(numberOfChannels == 2)
-                    break;
+                /*if(numberOfChannels == 2)
+                    break;*/
+				spinlock = FALSE;
             }
             // Determine frequency for f1
             if(lastElement->activeISpins) {
@@ -4192,6 +4196,8 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
     free(nuc);
     free(pulprog);
     free(fnmode);
+	if(takeDataFromPulseSequence && numberOfElements > 0)
+		free(gradientStrength);
     g_date_time_unref(date);
 
     return parameterString;
