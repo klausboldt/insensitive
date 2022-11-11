@@ -91,13 +91,15 @@ host_triplet = @host@
 bin_PROGRAMS = insensitive$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_compile_flag.m4 \
-	$(top_srcdir)/m4/ax_pthread.m4 $(top_srcdir)/m4/gettext.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/pkg.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_blas.m4 \
+	$(top_srcdir)/m4/ax_check_compile_flag.m4 \
+	$(top_srcdir)/m4/ax_lapack.m4 $(top_srcdir)/m4/ax_pthread.m4 \
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/iconv.m4 \
+	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/pkg.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -366,12 +368,6 @@ insensitive_SOURCES = \
 	insensitive-preferences.c insensitive-preferences.h \
 	levmarq.c levmarq.h
 
-
-#insensitive_CFLAGS = @GLIB_CFLAGS@ @GIO_CFLAGS@ @GTK3_CFLAGS@ @BLAS_CFLAGS@ @CBLAS_CFLAGS@ \
-#	@LAPACK_CFLAGS@ @FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @WEBKIT2GTK_CFLAGS@ @XML2_CFLAGS@
-#
-#insensitive_LDADD = @LIBINTL@ @GLIB_LIBS@ @GIO_LIBS@ @GTK3_LIBS@ @BLAS_LIBS@ @CBLAS_LIBS@ \
-#	@LAPACK_LIBS@ @FFTW3_LIBS@ @CAIRO_LIBS@ @WEBKIT2GTK_LIBS@ @XML2_LIBS@
 insensitive_CFLAGS = @GLIB_CFLAGS@ @GIO_CFLAGS@ @GTK3_CFLAGS@ \
 	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @WEBKIT2GTK_CFLAGS@ @XML2_CFLAGS@
 

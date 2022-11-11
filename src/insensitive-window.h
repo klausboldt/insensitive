@@ -557,6 +557,7 @@ int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, floa
 void on_pulseSequence_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 void draw_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+void create_graph_view(InsensitiveWindow *window, int surface_width, int surface_height);
 float contour_height(InsensitiveWindow *window, int x, int y, int maxX, int maxY, gboolean negativeValues);
 float contour_for_index(int index);
 void compute_contours(InsensitiveWindow *window, GPtrArray *contours, gboolean negativeValues);

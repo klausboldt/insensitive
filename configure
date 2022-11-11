@@ -9243,10 +9243,10 @@ if test "${with_blas+set}" = set; then :
 fi
 
 case $with_blas in
-	yes | "") ;;
-	no) ax_blas_ok=disable ;;
-	-* | */* | *.a | *.so | *.so.* | *.o) BLAS_LIBS="$with_blas" ;;
-	*) BLAS_LIBS="-l$with_blas" ;;
+  yes | "") ;;
+  no) ax_blas_ok=disable ;;
+  -* | */* | *.a | *.so | *.so.* | *.o) BLAS_LIBS="$with_blas" ;;
+  *) BLAS_LIBS="-l$with_blas" ;;
 esac
 
 # Get fortran linker names of BLAS functions to check for.
@@ -9295,10 +9295,10 @@ LIBS="$LIBS $FLIBS"
 # First, check BLAS_LIBS environment variable
 if test $ax_blas_ok = no; then
 if test "x$BLAS_LIBS" != x; then
-	save_LIBS="$LIBS"; LIBS="$BLAS_LIBS $LIBS"
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in $BLAS_LIBS" >&5
+  save_LIBS="$LIBS"; LIBS="$BLAS_LIBS $LIBS"
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in $BLAS_LIBS" >&5
 $as_echo_n "checking for $sgemm in $BLAS_LIBS... " >&6; }
-	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 /* Override any GCC internal prototype to avoid an error.
@@ -9331,18 +9331,18 @@ else
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_blas_ok" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_blas_ok" >&5
 $as_echo "$ax_blas_ok" >&6; }
-	LIBS="$save_LIBS"
+  LIBS="$save_LIBS"
 fi
 fi
 
 # BLAS linked to by default?  (happens on some supercomputers)
 if test $ax_blas_ok = no; then
-	save_LIBS="$LIBS"; LIBS="$LIBS"
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking if $sgemm is being linked in already" >&5
+  save_LIBS="$LIBS"; LIBS="$LIBS"
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking if $sgemm is being linked in already" >&5
 $as_echo_n "checking if $sgemm is being linked in already... " >&6; }
-	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 /* Override any GCC internal prototype to avoid an error.
@@ -9373,14 +9373,14 @@ if ac_fn_c_try_link "$LINENO"; then :
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_blas_ok" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_blas_ok" >&5
 $as_echo "$ax_blas_ok" >&6; }
-	LIBS="$save_LIBS"
+  LIBS="$save_LIBS"
 fi
 
 # BLAS in OpenBLAS library? (http://xianyi.github.com/OpenBLAS/)
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_openblas_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_openblas_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lopenblas" >&5
 $as_echo_n "checking for $sgemm in -lopenblas... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -9428,14 +9428,20 @@ eval ac_res=\$$as_ac_Lib
 $as_echo "$ac_res" >&6; }
 if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
   ax_blas_ok=yes
-			                BLAS_LIBS="-lopenblas"
+                      BLAS_LIBS="-lopenblas"
 fi
+
+  ac_fn_c_check_header_mongrel "$LINENO" "openblas/cblas.h" "ac_cv_header_openblas_cblas_h" "$ac_includes_default"
+if test "x$ac_cv_header_openblas_cblas_h" = xyes; then :
+  BLAS_CFLAGS="-I${includedir}/openblas -DOPENBLAS"
+fi
+
 
 fi
 
 # BLAS in ATLAS library? (http://math-atlas.sourceforge.net/)
 if test $ax_blas_ok = no; then
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for ATL_xerbla in -latlas" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ATL_xerbla in -latlas" >&5
 $as_echo_n "checking for ATL_xerbla in -latlas... " >&6; }
 if ${ac_cv_lib_atlas_ATL_xerbla+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -9573,7 +9579,7 @@ fi
 $as_echo "$ac_cv_lib_cblas_cblas_dgemm" >&6; }
 if test "x$ac_cv_lib_cblas_cblas_dgemm" = xyes; then :
   ax_blas_ok=yes
-			 BLAS_LIBS="-lcblas -lf77blas -latlas"
+       BLAS_LIBS="-lcblas -lf77blas -latlas"
 fi
 
 fi
@@ -9584,7 +9590,7 @@ fi
 
 # BLAS in PhiPACK libraries? (requires generic BLAS lib, too)
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_blas_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_blas_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lblas" >&5
 $as_echo_n "checking for $sgemm in -lblas... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -9736,11 +9742,11 @@ fi
 
 # BLAS in Intel MKL library?
 if test $ax_blas_ok = no; then
-	# MKL for gfortran
-	if test x"$ac_cv_fc_compiler_gnu" = xyes; then
-		# 64 bit
-		if test $host_cpu = x86_64; then
-			as_ac_Lib=`$as_echo "ac_cv_lib_mkl_gf_lp64_$sgemm" | $as_tr_sh`
+  # MKL for gfortran
+  if test x"$ac_cv_fc_compiler_gnu" = xyes; then
+    # 64 bit
+    if test $host_cpu = x86_64; then
+      as_ac_Lib=`$as_echo "ac_cv_lib_mkl_gf_lp64_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lmkl_gf_lp64" >&5
 $as_echo_n "checking for $sgemm in -lmkl_gf_lp64... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -9790,9 +9796,9 @@ if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
   ax_blas_ok=yes;BLAS_LIBS="-lmkl_gf_lp64 -lmkl_sequential -lmkl_core -lpthread"
 fi
 
-		# 32 bit
-		elif test $host_cpu = i686; then
-			as_ac_Lib=`$as_echo "ac_cv_lib_mkl_gf_$sgemm" | $as_tr_sh`
+    # 32 bit
+    elif test $host_cpu = i686; then
+      as_ac_Lib=`$as_echo "ac_cv_lib_mkl_gf_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lmkl_gf" >&5
 $as_echo_n "checking for $sgemm in -lmkl_gf... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -9842,12 +9848,12 @@ if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
   ax_blas_ok=yes;BLAS_LIBS="-lmkl_gf -lmkl_sequential -lmkl_core -lpthread"
 fi
 
-		fi
-	# MKL for other compilers (Intel, PGI, ...?)
-	else
-		# 64-bit
-		if test $host_cpu = x86_64; then
-			as_ac_Lib=`$as_echo "ac_cv_lib_mkl_intel_lp64_$sgemm" | $as_tr_sh`
+    fi
+  # MKL for other compilers (Intel, PGI, ...?)
+  else
+    # 64-bit
+    if test $host_cpu = x86_64; then
+      as_ac_Lib=`$as_echo "ac_cv_lib_mkl_intel_lp64_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lmkl_intel_lp64" >&5
 $as_echo_n "checking for $sgemm in -lmkl_intel_lp64... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -9897,9 +9903,9 @@ if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
   ax_blas_ok=yes;BLAS_LIBS="-lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread"
 fi
 
-		# 32-bit
-		elif test $host_cpu = i686; then
-			as_ac_Lib=`$as_echo "ac_cv_lib_mkl_intel_$sgemm" | $as_tr_sh`
+    # 32-bit
+    elif test $host_cpu = i686; then
+      as_ac_Lib=`$as_echo "ac_cv_lib_mkl_intel_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lmkl_intel" >&5
 $as_echo_n "checking for $sgemm in -lmkl_intel... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -9949,12 +9955,12 @@ if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
   ax_blas_ok=yes;BLAS_LIBS="-lmkl_intel -lmkl_sequential -lmkl_core -lpthread"
 fi
 
-		fi
-	fi
+    fi
+  fi
 fi
 # Old versions of MKL
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_mkl_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_mkl_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lmkl" >&5
 $as_echo_n "checking for $sgemm in -lmkl... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -10008,10 +10014,10 @@ fi
 
 # BLAS in Apple vecLib library?
 if test $ax_blas_ok = no; then
-	save_LIBS="$LIBS"; LIBS="-framework vecLib $LIBS"
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -framework vecLib" >&5
+  save_LIBS="$LIBS"; LIBS="-framework vecLib $LIBS"
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -framework vecLib" >&5
 $as_echo_n "checking for $sgemm in -framework vecLib... " >&6; }
-	cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 /* Override any GCC internal prototype to avoid an error.
@@ -10042,14 +10048,14 @@ if ac_fn_c_try_link "$LINENO"; then :
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_blas_ok" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_blas_ok" >&5
 $as_echo "$ax_blas_ok" >&6; }
-	LIBS="$save_LIBS"
+  LIBS="$save_LIBS"
 fi
 
 # BLAS in Alpha CXML library?
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_cxml_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_cxml_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lcxml" >&5
 $as_echo_n "checking for $sgemm in -lcxml... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -10103,7 +10109,7 @@ fi
 
 # BLAS in Alpha DXML library? (now called CXML, see above)
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_dxml_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_dxml_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -ldxml" >&5
 $as_echo_n "checking for $sgemm in -ldxml... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -10157,8 +10163,8 @@ fi
 
 # BLAS in Sun Performance library?
 if test $ax_blas_ok = no; then
-	if test "x$GCC" != xyes; then # only works with Sun CC
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for acosp in -lsunmath" >&5
+  if test "x$GCC" != xyes; then # only works with Sun CC
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for acosp in -lsunmath" >&5
 $as_echo_n "checking for acosp in -lsunmath... " >&6; }
 if ${ac_cv_lib_sunmath_acosp+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -10256,12 +10262,12 @@ fi
 
 fi
 
-	fi
+  fi
 fi
 
 # BLAS in SCSL library?  (SGI/Cray Scientific Library)
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_scs_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_scs_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lscs" >&5
 $as_echo_n "checking for $sgemm in -lscs... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -10315,7 +10321,7 @@ fi
 
 # BLAS in SGIMATH library?
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_complib.sgimath_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_complib.sgimath_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lcomplib.sgimath" >&5
 $as_echo_n "checking for $sgemm in -lcomplib.sgimath... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -10369,7 +10375,7 @@ fi
 
 # BLAS in IBM ESSL library? (requires generic BLAS lib, too)
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_blas_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_blas_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lblas" >&5
 $as_echo_n "checking for $sgemm in -lblas... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -10472,7 +10478,7 @@ fi
 
 # Generic BLAS library?
 if test $ax_blas_ok = no; then
-	as_ac_Lib=`$as_echo "ac_cv_lib_blas_$sgemm" | $as_tr_sh`
+  as_ac_Lib=`$as_echo "ac_cv_lib_blas_$sgemm" | $as_tr_sh`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $sgemm in -lblas" >&5
 $as_echo_n "checking for $sgemm in -lblas... " >&6; }
 if eval \${$as_ac_Lib+:} false; then :
@@ -11171,6 +11177,7 @@ fi
 
 
 
+CFLAGS="$CFLAGS $BLAS_CFLAGS"
 LIBS="$LAPACK_LIBS $BLAS_LIBS $FLIBS $LIBS"
 
 ac_config_headers="$ac_config_headers insensitive-config.h"
