@@ -34,10 +34,10 @@ insensitive_LDADD = @LIBINTL@ @GLIB_LIBS@ @GIO_LIBS@ @GTK3_LIBS@ \
 insensitive_LDFLAGS = -rdynamic
 
 insensitive-resources.c: insensitive.gresource.xml
-	@GLIB_COMPILE_RESOURCES@ --target=$@  --generate-source --c-name insensitive $<
+	@GLIB_COMPILE_RESOURCES@ --sourcedir=$(top_builddir)/src --target=$@ --generate-source --c-name insensitive $<
 
 insensitive-resources.h: insensitive.gresource.xml
-	@GLIB_COMPILE_RESOURCES@ --target=$@ --generate-header --c-name insensitive $<
+	@GLIB_COMPILE_RESOURCES@ --sourcedir=$(top_builddir)/src --target=$@ --generate-header --c-name insensitive $<
 
 EXTRA_DIST = insensitive.gresource.xml \
 	insensitive-composer-row.ui \

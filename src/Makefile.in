@@ -941,10 +941,10 @@ uninstall-am: uninstall-binPROGRAMS
 
 
 insensitive-resources.c: insensitive.gresource.xml
-	@GLIB_COMPILE_RESOURCES@ --target=$@  --generate-source --c-name insensitive $<
+	@GLIB_COMPILE_RESOURCES@ --sourcedir=$(top_builddir)/src --target=$@ --generate-source --c-name insensitive $<
 
 insensitive-resources.h: insensitive.gresource.xml
-	@GLIB_COMPILE_RESOURCES@ --target=$@ --generate-header --c-name insensitive $<
+	@GLIB_COMPILE_RESOURCES@ --sourcedir=$(top_builddir)/src --target=$@ --generate-header --c-name insensitive $<
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

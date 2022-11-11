@@ -72,7 +72,7 @@ with a newer version of the program cannot be opened with older (macOS)
 versions of Insensitive.
 
 For any further question on the usage of Insensitive, or to report bugs or 
-make suggestions, please contact [Klaus Boldt](https://www.chemie.uni-konstanz.de/boldt/).
+make suggestions, please contact [Klaus Boldt](mailto:klaus.boldt@uni-rostock.de).
 
 ## Third Party Software
 
