@@ -216,7 +216,6 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
     gboolean B0 = gtk_toggle_button_get_active(self->B0_checkbox);
     gboolean B1 = gtk_toggle_button_get_active(self->B1_checkbox);
 
-
     // Rotating Frame
     if (!gtk_toggle_button_get_active(self->rotatingFrame_checkbox)) {
         if (B0 || B1) {
@@ -235,10 +234,11 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
     for (spin = 0; spin < self->numberOfSpins; spin++) {
         v = g_ptr_array_index(self->spinSet, spin);
         if (B1) {
-            cos_phi_alpha = cos(v->phase_alpha);
-            sin_phi_alpha = sin(v->phase_alpha);
-            cos_phi_beta = cos(v->phase_beta);
-            sin_phi_beta = sin(v->phase_beta);
+			/* B₁ field is applied */
+    		cos_phi_alpha = cos(v->phase_alpha);
+    		sin_phi_alpha = sin(v->phase_alpha);
+    		cos_phi_beta = cos(v->phase_beta);
+    		sin_phi_beta = sin(v->phase_beta);
             re1 = v->A_alpha * cos_fa * cos_phi_alpha + v->A_beta * sin_fa * sin_phi_beta;
             im1 = v->A_alpha * cos_fa * sin_phi_alpha - v->A_beta * sin_fa * cos_phi_beta;
             re2 = v->A_alpha * sin_fa * sin_phi_alpha + v->A_beta * cos_fa * cos_phi_beta;
@@ -255,10 +255,10 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
                 v->phase_beta -= 2 * M_PI;
             if(v->phase_beta < 0.0)
                 v->phase_beta += 2 * M_PI;
-        }
-        if (!B1) {
+        } else {
+			/* B₀ field or no field is applied */
             double temp;
-            for (i = 0; i < gtk_adjustment_get_value(self->T1_adjustment); i++) {
+			for (i = 0; i < gtk_adjustment_get_value(self->T1_adjustment); i++) {
                 random = (float)rand() / (float)RAND_MAX;
                 if (!B0 && !B1)
                     kT = 0.0;
@@ -275,6 +275,18 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
                     v->A_alpha = (temp <= 0.0) ? 0.0 : sqrt(temp);
                     v->A_beta = (temp <= 0.0) ? 1.0 : sqrt(1 - temp);
                 }
+				/*
+				 * There is a bug here: T₁ relaxation messes with the phase coherence.
+				 * There is no issue if spin-lattice relaxation occurs when the spin
+				 * ensemble is in the Iz state. Relaxation from -Iz to Iz leads to a
+				 * phase shift of π between individual spins and ensemble vector when
+				 * the next pulse transforms the state to the x,y plane, while relax-
+				 * ation from Ix or Iy back to Iz leads to a total loss of coherence.
+				 *
+				 * Setting the phase difference to π fixes it, although I do not
+				 * understand why, yet.
+				 */
+				v->phase_alpha = M_PI - v->phase_beta;
             }
             for (i = 0; i < gtk_adjustment_get_value(self->T2_adjustment); i++) {
                 random = (0.5 - (float)rand() / (float)RAND_MAX) * phaseShift;
@@ -387,12 +399,7 @@ void create_superposition_state(GtkButton *button, gpointer user_data)
 }
 
 
-/*- (NSMutableArray *)spinSet
-{
-    return spinSet;
-}
-
-
+/*
 - (void)toggleSingleSpinEvolutionTimer:(BOOL)newState
 {
     if(newState == YES) {
@@ -416,7 +423,6 @@ void create_superposition_state(GtkButton *button, gpointer user_data)
     else
         [self toggleSingleSpinEvolutionTimer:NO];
 }
-
 */
 
 
@@ -485,7 +491,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
         origin_x = 41.0;
 	    height = 71.0;
         origin_y = gtk_widget_get_allocated_height(widget) - height;
-	    width = gtk_widget_get_allocated_width(widget) - origin_x - 7.0;
+	    width = gtk_widget_get_allocated_width(widget) - 2 * origin_x; //gtk_widget_get_allocated_width(widget) - origin_x - 7.0;
         centre_x = origin_x + width / 2;
 	    centre_y = origin_y + height / 2;
         top = origin_y + 25.0;
@@ -1017,7 +1023,6 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 			cairo_stroke(cr);
 		}
 		// Draw front vectors
-		cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 1.0);
 		cairo_set_line_width(cr, 1.0);
 		cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 1.0);
 		for (i = 0; i < window->numberOfSpins; i++) {

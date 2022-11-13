@@ -15,7 +15,7 @@ Known bugs:
 
 Roadmap to version 1.0:
 -----------------------
-- Running versions for Windows, macOS (libwebkit2gtk needs to be replaced)
+- Running versions for Windows (MSYS2), macOS (jhbuild)
 
 Roadmap beyond version 1.0:
 ---------------------------

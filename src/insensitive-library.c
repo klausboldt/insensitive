@@ -1773,8 +1773,7 @@ void longitudinal_relaxation(DSPComplex *matrix, unsigned int size, int spin_typ
 		spins = lb(size);
 		size_square = size * size;
 		equilibrium = malloc(size_square * sizeof(DSPComplex));
-		set_thermal_equilibrium(equilibrium, spins, spin_type_array,
-					gyroI, gyroS);
+		set_thermal_equilibrium(equilibrium, spins, spin_type_array, gyroI, gyroS);
 		z = complex_rect(-1, 0);
 		cblas_cscal(size_square, &z, equilibrium, 1);
 		difference = malloc(size_square * sizeof(DSPComplex));
