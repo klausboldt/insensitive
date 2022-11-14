@@ -3986,7 +3986,7 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
         g_string_append(parameterString, "F2");
     g_string_append(parameterString, " - Acquisition Parameters\n");
     g_string_append_printf(parameterString, "Date_          %4d%02d%02d\n", g_date_time_get_year(date), g_date_time_get_month(date), g_date_time_get_day_of_month(date));
-    g_string_append_printf(parameterString, "Time              %2d.%2d\n", g_date_time_get_hour(date), g_date_time_get_minute(date));
+    g_string_append_printf(parameterString, "Time              %02d.%02d\n", g_date_time_get_hour(date), g_date_time_get_minute(date));
     g_string_append(parameterString, "INSTRUM           spect\n");
     g_string_append(parameterString, "PROBHD    BBFO BB Z-GRD\n");
     g_string_append_printf(parameterString, "PULPROG %15.20s\n", pulprog);
