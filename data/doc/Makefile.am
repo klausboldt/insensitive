@@ -29,6 +29,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	ecos3ph.html \
 	energy_levels.html \
 	equation_of_motion.html \
+	equilibrium.png \
 	fid.html \
 	flip_angle.html \
 	formula_2ixiy_matrix.png \
@@ -214,8 +215,6 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	img_ft_sinc.png \
 	img_gradient.png \
 	img_jresolved_skewed.png \
-	img_main_window.png \
-	img_matrix_composer_ipa.png \
 	img_matrix_composer.png \
 	img_noe.png \
 	img_noe_roe.png \
@@ -223,10 +222,8 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	img_poplenotation.png \
 	img_powder_pattern.png \
 	img_presentation.png \
-	img_pulsesequence_ipa.png \
 	img_pulse_sequence.png \
 	img_pulsesequence.png \
-	img_pulse_shaper_ipa.png \
 	img_pulse_shaper.png \
 	img_relaxation_times.png \
 	img_resolution.png \
@@ -246,17 +243,13 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	img_spectrometer.png \
 	img_spectrum_1D.png \
 	img_spectrum_2D.png \
-	img_spectrumdisplay_2D_ipa.png \
 	img_spectrumdisplay_2D.png \
-	img_spectrumdisplay_ipa.png \
 	img_spectrumdisplay.png \
 	img_spherical_harmonics.png \
 	img_spinlock.png \
 	img_spin_network_editor.png \
-	img_spinstate_ipa.png \
 	img_spinstate.png \
 	img_spin_system_homonuclear.png \
-	img_spinsystem_ipa.png \
 	img_spinsystem.png \
 	img_tabbar.png \
 	img_three_level.png \
@@ -368,6 +361,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	t1ir1d.html \
 	trosy.html \
 	two_dimensional_spectra.html \
+	undo.png \
 	vector_model.html \
 	window_function.html \
 	zfilter.html \

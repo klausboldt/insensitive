@@ -25,7 +25,7 @@
             7 buttons at the bottom of the window allow to manipulate the spin state using <a href="pulse.html">
             pulses</a>, free evolution, and <a href="gradients.html">gradients</a>.
             </p>
-            <center><img src="img_spinstate.png" border="1" style="width:100%; max-width:637px;"></center>
+            <center><img src="img_spinstate.png" border="1" style="width:100%; max-width:1163px;"></center>
             
             <p><b>Vector Representation</b></p>
             <p>
@@ -61,7 +61,7 @@
             </p>
             <p><b>Actions on the spin state</b></p>
             <p>
-            Manipulation of the spin state can be performed using the seven buttons at the bottom of the main window.
+            Manipulation of the spin state can be performed using the nine buttons at the bottom of the main window.
             The following functions are available:
             </p>
             <p>
@@ -117,6 +117,18 @@
             Clicking "Stop" will immediately stop the acquisition.
             </p>
             <p>
+            <p>
+            <img src="equilibrium.png" align="left" height="32" width="32" hspace="5">
+            The <b>Equilibrium</b> button resets the spin state back to thermal equilibrium for a new experiment.
+            All spins will return to their <op>Iz</op> state with excess population of the <i>&alpha;</i> state.
+            </p>
+            <p>
+            <p>
+            <img src="undo.png" align="left" height="32" width="32" hspace="5">
+            Finally, <b>Undo</b> takes the spin state back to the previous value, undoing the last applied action
+            applied via the action buttons or command line. Clicking undo a second time will redo that action.
+            </p>
+            <p>
             More advanced manipulation is possible using the <a href="commandline.html">command line</a>. This way
             one can directly apply <a href="product_operator_formalism.html">product operators</a> to the spin system,
             e.g. "<op>0.5 I1y</op>" for a 45&deg; pulse with a phase of 90&deg; on I spin 1, "<op>0.25 I2z</op>" for
@@ -129,7 +141,7 @@
             state directly. A linear combination of cartesian product operators can be constructed and set up as the
             spin state by clicking "Update Matrix".
             </p>
-            <center><img src="img_matrix_composer.png" style="width:100%; max-width:381px;"></center>
+            <center><img src="img_matrix_composer.png" border="1" style="width:100%; max-width:390px;"></center>
             <p>
             Add an operator by clicking "Add Operator", remove an operator by selecting the trash symbol on the right
             hand side of the operator row. Change an operator by selecting the single spin components from the popup
