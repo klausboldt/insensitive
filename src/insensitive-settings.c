@@ -341,7 +341,7 @@ void insensitive_settings_load_defaults(InsensitiveSettings *self)
 		self->playSoundAfterAcquisition = FALSE;
 		g_clear_error(&err);
 	}
-	self->vectorDiagramType = (enum VectorDiagramType)g_key_file_get_integer(keyfile, group, "", NULL);
+	self->vectorDiagramType = (enum VectorDiagramType)g_key_file_get_integer(keyfile, group, "2DVectorMode", NULL);
 	if (err != NULL) {
 		self->vectorDiagramType = VectorDiagram3D;
 		g_clear_error(&err);

@@ -84,7 +84,7 @@ struct _InsensitiveSettings
 	gboolean color1stOrderCoherences;
 	enum MatrixDisplayType matrixDisplayType;
 
-    // Spectrum settings;
+    // Spectrum settings
     gboolean showGrid;
 
 	// More options
