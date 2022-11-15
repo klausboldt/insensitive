@@ -423,6 +423,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	formula_omega_eff.png \
 	formula_omega_zero.png \
 	formula_operator_group.png \
+	formula_phase_shift.png \
 	formula_planck_energy.png \
 	formula_precession_matrix.png \
 	formula_principal_cs_tensor.png \

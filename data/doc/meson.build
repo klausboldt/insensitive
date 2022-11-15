@@ -117,6 +117,7 @@ foreach file: [
   'formula_omega_eff.png',
   'formula_omega_zero.png',
   'formula_operator_group.png',
+  'formula_phase_shift.png',
   'formula_planck_energy.png',
   'formula_precession_matrix.png',
   'formula_principal_cs_tensor.png',

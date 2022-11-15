@@ -67,34 +67,41 @@
             number of possible states. Relaxation is therefore often treated in a semi-classical 
             approximation.<br>
             <br>
-            Each normalised basis vector corresponds to a pure eigenstate, which is fully 
-            <a href="populations.html">populated</a>.
+            Each normalised basis vector of the Zeeman basis corresponds to a pure eigenstate, which
+            is fully <a href="populations.html">populated</a>.
             </p>
             <center><img src="formula_basis_vectors.png" height="44" width="181"></center>
             <p>
-            If the system is in a superposition state, the vector components are the coefficients in a 
-            linear combination of eigenstates. The absolute value of a vector must always be unity to 
-            fulfil the requirements of quantum mechanics that the described object exists.
+            If the system is in a superposition state, the vector components are the coefficients
+            <i>c<sub>n</sub></i> that express the amplitude (weight) of each eigenstate in a linear
+            combination. The absolute value of a vector must always be unity to fulfil the requirements
+            of quantum mechanics that the described object exists with probability 1. The coefficients
+            are generally complex numbers <i>a</i>+i<i>b</i> = <i>A</i>&#183;e<sup>i&phi;</sup> that
+            have a phase &phi; in addition to the amplitude <i>A</i>.
             </p>
             <center><img src="formula_vector_states.png" height="44" width="169"></center>
             <p>
-            <a href="coherences.html">Coherences</a> are superposition states, with a defined
-            <a href="phase.html">phase</a> relationship between the contributing states. The phase factor
-            is generally a complex number. Its absolute value does not carry an important, physical
-            meaning: application of an operator for which the state vector is an eigenvector, it yields
-            the same observable, independent of the phase shift from multiplication with a constant
-            phase factor e<sup>i&phi;</sup>. However, the coherence is reflected in a defined phase
-            difference &Delta;&phi; between two eigenstates of the superposition.
+            <a href="coherences.html">Coherences</a> are superposition states with a defined
+            <a href="phase.html">phase</a> relationship between the contributing states.
             </p>
             <center><img src="formula_coherence_vectors.png" height="122" width="293"></center>
             <p>
-            In the superposition states that represent magnetisation in x, -y, -x, and y direction,
-            the phase offsets &Delta;&phi; between the &alpha; and &beta; states are 0, &pi;/2, &pi;,
-            and -&pi;/2, respectively. Contrary to the <a href="density_matrix.html">density matrix</a>
-            these angles do not have a straightforward, geometrical interpretation in cartesian
-            coordinates, because the adhere to the symmetry of the SU(2) special unitary
-            <a href="group_theory.html">group</a>. However, they do fulfil the eigenvalue equations
-            for the respective cartesian <a href="matrix_operators.html">operators</a>.
+            The phase factor is generally a complex number. Its absolute value does not carry an
+            important, physical meaning: a phase shift from multiplication with a constant phase
+            factor e<sup>i&phi;</sup> does not change the eigenvalue of a state vector for a
+            specific operator.
+            </p>
+            <center><img src="formula_phase_shift.png" height="44" width="225"></center>
+            <p>
+            However, coherence is reflected in a defined phase difference &Delta;&phi; between two
+            coefficients of the superposition. In the superposition states that represent magnetisation
+            in <i>x</i>, <i>-y</i>, <i>-x</i>, and <i>y</i> direction, the phase offsets &Delta;&phi;
+            between the <i>&alpha;</i> and <i>&beta;</i> states are 0, &pi;/2, &pi;, and -&pi;/2,
+            respectively. Contrary to the complex off-diagonal elements of the
+            <a href="density_matrix.html">density matrix</a> these angles do not have a straightforward,
+            geometrical interpretation in cartesian coordinates, because the adhere to the symmetry of
+            the SU(2) special unitary <a href="group_theory.html">group</a>. However, they do fulfil
+            the eigenvalue equations for the respective cartesian <a href="matrix_operators.html">operators</a>.
             </p>
             <center><img src="formula_hilbert_eigenvalue.png" height="85" width="137"></center>
             <p>
