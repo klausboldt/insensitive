@@ -8208,6 +8208,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	unsigned int i, spinTypeIsS;
 	float x, y, z, temp, slimness;
+	float thickness_scaling;
 	static const float circleShift = 2.54;
 	float width, height, origin_x, origin_y;
 	float xyPlane_origin_x, xyPlane_origin_y;
@@ -8229,6 +8230,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	origin_x = 0.5 * gtk_widget_get_allocated_width(widget);
 	origin_y = 0.5 * gtk_widget_get_allocated_height(widget);
 	slimness = (width < 300) ? 1.0 : 0.0;
+	thickness_scaling = (width < 350) ? 1.0 : width / 325;
 
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 	gtk_render_background(context, cr, 0, 0, width, height);
@@ -8263,7 +8265,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 			x = x * cos45 - y * sin45;
 			cairo_line_to(cr, origin_x + 0.5 * temp * width, origin_y - 0.1 * x * height);
 		}
-		cairo_set_line_width(cr,  1);
+		cairo_set_line_width(cr, thickness_scaling);
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 0.25);
 		cairo_stroke(cr);
 	}
@@ -8280,16 +8282,16 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 			if (((x < y + 0.01) && (x > y - 0.01) && !showXYPlane)
 			    // Or if x- or y-axis hides vectors in 2D-view
 			    || (((x < 0.01) && (x > -0.01)) || (((y < 0.01) && (y > -0.01)) && showXYPlane)))
-				cairo_set_line_width(cr,  4 - slimness);
+				cairo_set_line_width(cr,  (4 - slimness) * thickness_scaling);
 			else
-				cairo_set_line_width(cr,  2 - slimness);
+				cairo_set_line_width(cr,  (2 - slimness) * thickness_scaling);
 			draw_vector_to_context(settings, cr, width, height, origin_x, origin_y, x, y, z,
 					       spinTypeIsS, spinVector->spinType[i], spinVector->selected[i]);
 		}
 	}
 	// Create -z-axis
 	if (!showXYPlane) {
-		cairo_set_line_width(cr,  1);
+		cairo_set_line_width(cr, thickness_scaling);
 		cairo_move_to(cr, origin_x, origin_y);
 		cairo_line_to(cr, origin_x, origin_y + 0.5 * height);
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 1.0);
@@ -8301,13 +8303,13 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		y = spinVector->y[i];
 		z = spinVector->z[i];
 		if (!showXYPlane)
-			cairo_set_line_width(cr,  3 - slimness);
+			cairo_set_line_width(cr,  (3 - slimness) * thickness_scaling);
 		else {
 			// If x- or y-axis hides vectors in 2D-view
 			if (((x < 0.01) && (x > -0.01)) || ((y < 0.01) && (y > -0.01)))
-				cairo_set_line_width(cr,  4 - slimness);
+				cairo_set_line_width(cr,  (4 - slimness) * thickness_scaling);
 			else
-				cairo_set_line_width(cr,  2 - slimness);
+				cairo_set_line_width(cr,  (2 - slimness) * thickness_scaling);
 		}
 		if (z < -0.005 && (x >= -0.005 || y >= -0.005))
 			draw_vector_to_context(settings, cr, width, height, origin_x, origin_y, x, y, z,
@@ -8317,7 +8319,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		draw_grapefruit_paths(controller, FALSE, TRUE, cr, width, height, origin_x, origin_y, spinTypeIsS);
 	}
 	// Create x,y-plane
-	cairo_set_line_width(cr,  1);
+	cairo_set_line_width(cr, thickness_scaling);
 	xyPlane_origin_x = origin_x;
 	xyPlane_origin_y = 0.4 * height + 5.0;
 	if (showXYPlane) {
@@ -8326,7 +8328,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 1.0);
 		cairo_stroke(cr);
 	}
-	cairo_set_line_width(cr,  4 - slimness);
+	cairo_set_line_width(cr,  (4 - slimness) * thickness_scaling);
 	if (showXYPlane) {
 		// Create x-axis
 		cairo_move_to(cr, origin_x - 0.352 * width, origin_y - 0.352 * height);
@@ -8334,11 +8336,11 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		// Create y-axis
 		cairo_move_to(cr, origin_x + 0.352 * width, origin_y - 0.352 * height);
 		cairo_line_to(cr, origin_x - 0.352 * width, origin_y + 0.352 * height);
-		cairo_set_line_width(cr,  1);
+		cairo_set_line_width(cr, thickness_scaling);
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 1.0);
 		cairo_stroke(cr);
 	} else {
-		cairo_set_line_width(cr,  1);
+		cairo_set_line_width(cr, thickness_scaling);
 		// Create x-axis
 		cairo_move_to(cr, origin_x - 0.35 * width, origin_y - 0.35 * 0.2 * height);
 		cairo_line_to(cr, origin_x, origin_y);
@@ -8369,12 +8371,12 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		if (z >= -0.005 && x < -0.005 && y < -0.005) {
 			// Draw thick line if vector is hidden behind z-axis
 			if (showXYPlane)
-				cairo_set_line_width(cr,  3 - slimness);
+				cairo_set_line_width(cr,  (3 - slimness) * thickness_scaling);
 			else {
 				if ((x < y + 0.01) && (x > y - 0.01))
-					cairo_set_line_width(cr,  4 - slimness);
+					cairo_set_line_width(cr,  (4 - slimness) * thickness_scaling);
 				else
-					cairo_set_line_width(cr,  2 - slimness);
+					cairo_set_line_width(cr,  (2 - slimness) * thickness_scaling);
 			}
 			draw_vector_to_context(settings, cr, width, height, origin_x, origin_y, x, y, z,
 					       spinTypeIsS, spinVector->spinType[i], spinVector->selected[i]);
@@ -8382,7 +8384,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	}
 	// Create +z-axis
 	if (!showXYPlane) {
-		cairo_set_line_width(cr,  1);
+		cairo_set_line_width(cr, thickness_scaling);
 		cairo_move_to(cr, origin_x, origin_y - 0.5 * height);
 		cairo_line_to(cr, origin_x, origin_y);
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 1.0);
@@ -8393,7 +8395,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		x = spinVector->x[i];
 		y = spinVector->y[i];
 		z = spinVector->z[i];
-		cairo_set_line_width(cr,  3 - slimness);
+		cairo_set_line_width(cr,  (3 - slimness) * thickness_scaling);
 		if (z >= -0.005 && (x >= -0.005 || y >= -0.005))
 			draw_vector_to_context(settings, cr, width, height, origin_x, origin_y, x, y, z,
 					       spinTypeIsS, spinVector->spinType[i], spinVector->selected[i]);
@@ -8403,7 +8405,7 @@ gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	}
 	// Create sphere for grapefruit diagram (front half)
 	if (!showXYPlane) {
-		cairo_set_line_width(cr,  1);
+		cairo_set_line_width(cr, thickness_scaling);
 		xyPlane_origin_x = origin_x;
 		xyPlane_origin_y = origin_y;
 		cairo_arc(cr, xyPlane_origin_x, xyPlane_origin_y, MIN(width, height) / 2.0, 0, 2.0 * G_PI);
