@@ -6812,8 +6812,72 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 		}
 	}
 	// HELP
-	else if (!g_strcmp0(word[0], "help") && number_of_words == 1) {
-        on_tutorial_toolbutton_clicked(NULL, window);
+	else if (!g_strcmp0(word[0], "help")) {
+		if (number_of_words < 2)
+			on_tutorial_toolbutton_clicked(NULL, window);
+		else {
+			const gchar * const *dirs = g_get_system_data_dirs();
+			gchar *filename, *html_file = NULL;
+			gchar *line_buffer, *next_line, *text_buffer = NULL;
+			gsize text_buffer_len;
+			GError *err = NULL;
+			size_t n = 0;
+			int i;
+			GString *search_string;
+			gboolean keyword_found = FALSE;
+
+			search_string = g_string_new(word[1]);
+			for (i = 2; i < number_of_words; i++)
+				g_string_append_printf(search_string, "_%s", word[i]);
+			while (insensitive_g_string_replace(search_string, "-", "_", search_string));
+			g_string_ascii_down(search_string);
+
+			while (*dirs != NULL && !keyword_found) {
+    			filename = g_build_filename(*dirs++, "insensitive", "doc", "help_keywords", NULL);
+				if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
+					if (g_file_get_contents(filename, &text_buffer, &text_buffer_len, &err)) {
+						line_buffer = text_buffer;
+						while (line_buffer && !keyword_found) {
+  							next_line = strchr(line_buffer, '\n');
+  							if (next_line)
+							  *next_line = '\0';  // temporarily terminate the current line
+  							if (strstr(line_buffer, search_string->str) != NULL) {
+								html_file = malloc(256 * sizeof(gchar));
+         						strcpy(html_file, strtok(line_buffer, " \t\n"));
+								keyword_found = TRUE;
+							}
+  							if (next_line)
+							  *next_line = '\n';  // then restore newline-char, just to be tidy
+  							line_buffer = next_line ? (next_line + 1) : NULL;
+						}
+						g_free(text_buffer);
+					}
+				}
+				g_free(filename);
+			}
+			g_string_free(search_string, TRUE);
+
+			if (keyword_found) {
+				InsensitiveTutorial *tutorial_window = g_object_new(INSENSITIVE_TYPE_TUTORIAL,
+		                       										"default-width", 600,
+		                       										"default-height", 700,
+		                       										NULL);
+
+				gtk_window_set_title((GtkWindow *)tutorial_window, "Tutorial");
+				gtk_window_present((GtkWindow *)tutorial_window);
+				load_arbitrary_page(html_file, tutorial_window);
+				g_free(html_file);
+			} else {
+				dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+												GTK_DIALOG_DESTROY_WITH_PARENT,
+												GTK_MESSAGE_INFO,
+												GTK_BUTTONS_OK,
+												"The entered keyword or phrase was not found in the help index database.");
+	    		gtk_window_set_title(GTK_WINDOW(dialog), "Unknown keyword");
+				gtk_dialog_run(GTK_DIALOG(dialog));
+				gtk_widget_destroy(dialog);
+			}
+		}
 	}
 	// IJ
 	else if (!g_strcmp0(word[0], "ij") && number_of_words == 1) {

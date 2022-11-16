@@ -143,3 +143,21 @@ void load_index_page(GtkToolItem *button, gpointer user_data)
 		g_free(filename);
 	}
 }
+
+
+void load_arbitrary_page(gchar *html_filename, gpointer user_data)
+{
+    InsensitiveTutorial *window = (InsensitiveTutorial *)user_data;
+    gchar *filename;
+    const gchar * const *dirs = g_get_system_data_dirs();
+
+    while (*dirs != NULL) {
+        filename = g_build_filename(*dirs++, "insensitive", "doc", html_filename, NULL);
+        if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
+			webkit_web_view_load_uri(window->tutorial_webview, g_filename_to_uri(filename, NULL, NULL));
+            g_free(filename);
+            break;
+        }
+		g_free(filename);
+	}
+}

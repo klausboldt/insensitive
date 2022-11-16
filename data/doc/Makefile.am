@@ -182,6 +182,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	gradients.html \
 	group_theory.html \
 	gyromagnetic_ratio.html \
+	help_keywords \
 	hilbert_space.html \
 	hmbclpndqf.html \
 	hmqcqf.html \

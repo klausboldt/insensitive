@@ -181,6 +181,7 @@ foreach file: [
   'gradients.html',
   'group_theory.html',
   'gyromagnetic_ratio.html',
+  'help_keywords',
   'hilbert_space.html',
   'hmbclpndqf.html',
   'hmqcqf.html',

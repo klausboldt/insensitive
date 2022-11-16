@@ -48,3 +48,4 @@ void load_default_page(GtkToolItem *button, gpointer user_data);
 void load_manual_page(GtkToolItem *button, gpointer user_data);
 void load_cmd_page(GtkToolItem *button, gpointer user_data);
 void load_index_page(GtkToolItem *button, gpointer user_data);
+void load_arbitrary_page(gchar *html_file, gpointer user_data);
