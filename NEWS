@@ -2,10 +2,15 @@ Version 0.9.34 included the following new features and fixes:
 
 - The code base was ported to use the GTK+ 3.0 libraries instead of Cocoa
 - 1D Spectra can now be plotted with a baseline near zero on the y axis
+- Vector model line thickness scales with window size
 - Improved scaling of the density matrix
 - Separated magnitude calculation and symmetrisation of 2D spectra
 - Corrected the widths of the Gauss and sinc pulse shape
 - Improved the display of pulse shapes when off-resonance effects are ignored
+- Only one "Open File" dialog for all file types
+- Export spectrum als PNG image file
+- Fixed serious bugs in the quantum mechanics of the Single Spins module
+- Fixed minor bugs in the spectrum report
 - The presentation mode has been temporarily disabled
 
 Version 0.9.33 included the following new features and fixes:

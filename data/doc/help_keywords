@@ -7,7 +7,7 @@ chemical_shift.html						chemical_shift chemical_shift_anisotropy
 coherence_pathways.html					coherence_pathways coherence_pathway pathways pathway
 coherences.html							coherence coherences
 coherence_transfer.html					coherence_transfer
-commandline.html						cmd command commandline
+commandline.html						cmd command commandline command_line commands
 convolution_theorem.html				convolution convolution_theorem
 cosyqf.html								cosy correlation_spectroscopy
 coupling.html							j_coupling scalar_coupling coupling
