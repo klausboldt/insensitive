@@ -12,6 +12,17 @@ nb {
   position: fixed;
 }
 
+th {
+  font-family: Trebuchet MS;
+  font-size: 15px;
+  font-style: italic;
+}
+
+td {
+  font-family: Trebuchet MS;
+  font-size: 15px;
+}
+
 h1 {
   font-family: Trebuchet MS;
   font-size: 26px;
