@@ -2531,7 +2531,7 @@ void insensitive_controller_perform_pulseSequence(InsensitiveController *self)
 }
 
 
-gpointer insensitive_controller_perform_pulseSequence_in_background(gpointer data)
+gboolean insensitive_controller_perform_pulseSequence_in_background(gpointer data)
 {
     InsensitiveController *self = (InsensitiveController *)data;
     SequenceElement *element, *fidElement = insensitive_pulsesequence_get_last_element(self->pulseSequence);
@@ -2632,10 +2632,12 @@ gpointer insensitive_controller_perform_pulseSequence_in_background(gpointer dat
     self->fid.realp = accumulatedFID.realp;
     self->fid.imagp = accumulatedFID.imagp;
     gdk_threads_add_idle((GSourceFunc)insensitive_controller_finish_perform_pulseSequence, self);
+
+	return FALSE;
 }
 
 
-gpointer insensitive_controller_finish_perform_pulseSequence(gpointer data)
+gboolean insensitive_controller_finish_perform_pulseSequence(gpointer data)
 {
     InsensitiveController *self = (InsensitiveController *)data;
 
@@ -2676,6 +2678,8 @@ gpointer insensitive_controller_finish_perform_pulseSequence(gpointer data)
     set_allSpins_checkbox((InsensitiveWindow *)self->displayController, insensitive_settings_get_allSpinsSelected(self->settings));
 
     show_spectrumParameters_textview((InsensitiveWindow *)self->displayController, TRUE);
+
+	return FALSE;
 }
 
 
@@ -3616,7 +3620,7 @@ void insensitive_controller_interrupt_coherencePathway_calculation(InsensitiveCo
 }
 
 
-gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
+gboolean insensitive_controller_calculate_coherencePathway(gpointer data)
 {
     /*
      *  for p spins and n pulses in the sequence there are (2p+1)ⁿ possible coherence pathways
@@ -3845,6 +3849,8 @@ gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
     free(identity);
 
     self->interruptCoherencePathwayCalculation = TRUE;
+
+	return FALSE;
 }
 
 
@@ -4388,7 +4394,7 @@ void insensitive_controller_perform_2D_acquisition(InsensitiveController *self)
 }
 
 
-gpointer insensitive_controller_perform_2D_acquisition_in_background(gpointer data)
+gboolean insensitive_controller_perform_2D_acquisition_in_background(gpointer data)
 {
 	InsensitiveController *self = (InsensitiveController *)data;
 
@@ -4716,18 +4722,22 @@ gpointer insensitive_controller_perform_2D_acquisition_in_background(gpointer da
 		self->spectrumDataAvailable = FALSE;
 	}
 	gdk_threads_add_idle((GSourceFunc)insensitive_controller_finish_perform_2D_pulseSequence, self);
+
+	return FALSE;
 }
 
 
-void insensitive_controller_update_interface_during_2D_acquisition(gpointer data)
+gboolean insensitive_controller_update_interface_during_2D_acquisition(gpointer data)
 {
     InsensitiveController *self = (InsensitiveController *)data;
 
     add_to_spectrum_progressbar((InsensitiveWindow *)self->displayController, ++self->acquisitionProgress);
+
+	return FALSE;
 }
 
 
-void insensitive_controller_finish_perform_2D_pulseSequence(gpointer data)
+gboolean insensitive_controller_finish_perform_2D_pulseSequence(gpointer data)
 {
     InsensitiveController *self = (InsensitiveController *)data;
 
@@ -4757,6 +4767,8 @@ void insensitive_controller_finish_perform_2D_pulseSequence(gpointer data)
     set_sSpins_checkbox((InsensitiveWindow *)self->displayController, insensitive_settings_get_allSSpinsSelected(self->settings));
     set_allSpins_checkbox((InsensitiveWindow *)self->displayController, insensitive_settings_get_allSpinsSelected(self->settings));
     show_mainWindow_notebook_page((InsensitiveWindow *)self->displayController, 3);
+
+	return FALSE;
 }
 
 
