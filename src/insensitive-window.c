@@ -6817,12 +6817,12 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 			on_tutorial_toolbutton_clicked(NULL, window);
 		else {
 			const gchar * const *dirs = g_get_system_data_dirs();
-			gchar *filename, *html_file = NULL;
+			gchar *filename, **keyword, *html_file = NULL;
 			gchar *line_buffer, *next_line, *text_buffer = NULL;
 			gsize text_buffer_len;
 			GError *err = NULL;
 			size_t n = 0;
-			int i;
+			int i, keyword_index;
 			GString *search_string;
 			gboolean keyword_found = FALSE;
 
@@ -6831,7 +6831,6 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 				g_string_append_printf(search_string, "_%s", word[i]);
 			while (insensitive_g_string_replace(search_string, "-", "_", search_string));
 			g_string_ascii_down(search_string);
-
 			while (*dirs != NULL && !keyword_found) {
     			filename = g_build_filename(*dirs++, "insensitive", "doc", "help_keywords", NULL);
 				if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
@@ -6841,11 +6840,16 @@ void execute_command(GtkEntry *entry, gpointer user_data)
   							next_line = strchr(line_buffer, '\n');
   							if (next_line)
 							  *next_line = '\0';  // temporarily terminate the current line
-  							if (strstr(line_buffer, search_string->str) != NULL) {
-								html_file = malloc(256 * sizeof(gchar));
-         						strcpy(html_file, strtok(line_buffer, " \t\n"));
-								keyword_found = TRUE;
+							keyword = g_strsplit_set(line_buffer, " \t\n", 20);
+							for (keyword_index = 1; keyword[keyword_index] != NULL; keyword_index++) {
+								if (!strcmp(keyword[keyword_index], search_string->str)) {
+									keyword_found = TRUE;
+									html_file = malloc(256 * sizeof(gchar));
+									strcpy(html_file, keyword[0]);
+									break;
+								}
 							}
+							g_strfreev(keyword);
   							if (next_line)
 							  *next_line = '\n';  // then restore newline-char, just to be tidy
   							line_buffer = next_line ? (next_line + 1) : NULL;
