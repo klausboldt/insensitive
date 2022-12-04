@@ -2,6 +2,11 @@
 <!-- Generated with glade 3.39.0 -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
+  <object class="GtkImage" id="Image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">insensitive-tutorial</property>
+  </object>
   <object class="GtkImage" id="TBHideParameters">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
@@ -206,6 +211,16 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="TinyTriangleLeft">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">insensitive-triangleleft</property>
+  </object>
+  <object class="GtkImage" id="TinyTriangleRight">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">insensitive-triangleright</property>
+  </object>
   <object class="GtkMenu">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
@@ -396,11 +411,6 @@
     <property name="step-increment">0.01</property>
     <property name="page-increment">10</property>
     <signal name="value-changed" handler="on_gaussian_window_function_adjusted" object="InsensitiveWindow" swapped="no"/>
-  </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="icon-name">insensitive-tutorial</property>
   </object>
   <object class="GtkListStore" id="phaseCycling_liststore">
     <columns>
@@ -840,7 +850,7 @@ ph31=0 2 0 2 0 0 0 0
                         <property name="label" translatable="yes">Tutorial...</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="image">image1</property>
+                        <property name="image">Image1</property>
                         <property name="use-stock">False</property>
                         <signal name="activate" handler="on_tutorial_toolbutton_clicked" object="InsensitiveWindow" swapped="no"/>
                       </object>
@@ -3383,6 +3393,162 @@ ph31=0 2 0 2 0 0 0 0
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkSpinner" id="acquisition_spinner">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="padding">6</property>
+                        <property name="pack-type">end</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="expandPulse_button">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="halign">center</property>
+                        <property name="image">TinyTriangleRight</property>
+                        <property name="relief">none</property>
+                        <property name="always-show-image">True</property>
+                        <signal name="clicked" handler="on_expandPulse_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse90x_button">
+                        <property name="label" translatable="yes">90° x</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse90x_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse90y_button">
+                        <property name="label" translatable="yes">90° y</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse90y_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse90minusx_button">
+                        <property name="label" translatable="yes">90°-x</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse90minusx_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse90minusy_button">
+                        <property name="label" translatable="yes">90°-y</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse90minusy_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse180x_button">
+                        <property name="label" translatable="yes">180° x</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse180x_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse180y_button">
+                        <property name="label" translatable="yes">180° y</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse180y_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">8</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse180minusx_button">
+                        <property name="label" translatable="yes">180°-x</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse180minusx_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">9</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pulse180minusy_button">
+                        <property name="label" translatable="yes">180°-y</property>
+                        <property name="width-request">53</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <signal name="clicked" handler="on_pulse180minusy_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">10</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="contractPulse_button">
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="image">TinyTriangleLeft</property>
+                        <property name="relief">none</property>
+                        <signal name="clicked" handler="on_contractPulse_button_clicked" object="InsensitiveWindow" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">11</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkButton" id="chemicalShift_button">
                         <property name="label" translatable="yes">Chemical Shift</property>
                         <property name="name">chemicalShift_button</property>
@@ -3396,7 +3562,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="position">12</property>
                       </packing>
                     </child>
                     <child>
@@ -3413,7 +3579,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">2</property>
+                        <property name="position">13</property>
                       </packing>
                     </child>
                     <child>
@@ -3430,7 +3596,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">3</property>
+                        <property name="position">14</property>
                       </packing>
                     </child>
                     <child>
@@ -3447,7 +3613,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">4</property>
+                        <property name="position">15</property>
                       </packing>
                     </child>
                     <child>
@@ -3464,7 +3630,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">5</property>
+                        <property name="position">16</property>
                       </packing>
                     </child>
                     <child>
@@ -3481,7 +3647,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">6</property>
+                        <property name="position">17</property>
                       </packing>
                     </child>
                     <child>
@@ -3498,7 +3664,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">7</property>
+                        <property name="position">18</property>
                       </packing>
                     </child>
                     <child>
@@ -3515,20 +3681,7 @@ ph31=0 2 0 2 0 0 0 0
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">8</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinner" id="acquisition_spinner">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="padding">6</property>
-                        <property name="pack-type">end</property>
-                        <property name="position">9</property>
+                        <property name="position">19</property>
                       </packing>
                     </child>
                   </object>

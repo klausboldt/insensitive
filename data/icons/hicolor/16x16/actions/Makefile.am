@@ -19,7 +19,9 @@ icon_DATA = insensitive-acquisition.png \
 	insensitive-reset.png \
 	insensitive-step.png \
 	insensitive-stop.png \
-	insensitive-undo.png
+	insensitive-undo.png \
+	insensitive-triangleleft.png \
+	insensitive-triangleright.png
 
 EXTRA_DIST = $(icon_DATA)
 

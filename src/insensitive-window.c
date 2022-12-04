@@ -102,6 +102,16 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, iSpinVector_drawingarea);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, sSpinVector_drawingarea);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, matrix_drawingarea);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse90x_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse90y_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse90minusx_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse90minusy_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse180x_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse180y_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse180minusx_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse180minusy_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, expandPulse_button);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, contractPulse_button);
 
 	/* Settings */
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseEnvelope_combobox);
@@ -988,6 +998,132 @@ void on_pulse_button_clicked(GtkButton *button, gpointer user_data)
 	start_progress_indicator(window);
 	insensitive_controller_perform_pulse_animated(window->controller, TRUE);
 	/*}*/
+}
+
+
+void on_pulse90x_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 90, 0, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse90y_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 90, 90, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse90minusx_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 90, 180, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse90minusy_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 90, 270, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse180x_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 180, 0, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse180y_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 180, 90, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse180minusx_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 180, 180, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_pulse180minusy_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	start_progress_indicator(window);
+	insensitive_controller_perform_pulse(window->controller, 180, 270, TRUE);
+	on_contractPulse_button_clicked(window->contractPulse_button, window);
+}
+
+
+void on_expandPulse_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->chemicalShift_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->coupling_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->relaxation_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->freeEvolution_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->expandPulse_button), FALSE);
+
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90x_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90y_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90minusx_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90minusy_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180x_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180y_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180minusx_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180minusy_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->contractPulse_button), TRUE);
+}
+
+
+void on_contractPulse_button_clicked(GtkButton *button, gpointer user_data)
+{
+	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->chemicalShift_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->coupling_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->relaxation_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->freeEvolution_button), TRUE);
+	gtk_widget_set_visible(GTK_WIDGET(window->expandPulse_button), TRUE);
+
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90x_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90y_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90minusx_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse90minusy_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180x_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180y_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180minusx_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->pulse180minusy_button), FALSE);
+	gtk_widget_set_visible(GTK_WIDGET(window->contractPulse_button), FALSE);
 }
 
 

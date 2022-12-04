@@ -59,6 +59,9 @@ struct _InsensitiveWindow {
 
 	GtkTextBuffer       *productoperator_textbuffer;
 	GtkButton           *pulse_button;
+    GtkButton           *pulse90x_button, *pulse90y_button, *pulse90minusx_button, *pulse90minusy_button;
+    GtkButton           *pulse180x_button, *pulse180y_button, *pulse180minusx_button, *pulse180minusy_button;
+    GtkButton           *expandPulse_button, *contractPulse_button;
 	GtkButton           *chemicalShift_button;
 	GtkButton           *coupling_button;
 	GtkButton           *relaxation_button;
@@ -264,6 +267,16 @@ void spin_number_was_changed(InsensitiveWindow *window);
 /* Input Actions */
 void on_equilibrium_button_clicked(GtkButton *button, gpointer user_data);
 void on_pulse_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse90x_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse90y_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse90minusx_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse90minusy_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse180x_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse180y_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse180minusx_button_clicked(GtkButton *button, gpointer user_data);
+void on_pulse180minusy_button_clicked(GtkButton *button, gpointer user_data);
+void on_expandPulse_button_clicked(GtkButton *button, gpointer user_data);
+void on_contractPulse_button_clicked(GtkButton *button, gpointer user_data);
 void on_chemicalShift_button_clicked(GtkButton *button, gpointer user_data);
 void on_coupling_button_clicked(GtkButton *button, gpointer user_data);
 void on_relaxation_button_clicked(GtkButton *button, gpointer user_data);

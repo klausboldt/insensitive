@@ -4,7 +4,7 @@ Roadmap for Insensitive (GTK)
 Missing features not yet ported from the OSX version:
 -----------------------------------------------------
 - Energy level labels need to wrap if they are too long (use pango)
-- The tutorial needs to be adapted to the new Linux version
+- Phase correction should be possible in F1 for 2D spectra
 - The application should look for available updates
 
 Known bugs:
