@@ -835,14 +835,36 @@ void set_user_controls_enabled(InsensitiveWindow *self, gboolean value)
 {
 	if (value == FALSE) {
 		gtk_widget_set_sensitive((GtkWidget *)self->pulse_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90x_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90y_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90minusx_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90minusy_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180x_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180y_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180minusx_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180minusy_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->expandPulse_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->contractPulse_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->chemicalShift_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->coupling_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->relaxation_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->freeEvolution_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->gradient_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->equilibrium_button, FALSE);
+		gtk_widget_set_sensitive((GtkWidget *)self->undo_button, FALSE);
 		gtk_widget_set_sensitive((GtkWidget *)self->step_button, FALSE);
 	} else {
 		gtk_widget_set_sensitive((GtkWidget *)self->pulse_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90x_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90y_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90minusx_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse90minusy_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180x_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180y_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180minusx_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->pulse180minusy_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->expandPulse_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->contractPulse_button, TRUE);
 		if (insensitive_controller_allow_separate_shift_and_coupling(self->controller) && !self->controller->isRecordingPulseSequence) {
 			gtk_widget_set_sensitive((GtkWidget *)self->chemicalShift_button, TRUE);
 			if (self->controller->spinSystem->spins > 1)
@@ -854,6 +876,8 @@ void set_user_controls_enabled(InsensitiveWindow *self, gboolean value)
 		gtk_widget_set_sensitive((GtkWidget *)self->relaxation_button, TRUE);
 		gtk_widget_set_sensitive((GtkWidget *)self->freeEvolution_button, TRUE);
 		gtk_widget_set_sensitive((GtkWidget *)self->gradient_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->equilibrium_button, TRUE);
+		gtk_widget_set_sensitive((GtkWidget *)self->undo_button, TRUE);
 		gtk_widget_set_sensitive((GtkWidget *)self->step_button, TRUE);
 	}
 }
@@ -2672,7 +2696,7 @@ void allow_spectrum_acquisition(InsensitiveWindow *window, gboolean value)
     gtk_widget_set_sensitive((GtkWidget *)window->record_button, value);
     if (value) {
         gtk_button_set_label(window->play_button, "Play");
-        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-play", 24, GTK_ICON_LOOKUP_FORCE_REGULAR);
+        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-play", 16, GTK_ICON_LOOKUP_FORCE_REGULAR);
         gtk_button_set_image(window->play_button, gtk_image_new_from_file(gtk_icon_info_get_filename(icon_info)));
         g_clear_object(&icon_info);
     }
@@ -3274,7 +3298,7 @@ void on_play_button_clicked(GtkButton *button, gpointer user_data)
     if(insensitive_controller_get_acquisitionIsInProgress(window->controller)) {
         on_acquire_button_clicked(window->acquire_button, window);
         gtk_button_set_label(button, "Play");
-        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-play", 24, GTK_ICON_LOOKUP_FORCE_REGULAR);
+        icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-play", 16, GTK_ICON_LOOKUP_FORCE_REGULAR);
         gtk_button_set_image(button, gtk_image_new_from_file(gtk_icon_info_get_filename(icon_info)));
         g_clear_object(&icon_info);
     } else {
@@ -3291,7 +3315,7 @@ void on_play_button_clicked(GtkButton *button, gpointer user_data)
         }
         if(insensitive_pulsesequence_get_last_element(window->controller->pulseSequence)->type == SequenceTypeFID) {
             gtk_button_set_label(button, "Stop");
-            icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-stop", 24, GTK_ICON_LOOKUP_FORCE_REGULAR);
+            icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-stop", 16, GTK_ICON_LOOKUP_FORCE_REGULAR);
             gtk_button_set_image(button, gtk_image_new_from_file(gtk_icon_info_get_filename(icon_info)));
             g_clear_object(&icon_info);
         }
@@ -3310,7 +3334,7 @@ void on_step_button_clicked(GtkButton *button, gpointer user_data)
     if(insensitive_pulsesequence_get_number_of_elements(pulsesequence) > 0) {
         if(insensitive_pulsesequence_get_element_at_index(pulsesequence, controller->currentStepInPulseSequence)->type == SequenceTypeFID) {
             gtk_button_set_label(window->play_button, "Stop");
-            icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-stop", 24, GTK_ICON_LOOKUP_FORCE_REGULAR);
+            icon_info = gtk_icon_theme_lookup_icon(icon_theme, "insensitive-stop", 16, GTK_ICON_LOOKUP_FORCE_REGULAR);
             gtk_button_set_image(window->play_button, gtk_image_new_from_file(gtk_icon_info_get_filename(icon_info)));
             g_clear_object(&icon_info);
             start_progress_indicator(window);
