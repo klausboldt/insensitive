@@ -3,7 +3,7 @@
 //  Insensitive
 //
 //  Created by Klaus Boldt on 16.11.11.
-//  Copyright (c) 2009-2021 Klaus Boldt. All rights reserved.
+//  Copyright (c) 2009-2023 Klaus Boldt. All rights reserved.
 //
 
 #include "insensitive.h"

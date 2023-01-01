@@ -46,8 +46,8 @@ ul {
   font-size: 15px;
 }
 
-typewriter {
-  font-family: courier;
+.typewriter p{
+  font-family: monospace;
   font-size: 14px;
 }
 

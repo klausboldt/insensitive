@@ -82,6 +82,6 @@ Insensitive makes use of the Levenberg-Marquardt fitting algorithm written by
 
 ## License
 
-Copyright (C) 2009-2022 Klaus Boldt
+Copyright (C) 2009-2023 Klaus Boldt
 
 Licensed under the MIT License.
