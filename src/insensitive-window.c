@@ -7430,6 +7430,25 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 		}
 		on_relaxation_button_clicked(window->relaxation_button, window);
 	}
+    // RESET
+	else if (!g_strcmp0(word[0], "reset") && number_of_words == 1) {
+	    dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+                            		    GTK_MESSAGE_QUESTION,
+                            			GTK_BUTTONS_NONE,
+                            			"Do you want to reset all parameters and settings to the default values?");
+		gtk_dialog_add_buttons(GTK_DIALOG(dialog),
+                  			   "Cancel", 0,
+							   "Reset", 1, NULL);
+		gtk_window_set_title(GTK_WINDOW(dialog), "Reset all settings?");
+		if (gtk_dialog_run(GTK_DIALOG(dialog)) == 1) {
+		    InsensitivePreferences *preferences;
+		    preferences = g_object_new(INSENSITIVE_TYPE_PREFERENCES, NULL);
+			insensitive_preferences_set_controller(preferences, window);
+			on_reset_button_clicked(NULL, preferences);
+		    gtk_widget_destroy(GTK_WIDGET(preferences));
+		}
+		gtk_widget_destroy(dialog);
+	}
 	// SETRES
 	else if (!g_strcmp0(word[0], "setres") && number_of_words == 1) {
         on_preferences_menuitem_activate(NULL, window);
