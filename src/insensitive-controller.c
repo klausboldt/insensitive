@@ -1627,79 +1627,76 @@ void gradientEvent(gpointer user_data)
 gboolean animationTimerEvent(gpointer user_data)
 {
 	InsensitiveController *self = (InsensitiveController *)user_data;
-    InsensitiveSpinSystem *spinsystem = self->spinSystem;
-    InsensitiveSettings *settings = self->settings;
-    unsigned int steps = 6;
-    unsigned int dataPoints = insensitive_settings_get_dataPoints(settings);
-    float delay = insensitive_settings_get_delay(settings);
-    float time = insensitive_settings_get_dwellTime(settings) / steps;
-    gboolean spinlock = insensitive_settings_get_spinlock(settings);
+	InsensitiveSpinSystem *spinsystem = self->spinSystem;
+	InsensitiveSettings *settings = self->settings;
+	unsigned int dataPoints = insensitive_settings_get_dataPoints(settings);
+	unsigned int steps = self->acquisitionIsInProgress ? 1 : 6;
+	float delay = insensitive_settings_get_delay(settings);
+	float time = insensitive_settings_get_dwellTime(settings) / steps;
+	gboolean spinlock = insensitive_settings_get_spinlock(settings);
 
-    if(!self->operationIsInProgress && (!self->haltAnimation || self->acquisitionIsInProgress)) {
-        if(self->acquisitionIsInProgress && self->dwellTimeFraction == 0) {
-            insensitive_controller_acquire_dataPoint(self);
-            if(self->recordedDataPointsInFID == dataPoints) {
-                self->acquisitionTime = (float)g_get_monotonic_time() - self->acquisitionTime;
-                if(self->spectrumReport != NULL)
-                    g_string_free(self->spectrumReport, TRUE);
-                self->spectrumReport = insensitive_controller_create_spectrumReport(self, self->acquisitionAfterPulseSequence);
-                self->acquisitionAfterPulseSequence = FALSE;
-            }
-            set_complex_spectrum((InsensitiveWindow *)self->displayController,
-                                 self->fid,
-                                 self->recordedDataPointsInFID,
-                                 dataPoints);
-            if(!self->acquisitionIsInProgress && self->recordedDataPointsInFID == dataPoints)
-                show_spectrumParameters_textview((InsensitiveWindow *)self->displayController, TRUE);
-        } else if(insensitive_spinsystem_get_firstgradientpulseissued(spinsystem)) {
-            // Save the gradient action for the dwell time only
-            insensitive_settings_set_delay(settings, time);
-            insensitive_spinsystem_add_gradient_action(self->spinSystem, SequenceTypeEvolution, self->settings);
-            insensitive_settings_set_delay(settings, delay);
-        }
-        if(spinlock)
-            insensitive_spinsystem_switchtospinlockmode(spinsystem, TRUE);
-        insensitive_spinsystem_chemicalshift(spinsystem, time, insensitive_settings_get_dephasingJitter(settings));
-        if((insensitive_settings_get_iDecoupling(settings) || insensitive_settings_get_sDecoupling(settings)) && ! spinlock) {
-            insensitive_spinsystem_jcoupling(spinsystem,
-                                             time / 2,
-                                             insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
-            insensitive_spinsystem_perform_decoupling(spinsystem,
-                                                      insensitive_settings_get_iDecoupling(settings),
-                                                      insensitive_settings_get_sDecoupling(settings),
-                                                      insensitive_settings_get_phase(settings));
-            insensitive_spinsystem_jcoupling(spinsystem,
-                                             time / 2,
-                                             insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
-        } else
-            insensitive_spinsystem_jcoupling(spinsystem,
-                                             time,
-                                             insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
-        if(insensitive_settings_get_relaxationWithEvolution(settings)) {
-            if(insensitive_settings_get_dipolarRelaxation(settings) && (insensitive_spinsystem_get_spins(spinsystem) > 1)) {
-                if(spinlock)
-                    insensitive_spinsystem_transversedipolarrelaxation(spinsystem, time, insensitive_settings_get_correlationTime(settings));
-                else
-                    insensitive_spinsystem_dipolarrelaxation(spinsystem, time, insensitive_settings_get_correlationTime(settings));
-            } else {
-                insensitive_spinsystem_simplerelaxation(spinsystem, time, insensitive_settings_get_T1(settings), insensitive_settings_get_T2(settings), spinlock);
-            }
-        }
-        if(spinlock)
-            insensitive_spinsystem_switchtospinlockmode(spinsystem, FALSE);
-        if(!self->acquisitionIsInProgress)
-            insensitive_controller_add_to_grapefruit_path(self);
-        else if(insensitive_controller_get_grapefruit_path(self)->len > 0)
-            insensitive_controller_initialise_grapefruit_path(self);
-        if(self->dwellTimeFraction == 0)
-            spin_state_was_changed((InsensitiveWindow *)self->displayController);
-        self->dwellTimeFraction++;
-        if(self->dwellTimeFraction == steps) {
-            self->dwellTimeFraction = 0;
-        }
-    } /*else {
-        return G_SOURCE_CONTINUE; //G_SOURCE_REMOVE; <- That would cause animation to be stopped instead of interrupted!
-    }*/
+	if (!self->operationIsInProgress && (!self->haltAnimation || self->acquisitionIsInProgress)) {
+		if (self->acquisitionIsInProgress) {
+		    if (self->dwellTimeFraction == 0) {
+			    insensitive_controller_acquire_dataPoint(self);
+			    set_complex_spectrum((InsensitiveWindow *)self->displayController,
+					                  self->fid,
+					                  self->recordedDataPointsInFID,
+					                  dataPoints);
+			}
+			if (self->recordedDataPointsInFID == dataPoints) {
+				self->acquisitionTime = (float)g_get_monotonic_time() - self->acquisitionTime;
+				if (self->spectrumReport != NULL)
+					g_string_free(self->spectrumReport, TRUE);
+				self->spectrumReport = insensitive_controller_create_spectrumReport(self, self->acquisitionAfterPulseSequence);
+				self->acquisitionAfterPulseSequence = FALSE;
+			    if (!self->acquisitionIsInProgress)
+				    show_spectrumParameters_textview((InsensitiveWindow *)self->displayController, TRUE);
+			}
+		} else if (insensitive_spinsystem_get_firstgradientpulseissued(spinsystem)) {
+			// Save the gradient action for the dwell time only
+			insensitive_settings_set_delay(settings, time);
+			insensitive_spinsystem_add_gradient_action(self->spinSystem, SequenceTypeEvolution, self->settings);
+			insensitive_settings_set_delay(settings, delay);
+		}
+		if (spinlock)
+			insensitive_spinsystem_switchtospinlockmode(spinsystem, TRUE);
+		insensitive_spinsystem_chemicalshift(spinsystem, time, insensitive_settings_get_dephasingJitter(settings));
+		if ((insensitive_settings_get_iDecoupling(settings) || insensitive_settings_get_sDecoupling(settings)) && !spinlock) {
+			insensitive_spinsystem_jcoupling(spinsystem,
+							                 time / 2,
+							                 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+			insensitive_spinsystem_perform_decoupling(spinsystem,
+								                      insensitive_settings_get_iDecoupling(settings),
+								                      insensitive_settings_get_sDecoupling(settings),
+								                      insensitive_settings_get_phase(settings));
+			insensitive_spinsystem_jcoupling(spinsystem,
+							                 time / 2,
+							                 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+		} else
+			insensitive_spinsystem_jcoupling(spinsystem,
+							                 time,
+							                 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+		if (insensitive_settings_get_relaxationWithEvolution(settings)) {
+			if (insensitive_settings_get_dipolarRelaxation(settings) && (insensitive_spinsystem_get_spins(spinsystem) > 1)) {
+				if (spinlock)
+					insensitive_spinsystem_transversedipolarrelaxation(spinsystem, time, insensitive_settings_get_correlationTime(settings));
+				else
+					insensitive_spinsystem_dipolarrelaxation(spinsystem, time, insensitive_settings_get_correlationTime(settings));
+			} else {
+				insensitive_spinsystem_simplerelaxation(spinsystem, time, insensitive_settings_get_T1(settings), insensitive_settings_get_T2(settings), spinlock);
+			}
+		}
+		if (spinlock)
+			insensitive_spinsystem_switchtospinlockmode(spinsystem, FALSE);
+		if (!self->acquisitionIsInProgress)
+			insensitive_controller_add_to_grapefruit_path(self);
+		else if (insensitive_controller_get_grapefruit_path(self)->len > 0)
+			insensitive_controller_initialise_grapefruit_path(self);
+		g_idle_add((GSourceFunc)spin_state_was_changed, (InsensitiveWindow *)self->displayController);
+	    if (++(self->dwellTimeFraction) == steps)
+		    self->dwellTimeFraction = 0;
+	}
 	return G_SOURCE_CONTINUE;
 }
 
@@ -2552,7 +2549,6 @@ gboolean insensitive_controller_perform_pulseSequence_in_background(gpointer dat
     }
     for (i = 0; i < self->phaseCycles; i++) {
         insensitive_spinsystem_return_to_thermal_equilibrium(self->spinSystem);
-
         receiverPhase = complex_rect(cos(atof(g_ptr_array_index(self->phaseCyclingArray, phaseCyclingIndex)) / 180 * M_PI),
                                      -sin(atof(g_ptr_array_index(self->phaseCyclingArray, phaseCyclingIndex)) / 180 * M_PI));
         phaseCyclingIndex++;

@@ -428,41 +428,78 @@ float insensitive_pulsesequence_perform_actions_on_spinsystem(InsensitivePulseSe
 			steps = (element->time - rest) / dwellTime;
 			// Perform step of rest
 			if (rest != 0) {
-				insensitive_spinsystem_chemicalshift(spinsystem, rest, insensitive_settings_get_dephasingJitter(settings));
+				insensitive_spinsystem_chemicalshift(spinsystem,
+													 rest,
+													 insensitive_settings_get_dephasingJitter(settings));
 				if ((element->iDecoupling || element->sDecoupling) && !element->spinlock) {
-					insensitive_spinsystem_jcoupling(spinsystem, rest / 2, insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
-					insensitive_spinsystem_perform_decoupling(spinsystem, element->iDecoupling, element->sDecoupling, element->secondParameter);
-					insensitive_spinsystem_jcoupling(spinsystem, rest / 2, insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+					insensitive_spinsystem_jcoupling(spinsystem,
+													 rest / 2,
+													 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+					insensitive_spinsystem_perform_decoupling(spinsystem,
+															  element->iDecoupling,
+															  element->sDecoupling,
+															  element->secondParameter);
+					insensitive_spinsystem_jcoupling(spinsystem,
+													 rest / 2,
+													 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
 				} else
-					insensitive_spinsystem_jcoupling(spinsystem, rest, insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+					insensitive_spinsystem_jcoupling(spinsystem,
+													 rest,
+													 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
 				if (insensitive_settings_get_relaxationWithEvolution(settings)) {
 					if (insensitive_settings_get_dipolarRelaxation(settings) && (spins > 1)) {
 						if (element->spinlock)
-							insensitive_spinsystem_transversedipolarrelaxation(spinsystem, rest, insensitive_settings_get_correlationTime(settings));
+							insensitive_spinsystem_transversedipolarrelaxation(spinsystem,
+																			   rest,
+																			   insensitive_settings_get_correlationTime(settings));
 						else
-							insensitive_spinsystem_dipolarrelaxation(spinsystem, rest, insensitive_settings_get_correlationTime(settings));
+							insensitive_spinsystem_dipolarrelaxation(spinsystem,
+																	 rest,
+																	 insensitive_settings_get_correlationTime(settings));
 					} else
-						insensitive_spinsystem_simplerelaxation(spinsystem, rest, insensitive_settings_get_T1(settings), insensitive_settings_get_T2(settings), element->spinlock);
+						insensitive_spinsystem_simplerelaxation(spinsystem,
+																rest,
+																insensitive_settings_get_T1(settings),
+																insensitive_settings_get_T2(settings),
+																element->spinlock);
 				}
 			}
 			// Perform in steps of dwell time
 			for (s = 0; s < steps; s++) {
-				insensitive_spinsystem_chemicalshift(spinsystem, dwellTime, insensitive_settings_get_dephasingJitter(settings));
-
+				insensitive_spinsystem_chemicalshift(spinsystem,
+													 dwellTime,
+													 insensitive_settings_get_dephasingJitter(settings));
 				if ((element->iDecoupling || element->sDecoupling) && !element->spinlock) {
-					insensitive_spinsystem_jcoupling(spinsystem, dwellTime / 2, insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
-					insensitive_spinsystem_perform_decoupling(spinsystem, element->iDecoupling, element->sDecoupling, element->secondParameter);
-					insensitive_spinsystem_jcoupling(spinsystem, dwellTime / 2, insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+					insensitive_spinsystem_jcoupling(spinsystem,
+													 dwellTime / 2,
+													 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+					insensitive_spinsystem_perform_decoupling(spinsystem,
+															  element->iDecoupling,
+															  element->sDecoupling,
+															  element->secondParameter);
+					insensitive_spinsystem_jcoupling(spinsystem,
+													 dwellTime / 2,
+													 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
 				} else
-					insensitive_spinsystem_jcoupling(spinsystem, dwellTime, insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
+					insensitive_spinsystem_jcoupling(spinsystem,
+													 dwellTime,
+													 insensitive_settings_get_strongCoupling(settings) ? StrongCouplingMode : WeakCouplingMode);
 				if (insensitive_settings_get_relaxationWithEvolution(settings)) {
 					if (insensitive_settings_get_dipolarRelaxation(settings) && (spins > 1)) {
 						if (element->spinlock)
-							insensitive_spinsystem_transversedipolarrelaxation(spinsystem, dwellTime, insensitive_settings_get_correlationTime(settings));
+							insensitive_spinsystem_transversedipolarrelaxation(spinsystem,
+																			   dwellTime,
+																			   insensitive_settings_get_correlationTime(settings));
 						else
-							insensitive_spinsystem_dipolarrelaxation(spinsystem, dwellTime, insensitive_settings_get_correlationTime(settings));
+							insensitive_spinsystem_dipolarrelaxation(spinsystem,
+																	 dwellTime,
+																	 insensitive_settings_get_correlationTime(settings));
 					} else
-						insensitive_spinsystem_simplerelaxation(spinsystem, dwellTime, insensitive_settings_get_T1(settings), insensitive_settings_get_T2(settings), element->spinlock);
+						insensitive_spinsystem_simplerelaxation(spinsystem,
+																dwellTime,
+																insensitive_settings_get_T1(settings),
+																insensitive_settings_get_T2(settings),
+																element->spinlock);
 				}
 			}
 			if (element->spinlock)
