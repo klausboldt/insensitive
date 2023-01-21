@@ -112,6 +112,7 @@ foreach file: [
   'formula_matrix_element.png',
   'formula_matrix_multiplication.png',
   'formula_matrix.png',
+  'formula_multi_quantum_coherence.png',
   'formula_mixed_states.png',
   'formula_normalization.png',
   'formula_norm.png',

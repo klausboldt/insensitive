@@ -114,6 +114,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	formula_matrix_multiplication.png \
 	formula_matrix.png \
 	formula_mixed_states.png \
+	formula_multi_quantum_coherence.png \
 	formula_normalization.png \
 	formula_norm.png \
 	formula_omega_eff.png \
