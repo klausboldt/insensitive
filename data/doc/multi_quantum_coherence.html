@@ -18,27 +18,45 @@ Multi-quantum coherence
 
 <div>
 <p>
-Multi-quantum coherences are states of two or more <a href="spin.html">spins</a> in a system linked to 
-have the same transverse magnetisation (e.g. <op>2I1xI2x</op>). 
+Multi-quantum coherences are coherent superpositions of two or more <a href="spin.html">spins</a> in a
+system, linked by a defined <a href="phase.html">phase</a> relationship. For example, the multi-quantum
+coherence <op>2I1xI2x</op> carries the information that if the magnetisation of spin 1 (red) points in
+<i>x</i> direction, the same holds for spin 2 (blue). However, the spins can also both point in
+-<i>x</i> direction with the same probability. With no preference for either positive or negative
+direction, multi-quantum coherences do not result in any observable magnetisation and are not visible
+in the vector representation of a spin system.
 </p>
 <center><img src="img_vectors_2IxSx.png" height="207" width="200"></center>
 <p>
-This state of higher <a href="coherences.html">coherence</a> does not result in any observable magnetisation 
-and is not visible in the vector representation of a spin system. It is the basis for transferring information 
-between spins in many 2D techniques like for example <a href="hmqcqf.html">HMQC</a>.
+The <op>-2I1xI2x</op> operator represents those spins in which the coherences of the two couples spins
+point in the opposite direction (spin 1 points in <i>x</i> if spin 2 points in -<i>x</i> and vice versa.)
+Similarly, in case of the operator <op>2I1xI2y</op> the magnetic moments of spin 1 (red) and spin 2 (blue)
+have a phase shift of +90&deg;, again with equal probability that both coherences have either positive
+or negative sign.
 </p>
 <center><img src="img_vectors_2IxSy.png" height="214" width="200"></center>
 <p>
-In the case of the operator <op>2I1xI2y</op> the magnetic moments of spin 1 (red) and spin 2 (blue) have a 
-<a href="phase.html">phase shift</a> of 90&deg;, but still result in no net magnetisation.
+Multi-quantum coherences can be separated into linear combinations of
+<a href="product_operator_formalism.html">product operators</a> in the <a href="spherical_tensors.html">
+shperical tensor</a> basis:
+</p>
+<center><img src="img_multi_quantum_coherence.png" height="24" width="402"></center>
+<p>
+The first summand is a double-quantum coherence, which <a href="precession.html">precesses</a> with
+the sum of the <a href="larmor_frequency.html">Larmor frequencies</a> of the participating spins,
+&Omega;<sub>1</sub> + &Omega;<sub>2</sub>. The second summand is the zero-quantum coherence that
+precesses with the difference frequency, &Omega;<sub>1</sub> - &Omega;<sub>2</sub>. As with single-quantum
+coherences, precession turns multi-quantum coherences from <i>x</i> to <i>y</i> to -<i>x</i> to -<i>y</i>.
+Unlike single-quantum coherences, the <a href="coupling.html">coupling</a> propagator has no effect on
+multi-quantum coherences, since all spins are in a mixed, coherent state and the
+<a href="populations.html">populations</a> of the spins are unknown.
 </p>
 <center><img src="formula_2ixiy_matrix.png" height="87" width="235"></center>
 <p>
 The <a href="matrix.html">matrix</a> representation of this operator has no non-zero matrix elements for 
-populations or observable coherences. The multi-quantum coherences precess with the sum of the
-<a href="larmor_frequency.html">Larmor frequencies</a> of the participating spins. The <a href="coupling.html">
-coupling</a> propagator has no effect on multi-quantum coherences, since all spins are in a mixed, coherent
-state and the <a href="populations.html">populations</a> of the spins are unknown.
+populations or observable coherences. In many <a href="two_dimensional_spectra.html">2D techniques</a>,
+multi-quantum coherences are used for transferring information between spins, like for example the
+<a href="hmqcqf.html">HMQC</a> experiment.
 </p>
 </div>
 
