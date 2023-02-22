@@ -232,6 +232,7 @@ float distance_between_spins(float b, float gyro1, float gyro2)
 
 float spectral_density(float tau, float omega)
 {
+	// Bloembergen-Purcell-Pound model
 	return tau / (1 + pow(omega * tau, 2));
 }
 
@@ -1277,12 +1278,12 @@ DSPComplex *relaxation_matrix(int spins, int spin_type_array, float *tensor, flo
 				/* M. H. Levitt */
 				/*R2[i] += 0.15 * pow(b, 2) * (3 * spectral_density(tau, delta)
 				 + 5 * spectral_density(tau, omega_partner)
-				 + 2 * spectral_density(tau, sum)); */
+				 + 2 * spectral_density(tau, sum));*/
 				/* R. R. Ernst, G. Bodenhausen, A. Wokaun */
 				R2[i] += 0.05 * pow(b, 2) * (4 * spectral_density(tau, 0)
 							     + spectral_density(tau, delta)
 							     + 3 * spectral_density(tau, omega)
-							     + 6 * spectral_density(tau, omega_partner) /* 3 */
+							     + 6 * spectral_density(tau, omega_partner) // 3
 							     + 6 * spectral_density(tau, sum));
 
 				/* Higher order transitions for every spin to every spin are needed */
@@ -3385,6 +3386,36 @@ gboolean insensitive_g_string_replace(GString *g_origString, char *stringToRepla
         g_string_assign(g_output, g_origString->str);
     free(copy);
     return FALSE;
+}
+
+
+gchar *substring_for_keyword_in_string(gchar *keyword, gchar *text, gsize length)
+{
+	gchar *return_string = NULL;
+	gchar *pos = NULL;
+	size_t len;
+
+	if (text == NULL)
+		goto search_failed;
+	if (length < 1)
+		goto search_failed;
+	pos = g_strstr_len(text, length, keyword);
+	if (pos == NULL)
+		goto search_failed;
+	pos += strlen(keyword);
+	while (*pos == ' ')
+		pos++;
+	len = 0;
+	for (len = 0; (*(pos + len) != '\n') && (*(pos + len) != '\0'); len++);
+	return_string = calloc(len + 1, sizeof(char));
+	if (return_string == NULL)
+		goto search_failed;
+	strncpy(return_string, pos, len);
+
+	return return_string;
+
+search_failed:
+	return NULL;
 }
 
 

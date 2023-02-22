@@ -6,7 +6,7 @@
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
  * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
+ * distribute, sublicense, and/or selexport_sl copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
  *
@@ -5784,16 +5784,26 @@ void perform_save_spectrum(GtkMenuItem *menuitem, gpointer user_data)
 
 void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 {
-	float begin1, timestep, step1, begin2, step2;
+	float DW, begin1, step1, begin2, step2;
+	float freq1, freq2;
+	float min_y1, min_y2, max_y1, max_y2, min_x1, min_x2, max_x1, max_x2;
+	float factor_x1, factor_x2, factor_y1, factor_y2, newPhase0;
+	float first_x1, first_x2, first_y1, first_y2, last_x1, last_x2, last_y1, last_y2;
+	float temp, *dataset;
+	gchar *nuc1, *nuc2, *fnmode, *pulprog, *datatype, *x_unit, *y_unit, *x_scale, *sqz;
+	signed long current;
+	char *z;
+	unsigned int p;
 	int i, j, t1DataPoints, t2DataPoints;
 	DSPSplitComplex data;
-	GString *csv;
+	GString *csv, *spectrum_report;
 	GError *error;
 	gboolean ok;
 	gint result;
-	gchar *filename, *separator;
+	gchar *filename, *separator, *date_str, *freq_str;
 	GtkWidget *dialog, *chooser;
 	GtkFileFilter *filter, *current_filter;
+	GDateTime *date = g_date_time_new_now_local();
 
 	if (insensitive_controller_get_spectrumDataAvailable(window->controller)) {
 		separator = malloc(2 * sizeof(gchar));
@@ -5817,6 +5827,7 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
 		filter = gtk_file_filter_new();
 		gtk_file_filter_add_pattern(filter, "*.jdx");
+		gtk_file_filter_add_pattern(filter, "*.dx");
 		gtk_file_filter_set_name(filter, "JCAMP-DX files (JDX)");
 		if (insensitive_settings_get_exportFormat(window->controller->settings) == JDX)
 			current_filter = filter;
@@ -5854,51 +5865,431 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 			t2DataPoints = insensitive_settings_get_dataPoints(window->controller->settings);
 			data = window->displayedData;
 			csv = g_string_new("");
-			timestep = insensitive_settings_get_dwellTime(window->controller->settings);
-            if (insensitive_settings_get_exportFormat(window->controller->settings) == PNG) {
-                cairo_surface_write_to_png(window->spectrum_surface, filename);
-            } else if (window->twoDimensionalSpectrum) {
+			DW = insensitive_settings_get_dwellTime(window->controller->settings);
+			if (window->twoDimensionalSpectrum) {
 				t1DataPoints = indirect_datapoints(insensitive_controller_get_detectionMethod(window->controller), t2DataPoints);
 				switch (window->domainOf2DSpectrum) {
 				case FID:
-					step2 = timestep;
-					begin2 = 0;
-					step1 = timestep;
+					step1 = DW;
+					step2 = DW;
 					begin1 = 0;
+					begin2 = 0;
 					break;
 				case FFT1D:
-					step2 = 1 / (timestep * t2DataPoints);
-					step1 = timestep;
-					begin2 = -0.5 / timestep;
+					step1 = DW;
+					step2 = 1 / (DW * t2DataPoints);
 					begin1 = 0;
+					begin2 = -0.5 / DW;
 					break;
 				case FFT2D:
 				case AbsValue:
-					step2 = 1 / (timestep * t2DataPoints);
-					step1 = 1 / (timestep * t1DataPoints);
-					begin2 = -0.5 / timestep;
-					begin1 = -0.5 / timestep;
+					step1 = 1 / (DW * t1DataPoints);
+					step2 = 1 / (DW * t2DataPoints);
+					begin1 = -0.5 / DW;
+					begin2 = -0.5 / DW;
 				}
-				// JCAMP-DX export not available for 2D data
-				if (insensitive_settings_get_exportFormat(window->controller->settings) == JDX) {
-					dialog = gtk_message_dialog_new(GTK_WINDOW(window),
-									GTK_DIALOG_DESTROY_WITH_PARENT,
-									GTK_MESSAGE_ERROR,
-									GTK_BUTTONS_OK,
-									"2D spectra cannot be exported in JCAMP-DX format.");
-					gtk_window_set_title(GTK_WINDOW(dialog), "JCAMP-DX export");
-					gtk_dialog_run(GTK_DIALOG(dialog));
-					gtk_widget_destroy(dialog);
-					// Code for Bruker-style txt format
-				} else if (insensitive_settings_get_exportFormat(window->controller->settings) == TXT) {
-					float f1gyro = window->controller->spinSystem->absGyroI;
-					float freq1 = f1gyro / gyro_1H * spectrometer_frequency / 1e6;
-					GDateTime *date = g_date_time_new_now_local();
-					gchar *date_str = g_date_time_format(date, "%A, %B %e, %Y %l:%M:%S %p %Z");
-					g_string_append_printf(csv, "# File created = %s\n", date_str);
+			} else {
+				if (!window->showsFrequencyDomain) {
+					step1 = DW;
+					begin1 = 0;
+				} else {
+					step1 = 1 / (DW * t2DataPoints);
+					begin1 = -0.5 / DW;
+				}
+			}
+			switch (insensitive_settings_get_exportFormat(window->controller->settings)) {
+			case PNG:
+				cairo_surface_write_to_png(window->spectrum_surface, filename);
+				break;
+			case JDX:
+				spectrum_report = insensitive_controller_get_spectrumReport(window->controller);
+				sqz = malloc(12 * sizeof(gchar));
+				z = malloc(10 * sizeof(gchar));
+				datatype = malloc(9 * sizeof(gchar));
+				x_scale = malloc(10 * sizeof(gchar));
+				x_unit = malloc(8 * sizeof(gchar));
+				y_unit = malloc(16 * sizeof(gchar));
+				strcpy(y_unit, "ARBITRARY UNITS");
+				if (window->showsFrequencyDomain) {
+					strcpy(datatype, "SPECTRUM");
+					strcpy(x_scale, "FREQUENCY");
+					strcpy(x_unit, "HZ");
+				} else {
+					strcpy(datatype, "FID");
+					strcpy(x_scale, "TIME");
+					strcpy(x_unit, "SECONDS");
+				}
+				if (window->twoDimensionalSpectrum) {
+					freq_str = substring_for_keyword_in_string("SFO1", spectrum_report->str, spectrum_report->len);
+					if (freq_str == NULL)
+						freq2 = spectrometer_frequency / 1e6;
+					else {
+						freq_str[strlen(freq_str) - 4] = '\0';
+						freq2 = atof(freq_str);
+						free(freq_str);
+					}
+					freq_str = substring_for_keyword_in_string("SFO2", spectrum_report->str, spectrum_report->len);
+					if (freq_str == NULL)
+						freq1 = freq2;
+					else {
+						freq_str[strlen(freq_str) - 4] = '\0';
+						freq1 = atof(freq_str);
+						free(freq_str);
+					}
+					nuc2 = substring_for_keyword_in_string("NUC1", spectrum_report->str, spectrum_report->len);
+					if (nuc2 == NULL) {
+						nuc2 = malloc(3 * sizeof(gchar));
+						strcpy(nuc2, "1H");
+					}
+				    nuc1 = substring_for_keyword_in_string("NUC2", spectrum_report->str, spectrum_report->len);
+				    if (nuc1 == NULL) {
+					    nuc1 = malloc(strlen(nuc2) * sizeof(gchar));
+					    strcpy(nuc1, nuc2);
+				    }
+					fnmode = substring_for_keyword_in_string("FnMode", spectrum_report->str, spectrum_report->len);
+					if (fnmode == NULL) {
+						fnmode = malloc(10 * sizeof(gchar));
+						strcpy(fnmode, "undefined");
+					}
+					pulprog = substring_for_keyword_in_string("PULPROG", spectrum_report->str, spectrum_report->len);
+					if (fnmode == NULL) {
+						fnmode = malloc(10 * sizeof(gchar));
+						strcpy(fnmode, "undefined");
+					}
+					g_string_append_printf(csv, "##TITLE= %s\n##JCAMPDX= 6.0  $$ Insensitive NMR JCAMP-DX v%s\n",
+							   			   g_path_get_basename(filename), insensitive_version);
+					if (window->showsFrequencyDomain) {
+						if (insensitive_settings_get_showRealPart(window->controller->settings))
+							dataset = window->displayedData.realp;
+						else
+							dataset = data.imagp;
+					}
+					g_string_append_printf(csv, "##DATA TYPE= nD NMR %s\n##DATA CLASS= NTUPLES\n##NUM DIM= 2\n", datatype);
+					g_string_append(csv, "##ORIGIN= Insensitive\n##OWNER= Insensitive\n");
+					date_str = g_date_time_format(date, "%Y/%m/%d %H:%M:%S%z");
+					g_string_append_printf(csv, "##LONG DATE= %s\n", date_str);
 					free(date_str);
-					g_date_time_unref(date);
-					g_string_append_printf(csv, "# Data set = insensitive  %d  1  %s\n# Spectral Region:\n", window->controller->expno, filename);
+					g_string_append_printf(csv, "##.OBSERVE FREQUENCY= %.2f\n##.OBSERVE NUCLEUS= ^%s\n", freq2, nuc2);
+			        g_string_append_printf(csv, "##.DELAY= (0.0, 0.0)\n##.ACQUISITION MODE= SIMULTANEOUS (DQD)\n##.ACQUISITION SCHEME= %s\n", fnmode);
+					g_string_append(csv, "##SPECTROMETER/DATA SYSTEM= Insensitive simulation\n");
+				    g_string_append_printf(csv, "##.PULSE SEQUENCE= %s\n", pulprog);
+					g_string_append(csv, "##.SOLVENT NAME= none\n");
+					g_string_append_printf(csv, "##NTUPLES= nD NMR %s\n", datatype);
+					g_string_append_printf(csv, "##VAR_NAME=  %s1, %12s2, %13s", x_scale, x_scale, datatype);
+					if (window->showsFrequencyDomain) {
+						g_string_append_printf(csv, "\n");
+						g_string_append(csv, "##SYMBOL=    F1,            F2,              Y\n");
+					} else {
+					  	g_string_append_printf(csv, "/REAL, %10s/IMAG\n", datatype);
+					  	g_string_append(csv, "##SYMBOL=    T1,            T2,              R,               I\n");
+					}
+					g_string_append_printf(csv, "##.NUCLEUS=  %s, %13s\n", nuc1, nuc2);
+					g_string_append(csv, "##VAR_TYPE=  INDEPENDENT,   INDEPENDENT,     DEPENDENT");
+					if (!window->showsFrequencyDomain)
+						g_string_append(csv, ",       DEPENDENT");
+					g_string_append(csv, "\n##VAR_FORM=  AFFN,          AFFN,            ASDF");
+					if (!window->showsFrequencyDomain) {
+						g_string_append(csv, ",            ASDF");
+						g_string_append_printf(csv, "\n##VAR_DIM=   %d,%15d,%16d,%16d\n", t1DataPoints, t2DataPoints, t2DataPoints, t2DataPoints);
+					} else {
+						g_string_append_printf(csv, "\n##VAR_DIM=   %d,%14d,%16d\n", t1DataPoints, t2DataPoints, t2DataPoints);
+					}
+					g_string_append_printf(csv, "##UNITS=     %s, %13s, %23s", x_unit, x_unit, y_unit);
+					if (!window->showsFrequencyDomain)
+						g_string_append_printf(csv, ", %15s", y_unit);
+					// Determine Min and Max values
+					if (window->showsFrequencyDomain) {
+						min_y1 = dataset[0];
+						max_y1 = dataset[0];
+						for (i = 1; i < t2DataPoints * t1DataPoints; i++) {
+							if (min_y1 > dataset[i]) {
+								min_y1 = dataset[i];
+								if (fabsf(min_y1) > fabsf(max_y1))
+									max_x1 = i;
+							}
+							if (max_y1 < dataset[i]) {
+								max_y1 = dataset[i];
+								if (fabsf(max_y1) > fabsf(min_y1))
+									max_x1 = i;
+							}
+						}
+						min_x1 = begin1 + freq1;
+						min_x2 = begin2 + freq2;
+					} else {
+						dataset = data.realp;
+						min_y1 = data.realp[0];
+						min_y2 = data.imagp[0];
+						max_y1 = data.realp[0];
+						max_y2 = data.imagp[0];
+						for (i = 1; i < t2DataPoints * t1DataPoints; i++) {
+							if (min_y1 > data.realp[i]) {
+								min_y1 = data.realp[i];
+								if (fabsf(min_y1) > fabsf(max_y1))
+									max_x1 = i;
+							}
+							if (max_y1 < data.realp[i]) {
+								max_y1 = data.realp[i];
+								if (fabsf(max_y1) > fabsf(min_y1))
+									max_x1 = i;
+							}
+							if (min_y2 > data.imagp[i]) {
+								min_y2 = data.imagp[i];
+								if (fabsf(min_y2) > fabsf(max_y2))
+									max_x2 = i;
+							}
+							if (max_y2 < data.imagp[i]) {
+								max_y2 = data.imagp[i];
+								if (fabsf(max_y2) > fabsf(min_y2))
+									max_x2 = i;
+							}
+						}
+						min_x1 = begin1;
+						min_x2 = begin2;
+					}
+					max_x1 = begin1 + max_x1 * step1;
+					max_x2 = begin2 + max_x2 * step2;
+					factor_x1 = 1 / step1;
+					factor_x2 = 1 / step2;
+					factor_y1 = 1000000.0;
+					//temp = (fabsf(max_x1) > fabsf(min_x1)) ? fabsf(max_x1) : fabsf(min_x1);
+					if (!window->showsFrequencyDomain)
+						factor_y2 = 1000000.0;
+					g_string_append_printf(csv, "\n##FACTOR=    %.9f,%14.9f,%15.9f", factor_x1, factor_x2, 1 / factor_y1);
+					if (!window->showsFrequencyDomain)
+						g_string_append_printf(csv, ", %15.9f", 1 / factor_y2);
+					if (!window->showsFrequencyDomain)
+						g_string_append_printf(csv, "\n##FIRST=     %.9f,%14.9f,%17.9f,%16.9f", min_x1, min_x2, data.realp[0], data.imagp[0]);
+					else
+						g_string_append_printf(csv, "\n##FIRST=     %.9f,%14.9f,%17.9f", min_x1, min_x2, data.realp[0]);
+					if (!window->showsFrequencyDomain)
+						g_string_append_printf(csv, "\n##LAST=      %.9f,%15.9f,%15.9f,%16.9f", (t1DataPoints - 1) * step1, (t2DataPoints - 1) * step2, data.realp[t1DataPoints * t2DataPoints - 1], data.imagp[t1DataPoints * t2DataPoints - 1]);
+					else
+						g_string_append_printf(csv, "\n##LAST=      %.9f,%14.9f,%15.9f", freq1 + begin1 + (t1DataPoints - 1) * step1, freq2 + begin2 + (t2DataPoints - 1) * step2, dataset[t1DataPoints * t2DataPoints - 1]);
+					g_string_append_printf(csv, "\n##MIN=       %.9f,%14.9f,%18.9f", min_x1, min_x2, min_y1);
+					if (!window->showsFrequencyDomain)
+						g_string_append_printf(csv, ",%16.9f", min_y2);
+					g_string_append_printf(csv, "\n##MAX=       %.9f,%15.9f,%15.9f", (t1DataPoints - 1) * step1, (t2DataPoints - 1) * step2, max_y1);
+					if (!window->showsFrequencyDomain)
+						g_string_append_printf(csv, ",%16.9f", max_y2);
+					g_string_append(csv, "\n");
+					if (!window->showsFrequencyDomain) {
+						for (p = 0; p < t1DataPoints; p++) {
+							strcpy(z, "Real");
+							g_string_append_printf(csv, "$$ %s data points\n##PAGE= T1=%f\n##FIRST=\t%f,\t%f,\t%f,\t%f\n##DATA TABLE= (T2++(%c..%c)), PROFILE\n", z, begin1 + p * step1, min_x1, min_x2, data.realp[p], data.imagp[p], *z, *z);
+							for (i = 0; i < t2DataPoints; i += 10) {
+								g_string_append_printf(csv, "%.0f", begin1 + i);
+								for (j = 0; j < 10; j++) {
+									if (i + j < t2DataPoints) {
+										current = lroundf(data.realp[i + j + (p * t2DataPoints)] * factor_y1);
+										sprintf(sqz, "%ld", current);
+										if (current < 0) {
+											// negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
+											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
+										} else {
+											// positive numbers: replace first digit by @, A, B, C, ... for 0, 1, 2, 3, ...
+											g_string_append_printf(csv, "%c%s", *sqz + 16, sqz + 1);
+										}
+									}
+								}
+								g_string_append(csv, "\n");
+							}
+							strcpy(z, "Imaginary");
+							g_string_append_printf(csv, "$$ %s data points\n##PAGE= T1=%f\n##FIRST=\t%f,\t%f,\t%f,\t%f\n##DATA TABLE= (T2++(%c..%c)), PROFILE\n", z, begin2 + p * step2, begin1, begin2, data.realp[p], data.imagp[p], *z, *z);
+							for (i = 0; i < t2DataPoints; i += 10) {
+								g_string_append_printf(csv, "%.0f", begin2 + i);
+								for (j = 0; j < 10; j++) {
+									if (i + j < t2DataPoints) {
+										current = lroundf(data.imagp[i + j + (p * t2DataPoints)] * factor_y2);
+										sprintf(sqz, "%ld", current);
+										if (current < 0) {
+											// negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
+											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
+										} else {
+											// positive numbers: replace first digit by @, A, B, C, ... for 0, 1, 2, 3, ...
+											g_string_append_printf(csv, "%c%s", *sqz + 16, sqz + 1);
+										}
+									}
+								}
+								g_string_append(csv, "\n");
+							}
+						}
+					} else {
+						*z = 'Y';
+						for (p = 0; p < t1DataPoints; p++) {
+							g_string_append_printf(csv, "##PAGE= F1=%f\n##FIRST=\t%f,\t%f,\t%f\n##DATA TABLE= (F2++(%c..%c)), PROFILE\n", (begin1 + p * step1) + freq1, min_x1, min_x2, dataset[p], *z, *z);
+							for (i = 0; i < t2DataPoints; i += 10) {
+								g_string_append_printf(csv, "%.0f", ((begin1 + i * step2) + freq2) * factor_x2);
+								for (j = 0; j < 10; j++) {
+									if (i + j < t2DataPoints) {
+									    // SQZ: Difference to previous value (first digit: @ = 0, A-I > 0, a-i < 0)
+										current = lroundf(dataset[i + j + (p * t2DataPoints)] * factor_y1);
+									    sprintf(sqz, "%ld", current);
+										if (current < 0) {
+										    // negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
+											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
+										} else {
+										    // positive numbers: replace first digit by @, A, B, C, ... for 0, 1, 2, 3, ...
+											g_string_append_printf(csv, "%c%s", *sqz + 16, sqz + 1);
+										}
+									}
+								}
+								g_string_append(csv, "\n");
+							}
+						}
+					}
+					g_string_append_printf(csv, "##END TUPLES=nD NMR %s\n##END=", datatype);
+					free(nuc2);
+					free(fnmode);
+					free(pulprog);
+				} else {
+					freq_str = substring_for_keyword_in_string("SFO1", spectrum_report->str, spectrum_report->len);
+					if (freq_str == NULL)
+						freq1 = spectrometer_frequency / 1e6;
+					else {
+						freq_str[strlen(freq_str) - 4] = '\0';
+						freq1 = atof(freq_str);
+						free(freq_str);
+					}
+				    nuc1 = substring_for_keyword_in_string("NUC1", spectrum_report->str, spectrum_report->len);
+				    if (nuc1 == NULL) {
+						nuc1 = malloc(3 * sizeof(gchar));
+						strcpy(nuc2, "1H");
+				    }
+					g_string_append_printf(csv, "##TITLE= %s\n##JCAMPDX= 5.0  $$ Insensitive NMR JCAMP-DX v%s\n",
+							       		   g_path_get_basename(filename), insensitive_version);
+					g_string_append_printf(csv, "##DATA TYPE= NMR %s\n", datatype);
+					if (window->showsFrequencyDomain)
+						g_string_append(csv, "##DATA CLASS= XYDATA\n");
+					else
+						g_string_append(csv, "##DATA CLASS= NTUPLES\n");
+					g_string_append(csv, "##ORIGIN= Insensitive\n##OWNER= Insensitive\n");
+					g_string_append_printf(csv, "##.OBSERVE FREQUENCY= %.9f\n##.OBSERVE NUCLEUS= ^%s\n", freq1, nuc1);
+					// Determine Min and Max values
+					min_y1 = data.realp[0];
+					min_y2 = data.imagp[0];
+					max_y1 = data.realp[0];
+					max_y2 = data.imagp[0];
+					for (i = 1; i < t2DataPoints; i++) {
+						if (min_y1 > data.realp[i]) {
+							min_y1 = data.realp[i];
+							if (fabsf(min_y1) > fabsf(max_y1))
+								max_x1 = i;
+						}
+						if (max_y1 < data.realp[i]) {
+							max_y1 = data.realp[i];
+							if (fabsf(max_y1) > fabsf(min_y1))
+								max_x1 = i;
+						}
+						if (!window->showsFrequencyDomain) {
+							if (min_y2 > data.imagp[i])
+								min_y2 = data.imagp[i];
+							if (max_y2 < data.imagp[i])
+								max_y2 = data.imagp[i];
+						}
+					}
+					factor_x1 = 1 / step1;
+					//temp = (fabsf(max_y1) > fabsf(min_y1)) ? fabsf(min_y1) : fabsf(min_y1);
+					factor_y1 = 1000000000.0;
+					// Pivot point for first order phase correction should be at the hightest peak in JCAMP-DX format!
+					max_x1 = begin1 + max_x1 * step1;
+					newPhase0 = window->zeroOrderPhaseShift + 0.5 * t2DataPoints * window->firstOrderPhaseShift * (0.1 * max_x1 - window->pivotPoint);
+					g_string_append_printf(csv, "##.PHASE 0= %f\n##.PHASE 1= %f\n", newPhase0 * 180 / M_PI, window->firstOrderPhaseShift * 180 / M_PI);
+					if (!window->showsFrequencyDomain) {
+						// Export FID as complex Data...
+						g_string_append(csv, "##.DELAY= (0.0, 0.0)\n##.ACQUISITION MODE= SIMULTANEOUS (DQD)\n");
+						g_string_append(csv, "##SPECTROMETER/DATA SYSTEM= Insensitive simulation\n");
+						g_string_append_printf(csv, "##NTUPLES= NMR %s\n", datatype);
+						g_string_append_printf(csv, "##VAR_NAME=  %s, %12s/REAL, %10s/IMAG, %18s\n", x_scale, datatype, datatype, "PAGE NUMBER");
+						g_string_append(csv, "##SYMBOL=    X,             R,               I,               N\n");
+						g_string_append(csv, "##VAR_TYPE=  INDEPENDENT,   DEPENDENT,       DEPENDENT,       PAGE\n");
+						g_string_append(csv, "##VAR_FORM=  AFFN,          ASDF,            ASDF,            AFFN\n");
+						g_string_append_printf(csv, "##VAR_DIM=   %d, %13d,%16d,%13d\n", t2DataPoints, t2DataPoints, t2DataPoints, 2);
+						g_string_append_printf(csv, "##UNITS=     %s, %21s, %15s,\n", x_unit, y_unit, y_unit);
+						g_string_append_printf(csv, "##FIRST=     %.9f,%15.9f,%15.9f, %5d\n", begin1, data.realp[0], data.imagp[0], 1);
+						g_string_append_printf(csv, "##LAST=      %.9f,%13.9f,%15.9f, %5d\n", begin1 + (t2DataPoints - 1) * step1, data.realp[t2DataPoints - 1], data.imagp[t2DataPoints - 1], 2);
+						g_string_append_printf(csv, "##MIN=       %.9f,%15.9f,%15.9f, %5d\n", begin1, min_y1, min_y2, 1);
+						g_string_append_printf(csv, "##MAX=       %.9f,%13.9f,%15.9f, %5d\n", begin1 + (t2DataPoints - 1) * step1, max_y1, max_y2, 2);
+						g_string_append_printf(csv, "##FACTOR=    %.9f,%14.9f,%15.9f, %5d\n", factor_x1, 1 / factor_y1, 1 / factor_y1, 1);
+						for (p = 1; p <= 2; p++) {
+							if (p == 1) {
+								strcpy(z, "Real");
+								dataset = data.realp;
+							} else {
+								strcpy(z, "Imaginary");
+								dataset = data.imagp;
+							}
+							g_string_append_printf(csv, "$$ %s data points\n##PAGE= N=%d\n##DATA TABLE= (X++(%c..%c)), XYDATA\n", z, p, *z, *z);
+							if (dataset != NULL) {
+								for (i = 0; i < t2DataPoints; i += 10) {
+									g_string_append_printf(csv, "%.0f", begin1 + i);
+									for (j = 0; j < 10; j++) {
+										if (i + j < t2DataPoints) {
+											current = lroundf(dataset[i + j] * factor_y1);
+											sprintf(sqz, "%ld", current);
+											if (current < 0) {
+												// negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
+												g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
+											} else {
+												// positive numbers: replace first digit by @, A, B, C, ... for 0, 1, 2, 3, ...
+												g_string_append_printf(csv, "%c%s", *sqz + 16, sqz + 1);
+											}
+										}
+									}
+									g_string_append(csv, "\n");
+								}
+							}
+						}
+						g_string_append_printf(csv, "##END NTUPLES= NMR %s\n##END=", datatype);
+					} else {
+						// Export only real spectrum data
+						g_string_append(csv, "##.ACQUISITION MODE= SIMULTANEOUS (DQD)\n");
+						g_string_append(csv, "##SPECTROMETER/DATA SYSTEM= Insensitive simulation\n");
+						g_string_append_printf(csv, "##RESOLUTION= %f\n", 1 / (step1 * (t2DataPoints - 1)));
+						g_string_append_printf(csv, "##XUNITS= %s\n##YUNITS= %s\n", x_unit, y_unit);
+						g_string_append_printf(csv, "##XFACTOR= %.9f\n##YFACTOR= %.9f\n", factor_x1, 1 / factor_y1);
+						g_string_append_printf(csv, "##FIRSTX= %.9f\n##LASTX= %.9f\n", begin1 + freq1, (begin1 + (t2DataPoints - 1) * step1) + freq1);
+						g_string_append_printf(csv, "##MAXY= %.9f\n##MINY= %.9f\n", max_y1, min_y1);
+						g_string_append_printf(csv, "##DELTAX= %.9f\n##NPOINTS= %d\n##FIRSTY= %.9f\n", step1, t2DataPoints, data.realp[0]);
+						g_string_append(csv, "##XYDATA= (X++(Y..Y))\n");
+						if (data.realp != NULL) {
+							for (i = 0; i < t2DataPoints; i += 10) {
+								g_string_append_printf(csv, "%.0f", ((begin1 + i * step1) + freq1) * factor_x1);
+								for (j = 0; j < 10; j++) {
+									if (i + j < t2DataPoints) {
+									    // SQZ: Difference to previous value (first digit: @ = 0, A-I > 0, a-i < 0)
+										// DIF: Difference to previous value (first digit: % = 0, J-R > 0, j-r < 0)
+										current = lroundf(data.realp[i + j] * factor_y1 /*+ 0.5*/);
+										sprintf(sqz, "%ld", current);
+										if (current < 0) {
+										    // negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
+											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
+										} else {
+										    // positive numbers: replace first digit by @, A, B, C, ... for 0, 1, 2, 3, ...
+											g_string_append_printf(csv, "%c%s", *sqz + 16, sqz + 1);
+										}
+									}
+								}
+								g_string_append(csv, "\n");
+							}
+						}
+						g_string_append(csv, "##END=");
+					}
+				}
+				free(nuc1);
+				free(datatype);
+				free(x_scale);
+				free(x_unit);
+				free(y_unit);
+				free(sqz);
+				free(z);
+				break;
+			case TXT:
+				date_str = g_date_time_format(date, "%A, %B %e, %Y %l:%M:%S %p %Z");
+				g_string_append_printf(csv, "# File created = %s\n", date_str);
+				free(date_str);
+				g_date_time_unref(date);
+				g_string_append_printf(csv, "# Data set = insensitive  %d  1  %s\n# Spectral Region:\n", window->controller->expno, filename);
+				if (window->twoDimensionalSpectrum) {
 					if (window->domainOf2DSpectrum == FID) {
 						g_string_append_printf(csv, "# T1LEFT = 0.0 s. T1RIGHT = %.15f s.\n",
 								       begin1 + (t1DataPoints - 1) * step1);
@@ -5933,6 +6324,28 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 						}
 					}
 				} else {
+					if (window->showsFrequencyDomain)
+						g_string_append_printf(csv, "# LEFT = %.15f Hz. RIGHT = %.15f Hz.\n#\n# SIZE = %d ( = number of points)\n",
+								       		   begin1,
+								               begin1 + (t2DataPoints - 1) * step1,
+								               t2DataPoints);
+					else
+						g_string_append_printf(csv, "# LEFT = 0.0 s. RIGHT = %.15f s.\n#\n# SIZE = %d ( = number of points)\n",
+							       			   begin1 + (t2DataPoints - 1) * step1,
+							       			   t2DataPoints);
+					g_string_append(csv, "#\n# In the following ordering is from the 'left' to the 'right' limits!\n# Lines beginning with '#' must be considered as comment lines.\n#");
+					if ((data.realp != NULL) && (data.imagp != NULL)) {
+						for (i = 0; i < t2DataPoints; i++) {
+							g_string_append_printf(csv, "\n%f", data.realp[i]);
+							if (data.imagp[i] >= 0)
+								g_string_append(csv, "+");
+							g_string_append_printf(csv, "%fi", data.imagp[i]);
+						}
+					}
+				}
+				break;
+			default:
+				if (window->twoDimensionalSpectrum) {
 					if ((data.realp != NULL) && (data.imagp != NULL)) {
 						g_string_append(csv, "2D spectrum");
 						for (j = 0; j < t1DataPoints; j++)
@@ -5947,234 +6360,6 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 							}
 						}
 					}
-				}
-			} else {
-				if (window->showsFrequencyDomain) {
-					step1 = 1 / (timestep * t2DataPoints);
-					begin1 = -0.5 / timestep;
-				} else {
-					step1 = timestep;
-					begin1 = 0;
-				}
-				// Here begins header construction for JCAMP-DX export format
-				if (insensitive_settings_get_exportFormat(window->controller->settings) == JDX) {
-					float f1gyro = window->controller->spinSystem->absGyroI;
-					float freq1 = f1gyro / gyro_1H * spectrometer_frequency / 1e6;
-					float min_r, min_i, max_r, max_i, max_x, newPhase0, x_factor, y_factor, temp, *dataset;
-					gchar *nuc, *datatype, *x_unit, *x_scale, *sqz;
-					signed long current;//, diff, last;
-					char z;
-					unsigned int p;
-					sqz = malloc(12 * sizeof(gchar));
-					nuc = malloc(7 * sizeof(gchar));
-					datatype = malloc(9 * sizeof(gchar));
-					x_scale = malloc(10 * sizeof(gchar));
-					x_unit = malloc(8 * sizeof(gchar));
-					g_string_append_printf(csv, "##TITLE= %s\n##JCAMPDX= 5.0  $$ Insensitive NMR JCAMP-DX v%s\n",
-							       g_path_get_basename(filename), insensitive_version);
-					if (window->showsFrequencyDomain) {
-						strcpy(datatype, "SPECTRUM");
-						strcpy(x_scale, "FREQUENCY");
-						strcpy(x_unit, "HZ");
-					} else {
-						strcpy(datatype, "FID");
-						strcpy(x_scale, "TIME");
-						strcpy(x_unit, "SECONDS");
-					}
-					g_string_append_printf(csv, "##DATA TYPE= NMR %s\n", datatype);
-					if (window->showsFrequencyDomain)
-						g_string_append(csv, "##DATA CLASS= XYDATA\n");
-					else
-						g_string_append(csv, "##DATA CLASS= NTUPLES\n");
-					g_string_append(csv, "##ORIGIN= Insensitive\n##OWNER= Insensitive\n");
-					if (f1gyro == gyro_1H)
-						strcpy(nuc, "^1H");
-					else if (f1gyro == gyro_13C)
-						strcpy(nuc, "^13C");
-					else if (f1gyro == gyro_15N)
-						strcpy(nuc, "^15N");
-					else if (f1gyro == gyro_19F)
-						strcpy(nuc, "^19F");
-					else if (f1gyro == gyro_29Si)
-						strcpy(nuc, "^29Si");
-					else if (f1gyro == gyro_31P)
-						strcpy(nuc, "^31P");
-					else if (f1gyro == gyro_57Fe)
-						strcpy(nuc, "^57Fe");
-					else if (f1gyro == gyro_77Se)
-						strcpy(nuc, "^77Se");
-					else if (f1gyro == gyro_113Cd)
-						strcpy(nuc, "^113Cd");
-					else if (f1gyro == gyro_119Sn)
-						strcpy(nuc, "^119Sn");
-					else if (f1gyro == gyro_129Xe)
-						strcpy(nuc, "^129Xe");
-					else if (f1gyro == gyro_183W)
-						strcpy(nuc, "^183W");
-					else if (f1gyro == gyro_195Pt)
-						strcpy(nuc, "^195Pt");
-					else
-						strcpy(nuc, "??");
-					g_string_append_printf(csv, "##.OBSERVE FREQUENCY= %.1f\n##.OBSERVE NUCLEUS= %s\n", freq1, nuc);
-					// Determine Min and Max values
-					min_r = data.realp[0];
-					min_i = data.imagp[0];
-					max_r = data.realp[0];
-					max_i = data.imagp[0];
-					for (i = 1; i < t2DataPoints; i++) {
-						if (min_r < data.realp[i]) {
-							min_r = data.realp[i];
-							if (fabsf(min_r) > fabsf(max_r))
-								max_x = i;
-						}
-						if (min_i < data.imagp[i])
-							min_i = data.imagp[i];
-						if (max_r > data.realp[i]) {
-							max_r = data.realp[i];
-							if (fabsf(max_r) > fabsf(min_r))
-								max_x = i;
-						}
-						if (max_i > data.imagp[i])
-							max_i = data.imagp[i];
-					}
-					x_factor = 1 / step1;
-					temp = (fabsf(max_r) > fabsf(min_r)) ? fabsf(max_r) : fabsf(min_r);
-					y_factor = 1.0;
-					while (temp < 100000000) {
-						temp *= 10;
-						y_factor *= 10;
-					}
-					// Pivot point for first order phase correction should be at the hightest peak in JCAMP-DX format!
-					max_x = begin1 + max_x * step1;
-					newPhase0 = window->zeroOrderPhaseShift + 0.5 * t2DataPoints * window->firstOrderPhaseShift * (0.1 * max_x - window->pivotPoint);
-					g_string_append_printf(csv, "##.PHASE 0= %f\n##.PHASE 1= %f\n", newPhase0 * 180 / M_PI, window->firstOrderPhaseShift * 180 / M_PI);
-					if (!window->showsFrequencyDomain) {
-						// Export FID as complex data...
-						g_string_append(csv, "##.DELAY= (0.0, 0.0)\n##.ACQUISITION MODE= SIMULTANEOUS\n");
-						g_string_append(csv, "##SPECTROMETER/DATA SYSTEM= Insensitive simulation\n");
-						g_string_append_printf(csv, "##NTUPLES= NMR %s\n", datatype);
-						g_string_append_printf(csv, "##VAR_NAME=\t%s,\t%s/REAL,\t%s/IMAG,\tPAGE NUMBER\n", x_scale, datatype, datatype);
-						g_string_append(csv, "##SYMBOL=\tX,\tR,\tI,\tN\n");
-						g_string_append(csv, "##VAR_TYPE=\tINDEPENDENT,\tDEPENDENT,\tDEPENDENT,\tPAGE\n");
-						g_string_append(csv, "##VAR_FORM=\tAFFN,\tASDF,\tASDF,\tAFFN\n");
-						g_string_append_printf(csv, "##VAR_DIM=\t%d,\t%d,\t%d,\t2\n", t2DataPoints, t2DataPoints, t2DataPoints);
-						g_string_append_printf(csv, "##UNITS=\t%s,\tARBITRARY UNITS,\tARBITRARY UNITS,\n", x_unit);
-						g_string_append_printf(csv, "##FIRST=\t%f,\t%f,\t%f,\t1\n", begin1, data.realp[0], data.imagp[0]);
-						g_string_append_printf(csv, "##LAST= \t%f,\t%f,\t%f,\t2\n", begin1 + (t2DataPoints - 1) * step1, data.realp[t2DataPoints - 1], data.imagp[t2DataPoints - 1]);
-						g_string_append_printf(csv, "##MIN=  \t%f,\t%f,\t%f,\t1\n", begin1, min_r, min_i);
-						g_string_append_printf(csv, "##MAX=  \t%f,\t%f,\t%f,\t2\n", begin1 + (t2DataPoints - 1) * step1, max_r, max_i);
-						g_string_append_printf(csv, "##FACTOR=\t%f,\t%.3f,\t%.3f,\t1\n", 1 / x_factor, y_factor, y_factor);
-						for (p = 1; p <= 2; p++) {
-							if (p == 1) {
-								z = 'R';
-								dataset = data.realp;
-							} else {
-								z = 'I';
-								dataset = data.imagp;
-							}
-							g_string_append_printf(csv, "##PAGE= %d\n##DATA TABLE= (X++(%c..%c)), XYDATA\n", p, z, z);
-							if (dataset != NULL) {
-								for (i = 0; i < t2DataPoints; i += 10) {
-									g_string_append_printf(csv, "%.0f", (begin1 + i * step1) * x_factor);
-									for (j = 0; j < 10; j++) {
-										if (i + j < t2DataPoints) {
-											//// DIF: Difference to previous value (first digit: % = 0, J-R > 0, j-r < 0)
-											//if(j > 0) {
-											//    last = current;
-											//    current = roundtol(dataset[i + j] * y_factor);
-											//    diff = current - last;
-											//    [sqz setString:[NSString stringWithFormat:@"%ld", diff]];
-											//    if(diff < 0) {
-											//        [csv appendFormat:@"%c%@", [sqz characterAtIndex:1] + 57, [sqz substringFromIndex:2]];
-											//    } else if(diff == 0) {
-											//        [csv appendFormat:@"%%%@", [sqz substringFromIndex:1]];
-											//    } else {
-											//        [csv appendFormat:@"%c%@", [sqz characterAtIndex:0] + 25, [sqz substringFromIndex:1]];
-											//    }
-											//// SQZ: Squeezed value (first digit: @ = 0, A-I > 0, a-i < 0)
-											//} else {
-											//    current = roundtol(dataset[i + j] * y_factor);
-											//    [sqz setString:[NSString stringWithFormat:@"%ld", current]];
-											//    if(current < 0) {
-											//        [csv appendFormat:@"%c%@", [sqz characterAtIndex:1] + 49, [sqz substringFromIndex:2]];
-											//    } else {
-											//        [csv appendFormat:@"%c%@", [sqz characterAtIndex:0] + 16, [sqz substringFromIndex:1]];
-											//    }
-											//}
-											g_string_append_printf(csv, " %.0f", dataset[i + j] * y_factor);
-										}
-									}
-									g_string_append(csv, "\n");
-								}
-							}
-						}
-						g_string_append_printf(csv, "##END NTUPLES= NMR %s\n##END=", datatype);
-					} else {
-						// Export only real spectrum data
-						g_string_append(csv, "##.ACQUISITION MODE= SINGLE\n");
-						g_string_append(csv, "##SPECTROMETER/DATA SYSTEM= Insensitive simulation\n");
-						g_string_append_printf(csv, "##RESOLUTION= %f\n", fabsf(step1));
-						g_string_append_printf(csv, "##XUNITS= %s\n##YUNITS= ARBITRARY UNITS\n", x_unit);
-						g_string_append_printf(csv, "##XFACTOR= %f\n##YFACTOR= %.1f\n", 1 / x_factor, y_factor);
-						g_string_append_printf(csv, "##FIRSTX= %.3f\n##LASTX= %.3f\n", begin1 + freq1, (begin1 + (t2DataPoints - 1) * step1) + freq1);
-						g_string_append_printf(csv, "##MAXY= %f\n##MINY= %f\n", max_r, min_r);
-						g_string_append_printf(csv, "##DELTAX= %f\n##NPOINTS= %d\n##FIRSTY= %f\n", step1 * x_factor, t2DataPoints, data.realp[0]);
-						g_string_append(csv, "##XYDATA= (X++(Y..Y))\n");
-						if (data.realp != NULL) {
-							;
-							for (i = 0; i < t2DataPoints; i += 10) {
-								g_string_append_printf(csv, "%.0f", ((begin1 + i * step1) + freq1) * x_factor);
-								for (j = 0; j < 10; j++) {
-									if (i + j < t2DataPoints) {
-										// DIF: Difference to previous value (first digit: % = 0, J-R > 0, j-r < 0)
-										current = lroundf(data.realp[i + j] * y_factor + 0.5);
-										sprintf(sqz, "%ld", current);
-										if (current < 0) {
-											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 49, sqz + 2);
-										} else {
-											g_string_append_printf(csv, "%c%s", *sqz + 16, sqz + 1);
-										}
-									}
-								}
-								g_string_append(csv, "\n");
-							}
-						}
-						g_string_append(csv, "##END=");
-					}
-					free(nuc);
-					free(datatype);
-					free(x_scale);
-					free(x_unit);
-					free(sqz);
-					// Code for Bruker-style txt format
-				} else if (insensitive_settings_get_exportFormat(window->controller->settings) == TXT) {
-					float f1gyro = window->controller->spinSystem->absGyroI;
-					float freq1 = f1gyro / gyro_1H * spectrometer_frequency / 1e6;
-					GDateTime *date = g_date_time_new_now_local();
-					gchar *date_str = g_date_time_format(date, "%A, %B %e, %Y %l:%M:%S %p %Z");
-					g_string_append_printf(csv, "# File created = %s\n", date_str);
-					free(date_str);
-					g_date_time_unref(date);
-					g_string_append_printf(csv, "# Data set = insensitive  %d  1  %s\n# Spectral Region:\n", window->controller->expno, filename);
-					if (window->showsFrequencyDomain)
-						g_string_append_printf(csv, "# LEFT = %.15f Hz. RIGHT = %.15f Hz.\n#\n# SIZE = %d ( = number of points)\n",
-								       begin1,
-								       begin1 + (t2DataPoints - 1) * step1,
-								       t2DataPoints);
-					else
-						g_string_append_printf(csv, "# LEFT = 0.0 s. RIGHT = %.15f s.\n#\n# SIZE = %d ( = number of points)\n",
-								       begin1 + (t2DataPoints - 1) * step1,
-								       t2DataPoints);
-					g_string_append(csv, "#\n# In the following ordering is from the 'left' to the 'right' limits!\n# Lines beginning with '#' must be considered as comment lines.\n#");
-					if ((data.realp != NULL) && (data.imagp != NULL)) {
-						for (i = 0; i < t2DataPoints; i++) {
-							g_string_append_printf(csv, "\n%f", data.realp[i]);
-							if (data.imagp[i] >= 0)
-								g_string_append(csv, "+");
-							g_string_append_printf(csv, "%fi", data.imagp[i]);
-						}
-					}
-					// Code for CSV and DAT file formats
 				} else {
 					if (window->showsFrequencyDomain) {
 						g_string_append_printf(csv, "frequency/Hz%sRe%sIm", separator, separator);

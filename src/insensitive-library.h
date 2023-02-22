@@ -148,6 +148,7 @@ void print_complex_matrix(DSPComplex *matrix, unsigned int size);
 void print_double_complex_matrix(DSPDoubleComplex *matrix, unsigned int size);
 char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_array);
 char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_array);
+gchar *substring_for_keyword_in_string(gchar *keyword, gchar *text, gsize length);
 void coherence_orders_for_matrix(DSPComplex *matrix, int *orders, int spins);
 char *product_operator_from_base4(int index, int number_of_spins, int spin_type_array, float coefficient);
 char *replace_numbers_by_indices(char *string);
