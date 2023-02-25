@@ -432,15 +432,14 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	const float coneAngle = 0.8410742;
 	double random;
 	double x1, x2, y1, y2;
-	double precessionAngle, x, temp, max_width, max_shift, perspective;
+	double precessionAngle, x, temp, max_width, perspective;//, max_shift;
 	double state, angle;
 	double a_alpha, b_alpha, a_beta, b_beta, x_amplitude, y_amplitude, z_amplitude;
 	double sum_x, sum_y, sum_z, sum_angle;
 	DSPComplex *operator_Ix, *operator_Iy, *operator_Iz, *matrix, z;
 	SingleSpinVector *v;
-	int counter = 0;
-	float bottom, top, left, right, proj_x, proj_y, arrowangle;
-	float width, height, origin_x, origin_y, y, circle_width;
+	float bottom, top, left, proj_x, proj_y, arrowangle;//, right;
+	float width, height, origin_x, origin_y, y;
     cairo_text_extents_t extents;
     gchar *label;
 	gboolean B0 = gtk_toggle_button_get_active(window->B0_checkbox);
@@ -465,7 +464,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		top = origin_y + 25.0;
 		bottom = origin_y + height - 25.0;
 		left = origin_x + 25.0;
-		right = origin_x + width - 25.0;
+		//right = origin_x + width - 25.0;
 		cairo_move_to(cr, centre_x, bottom);
 		cairo_line_to(cr, centre_x, top);
 		cairo_line_to(cr, centre_x - 5, top + 7);
@@ -495,7 +494,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
         top = origin_y + 25.0;
 	    bottom = origin_y + height - 25.0;
 	    left = origin_x + 25.0;
-	    right = origin_x + width - 25.0;
+	    //right = origin_x + width - 25.0;
 	    if (rotatingFrame) {
 		    cairo_move_to(cr, centre_x, centre_y);
 		    cairo_line_to(cr, left, centre_y);
@@ -561,7 +560,6 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		free(operator_Iz);
 		free(matrix);
 		sum_angle = acos(sum_z / sqrt(pow(sum_x, 2) + pow(sum_y, 2) + pow(sum_z, 2)));
-		counter = 0;
 	}
 
 	// Draw sum of all vectors in back
@@ -811,7 +809,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		// Draw rotated cone around z
 		perspective = window->phase;
 		max_width = 2 * halfWidth * cos(coneAngle);
-		max_shift = halfWidth * sin(coneAngle);
+		//max_shift = halfWidth * sin(coneAngle);
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 1.0);
 		cairo_move_to(cr, centre_x, centre_y);
 		cairo_line_to(cr, centre_x - halfWidth * sin(coneAngle) * cos(perspective), centre_y - halfWidth * cos(coneAngle));

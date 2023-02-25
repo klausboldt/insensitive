@@ -150,7 +150,7 @@ void insensitive_pulse_shaper_set_controller(InsensitivePulseShaper *self, gpoin
 void insensitive_pulse_shaper_refreshGraphs(InsensitivePulseShaper *self)
 {
 	DSPSplitComplex pulseShape, pulsePowerSpectrum;
-	unsigned int i;
+	int i;
 
 	if (self != NULL && self->controller != NULL) {
 		pulseShape = insensitive_controller_get_pulseShape(self->controller);
@@ -350,17 +350,18 @@ void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_
     gboolean plotFrequencyDomain = (drawingarea == window->frequencyDomain_drawingarea);
     unsigned int i, maxDataPoints, index;
 	float stepSizeX, stepSizeY;
-	float center_x, center_y;
+	//float center_x, center_y;
 	float width, height, origin_x, origin_y;
     DSPSplitComplex displayedData;
     enum ExcitationProfile excitationProfile;
 
     maxDataPoints = plotFrequencyDomain ? pulsePowerSpectrumCenter : pulsePowerSpectrumResolution;
     displayedData = plotFrequencyDomain ? window->frequencyDomainData : window->timeDomainData;
-    if (insensitive_settings_get_ignoreOffResonanceEffectsForPulses(window->controller->settings))
+    if (insensitive_settings_get_ignoreOffResonanceEffectsForPulses(window->controller->settings)) {
         excitationProfile = Mxy_Phase;
-    else
+	} else {
         excitationProfile = insensitive_settings_get_excitationProfile(window->controller->settings);
+	}
 	width = gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
 	origin_x = 0.0;
@@ -380,26 +381,26 @@ void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_
         case Mxy_Phase:
             stepSizeY /= 1.7;
             origin_y = 3 * height / 4;
-		    center_y = origin_y - height / 4;
+		    //center_y = origin_y - height / 4;
             break;
         case Mx_My:
             stepSizeY /= 1.2;
             origin_y = height / 2;
 		    stepSizeY /= 2;
-		    center_y = origin_y;
+		    //center_y = origin_y;
             break;
         case Mz:
             stepSizeY /= 2.4;
             origin_y = height / 2;
-		    center_y = origin_y;
+		    //center_y = origin_y;
         }
     } else {
         stepSizeY /= 1.5;
 		origin_y = height / 2;
 		stepSizeY /= 2;
-		center_y = origin_y;
+		//center_y = origin_y;
 	}
-	center_x = origin_x + width / 2;
+	//center_x = origin_x + width / 2;
 	cairo_set_line_width(cr, 3);
     cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
 

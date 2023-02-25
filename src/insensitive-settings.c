@@ -484,7 +484,7 @@ void insensitive_settings_save_pulsesequence(InsensitiveSettings *self, gpointer
 		for (i = 0; i < phaseCyclingArray->len; i++)
 			phase_list[i] = g_ptr_array_index(phaseCyclingArray, i);
 		g_key_file_set_string_list(self->defaultSettings, pp_group, "PhaseCyclingArray",
-					   phase_list, phaseCyclingArray->len);
+								   phase_list, phaseCyclingArray->len);
 		free(phase_list);
 		pp_code = malloc(size * sizeof(guchar *));
 		for (i = 0; i < size; i++)
@@ -805,7 +805,7 @@ DSPSplitComplex insensitive_settings_get_pulseShape(InsensitiveSettings *self)
 
 void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 {
-	int i, n, centre;
+	unsigned int i, n, centre;
 	float A, B, factor, frequency, width;
 
 	switch (self->pulseEnvelope) {

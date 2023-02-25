@@ -276,8 +276,8 @@ void insensitive_composer_set_controller(InsensitiveComposer *self, gpointer new
 void insensitive_composer_reset(InsensitiveComposer *self)
 {
     if (self) {
-        gtk_container_foreach((GtkContainer *)self->composer_listbox, (GtkCallback)gtk_widget_destroy, NULL);
-        self->numberOfRows = 0;
+        gtk_container_foreach(GTK_CONTAINER(self->composer_listbox), (void *)gtk_widget_destroy, NULL);
+		self->numberOfRows = 0;
 		insensitive_composer_initialize(self);
 	}
 }

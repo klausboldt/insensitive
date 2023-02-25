@@ -261,7 +261,7 @@ void set_acquisition_is_running(InsensitiveWindow *self, gboolean value);
 void enable_acquisition_button(InsensitiveWindow *self, gboolean value);
 void start_progress_indicator(InsensitiveWindow *self);
 void stop_progress_indicator(InsensitiveWindow *self);
-void spin_state_was_changed(InsensitiveWindow *window);
+gboolean spin_state_was_changed(InsensitiveWindow *window);
 void spin_number_was_changed(InsensitiveWindow *window);
 
 /* Input Actions */
@@ -420,9 +420,9 @@ void set_acquisition_in_background(InsensitiveWindow *window, gboolean value);
 void set_phaseCycling_combobox(InsensitiveWindow *window, int value);
 void set_detectionMethod(InsensitiveWindow *window, enum PurePhaseDetectionMethod value);
 void set_current_step_in_pulseSequence(InsensitiveWindow *window, unsigned int value);
-void update_pulseSequence(InsensitiveWindow *window);
+gboolean update_pulseSequence(InsensitiveWindow *window);
 void resize_pulseSequence_view(InsensitiveWindow *window);
-void redraw_pulseSequence(InsensitiveWindow *window);
+gboolean redraw_pulseSequence(InsensitiveWindow *window);
 void on_bottomDisplay_combobox_changed(GtkComboBox *combobox, gpointer user_data);
 void close_coherencePathway(InsensitiveWindow *window);
 void display_pulseProgram_code(InsensitiveWindow *window);
@@ -532,7 +532,7 @@ void set_openedFileState_for_spectrum(InsensitiveWindow *window, enum OpenFileSt
 gboolean perform_open_spectrum(InsensitiveWindow *window, xmlNodePtr node);
 void perform_save_spectrum(GtkMenuItem *menuitem, gpointer user_data);
 void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window);
-void update_spectrum_parameter_panel(InsensitiveWindow *window);
+gboolean update_spectrum_parameter_panel(InsensitiveWindow *window);
 
 void show_spectrumParameters_textview(InsensitiveWindow *window, gboolean value);
 void on_toggleParameters_button_clicked(GtkButton *button, gpointer user_data);
@@ -542,7 +542,7 @@ void set_noise_spectrum(InsensitiveWindow *window, DSPSplitComplex splitComplex)
 float magnification(InsensitiveWindow *window);
 void set_magnification(InsensitiveWindow *window, float value);
 void reset_magnification(InsensitiveWindow *window);
-void recalculate_graph(InsensitiveWindow *window);
+gboolean recalculate_graph(InsensitiveWindow *window);
 DSPSplitComplex displayed_graph(InsensitiveWindow *window);
 
 /* Command Line */

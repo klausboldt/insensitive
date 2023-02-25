@@ -665,7 +665,7 @@ void show_mainWindow_notebook_page(InsensitiveWindow *self, unsigned int page)
        					 || insensitive_controller_get_currentStepInPulseSequence(controller) > 0)
    		    && !insensitive_controller_get_acquisitionIsInProgress(controller)) {
     		gtk_widget_show(GTK_WIDGET(self->step_window));
-			gtk_widget_set_visible(self->stepWindow_button, !insensitive_controller_get_isRecordingPulseSequence(controller));
+			gtk_widget_set_visible(GTK_WIDGET(self->stepWindow_button), !insensitive_controller_get_isRecordingPulseSequence(controller));
 		} else if (gtk_widget_is_visible(GTK_WIDGET(self->step_window))) {
     		gtk_widget_hide(GTK_WIDGET(self->step_window));
 		}
@@ -916,7 +916,7 @@ void stop_progress_indicator(InsensitiveWindow *self)
 }
 
 
-void spin_state_was_changed(InsensitiveWindow *window)
+gboolean spin_state_was_changed(InsensitiveWindow *window)
 {
 	InsensitiveController *controller = window->controller;
 	gchar *postring;
@@ -959,6 +959,8 @@ void spin_state_was_changed(InsensitiveWindow *window)
 	g_free(postring);
 	//[productOperatorTextView setFont:[NSFont fontWithName:@"Georgia" size:14]];
 	//[productOperatorTextView setTextColor:[NSColor blackColor]];
+
+	return FALSE;
 }
 
 
@@ -2131,14 +2133,12 @@ void on_main_window_resize(GtkWindow *main_window, gpointer user_data)
 
 void set_matrixDisplayType(InsensitiveWindow *window, enum MatrixDisplayType value)
 {
-	int fontSize = -1;
-    gint matrix_height;
+	gint matrix_height;
 
 	switch (value) {
 	case MatrixDisplayTypeGraphical:
 		gtk_combo_box_set_active((GtkComboBox *)window->matrixDisplayType_combobox, 1);
-		fontSize = -1;
-        switch (insensitive_spinsystem_get_spins(window->controller->spinSystem)) {
+		switch (insensitive_spinsystem_get_spins(window->controller->spinSystem)) {
 		case 1:
 			matrix_height = 99;
 			break;
@@ -2750,7 +2750,7 @@ void set_current_step_in_pulseSequence(InsensitiveWindow *window, unsigned int v
         g_idle_add((GSourceFunc)update_pulseSequence, window);
 }
 
-void update_pulseSequence(InsensitiveWindow *window)
+gboolean update_pulseSequence(InsensitiveWindow *window)
 {
     InsensitiveController *controller = window->controller;
     InsensitivePulseSequence *pulsesequence = controller->pulseSequence;
@@ -2780,6 +2780,8 @@ void update_pulseSequence(InsensitiveWindow *window)
         close_coherencePathway(window);
         display_pulseProgram_code(window);
     }
+
+	return FALSE;
 }
 
 
@@ -2814,12 +2816,14 @@ void resize_pulseSequence_view(InsensitiveWindow *window)
 }
 
 
-void redraw_pulseSequence(InsensitiveWindow *window)
+gboolean redraw_pulseSequence(InsensitiveWindow *window)
 {
     //[self finishEditingSequenceElement:self];
     resize_pulseSequence_view(window);
     gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
     gtk_widget_queue_draw((GtkWidget *)window->pulseSequenceStep_drawingarea);
+
+	return FALSE;
 }
 
 
@@ -3293,7 +3297,7 @@ void on_play_button_clicked(GtkButton *button, gpointer user_data)
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
     GtkIconInfo *icon_info;
-    SequenceElement *lastElement = insensitive_pulsesequence_get_last_element(window->controller->pulseSequence);
+    //SequenceElement *lastElement = insensitive_pulsesequence_get_last_element(window->controller->pulseSequence);
 
     if(insensitive_controller_get_acquisitionIsInProgress(window->controller)) {
         on_acquire_button_clicked(window->acquire_button, window);
@@ -4251,7 +4255,8 @@ void draw_coherencePathway(InsensitiveWindow *window)
 gpointer calculate_coherence_paths(gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
-    int i, spins, pulseIndex, step, p, type = 0;
+    int i, spins, pulseIndex, step, p;
+	unsigned int type = 0;
     int **pathways, numberOfOrders;
     long numberOfPathways;
     float current_Y, current_X, *coefficients, *alpha, maxCoefficient, offset, shiftFromText;
@@ -4436,6 +4441,8 @@ gpointer calculate_coherence_paths(gpointer user_data)
             }
         }
     gtk_widget_queue_draw((GtkWidget *)window->coherencePathway_drawingarea);
+
+	return user_data;
 }
 
 
@@ -5788,17 +5795,14 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 	float freq1, freq2;
 	float min_y1, min_y2, max_y1, max_y2, min_x1, min_x2, max_x1, max_x2;
 	float factor_x1, factor_x2, factor_y1, factor_y2, newPhase0;
-	float first_x1, first_x2, first_y1, first_y2, last_x1, last_x2, last_y1, last_y2;
-	float temp, *dataset;
+	//float first_x1, first_x2, first_y1, first_y2, last_x1, last_x2;
+	float *dataset;
 	gchar *nuc1, *nuc2, *fnmode, *pulprog, *datatype, *x_unit, *y_unit, *x_scale, *sqz;
 	signed long current;
 	char *z;
-	unsigned int p;
-	int i, j, t1DataPoints, t2DataPoints;
+	unsigned int i, j, p, t1DataPoints, t2DataPoints;
 	DSPSplitComplex data;
 	GString *csv, *spectrum_report;
-	GError *error;
-	gboolean ok;
 	gint result;
 	gchar *filename, *separator, *date_str, *freq_str;
 	GtkWidget *dialog, *chooser;
@@ -6051,7 +6055,6 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 					factor_x1 = 1 / step1;
 					factor_x2 = 1 / step2;
 					factor_y1 = 1000000.0;
-					//temp = (fabsf(max_x1) > fabsf(min_x1)) ? fabsf(max_x1) : fabsf(min_x1);
 					if (!window->showsFrequencyDomain)
 						factor_y2 = 1000000.0;
 					g_string_append_printf(csv, "\n##FACTOR=    %.9f,%14.9f,%15.9f", factor_x1, factor_x2, 1 / factor_y1);
@@ -6153,7 +6156,7 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 				    nuc1 = substring_for_keyword_in_string("NUC1", spectrum_report->str, spectrum_report->len);
 				    if (nuc1 == NULL) {
 						nuc1 = malloc(3 * sizeof(gchar));
-						strcpy(nuc2, "1H");
+						strcpy(nuc1, "1H");
 				    }
 					g_string_append_printf(csv, "##TITLE= %s\n##JCAMPDX= 5.0  $$ Insensitive NMR JCAMP-DX v%s\n",
 							       		   g_path_get_basename(filename), insensitive_version);
@@ -6188,7 +6191,6 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 						}
 					}
 					factor_x1 = 1 / step1;
-					//temp = (fabsf(max_y1) > fabsf(min_y1)) ? fabsf(min_y1) : fabsf(min_y1);
 					factor_y1 = 1000000000.0;
 					// Pivot point for first order phase correction should be at the hightest peak in JCAMP-DX format!
 					max_x1 = begin1 + max_x1 * step1;
@@ -6403,10 +6405,10 @@ void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 }
 
 
-void update_spectrum_parameter_panel(InsensitiveWindow *window)
+gboolean update_spectrum_parameter_panel(InsensitiveWindow *window)
 {
 	int i, channels, dataPoints;
-	float freq, LB;
+	float LB;//, freq;
 	GString *stringBeforeProcessing;
 	gchar *wdw;
 	GString *parameterString;
@@ -6447,17 +6449,16 @@ void update_spectrum_parameter_panel(InsensitiveWindow *window)
 			channels = 2;
 		else
 			channels = 1;
-		//for(i = channels; i > 0; i--) {
 		for (i = 2; i > 2 - channels; i--) {
             if (i < 2)
                 g_string_append(parameterString, "\n\n");
 			g_string_append_printf(parameterString, "F%d - Processing parameters", i);
 			if (window->twoDimensionalSpectrum && i == 1) {
 				dataPoints = indirect_datapoints(insensitive_controller_get_detectionMethod(window->controller), insensitive_settings_get_dataPoints(window->controller->settings));
-				freq = 0.0;
+				//freq = 0.0;
 			} else {
 				dataPoints = insensitive_settings_get_dataPoints(window->controller->settings);
-				freq = 0.0;
+				//freq = 0.0;
 			}
 			g_string_append_printf(parameterString, "\nSI %20d", dataPoints);
 			//g_string_append_printf(parameterString, "SF %20.2f MHz\n", freq);
@@ -6499,6 +6500,8 @@ void update_spectrum_parameter_panel(InsensitiveWindow *window)
 	}
 	gtk_text_buffer_set_text(window->spectrumParameters_textbuffer, parameterString->str, parameterString->len);
 	g_string_free(parameterString, true);
+
+	return FALSE;
 }
 
 
@@ -6634,7 +6637,7 @@ void reset_magnification(InsensitiveWindow *window)
 }
 
 
-void recalculate_graph(InsensitiveWindow *window)
+gboolean recalculate_graph(InsensitiveWindow *window)
 {
     unsigned int i, x, y;
     float integralSizingFactor;
@@ -6695,6 +6698,8 @@ void recalculate_graph(InsensitiveWindow *window)
         }
     }
     gtk_widget_queue_draw((GtkWidget *)window->spectrum_drawingarea);
+
+	return FALSE;
 }
 
 
@@ -7166,8 +7171,8 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 			gchar *line_buffer, *next_line, *text_buffer = NULL;
 			gsize text_buffer_len;
 			GError *err = NULL;
-			size_t n = 0;
-			int i, keyword_index;
+			//size_t n = 0;
+			unsigned int i, keyword_index;
 			GString *search_string;
 			gboolean keyword_found = FALSE;
 
@@ -7970,7 +7975,7 @@ void execute_command(GtkEntry *entry, gpointer user_data)
         }
 	}
 	// ZG, GO
-	else if ((!g_strcmp0(word[0], "zg") || !g_strcmp0(word[0], "go")) && number_of_words == 1) {
+	else if ((!g_strcmp0(word[0], "zg") || !g_strcmp0(word[0], "go") || !g_strcmp0(word[0], "play")) && number_of_words == 1) {
         if(!insensitive_controller_get_pulseSequence_ends_with_acquisition(window->controller) || !g_strcmp0(word[0], "go"))
             on_acquire_button_clicked(window->acquire_button, window);
         else {
@@ -8195,7 +8200,7 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 	}
 	// First word is real number: apply product operator
 	else if (atof(word[0]) != 0.0) {
-		unsigned int numberOfMinusSigns, numberOfDecimalPoints;
+		int numberOfMinusSigns, numberOfDecimalPoints;
 		gchar *string;
 
 		string = command;
@@ -9055,12 +9060,12 @@ void draw_grapefruit_paths(InsensitiveController *controller, gboolean upper, gb
 
 gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
-	GtkStyleContext *context;
+	//GtkStyleContext *context;
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	InsensitiveController *controller = window->controller;
 	InsensitiveSpinSystem *spinsystem = controller->spinSystem;
 	InsensitiveSettings *settings = controller->settings;
-	float width, height, origin_x, origin_y, alignment;
+	float width, height, alignment;//, origin_x, origin_y;
 	float alphaOfStroke, angle;
 	float center_spin_x[4], center_spin_y[4], adjust_x, adjust_y;
     float shift, constant;
@@ -9071,11 +9076,11 @@ gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data
 	unsigned int spins = insensitive_spinsystem_get_spins(spinsystem);
 	float *couplingMatrix = insensitive_spinsystem_get_raw_couplingmatrix(spinsystem);
 
-	context = gtk_widget_get_style_context(widget);
+	//context = gtk_widget_get_style_context(widget);
 	width = gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
-	origin_x = 0.5 * gtk_widget_get_allocated_width(widget);
-	origin_y = 0.5 * gtk_widget_get_allocated_height(widget);
+	//origin_x = 0.5 * gtk_widget_get_allocated_width(widget);
+	//origin_y = 0.5 * gtk_widget_get_allocated_height(widget);
 
 	center_spin_x[0] = width / 2 - icon_half_width;
 	center_spin_x[1] = 128;
@@ -9611,8 +9616,8 @@ void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr, gpointer user_d
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int width, height;
 
-    width = gtk_widget_get_allocated_width(window->pulseSequence_drawingarea);
-    height = gtk_widget_get_allocated_height(window->pulseSequence_drawingarea);
+    width = gtk_widget_get_allocated_width(GTK_WIDGET(window->pulseSequence_drawingarea));
+    height = gtk_widget_get_allocated_height(GTK_WIDGET(window->pulseSequence_drawingarea));
 
     if (window->pulseSequence_surface != NULL) {
         cairo_scale(cr, 0.707, 0.707);
@@ -9630,11 +9635,11 @@ void create_pulseSequence_view(InsensitiveWindow *window, int width, int height)
 	InsensitivePulseSequence *pulseSequence = controller->pulseSequence;
 	SequenceElement *lastElement;
 	float factor, x;
-	unsigned int i, selected, numberOfElements;
+	unsigned int i, numberOfElements;//, selected;
 	int colorPulseSandwich = 0, pulseIndex = 0, delayIndex = 0, gradientIndex = 0;
 	float currentPosition = 60, stepWidth, heightOfRectangle;
 	float stepMarkerYPosition, standardStepMarkerYPosition, lastStepYPosition, stepMarkerXPosition = -1;
-	float pulseHeight, pulseWidth;
+	float pulseHeight;//, pulseWidth;
 	gboolean lastStepHasIDecoupling, lastStepHasSDecoupling;
 	gboolean sequenceInvolvesISpinAction = FALSE, sequenceInvolvesSSpinAction = FALSE;
 	gboolean sequenceInvolvesISpins = FALSE, sequenceInvolvesSSpins = FALSE, sequenceInvolvesGradients = FALSE;
@@ -9814,7 +9819,7 @@ void create_pulseSequence_view(InsensitiveWindow *window, int width, int height)
 					pulseHeight = 0.25;
 				else
 					pulseHeight = (log10f(currentElement->pulseStrength) + 4) / 4;
-				pulseWidth = 1.0;// currentElement->pulseDuration * 10;
+				//pulseWidth = 1.0;// currentElement->pulseDuration * 10;
 				if (currentElement->pulseEnvelope == Rectangle) {
 					cairo_rectangle(cr, currentPosition * factor, window->I_line, stepWidth * factor, -pulseHeight * 50 * factor);
 					cairo_fill_preserve(cr);
@@ -10460,7 +10465,7 @@ void create_graph_view(InsensitiveWindow *window, int surface_width, int surface
     int *peak, pos;
     float stepSizeX, stepSizeY, deflection;
     float current_x, current_y;
-    float width, height, origin_x, origin_y, center_y;
+    float width, height, origin_x, origin_y;//, center_y;
     const int gap_top = GAP_TOP;
     const int gap_bottom = GAP_BOTTOM;
     const int gap_left = GAP_LEFT;
@@ -10709,11 +10714,11 @@ void create_graph_view(InsensitiveWindow *window, int surface_width, int surface
             else
                 origin_y += height / 2;
             stepSizeY /= 2;
-            center_y = origin_y;
+            //center_y = origin_y;
         } else {
             origin_x += window->drawOrdinate ? 2.0 : 0.0;
             origin_y += height / 4;
-            center_y = origin_y + height / 4;
+            //center_y = origin_y + height / 4;
         }
         cairo_set_line_width(cr, 3);
         cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
@@ -10923,7 +10928,7 @@ float contour_height(InsensitiveWindow *window, int x, int y, int maxX, int maxY
     xx = (int)(((float)x / (float)maxX) * (float)window->lastDataPointDisplayed);
 	yy = window->indirectDataPoints - (int)((((float)y + 1) / (float)maxY) * (float)window->indirectDataPoints);
 
-    if(xx >= window->lastDataPointDisplayed || yy >= window->indirectDataPoints || xx < 0 || yy < 0)
+    if(xx >= window->lastDataPointDisplayed || yy >= window->indirectDataPoints /*|| xx < 0 || yy < 0*/)
         h = 0;
     else {
         if(window->drawRealPart)
@@ -10941,12 +10946,12 @@ float contour_height(InsensitiveWindow *window, int x, int y, int maxX, int maxY
 
 float contour_x(InsensitiveWindow *window, int x)
 {
-	GtkAllocation* alloc = g_new(GtkAllocation, 1);
+	/*GtkAllocation* alloc = g_new(GtkAllocation, 1);
     float minX;
 
     gtk_widget_get_allocation(GTK_WIDGET(window->spectrum_drawingarea), alloc);
     minX = alloc->width;
-    g_free(alloc);
+    g_free(alloc);*/
 
 	return x * contourCellSize + GAP_LEFT;
 }

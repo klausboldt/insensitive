@@ -862,7 +862,7 @@ void insensitive_controller_restore_previous_state(InsensitiveController *self)
         self->previousPhaseCyclingArray = tempArray;
         if ((int)self->previousPulseList->len - (int)self->pulseList->len == 1)
             remove_last_column_from_phaseCyclingTable((InsensitiveWindow *)self->displayController);
-        else if (self->previousPulseList->len - self->pulseList->len == -1)
+        else if ((int)self->previousPulseList->len - (int)self->pulseList->len == -1)
             insert_column_into_phaseCyclingTable((InsensitiveWindow *)self->displayController, self->pulseList->len + 1, 1);
     }
     insensitive_controller_initialise_grapefruit_path(self);
@@ -1895,8 +1895,8 @@ void insensitive_controller_calculate_energy_levels(InsensitiveController *self)
                 vec_size = size * size;
                 // Convert matrix to column major form
                 colMajorMatrix = malloc(vec_size * sizeof(__CLPK_real));
-                for (m = 0; m < size; m++)
-                    for (n = 0; n < size; n++)
+                for (m = 0; m < (unsigned int)size; m++)
+                    for (n = 0; n < (unsigned int)size; n++)
                         colMajorMatrix[n * size + m] = hamiltonian[n * size + m].real;
                 // Solve eigenvalue equation
                 eigenvalues = malloc(size * sizeof(__CLPK_real));
@@ -2298,7 +2298,7 @@ unsigned int insensitive_controller_get_numberOfPhaseCycles(InsensitiveControlle
 
 void insensitive_controller_add_number_of_phase_cycles(InsensitiveController *self, int number)
 {
-	int i, j, len, number_of_columns;
+	int i, len, number_of_columns;
 	gchar *phaseString;
 
     number_of_columns = self->pulseList->len + 1;
@@ -2528,7 +2528,7 @@ void insensitive_controller_perform_pulseSequence(InsensitiveController *self)
 }
 
 
-gboolean insensitive_controller_perform_pulseSequence_in_background(gpointer data)
+gpointer insensitive_controller_perform_pulseSequence_in_background(gpointer data)
 {
     InsensitiveController *self = (InsensitiveController *)data;
     SequenceElement *element, *fidElement = insensitive_pulsesequence_get_last_element(self->pulseSequence);
@@ -2629,7 +2629,7 @@ gboolean insensitive_controller_perform_pulseSequence_in_background(gpointer dat
     self->fid.imagp = accumulatedFID.imagp;
     gdk_threads_add_idle((GSourceFunc)insensitive_controller_finish_perform_pulseSequence, self);
 
-	return FALSE;
+	return data;
 }
 
 
@@ -2834,6 +2834,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 				break;
 			case DANTE:
 				dante = TRUE;
+				/* FALLTHRU */
 			default:
 				shapedPulseFile = "";
 			}
@@ -3194,11 +3195,11 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						coupling_partners_from_index(&spin1type, &spin2type, j / 4, insensitive_spinsystem_get_spins(self->spinSystem));
 						spin1type = insensitive_spinsystem_get_spintype_for_spin(self->spinSystem, spin1type - 1);
 						spin2type = insensitive_spinsystem_get_spintype_for_spin(self->spinSystem, spin2type - 1);
-						if (spin1type == spinTypeI && spin2type == spinTypeI) {
+						if ((unsigned int)spin1type == spinTypeI && (unsigned int)spin2type == spinTypeI) {
 							cnstHH = TRUE;
 							if (d2Value == NULL)
 								d2Value = "1s/cnst1*2";
-						} else if (spin1type == spinTypeS && spin2type == spinTypeS) {
+						} else if ((unsigned int)spin1type == spinTypeS && (unsigned int)spin2type == spinTypeS) {
 							cnstXX = TRUE;
 							if (d2Value == NULL)
 								d2Value = "1s/cnst3*2";
@@ -3222,11 +3223,11 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						coupling_partners_from_index(&spin1type, &spin2type, (j - 1) / 4, insensitive_spinsystem_get_spins(self->spinSystem));
 						spin1type = insensitive_spinsystem_get_spintype_for_spin(self->spinSystem, spin1type - 1);
 						spin2type = insensitive_spinsystem_get_spintype_for_spin(self->spinSystem, spin2type - 1);
-						if (spin1type == spinTypeI && spin2type == spinTypeI) {
+						if ((unsigned int)spin1type == spinTypeI && (unsigned int)spin2type == spinTypeI) {
 							cnstHH = TRUE;
 							if (d3Value == NULL)
 								d3Value = "1s/cnst1*3";
-						} else if (spin1type == spinTypeS && spin2type == spinTypeS) {
+						} else if ((unsigned int)spin1type == spinTypeS && (unsigned int)spin2type == spinTypeS) {
 							cnstXX = TRUE;
 							if (d3Value == NULL)
 								d3Value = "1s/cnst3*3";
@@ -3250,11 +3251,11 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						coupling_partners_from_index(&spin1type, &spin2type, (j - 2) / 4, insensitive_spinsystem_get_spins(self->spinSystem));
 						spin1type = insensitive_spinsystem_get_spintype_for_spin(self->spinSystem, spin1type - 1);
 						spin2type = insensitive_spinsystem_get_spintype_for_spin(self->spinSystem, spin2type - 1);
-						if (spin1type == spinTypeI && spin2type == spinTypeI) {
+						if ((unsigned int)spin1type == spinTypeI && (unsigned int)spin2type == spinTypeI) {
 							cnstHH = TRUE;
 							if (d4Value == NULL)
 								d4Value = "1s/cnst1*4";
-						} else if (spin1type == spinTypeS && spin2type == spinTypeS) {
+						} else if ((unsigned int)spin1type == spinTypeS && (unsigned int)spin2type == spinTypeS) {
 							cnstXX = TRUE;
 							if (d4Value == NULL)
 								d4Value = "1s/cnst3*4";
@@ -3616,7 +3617,7 @@ void insensitive_controller_interrupt_coherencePathway_calculation(InsensitiveCo
 }
 
 
-gboolean insensitive_controller_calculate_coherencePathway(gpointer data)
+gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
 {
     /*
      *  for p spins and n pulses in the sequence there are (2p+1)ⁿ possible coherence pathways
@@ -3846,7 +3847,7 @@ gboolean insensitive_controller_calculate_coherencePathway(gpointer data)
 
     self->interruptCoherencePathwayCalculation = TRUE;
 
-	return FALSE;
+	return data;
 }
 
 
@@ -4390,7 +4391,7 @@ void insensitive_controller_perform_2D_acquisition(InsensitiveController *self)
 }
 
 
-gboolean insensitive_controller_perform_2D_acquisition_in_background(gpointer data)
+gpointer insensitive_controller_perform_2D_acquisition_in_background(gpointer data)
 {
 	InsensitiveController *self = (InsensitiveController *)data;
 
@@ -4719,7 +4720,7 @@ gboolean insensitive_controller_perform_2D_acquisition_in_background(gpointer da
 	}
 	gdk_threads_add_idle((GSourceFunc)insensitive_controller_finish_perform_2D_pulseSequence, self);
 
-	return FALSE;
+	return data;
 }
 
 
@@ -5278,7 +5279,7 @@ void insensitive_controller_absolute_value_spectrum(InsensitiveController *self)
 void insensitive_controller_spectrum_symmetrization(InsensitiveController *self, enum Symmetrization symmetrize, unsigned int spectrumDomain)
 {
     unsigned int t1DataPoints, t2DataPoints, totalDataPoints, center;
-    unsigned int i, x, y, position1, position2, denominator, indirectSize;
+    unsigned int i, x, y, position1, position2, denominator;
     float abs1, abs2, sign1, sign2;
     DSPSplitComplex symmetricSER, squareSpectrum;
 
@@ -5295,7 +5296,8 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
         case 0:
         case 1:
             insensitive_controller_fourier_transform_2D_spectrum_along_T2_and_T1(self);
-            /* Fallthrough: if no 2D FFT has been performed, do so and proceed with spectrumDomain == 2 */
+			/* If no 2D FFT has been performed, do so and proceed with spectrumDomain == 2 */
+            /* FALLTHRU */
         case 2:
             squareSpectrum.realp = self->spectrum2D.realp;
             squareSpectrum.imagp = self->spectrum2D.imagp;

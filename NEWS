@@ -8,6 +8,7 @@ Version 0.9.34 included the following new features and fixes:
 - Corrected the widths of the Gauss and sinc pulse shape
 - Improved the display of pulse shapes when off-resonance effects are ignored
 - Only one "Open File" dialog for all file types
+- Export 2D spectra in JCAMP-DX 6.0 format
 - Export spectrum als PNG image file
 - Fixed serious bugs in the quantum mechanics of the Single Spins module
 - Fixed minor bugs in the spectrum report

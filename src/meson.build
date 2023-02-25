@@ -28,6 +28,12 @@ insensitive_deps = [
 ]
 
 cc = meson.get_compiler('c')
+if cc.get_argument_syntax() == 'gcc'
+    compiler_args = cc.get_supported_arguments([
+        '-Wno-unused-parameter',
+    ])
+endif
+add_project_arguments(compiler_args, language: 'c')
 libm = cc.find_library('m')
 
 gnome = import('gnome')

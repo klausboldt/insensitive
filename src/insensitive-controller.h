@@ -185,7 +185,7 @@ void insensitive_controller_set_variableEvolutionTime(InsensitiveController *sel
 gboolean insensitive_controller_get_pulseSequence_ends_with_acquisition(InsensitiveController *self);
 void insensitive_controller_erase_pulseSequence(InsensitiveController *self);
 void insensitive_controller_perform_pulseSequence(InsensitiveController *self);
-gboolean insensitive_controller_perform_pulseSequence_in_background(gpointer data);
+gpointer insensitive_controller_perform_pulseSequence_in_background(gpointer data);
 gboolean insensitive_controller_finish_perform_pulseSequence(gpointer data);
 unsigned int insensitive_controller_get_currentStepInPulseSequence(InsensitiveController *self);
 void insensitive_controller_set_currentStepInPulseSequence(InsensitiveController *self, int value);
@@ -193,7 +193,7 @@ void insensitive_controller_perform_next_step_of_pulseSequence(InsensitiveContro
 GString *insensitive_controller_export_pulseSequence(InsensitiveController *self, gchar *name);
 void insensitive_controller_perform_threaded_coherencePathway_calculation(InsensitiveController * self);
 void insensitive_controller_interrupt_coherencePathway_calculation(InsensitiveController * self);
-gboolean insensitive_controller_calculate_coherencePathway(gpointer data);
+gpointer insensitive_controller_calculate_coherencePathway(gpointer data);
 gchar *insensitive_controller_get_pulseSequence_name(InsensitiveController *self);
 void insensitive_controller_set_name_for_pulseSequence(InsensitiveController *self, gchar *name);
 GString *insensitive_controller_create_spectrumReport(InsensitiveController *self, gboolean takeDataFromPulseSequence);
@@ -205,7 +205,7 @@ gboolean insensitive_controller_get_acquisitionIsInProgress(InsensitiveControlle
 void insensitive_controller_reset_acquisition_for_dataPoints(InsensitiveController *self, unsigned int number);
 void insensitive_controller_perform_acquisition(InsensitiveController *self);
 void insensitive_controller_perform_2D_acquisition(InsensitiveController *self);
-gboolean insensitive_controller_perform_2D_acquisition_in_background(gpointer data);
+gpointer insensitive_controller_perform_2D_acquisition_in_background(gpointer data);
 void insensitive_controller_initiate_interface_for_2D_acquisition(gpointer data);
 gboolean insensitive_controller_update_interface_during_2D_acquisition(gpointer data);
 gboolean insensitive_controller_finish_perform_2D_pulseSequence(gpointer data);
