@@ -805,12 +805,12 @@ DSPSplitComplex insensitive_settings_get_pulseShape(InsensitiveSettings *self)
 
 void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 {
-	unsigned int i, n, centre;
+	int i, n, centre;
 	float A, B, factor, frequency, width;
 
 	switch (self->pulseEnvelope) {
 	case Rectangle:
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			self->pulseShape.realp[i] = 1.0;
 			self->pulseShape.imagp[i] = 0.0;
 		}
@@ -818,7 +818,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 	case Gaussian:
         width = 3530;
 		centre = pulseShapeResolution / 2;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 2.4365 * exp(-pow(i - centre + 0.5, 2) / width);
 			self->pulseShape.realp[i] = factor;
 			self->pulseShape.imagp[i] = 0.0;
@@ -827,7 +827,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 	case Sinc:
 		width = 0.0739198; //18.92347 / pulseShapeResolution;
 		centre = pulseShapeResolution / 2;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			if (i == centre)
 				factor = 1;
 			else
@@ -840,7 +840,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 		break;
 	case EBURP_1:
 		frequency = 2 * M_PI / pulseShapeResolution;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 0.23;
 			for (n = 1; n <= 8; n++) {
 				switch (n) {
@@ -885,7 +885,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 		break;
 	case EBURP_2:
 		frequency = 2 * M_PI / pulseShapeResolution;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 0.26;
 			for (n = 1; n <= 9; n++) {
 				switch (n) {
@@ -934,7 +934,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 		break;
 	case IBURP_1:
 		frequency = 2 * M_PI / pulseShapeResolution;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 0.50;
 			for (n = 1; n <= 9; n++) {
 				switch (n) {
@@ -983,7 +983,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 		break;
 	case IBURP_2:
 		frequency = 2 * M_PI / pulseShapeResolution;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 0.50;
 			for (n = 1; n <= 11; n++) {
 				switch (n) {
@@ -1040,7 +1040,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 		break;
 	case UBURP:
 		frequency = 2 * M_PI / pulseShapeResolution;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 0.27;
 			for (n = 1; n <= 20; n++) {
 				switch (n) {
@@ -1113,7 +1113,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 		break;
 	case REBURP:
 		frequency = 2 * M_PI / pulseShapeResolution;
-		for (i = 0; i < pulseShapeResolution; i++) {
+		for (i = 0; i < (int)pulseShapeResolution; i++) {
 			factor = 0.49;
 			for (n = 1; n <= 15; n++) {
 				switch (n) {
@@ -1174,7 +1174,7 @@ void insensitive_settings_create_pulseShape(InsensitiveSettings *self)
 			self->pulseShape.realp[i] = 1.0;
 			self->pulseShape.imagp[i] = 0.0;
 		}
-		for (i = pulseShapeResolution / maxDanteCycles; i < pulseShapeResolution; i++) {
+		for (i = pulseShapeResolution / maxDanteCycles; i < (int)pulseShapeResolution; i++) {
 			self->pulseShape.realp[i] = 0.0;
 			self->pulseShape.imagp[i] = 0.0;
 		}

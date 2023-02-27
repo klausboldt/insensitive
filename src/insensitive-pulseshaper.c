@@ -350,7 +350,6 @@ void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_
     gboolean plotFrequencyDomain = (drawingarea == window->frequencyDomain_drawingarea);
     unsigned int i, maxDataPoints, index;
 	float stepSizeX, stepSizeY;
-	//float center_x, center_y;
 	float width, height, origin_x, origin_y;
     DSPSplitComplex displayedData;
     enum ExcitationProfile excitationProfile;
@@ -381,26 +380,21 @@ void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_
         case Mxy_Phase:
             stepSizeY /= 1.7;
             origin_y = 3 * height / 4;
-		    //center_y = origin_y - height / 4;
             break;
         case Mx_My:
             stepSizeY /= 1.2;
             origin_y = height / 2;
 		    stepSizeY /= 2;
-		    //center_y = origin_y;
             break;
         case Mz:
             stepSizeY /= 2.4;
             origin_y = height / 2;
-		    //center_y = origin_y;
         }
     } else {
         stepSizeY /= 1.5;
 		origin_y = height / 2;
 		stepSizeY /= 2;
-		//center_y = origin_y;
 	}
-	//center_x = origin_x + width / 2;
 	cairo_set_line_width(cr, 3);
     cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
 
