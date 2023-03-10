@@ -272,7 +272,6 @@ typedef struct {
 #define standardPlaySound FALSE
 #define standardVectorDiagramType 0
 #define standardSignalToNoiseThreshold 0.0
-#define totalNumberOfSingleSpins 100
 #define standardMaxCoherenceCalculations 6.0
 
 #endif

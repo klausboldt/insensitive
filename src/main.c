@@ -65,7 +65,7 @@ static void on_open(GApplication *app, GFile **files, gint n_files, const gchar 
 
 	g_assert(GTK_IS_APPLICATION(app));
 
-	window = INSENSITIVE_WINDOW(gtk_application_get_window_by_id(app, 1));
+	window = INSENSITIVE_WINDOW(gtk_application_get_window_by_id(GTK_APPLICATION(app), 1));
 	if (window == NULL)
 		window = g_object_new(INSENSITIVE_TYPE_WINDOW,
 		                      "application", app,
