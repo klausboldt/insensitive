@@ -224,6 +224,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	img_poplenotation.png \
 	img_powder_pattern.png \
 	img_presentation.png \
+	img_polarised_pulse.png \
 	img_pulse_sequence.png \
 	img_pulsesequence.png \
 	img_pulse_shaper.png \

@@ -2315,12 +2315,13 @@ void perform_save_spinSystem(GtkMenuItem *menuitem, gpointer user_data)
         xmlCreateIntSubset(doc, BAD_CAST "plist", BAD_CAST "-//Apple//DTD PLIST 1.0//EN", BAD_CAST "http://www.apple.com/DTDs/PropertyList-1.0.dtd");
         first_child = xmlNewChild(root, NULL, BAD_CAST "dict", NULL);
 
-        size = insensitive_spinsystem_get_size(window->controller->spinSystem);
+        size = insensitive_spinsystem_get_spins(window->controller->spinSystem);
         xmlNewChild(first_child, NULL, BAD_CAST "key", BAD_CAST "CouplingMatrix");
         base64 = g_base64_encode((const guchar *)insensitive_spinsystem_get_raw_couplingmatrix(window->controller->spinSystem),
-                                 size * sizeof(float));
+                                 size * size * sizeof(float));
         xmlNewChild(first_child, NULL, BAD_CAST "data", BAD_CAST base64);
         g_free(base64);
+        size = insensitive_spinsystem_get_size(window->controller->spinSystem);
         xmlNewChild(first_child, NULL, BAD_CAST "key", BAD_CAST "DensityMatrix");
         base64 = g_base64_encode((const guchar *)insensitive_spinsystem_get_raw_densitymatrix(window->controller->spinSystem),
                                  size * size * sizeof(DSPComplex));
@@ -3530,6 +3531,7 @@ gboolean perform_open_pulseProgram(InsensitiveWindow *window, xmlNodePtr node)
         }
         g_ptr_array_add(pulseSequenceArray, element);
     }
+    window->controller->phaseCycles = 0;
     insensitive_controller_substitute_pulseSequence(window->controller, pulseSequenceArray);
     // Open phase cycling table
     insensitive_controller_substitute_phaseCyclingArray(window->controller, phaseCyclingArray, phaseCycles);
@@ -8439,6 +8441,7 @@ gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gp
         else {
             command = g_ptr_array_index(window->commandHistory, window->commandHistory->len - window->commandHistoryPosition);
             gtk_entry_set_text(window->command_line, command);
+            gtk_editable_set_position(window->command_line, -1);
         }
         return TRUE;
     } else if (event->keyval == GDK_KEY_Down) {
@@ -8449,6 +8452,7 @@ gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gp
         else {
             command = g_ptr_array_index(window->commandHistory, window->commandHistory->len - window->commandHistoryPosition);
             gtk_entry_set_text(window->command_line, command);
+            gtk_editable_set_position(window->command_line, -1);
         }
         return TRUE;
     }

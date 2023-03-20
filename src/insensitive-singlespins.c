@@ -32,6 +32,8 @@
 #include "insensitive-library.h"
 
 #define X_RF_CONE_ROTATION -M_PI_4 / 4
+#define coneAngle 0.8410742
+#define M_3_PI_2  3 * M_PI_2
 #define totalNumberOfSingleSpins 1000
 
 
@@ -120,16 +122,16 @@ static void insensitive_single_spins_init(InsensitiveSingleSpins *self)
     gtk_widget_init_template(GTK_WIDGET(self));
 
     self->phase = 0.0;
-    self->numberOfSpins = totalNumberOfSingleSpins;
+    self->numberOfSpins = totalNumberOfSingleSpins - 1;
 
     srand((unsigned)time(&t) + (unsigned long)&self->numberOfSpins - (unsigned long)&self->phase);
-    self->spinSet = g_ptr_array_sized_new(self->numberOfSpins);
-    for (i = 0; i < self->numberOfSpins; i++) {
+    self->spinSet = g_ptr_array_sized_new(totalNumberOfSingleSpins);
+    for (i = 0; i < totalNumberOfSingleSpins; i++) {
         SingleSpinVector *vector = malloc(sizeof(SingleSpinVector));
         g_ptr_array_add(self->spinSet, vector);
     }
     self->fieldAxis = Zfield;
-    self->realQuantumProbability = FALSE;
+    self->realQuantumProbability = TRUE;
     create_zeeman_state(NULL, self);
 
     self->timer_is_running = TRUE;
@@ -226,8 +228,8 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
         if (self->global_flip_angle < 0.0)
             self->global_flip_angle = 0.0;
         self->global_coherence -= 0.005 * gtk_adjustment_get_value(self->T2_adjustment);
-        if (self->global_coherence < /*cos(self->global_flip_angle) +*/ 0.001) // little leftover coherence to prevent
-            self->global_coherence = /*cos(self->global_flip_angle) +*/ 0.001; // zero cone sector surface  when 2π = 0
+        if (self->global_coherence < cos(self->global_flip_angle) + 0.000)
+            self->global_coherence = cos(self->global_flip_angle) + 0.000;
     }
     // Rotating Frame
     if (!gtk_toggle_button_get_active(self->rotatingFrame_checkbox)) {
@@ -244,7 +246,7 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
         }
     }
     // Spin Evolution
-    for (spin = 0; spin < self->numberOfSpins; spin++) {
+    for (spin = 0; spin < totalNumberOfSingleSpins; spin++) {
         v = g_ptr_array_index(self->spinSet, spin);
         if (B1) {
 			/* B₁ field is applied */
@@ -437,17 +439,15 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	InsensitiveSingleSpins *window = (InsensitiveSingleSpins *)user_data;
 	unsigned int i;
 	float centre_x, centre_y, halfWidth, circleWidth;
-	const float coneAngle = 0.8410742;
-    const float M_3_PI_2 = 3 * M_PI_2;
 	double random;
 	double x1, x2, y1, y2;
-	double precessionAngle, x, temp, max_width, perspective;//, max_shift;
+	double precessionAngle, x, temp, max_width, perspective;
 	double state, angle;
 	double a_alpha, b_alpha, a_beta, b_beta, x_amplitude, y_amplitude, z_amplitude;
 	double sum_x, sum_y, sum_z, sum_angle;
 	DSPComplex *operator_Ix, *operator_Iy, *operator_Iz, *matrix, z;
 	SingleSpinVector *v;
-	float bottom, top, left, proj_x, proj_y, arrowangle;//, right;
+	float bottom, top, left, proj_x, proj_y, arrowangle;
 	float width, height, origin_x, origin_y, y;
     cairo_text_extents_t extents;
     gchar *label;
@@ -458,7 +458,8 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 	gboolean trueMomentumUncertainty = (window->numberOfSpins == totalNumberOfSingleSpins - 1);
     float theta_up, theta_down, phase; // angle of shaded cones (up/down)
     float theta_min_up, theta_max_up, theta_min_down, theta_max_down, theta_second_segment;
-    float min = 0.0, max = 0.0, rim, step, transparency_up, transparency_down, decoherence;
+    float min = 0.0, max = 0.0, rim, step, decoherence;
+    float transparency_up_front, transparency_up_hind, transparency_down_front, transparency_down_hind;
 
 	//        _____
     //      ,´  π  `.         Rotation is clockwise from 0 -> 3π/2 -> π -> π/2
@@ -470,34 +471,46 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
     //          V
     if (trueMomentumUncertainty) {
         // Calculate opening angle of the shaded cone
-        theta_up = cos(window->global_flip_angle) * M_PI + M_PI;
-        if (theta_up < M_PI) {
-            transparency_up = theta_up / M_PI;
-            theta_up = M_PI;
-        } else
-            transparency_up = 1.0;
-        theta_down = -cos(window->global_flip_angle) * M_PI + M_PI;
-        if (theta_down < M_PI) {
-            transparency_down = theta_down / M_PI;
-            theta_down = M_PI;
-        } else
-            transparency_down = 1.0;
-		phase = (sin(window->global_flip_angle) >= 0) ? window->phase : window->phase + M_PI;
+        theta_up = M_PI;
+        theta_down = M_PI;
         if (window->global_coherence > cos(window->global_flip_angle))
-            decoherence = (1 - window->global_coherence) * M_PI_2;
+            decoherence = (1 - window->global_coherence) * 0.5;
         else
-            decoherence = (1 - cos(window->global_flip_angle)) * M_PI_2;
+            decoherence = (1 - cos(window->global_flip_angle)) * 0.5;
+        transparency_up_front = cos(window->global_flip_angle) + 1.0;
+        transparency_down_front = -cos(window->global_flip_angle) + 1.0;
+        transparency_up_hind = 1 - transparency_down_front;
+        transparency_down_hind = 1 - transparency_up_front;
+        if (transparency_up_front > transparency_up_hind) {
+            transparency_up_front -= decoherence;
+            transparency_up_hind += decoherence;
+        } else {
+            transparency_up_front += decoherence;
+            transparency_up_hind -= decoherence;
+        }
+        if (transparency_down_front > transparency_down_hind) {
+            transparency_down_front -= decoherence;
+            transparency_down_hind += decoherence;
+        } else {
+            transparency_down_front += decoherence;
+            transparency_down_hind -= decoherence;
+        }
+        if (transparency_up_front > 1.0) transparency_up_front = 1.0;
+        if (transparency_down_front > 1.0) transparency_down_front = 1.0;
+        if (transparency_up_hind > 1.0) transparency_up_hind = 1.0;
+        if (transparency_down_hind > 1.0) transparency_down_hind = 1.0;
+		phase = (sin(window->global_flip_angle) >= 0) ? window->phase : window->phase + M_PI;
 		// Compute limites of the shaded cone sector
-		theta_min_up = phase + 0.5 * theta_up + decoherence;
+		theta_min_up = phase + 0.5 * theta_up;
 		while (theta_min_up > 2 * M_PI) theta_min_up -= 2 * M_PI;
 		while (theta_min_up < 0) theta_min_up += 2 * M_PI;
-		theta_max_up = phase - 0.5 * theta_up - decoherence;
+		theta_max_up = phase - 0.5 * theta_up;
 		while (theta_max_up > 2 * M_PI) theta_max_up -= 2 * M_PI;
 		while (theta_max_up < 0) theta_max_up += 2 * M_PI;
-		theta_min_down = phase + 0.5 * theta_down + decoherence;
+		theta_min_down = phase + 0.5 * theta_down;
 		while (theta_min_down > 2 * M_PI) theta_min_down -= 2 * M_PI;
 		while (theta_min_down < 0) theta_min_down += 2 * M_PI;
-		theta_max_down = phase - 0.5 * theta_down - decoherence;
+		theta_max_down = phase - 0.5 * theta_down;
 		while (theta_max_down > 2 * M_PI) theta_max_down -= 2 * M_PI;
 		while (theta_max_down < 0) theta_max_down += 2 * M_PI;
         step = M_PI / 20.0;
@@ -650,11 +663,12 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		halfWidth *= M_SQRT2;
         cairo_arc(cr, centre_x, centre_y, halfWidth * cos(coneAngle), 0.0, 2 * M_PI);
 		cairo_stroke(cr);
-		cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 1.0);
+		cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6);
         if (trueMomentumUncertainty) {
-            temp = 2.93 * halfWidth / (float)window->numberOfSpins;
-		    cairo_move_to(cr, centre_x, centre_y);
-		    cairo_line_to(cr, centre_x + temp * sum_x, centre_y - temp * sum_z);
+            temp = halfWidth * cos(coneAngle);
+            cairo_move_to(cr, centre_x, centre_y);
+			cairo_line_to(cr, centre_x + (-sin(window->phase) * sin(window->global_flip_angle) * temp),
+                          centre_y - cos(window->global_flip_angle) * temp);
         } else {
 		    operator_Ix = Ix(0, 1);
 		    operator_Iz = Iz(0, 1);
@@ -739,7 +753,97 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		cairo_stroke(cr);
 		// Draw hind vectors
         if (trueMomentumUncertainty) {
-            if (theta_up > 0.0) {
+            // Upper cone
+            if (theta_min_up > M_PI_2 && theta_min_up < M_3_PI_2)
+                min = theta_min_up;
+            else
+                min = M_3_PI_2;
+            if (theta_max_up > M_PI_2 && theta_max_up < M_3_PI_2)
+                max = theta_max_up;
+            else
+                max = M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_up_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(M_PI_2),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(M_PI_2) * circleWidth));
+            for (rim = M_PI_2; fabsf(max - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y - (halfWidth * sin(coneAngle) - cos(rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(max) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(min) * circleWidth));
+            for (rim = min; fabsf(M_3_PI_2 - rim) >= step; rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y - (halfWidth * sin(coneAngle) - cos(rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(M_3_PI_2),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(M_3_PI_2) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_up_front);
+            cairo_move_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(min) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(max) * circleWidth));
+			for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y - (halfWidth * sin(coneAngle) - cos(rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(min) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            // Lower cone
+            if (theta_min_down > M_PI_2 && theta_min_down < M_3_PI_2)
+                min = theta_min_down;
+            else
+                min = M_3_PI_2;
+            if (theta_max_down > M_PI_2 && theta_max_down < M_3_PI_2)
+                max = theta_max_down;
+            else
+                max = M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_down_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(M_PI_2),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-M_PI_2) * circleWidth));
+            for (rim = M_PI_2; fabsf(max - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y + (halfWidth * sin(coneAngle) + cos(-rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-max) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-min) * circleWidth));
+            for (rim = min; fabsf(M_3_PI_2 - rim) >= step; rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y + (halfWidth * sin(coneAngle) + cos(-rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(M_3_PI_2),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-M_3_PI_2) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_down_front);
+            cairo_move_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-min) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-max) * circleWidth));
+			for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y + (halfWidth * sin(coneAngle) + cos(-rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-min) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            /*if (theta_up > 0.0) {
                 cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_up);
                 theta_second_segment = 1e6;
 				if (fabsf(theta_min_up - theta_max_up) < 1e-5) {
@@ -854,37 +958,27 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
                     cairo_close_path(cr);
                     cairo_fill(cr);
                 }
-            }
+            }*/
         } else {
-			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.5);
+			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3);
 			for (i = 0; i < window->numberOfSpins; i++) {
 				v = g_ptr_array_index(window->spinSet, i);
 				if (window->realQuantumProbability) {
 					random = (float)rand() / (float)RAND_MAX;
-					if (random < pow(v->A_alpha, 2)) {
+					//if (random < pow(v->A_alpha, 2)) {
+                    if (v->A_alpha > M_SQRT1_2) {
 						state = 1.0;    // draw upward
-					} else if (random < pow(v->A_alpha, 2)) {
+					//} else if (random < pow(v->A_alpha, 2)) {
+				    } else if (v->A_alpha < M_SQRT1_2) {
 						state = -1.0;   // draw downward
 					} else {
 						random = (float)rand() / (float)RAND_MAX;
 						state = (random > 0.5) ? 1.0 : -1.0;
 					}
-                    angle = (v->phase_alpha - v->phase_beta) - window->phase + M_PI_2;
-                    /*if (v->A_alpha > M_SQRT1_2) {
-						state = 1.0;    // draw upward
-					} else if (v->A_alpha < M_SQRT1_2) {
-						state = -1.0;   // draw downward
-					} else {
-						random = (float)rand() / (float)RAND_MAX;
-						state = (random > 0.5) ? 1.0 : -1.0;
-					}
-                    x_amplitude = sin(v->phase_alpha - v->phase_beta);
-                    random = ((float)rand() / (float)RAND_MAX) - 0.5;
-                    if (x_amplitude < 0.0)
-                        angle = random * M_PI;
-                    else
-                        angle = random * M_PI + M_PI;
-                    angle -= window->phase;*/
+                    temp = v->phase_alpha - v->phase_beta;
+                    random = (float)rand() / (float)RAND_MAX * M_PI;
+                    temp = (sin(temp) >= 0.0) ? random : random + M_PI;
+                    angle = temp - window->phase + M_PI_2;
 			    } else {
 					if (v->A_alpha > M_SQRT1_2) {
 						state = 1.0;    // draw upward
@@ -918,7 +1012,105 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		// Draw front vectors
 		cairo_set_line_width(cr, 1.0);
         if (trueMomentumUncertainty) {
-            if (theta_up > 0.0) {
+            // Upper cone
+            if (theta_min_up >= 0.0 && theta_min_up <= M_PI_2)
+                min = theta_min_up;
+            else if (theta_min_up >= M_3_PI_2 && theta_min_up <= 2 * M_PI)
+                min = theta_min_up - 2 * M_PI;
+            else
+                min = M_PI_2;
+            if (theta_max_up >= 0.0 && theta_max_up <= M_PI_2)
+                max = theta_max_up;
+            else if (theta_max_up >= M_3_PI_2 && theta_max_up <= 2 * M_PI)
+                max = theta_max_up - 2 * M_PI;
+            else
+                max = -M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_up_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(-M_PI_2),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(-M_PI_2) * circleWidth));
+            for (rim = -M_PI_2; fabsf(max - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y - (halfWidth * sin(coneAngle) - cos(rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(max) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(min) * circleWidth));
+            for (rim = min; fabsf(M_PI_2 - rim) >= step; rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y - (halfWidth * sin(coneAngle) - cos(rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(M_PI_2),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(M_PI_2) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_up_front);
+            cairo_move_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(min) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(max) * circleWidth));
+			for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y - (halfWidth * sin(coneAngle) - cos(rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y - (halfWidth * sin(coneAngle) - cos(min) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            // Lower cone
+            if (theta_min_down >= 0.0 && theta_min_down <= M_PI_2)
+                min = theta_min_down;
+            else if (theta_min_down >= M_3_PI_2 && theta_min_down <= 2 * M_PI)
+                min = theta_min_down - 2 * M_PI;
+            else
+                min = M_PI_2;
+            if (theta_max_down >= 0.0 && theta_max_down <= M_PI_2)
+                max = theta_max_down;
+            else if (theta_max_down >= M_3_PI_2 && theta_max_down <= 2 * M_PI)
+                max = theta_max_down - 2 * M_PI;
+            else
+                max = -M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_down_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(-M_PI_2),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(M_PI_2) * circleWidth));
+            for (rim = -M_PI_2; fabsf(max - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y + (halfWidth * sin(coneAngle) + cos(-rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-max) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-min) * circleWidth));
+            for (rim = min; fabsf(M_PI_2 - rim) >= step; rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y + (halfWidth * sin(coneAngle) + cos(-rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(M_PI_2),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-M_PI_2) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_down_front);
+            cairo_move_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-min) * circleWidth));
+            cairo_line_to(cr, centre_x, centre_y);
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(max),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-max) * circleWidth));
+			for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(rim),
+					          centre_y + (halfWidth * sin(coneAngle) + cos(-rim) * circleWidth));
+            }
+            cairo_line_to(cr, centre_x - halfWidth * cos(coneAngle) * sin(min),
+					      centre_y + (halfWidth * sin(coneAngle) + cos(-min) * circleWidth));
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            /*if (theta_up > 0.0) {
                 cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_up);
                 theta_second_segment = 1e6;
                 if (fabsf(theta_min_up - theta_max_up) < 1e-5) {
@@ -1047,37 +1239,27 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
                     cairo_close_path(cr);
                     cairo_fill(cr);
                 }
-            }
+            }*/
         } else {
-			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 1.0);
+			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6);
 			for (i = 0; i < window->numberOfSpins; i++) {
 				v = g_ptr_array_index(window->spinSet, i);
 				if (window->realQuantumProbability) {
 					random = (float)rand() / (float)RAND_MAX;
-					if (random < pow(v->A_alpha, 2)) {
+					//if (random < pow(v->A_alpha, 2)) {
+                    if (v->A_alpha > M_SQRT1_2) {
 						state = 1.0;    // draw upward
-					} else if (random < pow(v->A_alpha, 2)) {
+                    //} else if (random < pow(v->A_alpha, 2)) {
+                    } else if (v->A_alpha < M_SQRT1_2) {
 						state = -1.0;   // draw downward
 					} else {
 						random = (float)rand() / (float)RAND_MAX;
 						state = (random > 0.5) ? 1.0 : -1.0;
 					}
-                    angle = (v->phase_alpha - v->phase_beta) - window->phase + M_PI_2;
-                    /*if (v->A_alpha > M_SQRT1_2) {
-						state = 1.0;    // draw upward
-					} else if (v->A_alpha < M_SQRT1_2) {
-						state = -1.0;   // draw downward
-					} else {
-						random = (float)rand() / (float)RAND_MAX;
-						state = (random > 0.5) ? 1.0 : -1.0;
-					}
-                    x_amplitude = sin(v->phase_alpha - v->phase_beta);
-                    random = ((float)rand() / (float)RAND_MAX) - 0.5;
-                    if (x_amplitude < 0.0)
-                        angle = random * M_PI;
-                    else
-                        angle = random * M_PI + M_PI;
-                    angle -= window->phase;*/
+                    temp = v->phase_alpha - v->phase_beta;
+                    random = (float)rand() / (float)RAND_MAX * M_PI;
+                    temp = (sin(temp) >= 0.0) ? random : random + M_PI;
+                    angle = temp - window->phase + M_PI_2;
 				} else {
 					if (v->A_alpha > M_SQRT1_2) {
 						state = 1.0;    // draw upward
@@ -1235,13 +1417,21 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
             cairo_close_path(cr);
             cairo_fill(cr);
         } else {
-		    cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.5);
+		    cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3);
 		    for (i = 0; i < window->numberOfSpins; i++) {
 			    v = g_ptr_array_index(window->spinSet, i);
+                angle = 2 * acos(v->A_alpha);
 			    x_amplitude = cos(v->phase_alpha - v->phase_beta);
-			    y_amplitude = sin(v->phase_alpha - v->phase_beta);
+                y_amplitude = sin(v->phase_alpha - v->phase_beta);
+                if (window->realQuantumProbability) {
+                    temp = (float)rand() / (float)RAND_MAX * M_PI - M_PI_2;
+                    angle += temp;
+                    if (angle < 0.0 || angle > M_PI)
+                        y_amplitude *= -1.0;
+                }
+				z_amplitude = cos(angle);
 			    if (y_amplitude < 0) {
-				    if (window->realQuantumProbability) {
+				    /*if (window->realQuantumProbability) {
 					    random = 1 - 2 * (float)rand() / (float)RAND_MAX;
 					    if (random < x_amplitude) {
 						    state = 1.0;    // draw upward
@@ -1251,7 +1441,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 						    random = (float)rand() / (float)RAND_MAX;
 						    state = (random > 0.5) ? 1.0 : -1.0;
 					    }
-				    } else {
+				    } else {*/
 					    if (x_amplitude > 0.0) {
 						    state = 1.0;    // draw left
                         } else if (x_amplitude < 0.0) {
@@ -1260,10 +1450,8 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 						    random = (float)rand() / (float)RAND_MAX;
 						    state = (random > 0.5) ? 1.0 : -1.0;
 					    }
-				    }
-				    angle = 2 * acos(v->A_alpha);
-				    z_amplitude = cos(angle);
-				    x2 = halfWidth * sin(coneAngle) * cos(perspective) * state;
+				    //}
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective) * state;
 				    x2 += 0.5 * max_width * sin(perspective) * sin(angle);
 				    if ((sin(v->phase_alpha - v->phase_beta) > 0.0 && v->A_alpha > M_SQRT1_2) ||
 					    (sin(v->phase_alpha - v->phase_beta) > 0.0 && v->A_alpha <= M_SQRT1_2))
@@ -1325,13 +1513,21 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
             cairo_close_path(cr);
             cairo_fill(cr);
         } else {
-		    cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 1.0);
+		    cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6);
 		    for (i = 0; i < window->numberOfSpins; i++) {
 			    v = g_ptr_array_index(window->spinSet, i);
+                angle = 2 * acos(v->A_alpha);
 			    x_amplitude = cos(v->phase_alpha - v->phase_beta);
-			    y_amplitude = sin(v->phase_alpha - v->phase_beta);
+                y_amplitude = sin(v->phase_alpha - v->phase_beta);
+                if (window->realQuantumProbability) {
+                    temp = (float)rand() / (float)RAND_MAX * M_PI - M_PI_2;
+                    angle += temp;
+                    if (angle < 0.0 || angle > M_PI)
+                        y_amplitude *= -1.0;
+                }
+				z_amplitude = cos(angle);
 			    if (y_amplitude > 0) {
-				    if (window->realQuantumProbability) {
+				    /*if (window->realQuantumProbability) {
 					    random = 1 - 2 * (float)rand() / (float)RAND_MAX;
 					    if (random < x_amplitude) {
 						    state = 1.0;    // draw upward
@@ -1341,7 +1537,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 						    random = (float)rand() / (float)RAND_MAX;
 						    state = (random > 0.5) ? 1.0 : -1.0;
 					    }
-				    } else {
+				    } else {*/
 					    if (x_amplitude > 0.0) {
 						    state = 1.0;    // draw left
 					    } else if (x_amplitude < 0.0) {
@@ -1350,9 +1546,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 						    random = (float)rand() / (float)RAND_MAX;
 						    state = (random > 0.5) ? 1.0 : -1.0;
 					    }
-				    }
-				    angle = 2 * acos(v->A_alpha);
-				    z_amplitude = cos(angle);
+				    //}
 				    x2 = halfWidth * sin(coneAngle) * cos(perspective) * state;
 				    x2 += 0.5 * max_width * sin(perspective) * sin(angle);
 				    if ((sin(v->phase_alpha - v->phase_beta) > 0.0 && v->A_alpha > M_SQRT1_2) ||
@@ -1481,7 +1675,159 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		cairo_stroke(cr);
 		// Draw hind vectors
         if (trueMomentumUncertainty) {
-			if (theta_up > 0.0) {
+            // Upper cone
+            if (theta_min_up > M_PI_2 && theta_min_up < M_3_PI_2)
+                min = theta_min_up;
+            else
+                min = M_3_PI_2;
+            if (theta_max_up > M_PI_2 && theta_max_up < M_3_PI_2)
+                max = theta_max_up;
+            else
+                max = M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_up_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(M_PI_2);
+			y1 = halfWidth * sin(coneAngle) + cos(M_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            for (rim = M_PI_2; fabsf(rim - max) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(rim);
+			    y1 = halfWidth * sin(coneAngle) + cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(max);
+			y1 = halfWidth * sin(coneAngle) + cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            //if (min < M_PI_2) min += 2 * M_PI;
+            x1 = -halfWidth * cos(coneAngle) * sin(min);
+			y1 = halfWidth * sin(coneAngle) + cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            for (rim = min; fabsf(M_3_PI_2 - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(rim);
+			    y1 = halfWidth * sin(coneAngle) + cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(M_3_PI_2);
+			y1 = halfWidth * sin(coneAngle) + cos(M_3_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_up_front);
+            x1 = -halfWidth * cos(coneAngle) * sin(min);
+			y1 = halfWidth * sin(coneAngle) + cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x + x2, centre_y - y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(max);
+			y1 = halfWidth * sin(coneAngle) + cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(rim);
+			    y1 = halfWidth * sin(coneAngle) + cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(min);
+			y1 = halfWidth * sin(coneAngle) + cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x + x2, centre_y - y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            // Lower cone
+            if (theta_min_down > M_PI_2 && theta_min_down < M_3_PI_2)
+                min = theta_min_down;
+            else
+                min = M_3_PI_2;
+            if (theta_max_down > M_PI_2 && theta_max_down < M_3_PI_2)
+                max = theta_max_down;
+            else
+                max = M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_down_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(-M_PI_2);
+			y1 = halfWidth * sin(coneAngle) - cos(M_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            for (rim = M_PI_2; fabsf(rim - max) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(-rim);
+			    y1 = halfWidth * sin(coneAngle) - cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(-max);
+			y1 = halfWidth * sin(coneAngle) - cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            //if (min < M_PI_2) min += 2 * M_PI;
+            x1 = -halfWidth * cos(coneAngle) * sin(-min);
+			y1 = halfWidth * sin(coneAngle) - cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            for (rim = min; fabsf(M_3_PI_2 - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(-rim);
+			    y1 = halfWidth * sin(coneAngle) - cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(-M_3_PI_2);
+			y1 = halfWidth * sin(coneAngle) - cos(M_3_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_down_front);
+            x1 = -halfWidth * cos(coneAngle) * sin(-min);
+			y1 = halfWidth * sin(coneAngle) - cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x - x2, centre_y + y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(-max);
+			y1 = halfWidth * sin(coneAngle) - cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(-rim);
+			    y1 = halfWidth * sin(coneAngle) - cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(-min);
+			y1 = halfWidth * sin(coneAngle) - cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x - x2, centre_y + y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+			/*if (theta_up > 0.0) {
                 cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 * transparency_up);
                 theta_second_segment = 1e6;
 				if (fabsf(theta_min_up - theta_max_up) < 1e-5) {
@@ -1634,21 +1980,27 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
                     cairo_close_path(cr);
                     cairo_fill(cr);
                 }
-            }
+            }*/
         } else {
-			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.5);
+			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3);
 		    for (i = 0; i < window->numberOfSpins; i++) {
 			    v = g_ptr_array_index(window->spinSet, i);
 			    if (window->realQuantumProbability) {
 				    random = (float)rand() / (float)RAND_MAX;
-				    if (random < pow(v->A_alpha, 2)) {
-					    state = 1.0;    // draw upward
-				    } else if (random < pow(v->A_alpha, 2)) {
-					    state = -1.0;   // draw downward
-				    } else {
-					    random = (float)rand() / (float)RAND_MAX;
-					    state = (random > 0.5) ? 1.0 : -1.0;
-				    }
+					//if (random < pow(v->A_alpha, 2)) {
+                    if (v->A_alpha > M_SQRT1_2) {
+						state = 1.0;    // draw upward
+					//} else if (random < pow(v->A_alpha, 2)) {
+				    } else if (v->A_alpha < M_SQRT1_2) {
+						state = -1.0;   // draw downward
+					} else {
+						random = (float)rand() / (float)RAND_MAX;
+						state = (random > 0.5) ? 1.0 : -1.0;
+					}
+                    temp = v->phase_alpha - v->phase_beta;
+                    random = (float)rand() / (float)RAND_MAX * M_PI;
+                    temp = (sin(temp) >= 0.0) ? random : random + M_PI;
+                    angle = temp - window->phase + M_PI_2;
 			    } else {
 				    if (v->A_alpha > M_SQRT1_2) {
 					    state = 1.0;    // draw upward
@@ -1658,8 +2010,8 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 					    random = (float)rand() / (float)RAND_MAX;
 					    state = (random > 0.5) ? 1.0 : -1.0;
 				    }
+                    angle = (v->phase_alpha - v->phase_beta) - window->phase + M_PI_2;
 			    }
-			    angle = (v->phase_alpha - v->phase_beta) - window->phase + M_PI_2;
 			    while (angle < 0.0) angle += 2 * M_PI;
 			    while (angle > 2 * M_PI) angle -= 2 * M_PI;
 			    if (angle < M_PI_2 || angle > M_3_PI_2) {
@@ -1685,7 +2037,167 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		// Draw front vectors
 		cairo_set_line_width(cr, 1.0);
         if (trueMomentumUncertainty) {
-            if (theta_up > 0.0) {
+            // Upper cone
+            if (theta_min_up >= 0.0 && theta_min_up <= M_PI_2)
+                min = theta_min_up;
+            else if (theta_min_up >= M_3_PI_2 && theta_min_up <= 2 * M_PI)
+                min = theta_min_up - 2 * M_PI;
+            else
+                min = M_PI_2;
+            if (theta_max_up >= 0.0 && theta_max_up <= M_PI_2)
+                max = theta_max_up;
+            else if (theta_max_up >= M_3_PI_2 && theta_max_up <= 2 * M_PI)
+                max = theta_max_up - 2 * M_PI;
+            else
+                max = -M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_up_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(-M_PI_2);
+			y1 = halfWidth * sin(coneAngle) + cos(-M_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            for (rim = -M_PI_2; fabsf(rim - max) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(rim);
+			    y1 = halfWidth * sin(coneAngle) + cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(max);
+			y1 = halfWidth * sin(coneAngle) + cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            //if (min < M_PI_2) min += 2 * M_PI;
+            x1 = -halfWidth * cos(coneAngle) * sin(min);
+			y1 = halfWidth * sin(coneAngle) + cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            for (rim = min; fabsf(M_PI_2 - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(rim);
+			    y1 = halfWidth * sin(coneAngle) + cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(M_PI_2);
+			y1 = halfWidth * sin(coneAngle) + cos(M_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_up_front);
+            x1 = -halfWidth * cos(coneAngle) * sin(min);
+			y1 = halfWidth * sin(coneAngle) + cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x + x2, centre_y - y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(max);
+			y1 = halfWidth * sin(coneAngle) + cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(rim);
+			    y1 = halfWidth * sin(coneAngle) + cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x + x2, centre_y - y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(min);
+			y1 = halfWidth * sin(coneAngle) + cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x + x2, centre_y - y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            // Lower cone
+            if (theta_min_down >= 0.0 && theta_min_down <= M_PI_2)
+                min = theta_min_down;
+            else if (theta_min_down >= M_3_PI_2 && theta_min_down <= 2 * M_PI)
+                min = theta_min_down - 2 * M_PI;
+            else
+                min = M_PI_2;
+            if (theta_max_down >= 0.0 && theta_max_down <= M_PI_2)
+                max = theta_max_down;
+            else if (theta_max_down >= M_3_PI_2 && theta_max_down <= 2 * M_PI)
+                max = theta_max_down - 2 * M_PI;
+            else
+                max = -M_PI_2;
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_down_hind);
+            cairo_move_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(M_PI_2);
+			y1 = halfWidth * sin(coneAngle) - cos(-M_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            for (rim = -M_PI_2; fabsf(rim - max) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(-rim);
+			    y1 = halfWidth * sin(coneAngle) - cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(-max);
+			y1 = halfWidth * sin(coneAngle) - cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            //if (min < M_PI_2) min += 2 * M_PI;
+            x1 = -halfWidth * cos(coneAngle) * sin(-min);
+			y1 = halfWidth * sin(coneAngle) - cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            for (rim = min; fabsf(M_PI_2 - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(-rim);
+			    y1 = halfWidth * sin(coneAngle) - cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(-M_PI_2);
+			y1 = halfWidth * sin(coneAngle) - cos(M_PI_2) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_down_front);
+            x1 = -halfWidth * cos(coneAngle) * sin(-min);
+			y1 = halfWidth * sin(coneAngle) - cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x - x2, centre_y + y2);
+            cairo_line_to(cr, centre_x, centre_y);
+            x1 = -halfWidth * cos(coneAngle) * sin(-max);
+			y1 = halfWidth * sin(coneAngle) - cos(max) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            for (rim = max; fabsf(min - rim) >= fabsf(step); rim += step) {
+                x1 = -halfWidth * cos(coneAngle) * sin(-rim);
+			    y1 = halfWidth * sin(coneAngle) - cos(rim) * circleWidth;
+			    x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			    y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+                cairo_line_to(cr, centre_x - x2, centre_y + y2);
+            }
+            x1 = -halfWidth * cos(coneAngle) * sin(-min);
+			y1 = halfWidth * sin(coneAngle) - cos(min) * circleWidth;
+			x2 = x1 * cos(precessionAngle) - y1 * sin(precessionAngle);
+			y2 = x1 * sin(precessionAngle) + y1 * cos(precessionAngle);
+			cairo_move_to(cr, centre_x - x2, centre_y + y2);
+            cairo_close_path(cr);
+            cairo_fill(cr);
+
+            /*if (theta_up > 0.0) {
                 cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 * transparency_up);
                 theta_second_segment = 1e6;
                 if (fabsf(theta_min_up - theta_max_up) < 1e-5) {
@@ -1850,21 +2362,27 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
                     cairo_close_path(cr);
                     cairo_fill(cr);
                 }
-            }
+            }*/
         } else {
-			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 1.0);
+			cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6);
 		    for (i = 0; i < window->numberOfSpins; i++) {
 			    v = g_ptr_array_index(window->spinSet, i);
 			    if (window->realQuantumProbability) {
 				    random = (float)rand() / (float)RAND_MAX;
-				    if (random < pow(v->A_alpha, 2)) {
-					    state = 1.0;    // draw upward
-				    } else if (random < pow(v->A_alpha, 2)) {
-					    state = -1.0;   // draw downward
-				    } else {
-					    random = (float)rand() / (float)RAND_MAX;
-					    state = (random > 0.5) ? 1.0 : -1.0;
-				    }
+					//if (random < pow(v->A_alpha, 2)) {
+                    if (v->A_alpha > M_SQRT1_2) {
+						state = 1.0;    // draw upward
+					//} else if (random < pow(v->A_alpha, 2)) {
+				    } else if (v->A_alpha < M_SQRT1_2) {
+						state = -1.0;   // draw downward
+					} else {
+						random = (float)rand() / (float)RAND_MAX;
+						state = (random > 0.5) ? 1.0 : -1.0;
+					}
+                    temp = v->phase_alpha - v->phase_beta;
+                    random = (float)rand() / (float)RAND_MAX * M_PI;
+                    temp = (sin(temp) >= 0.0) ? random : random + M_PI;
+                    angle = temp - window->phase + M_PI_2;
 			    } else {
 				    if (v->A_alpha > M_SQRT1_2) {
 					    state = 1.0;    // draw upward
@@ -1874,8 +2392,8 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 					    random = (float)rand() / (float)RAND_MAX;
 					    state = (random > 0.5) ? 1.0 : -1.0;
 				    }
+                    angle = (v->phase_alpha - v->phase_beta) - window->phase + M_PI_2;
 			    }
-			    angle = (v->phase_alpha - v->phase_beta) - window->phase + M_PI_2;
 			    if (angle < 0.0) angle += 2 * M_PI;
 			    while (angle < 0.0) angle += 2 * M_PI;
 			    while (angle > 2 * M_PI) angle -= 2 * M_PI;
@@ -1965,4 +2483,3 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		break;
 	}
 }
-

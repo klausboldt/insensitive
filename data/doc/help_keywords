@@ -69,18 +69,18 @@ relayed_cosy.html				relayed_cosy relayed
 roesyph.html					roesy roesyph
 rotating_frame.html				rotating_frame rotatingframe
 secsyqf.html					secsy secsyqf focsy
-settings.html					manual_settings
+settings.html					manual_settings settings
 shaped_pulses.html				shaped_pulses pulse_shapes dante eburp e_burp eburp1 eburp2 e_burp1 e_burp2 eburp_1 eburp_2 e_burp_1 e_burp_2
 single_quantum_coherence.html			single_quantum_coherence single_quantum_coherences
-single_spins.html				manual_single_spins
+single_spins.html				manual_single_spins single_spins single_spin double_cone
 singlet_triplet_basis.html			singlet triplet singlet_triplet_basis singlet_triplet
 solid_state_nmr.html				soild_state_nmr solid_state solids mas magic_angle_spinning magic_angle pake_patterns pake_pattern
 spectrometer.html				spectrometer hardware
-spectrum.html					manual_spectrum
+spectrum.html					manual_spectrum spectrum
 spectrum_resolution.html			resolution spectral_resolution spectrum_resolution zerofilling zero_filling
 spherical_tensors.html				spherical_tensor spherical_tensors spherical_basis spherical
 spin_echo_sandwich.html				spinecho spin_echo spin_echo_sandwich
-spineditor.html					manual_spin_system manual_spin_editor
+spineditor.html					manual_spin_system manual_spin_editor spin_editor spin_network_editor
 spin.html					spin spins
 spin_lock.html					spinlock spin_lock hartmann_hahn_condition hartmann_hahn cross_polarisation cross_polarization crosspolarisation crosspolarizationcp
 spin_manipulation.html				manual_spin_state

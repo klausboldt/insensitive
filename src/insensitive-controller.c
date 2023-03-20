@@ -3402,7 +3402,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 		insensitive_g_string_replace(pp, "\n#include <Delay.incl>", " ", pp);
 
 	// Create phase cycling table
-	if (self->phaseCyclingArray->len >= (self->phaseCycles / 2) * (self->pulseList->len + 1) + self->pulseList->len + 1) {
+    if (self->phaseCyclingArray->len >= (self->phaseCycles / 2) * (self->pulseList->len + 1) + self->pulseList->len + 1) {
 		unsigned int cycleSize;
 		gboolean half;
 		for (pulse = 0; pulse < self->pulseList->len; pulse++) {

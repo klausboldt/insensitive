@@ -636,12 +636,10 @@ DSPComplex *cartesian_operator(DSPComplex *one_spin, unsigned int index, unsigne
 	for (i = 0; i < spins; i++) {
 		if (i == index)
 			temp_matrix =
-				kronecker_multiply(aux_matrix, pow2(i), one_spin,
-						   2);
+				kronecker_multiply(aux_matrix, pow2(i), one_spin, 2);
 		else
 			temp_matrix =
-				kronecker_multiply(aux_matrix, pow2(i), identity,
-						   2);
+				kronecker_multiply(aux_matrix, pow2(i), identity, 2);
 
 		free(aux_matrix);
 		aux_matrix = temp_matrix;

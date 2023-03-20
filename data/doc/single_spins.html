@@ -19,66 +19,91 @@
         
         <div>
             <p>
-            The <a href="density_matrix.html">density matrix</a> description of NMR is limited to describe the behaviour of a spin ensemble
-            and yields the expectation value for the magnetisation that is obtained after the measurement of a large number spins.
-            This <a href="limitations.html">limits</a> the visualisation capabilities of the program in the case of dephasing, or simply
-            for understanding how the behaviour of individual spins leads to the macroscopic result of the NMR experiment. Therefore,
-            the trajectories of individuals spins is shown in the "Single Spins" module.
+            For spin, like all <a href="quantum_mechanics.html">quantum mechanical</a> angular momentum, the Uncertainly
+            Principle dictates that only the absolute square <i>s</i><sup>2</sup> of the angular momentum and one of the
+            cartesian components <i>s</i><sub>z</sub> can be known at the same time, while the other components
+            <i>s</i><sub>x</sub> and <i>s</i><sub>y</sub> are completely unknown. This has led to the common depiction of
+            spin as "double cones" that point either upwards or downwards along the principal axis (<i>z</i> in this example),
+            on the surface of which the orthogonal spin components are smeared out and <a href="precession.html">precess</a>.
+            Drawing single spins as classical vectors is, hence, not possible.
+            </p>
+            <p>
+            The <a href="density_matrix.html">density matrix</a> description of NMR and all its derived models in
+            Insensitive like the <a href="vector_model.html">vector model</a> are based on statistical quantum mechanics.
+            It averages over a spin ensemble and yields the expectation value for the magnetisation that is obtained after
+            the measurement of a large number spins. This <a href="limitations.html">limits</a> the visualisation capabilities
+            of the program in the case of dephasing, or simply for understanding how the behaviour of individual spins leads
+            to the macroscopic result of the NMR experiment. Therefore, the trajectories of individual spins is shown in the
+            "Single Spins" module.
             </p>
             <center><img src="img_single_spin_module.png" border="1" style="width:100%; max-width:570px;"></center>
             <p>
-            The most important principle to describe single spins under the influence of external magentic fields is that only one
-            cartesian component of angular momentum can be measured with certainty: if the <i>z</i> component is known through a measurement
-            to be either up or down (&alpha; or &beta; state), the <i>x</i> and <i>y</i> components are completely undetermined.
-            The relationship between the three cartesian components is expressed through a cyclic commutation rule:
+            The uncertainty of the cartesian components of spin in an external magnetic field is expressed through a cyclic
+            commutation relation
             </p>
             <center><img src="formula_cyclic_commutation.png" width="131" height="23"></center>
             <p>
-            As one of two components becomes more determined (e.g. <op>Ix</op>) it converts the certainty of the second component
-            (e.g. <op>Iz</op>) into certainty of the third one (<op>Iy</op>). This is equal to a rotation around (in this example)
-            the <i>x</i> axis as a result of the rf-pulse from <i>x</i>-direction.
+            In an external magnetic field <b>B</b><sub>0</sub>, if the <i>z</i> component is known through a measurement to
+            be either up or down (&alpha; or &beta; state), the <i>x</i> and <i>y</i> components are completely undetermined
+            and the vector is smeared out over the whole cone. If, instead, the <i>x</i> component is known, the cyclic
+            commutation rule under the influence of the <b>B</b><sub>0</sub> in <i>z</i> direction converts the certainty
+            of the <i>x</i> component into certainty along the -<i>y</i> direction, then into -<i>x</i> and <i>y</i> in a
+            cyclic manner. Physically, this is equal to precession around the <i>z</i> axis.
             </p>
             <p>
-            Physically, the presence of a rotating <b>B</b><sub>1</sub> field perpendicular to the principal <i>z</i> axis tilts the
-            axis of the total magentic field <b>B</b><sub>0</sub> + <b>B</b><sub>1</sub> slightly in a time-dependent manner. (The tilt
-            angle, as well as the relative <a href="precession.html">precession</a> frequencies around the <i>z</i> and <i>x</i> axes, are
-            exaggerated for didactic reasons.) This time-dependent perturbation puts the system in a perpetual non-equilibrium state.
-            The small <b>B</b><sub>1</sub> field of the <a href="pulse.html">rf-pulse</a> in <i>x</i> direction converts <i>z</i>
-            magnetisation into -<i>y</i> magnetisation. However, the rotation of the circularly polarised radiofrequency never allows the
-            spins to <a href="relaxation.html">relax</a> into the new equilibrium. The oscillating tilt of the magnetic field leads to a
-            movement of the total angular momentum of the spin ensemble to follow a spiralling path, called <i>nutation</i>.
+            A linear polarised <a href="pulse.html">rf-pulse</a> with strength 2<b>B</b><sub>1</sub> cos(<i>&omega;t</i>)
+            perturbs the <b>B</b><sub>0</sub> field. Linear polarised radiation can be split in two circular polarised beams
+            with opposite direction. Of these beams, one rotates opposite to the precession of the spins and, hence, can be
+            neglected for being off-resonance. The other has a magnetic field component <b>B</b><sub>1</sub> that varies
+            periodically from <i>x</i> to -<i>y</i> to -<i>x</i> to <i>y</i> back to <i>x</i>, following the polarisation
+            vector. That tilts the principal axis of the system is slightly away from <i>z</i> to align with the periodically
+            changing total magentic field <b>B</b><sub>0</sub> + <b>B</b><sub>1</sub>. (The tilt angle, as well as the relative
+            <a href="precession.html">precession</a> frequencies around the <i>z</i> and <i>x</i> axes, are exaggerated for
+            didactic reasons.) This time-dependent perturbation puts the system in a perpetual non-equilibrium state in which
+            the spins never <a href="relaxation.html">relax</a> into a new equilibrium and the uncetainty shifts between the
+            cartesian components. The oscillating tilt of the magnetic field leads to a movement of the total angular momentum
+            of the spin ensemble to follow a spiralling path, called <i>nutation</i>.
+            </p>
+            <center><img src="img_polarised_pulse.png" style="width:100%; max-width:1024px;"></center>
+            <p>
+            Viewed from the perspective of the <a href="rotating_frame.html">rotating frame</a>, the resonant spins no longer
+            precess around the <i>z</i> axis, because the effect of the dominating field along <i>z</i> is mathematically
+            removed. However, despite the apparent disappearance of the <b>B</b><sub>0</sub> field, the non-equilibrium
+            persists, yielding a continuous rotating of the spin states around the <i>x</i> axis, which
+            turns <i>z</i> magnetisation into -<i>y</i> into -<i>z</i> into <i>y</i> and back into <i>z</i> magnetisation.
+            Once the rf-field is switched off the spins that are oriented in <i>y</i> direction are in a superposition state
+            of both &alpha; and &beta; with respect to the static <b>B</b><sub>0</sub> field.
             </p>
             <p>
-            Viewed from the perspective of the <a href="rotating_frame.html">rotating frame</a>, the resonant spins no longer precess
-            around the <i>z</i> axis. However, despite the apparent disappearance of the <b>B</b><sub>0</sub> field, the non-equilibrium
-            persists, yielding a continuous rotating of the spin states around the <i>x</i> axis, turning <i>z</i> magnetisation into
-            -<i>y</i> into -<i>z</i> into <i>y</i> and back into <i>z</i> magnetisation. Once the rf-field is switched off the spins that
-            are oriented in <i>y</i> direction are in a superposition state of both &alpha; and &beta; with respect to the static
-            <b>B</b><sub>0</sub> field.
+            With no pulse acting on the spins, <a href="relaxation.html">relaxation</a> returns the spins into the state of
+            thermal equilibrium. Longitudinal (<i>T</i><sub>1</sub>) relaxation flips spins from the &beta; to the &alpha; state
+            until the ratio between the occupied states follows the Boltzmann distribution. Transversal (<i>T</i><sub>2</sub>)
+            relaxation causes dephasing and loss of <a href="coherences.html">coherence</a> of the individual spins around the
+            <i>z</i> axis. (Note that the difference between the occupation of the &alpha; and &beta; state is strongly
+            exaggerated. In reality, the difference in occupation probability is 8 x 10<sup>-5</sup> for protons at 300 K, using
+            a 500 MHz spectrometer.)
             </p>
             <p>
-            With no pulse acting on the spins, <a href="relaxation.html">relaxation</a> returns the spins into the state of thermal
-            equilibrium. Longitudinal (<i>T</i><sub>1</sub>) relaxation flips spins from the &beta; to the &alpha; state until ratio
-            between the occupied states follows the Boltzmann distribution. Transversal (<i>T</i><sub>2</sub>) relaxation causes
-            dephasing and loss of <a href="coherences.html">coherence</a> of the individual spins around the <i>z</i> axis.
-            (Note that the difference between the occupation of the &alpha; and &beta; state is strongly exaggerated. In reality, the
-            difference in occupation probability is 8 x 10<sup>-5</sup> for protons at 300 K, using a 500 MHz spectrometer.)
+            The single spin precession is simulated through uncoupled spins, which are exactly on resonance with the rf pulse,
+            i.e. <i>&Omega;</i><sup>0</sup> = 0 Hz. Insensitive can simulate three different conditions: in the presence of a
+            static <b>B</b><sub>0</sub> field, during the application of the <b>B</b><sub>1</sub> field of the rf pulse, and in
+            the absence of any field. In addition, the spin states can be shown in the static or
+            <a href="rotating_frame.html">rotating frame</a>.
             </p>
             <p>
-            The single spin precession is simulated through uncoupled spins, which are exactly on resonance with the rf pulse, i.e.
-            <i>&Omega;</i><sup>0</sup> = 0 Hz. Insensitive can simulate three different conditions: in the presence of a static
-            <b>B</b><sub>0</sub> field, during the application of the <b>B</b><sub>1</sub> field of the rf pulse, and in the absence
-            of any field. In addition, the spin states can be shown in the static or <a href="rotating_frame.html">rotating frame</a>.
-            In the absence of any magnetic field Insensitive displays the spin states of up to 100 random spins as
-            <a href="vector_model.html">vectors</a> starting at the origin. These states cannot be observed directly in an experiment.
-            For a measurement an external magnatic field needs to be applied, which determines the principal axis, which is usually the
-            <i>z</i> axis for <b>B</b><sub>0</sub>. The measurement determines one of the cartesian components of the angular momentum.
-            Hence, the other two components are completely uncertain. This results in a random distribution of the vectors in the <i>x</i>
-            and <i>y</i> directions, and one of two possible orientations in <i>z</i> direction, leading to a double cone. The indeterminancy
-            of the <i>x</i> and <i>y</i> components are visualised through the large number of vectors. In reality, if the state of a spin
-            is known, either &alpha; pointing in +<i>z</i> direction or &beta; pointing in -<i>z</i> direction, its <i>x</i> or <i>y</i>
-            component cannot actually be drawn. A visualisation that would describe the state better would be a cone that is completely
-            shaded in the colour used for the vector.
+            Insensitive either calculates the uncertainty of a single spin and depicts it as colour shading of the cones if the
+            slider for the number of spins is moves to the right, or simulates between 1 and 1000 individual spins.
+            In the absence of any magnetic field Insensitive displays the spins as vectors pointing from the origin. It is
+            important to note that these states cannot be observed directly in an experiment and represent a hypothetical
+            snapshot of the spin ensemble.
+            For a measurement an external magnatic field needs to be applied, which determines the principal axis, usually
+            denoted with <i>z</i> for the <b>B</b><sub>0</sub> field. The measurement determines one of the cartesian components
+            of the angular momentum. The uncertainty of the other components is shown as fluctuations of the individual
+            vectors and results in a random distribution in the <i>x</i> and <i>y</i> directions.
+            </p>
+            <p>
+            The Single Spin module of Insensitive needs to be treated as an illustration of the breakdown of the vector model
+            for spin rather than a depiction of reality.
             </p>
         </div>
         
