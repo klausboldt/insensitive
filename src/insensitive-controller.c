@@ -2700,7 +2700,7 @@ void insensitive_controller_perform_next_step_of_pulseSequence(InsensitiveContro
     if (insensitive_pulsesequence_get_number_of_elements(self->pulseSequence) > 0 && !self->acquisitionIsInProgress) {
         insensitive_controller_save_previous_state(self);
         phaseCyclingIndex = 1;
-        for( i = 0; i < self->pulseList->len; i++) {
+        for (i = 0; i < self->pulseList->len; i++) {
             element = g_ptr_array_index(self->pulseList, i);
             element->secondParameter = atof(g_ptr_array_index(self->phaseCyclingArray, phaseCyclingIndex++));
         }

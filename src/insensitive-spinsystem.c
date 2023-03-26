@@ -562,8 +562,9 @@ gchar *insensitive_spinsystem_get_cartesianOperatorString(InsensitiveSpinSystem 
 			returnString = malloc((strlen(productOperatorCString) - 3) * sizeof(gchar));
 			strcpy(returnString, productOperatorCString + 4);
 		}
-		free(productOperatorCString);
 	}
+    if (productOperatorCString != NULL)
+	    free(productOperatorCString);
 
 	return returnString;
 }
@@ -573,14 +574,14 @@ gchar *insensitive_spinsystem_get_sphericalOperatorString(InsensitiveSpinSystem 
 {
 	gchar *productOperatorCString, *returnString, **split;
 
-	productOperatorCString = (gchar *)spherical_product_operators(self->matrix, self->size, self->spinTypeArray);
+    productOperatorCString = (gchar *)spherical_product_operators(self->matrix, self->size, self->spinTypeArray);
 
-	if (!strcmp(productOperatorCString, "E/2\0")) {
+    if (!strcmp(productOperatorCString, "E/2")) {
 		returnString = malloc(4 * sizeof(gchar));
 		strcpy(returnString, productOperatorCString);
 	} else {
-		/* Replace placeholders for ⁺, ⁻, and π */
-		split = g_strsplit(productOperatorCString, "[+]", -1);
+		// Replace placeholders for ⁺, ⁻, and π
+        split = g_strsplit(productOperatorCString, "[+]", -1);
 		g_free(productOperatorCString);
 		productOperatorCString = g_strjoinv("⁺", split);
 		g_strfreev(split);
@@ -593,14 +594,15 @@ gchar *insensitive_spinsystem_get_sphericalOperatorString(InsensitiveSpinSystem 
 		productOperatorCString = g_strjoinv("π", split);
 		g_strfreev(split);
 		if (productOperatorCString[4] == '+') {
-			returnString = malloc((strlen(productOperatorCString) - 6) * sizeof(gchar));
+			returnString = malloc((strlen(productOperatorCString) - 5) * sizeof(gchar));
 			strcpy(returnString, productOperatorCString + 6);
 		} else {
-			returnString = malloc((strlen(productOperatorCString) - 4) * sizeof(gchar));
+			returnString = malloc((strlen(productOperatorCString) - 3) * sizeof(gchar));
 			strcpy(returnString, productOperatorCString + 4);
 		}
-		free(productOperatorCString);
 	}
+    if (productOperatorCString != NULL)
+	    free(productOperatorCString);
 
 	return returnString;
 }

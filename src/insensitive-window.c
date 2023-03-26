@@ -488,6 +488,7 @@ static void insensitive_window_init(InsensitiveWindow *self)
     gtk_entry_set_text(self->signalToNoiseThreshold_entry, str);
     free(str);
     set_dataPoints_label(self, 0, insensitive_settings_get_dataPoints(self->controller->settings));
+    g_idle_add((GSourceFunc)update_pulseSequence, self);
 
     gtk_widget_hide(GTK_WIDGET(self->step_window));
     gtk_widget_hide(GTK_WIDGET(self->dosyToolBox_window));
@@ -927,25 +928,15 @@ gboolean spin_state_was_changed(InsensitiveWindow *window)
 	if (insensitive_spinsystem_get_number_of_sspins(controller->spinSystem) == 0) {
 		gtk_widget_set_visible((GtkWidget *)window->iSpinVector_drawingarea, TRUE);
 		gtk_widget_set_visible((GtkWidget *)window->sSpinVector_drawingarea, FALSE);
-		if (insensitive_settings_get_vectorDiagramType(controller->settings) == VectorDiagramGrapefruit) {
-            //[iSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
-		}
-        gtk_widget_queue_draw((GtkWidget *)window->iSpinVector_drawingarea);
+		gtk_widget_queue_draw((GtkWidget *)window->iSpinVector_drawingarea);
 	} else if (insensitive_spinsystem_get_number_of_ispins(controller->spinSystem) == 0) {
 		gtk_widget_set_visible((GtkWidget *)window->iSpinVector_drawingarea, FALSE);
 		gtk_widget_set_visible((GtkWidget *)window->sSpinVector_drawingarea, TRUE);
-		if (insensitive_settings_get_vectorDiagramType(controller->settings) == VectorDiagramGrapefruit) {
-			//[sSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
-		}
-        gtk_widget_queue_draw((GtkWidget *)window->sSpinVector_drawingarea);
+		gtk_widget_queue_draw((GtkWidget *)window->sSpinVector_drawingarea);
 	} else {
 		gtk_widget_set_visible((GtkWidget *)window->iSpinVector_drawingarea, TRUE);
 		gtk_widget_set_visible((GtkWidget *)window->sSpinVector_drawingarea, TRUE);
-		if (insensitive_settings_get_vectorDiagramType(controller->settings) == VectorDiagramGrapefruit) {
-			//[iSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
-			//[sSpinVectorView drawGrapefruitDiagram:[controller grapefruitPath]];
-		}
-        gtk_widget_queue_draw((GtkWidget *)window->iSpinVector_drawingarea);
+		gtk_widget_queue_draw((GtkWidget *)window->iSpinVector_drawingarea);
         gtk_widget_queue_draw((GtkWidget *)window->sSpinVector_drawingarea);
 	}
 	free_vector_coordinates(vectorCoordinates);
@@ -956,9 +947,7 @@ gboolean spin_state_was_changed(InsensitiveWindow *window)
 	// Print product operator string
 	postring = insensitive_controller_get_productOperatorString(controller);
     gtk_text_buffer_set_text(window->productoperator_textbuffer, postring, strlen(postring));
-	g_free(postring);
-	//[productOperatorTextView setFont:[NSFont fontWithName:@"Georgia" size:14]];
-	//[productOperatorTextView setTextColor:[NSColor blackColor]];
+    g_free(postring);
 
 	return FALSE;
 }
@@ -2377,33 +2366,7 @@ void spin_was_selected(InsensitiveWindow *window, unsigned int spin)
 	else
 		insensitive_controller_set_selected_spin(window->controller, spin);
 
-	/*while ([couplingContextMenu numberOfItems]) {
-		[couplingContextMenu removeItemAtIndex:0];
-		[dipolarContextMenu removeItemAtIndex:0];
-		[distanceContextMenu removeItemAtIndex:0];
-	}*/
-	for (i = 0; i < maxNumberOfSpins; i++) {
-		if (i == insensitive_controller_get_selected_spin(window->controller))
-			;//[[spinButtonArray objectAtIndex:i] setState:NSOnState];
-		else {
-			//[[spinButtonArray objectAtIndex:i] setState:NSOffState];
-			if (i < insensitive_spinsystem_get_spins(window->controller->spinSystem)) {
-				index = i + 1;
-				/*[[couplingContextMenu addItemWithTitle:[NSString stringWithFormat:@"Spin %d", index]
-				  action:@selector(setJCoupling:)
-				  keyEquivalent:@""] setTarget:self];
-				[[couplingContextMenu itemAtIndex:[couplingContextMenu numberOfItems] - 1] setTag:i];
-				[[dipolarContextMenu addItemWithTitle:[NSString stringWithFormat:@"Spin %d", index]
-				  action:@selector(setDipolarCoupling:)
-				  keyEquivalent:@""] setTarget:self];
-				[[dipolarContextMenu itemAtIndex:[couplingContextMenu numberOfItems] - 1] setTag:i];
-				[[distanceContextMenu addItemWithTitle:[NSString stringWithFormat:@"Spin %d", index]
-				  action:@selector(setDistance:)
-				  keyEquivalent:@""] setTarget:self];
-				[[distanceContextMenu itemAtIndex:[couplingContextMenu numberOfItems] - 1] setTag:i];*/
-			}
-		}
-	}
+	/* It would be nice to have a context menu here to choose which variable is set */
     string = malloc(10 * sizeof(gchar));
     sprintf(string, "%.2f", insensitive_spinsystem_get_larmorfrequency_for_spin(window->controller->spinSystem,
                                                                                 insensitive_controller_get_selected_spin(window->controller)));
@@ -2748,7 +2711,7 @@ void set_current_step_in_pulseSequence(InsensitiveWindow *window, unsigned int v
 {
     window->nextStepInPulseSequence = value;
     if(insensitive_pulsesequence_get_number_of_elements(window->controller->pulseSequence) > 0)
-        g_idle_add((GSourceFunc)update_pulseSequence, window);
+        update_pulseSequence(window);//g_idle_add((GSourceFunc)update_pulseSequence, window);
 }
 
 gboolean update_pulseSequence(InsensitiveWindow *window)
@@ -3751,7 +3714,6 @@ void edit_sequence_element(InsensitiveWindow *window, int index)
             break;
         }
         update_pulseSequence(window);
-        //gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
     }
 }
 
@@ -4111,7 +4073,6 @@ void cancel_editing_sequence_element(InsensitiveWindow *window)
         gtk_notebook_set_current_page(window->pp_edit_notebook, 0);
         window->editedElement = NULL;
         update_pulseSequence(window);
-        //gtk_widget_queue_draw((GtkWidget *)window->pulseSequence_drawingarea);
     }
 }
 
@@ -9106,27 +9067,27 @@ gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data
         cairo_fill(cr);
 	}
 	// Draw lines between all coupling spin pairs
-	for (n = 0; n < spins - 1; n++)
+	for (n = 0; n < spins /*- 1*/; n++)
 		for (m = n + 1; m < spins; m++) {
 			// Make alpha channel correspond to coupling constant
 			switch (window->displayedConstant) {
 			case DipolarConstant:
                 constant = insensitive_spinsystem_get_dipolarcouplingconstant_between_spins(spinsystem, n, m);
                 strcpy(unit, "kHz");
-                alphaOfStroke = 1 - couplingMatrix[m * 4 + n];
+                alphaOfStroke = 1 - couplingMatrix[m * spins + n];
 				break;
 			case DistanceConstant:
                 constant = insensitive_spinsystem_get_distance_between_spins(spinsystem, n, m);
                 strcpy(unit, "nm");
-				alphaOfStroke = 1 - couplingMatrix[m * 4 + n];
+				alphaOfStroke = 1 - couplingMatrix[m * spins + n];
 				break;
 			case ScalarConstant:
                 constant = insensitive_spinsystem_get_jcouplingconstant_between_spins(spinsystem, n, m);
                 strcpy(unit, "Hz");
-				if (couplingMatrix[n * 4 + m] >= 1)
+				if (couplingMatrix[n * spins + m] >= 1)
 					alphaOfStroke = 1;
 				else
-					alphaOfStroke = fabsf(couplingMatrix[n * 4 + m]);
+					alphaOfStroke = fabsf(couplingMatrix[n * spins + m]);
 			}
 			// Draw line between coupling spins
             if(constant != 0.0) {
@@ -9290,6 +9251,8 @@ void on_spinEditor_drawingarea_button_release_event(GtkWidget *widget, GdkEventB
                         value = atof(gtk_entry_get_text(window->distanceConstant_entry));
                         insensitive_controller_set_distance_between_spins(window->controller, selected, i, value);
                     }
+                } else {
+                    spin_was_selected(window, i);
                 }
                 break;
         }

@@ -18,9 +18,13 @@ NMR Tutorial
 
 <div>
 <p>
-Insensitive is an application to visualise the NMR experiment on the level of a spin ensemble. 
-The spin system is represented as a semiclassical <a href="vector_model.html">vector model</a>, 
-as a spin <a href="density_matrix.html">density matrix</a> and as a sum of 
+The nuclear magnetic resonance (NMR) experiment makes use of the magnetic moment associated
+with the <a href="spin.html">spin</a> of atomic nuclei to gain information on the
+<a href="pople_notation.html">chemical structure</a> of molecules and solids. Understanding
+the physics behind spin dynamics can be challenging. Insensitive is an application that helps
+with that by visualising the NMR experiment on the level of a spin ensemble. The spin system
+is represented as a semiclassical <a href="vector_model.html">vector model</a>, as a spin
+<a href="density_matrix.html">density matrix</a> and as a sum of
 <a href="product_operator_formalism.html">product operators</a>. Additionally the 
 <a href="energy_levels.html">energy level</a> diagram of the spin system can be displayed.
 <br><br>
@@ -30,34 +34,46 @@ spectrometer hardware is explained <a href="spectrometer.html">here</a>.
 
 <p><b>Quantum mechanics</b></p>
 <p>
-To understand NMR and <a href="spin.html">spin</a> physics a basic knowledge of 
-<a href="quantum_mechanics.html">quantum mechanics</a> and the mathematics behind it is necessary.
-</p>
-
-<p><b>Fourier Transformation</b></p>
-<p>
-The <a href="pulse.html">pulsed</a> NMR experiments are based on the <a href="fourier_transformation.html">Fourier
-transformation</a>, which transforms the <a href="fid.html">free induction decay</a> recorded in 
-the time domain into a spectrum in the frequency domain.
+It is important to understand that <a href="spin.html">spin</a> is an inherently
+<a href="quantum_mechanics.html">quantum mechanical</a> property that has no equivalent in
+the macroscopic world. Every visualisation in three-dimensional space is bound to fail at
+some point and carries the danger of misunderstanding spin. Insensitive aim is therefore
+not only to illustrate textbook spin dynamics, but also to demonstrate the limits of different
+spin models. A god argument can be made that spin should not at all be visualised using
+the vector model. However, since it is taught and used in many textbooks and classes on NMR,
+Insensitive serves as a tool understand as much as unlearn spin as literal orbital momentum.
 </p>
 
 <p><b>Pulse sequences</b></p>
 <p>
-A list of <a href="pulse_sequences.html">pulse sequences</a> for several important NMR experiments
-with instructions how to simulate them with Insensitive.
+Insensitive can simulate a wide range of homo- and heteronuclear experiments in one and two
+dimensions. The tutorial includes a list of <a href="pulse_sequences.html">pulse sequences</a>
+for many NMR experiments with instructions how to set them up and understand their actions
+on the spin ensemble.
+</p>
+
+<p><b>Fourier Transformation</b></p>
+<p>
+The <a href="pulse.html">pulsed</a> NMR experiments make use on the
+<a href="fourier_transformation.html">Fourier transformation</a>, which transforms the
+<a href="fid.html">free induction decay</a> recorded in the time domain into a spectrum in the
+frequency domain.
 </p>
 
 <p><b>Further reading</b></p>
 <p>
-This tutorial is by no means a comprehensive introduction to NMR spectroscopy. 
-See <a href="literature.html">further reading</a> for recommended books, links and literature references.
-The textbooks <i>Spin Dynamics</i> by Malcolm Levitt and <i>Understanding NMR Spectroscopy</i> by
-James Keeler are highly recommened for using Insensitive.
+This tutorial is by no means a comprehensive introduction to NMR spectroscopy. The program
+should be used in combination with a textbook. <i>Spin Dynamics</i> by Malcolm Levitt and
+<i>Understanding NMR Spectroscopy</i> by James Keeler are highly recommened as companions
+for using Insensitive. <i>Spin</i> by Ilya Kuprov gives a rigorous treatment of spin
+from basic symmetries. All literature references that were used for writing Insensitive are
+listed in the <a href="literature.html">bibliography</a>.
 </p>
 
 <p><b>Index</b></p>
 <p>
-An alphabetical <a href="index.html">index</a> of all pages of this tutorial.
+An alphabetical <a href="index.html">index</a> of all pages of this tutorial is available.
+These pages can be opened from the command line by typing <tt>help <i>keyword</i></tt>.
 </p>
 </div>
 

@@ -1340,6 +1340,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		break;
 	case Xfield:
 	case Yfield:
+        decoherence = 0.3 * (1 - window->global_coherence);
 		// Draw rotated cone around z
 		perspective = window->phase;
 		max_width = 2 * halfWidth * cos(coneAngle);
@@ -1372,7 +1373,6 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		cairo_stroke(cr);
 		// Draw hind vectors
         if (trueMomentumUncertainty) {
-            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3);
             angle = window->global_flip_angle;
             if (angle >= M_3_PI_2) {
                 min = 0.0;
@@ -1384,6 +1384,73 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
                 min = 0.0;
                 max = M_PI_2 - angle;
             }
+            if (decoherence > 0.0) {
+                cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.5 * decoherence);
+                cairo_move_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(0.0);
+                y2 = halfWidth * cos(coneAngle) * cos(0.0);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                for (rim = 0.0; fabsf(rim - min) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 -= 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(min);
+                y2 = halfWidth * cos(coneAngle) * cos(min);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(max);
+                y2 = halfWidth * cos(coneAngle) * cos(max);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                for (rim = max; fabsf(rim - M_PI) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 -= 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(M_PI);
+                y2 = halfWidth * cos(coneAngle) * cos(M_PI);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(0.0);
+                y2 = halfWidth * cos(coneAngle) * cos(0.0);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                for (rim = 0.0; fabsf(rim - min) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 += 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(min);
+                y2 = halfWidth * cos(coneAngle) * cos(min);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(max);
+                y2 = halfWidth * cos(coneAngle) * cos(max);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                for (rim = max; fabsf(rim - M_PI) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 += 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(M_PI);
+                y2 = halfWidth * cos(coneAngle) * cos(M_PI);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                cairo_close_path(cr);
+                cairo_fill(cr);
+            }
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.3 - 0.5 * decoherence);
             cairo_move_to(cr, centre_x, centre_y);
             x2 = halfWidth * sin(coneAngle) * cos(perspective);
 			x2 -= 0.5 * max_width * sin(perspective) * sin(min);
@@ -1465,7 +1532,6 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		cairo_stroke(cr);
 		// Draw front vectors
         if (trueMomentumUncertainty) {
-            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6);
             angle = window->global_flip_angle;
             if (angle == M_PI_2) {
                 min = 0.0;
@@ -1480,6 +1546,73 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
                 min = 0.0;
                 max = angle - M_3_PI_2;
             }
+            if (decoherence > 0.0) {
+                cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, decoherence);
+                cairo_move_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(0.0);
+                y2 = halfWidth * cos(coneAngle) * cos(0.0);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                for (rim = 0.0; fabsf(rim - min) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 += 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(min);
+                y2 = halfWidth * cos(coneAngle) * cos(min);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(max);
+                y2 = halfWidth * cos(coneAngle) * cos(max);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                for (rim = max; fabsf(rim - M_PI) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 += 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 += 0.5 * max_width * sin(perspective) * sin(M_PI);
+                y2 = halfWidth * cos(coneAngle) * cos(M_PI);
+			    cairo_line_to(cr, centre_x - x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(0.0);
+                y2 = halfWidth * cos(coneAngle) * cos(0.0);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                for (rim = 0.0; fabsf(rim - min) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 -= 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(min);
+                y2 = halfWidth * cos(coneAngle) * cos(min);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(max);
+                y2 = halfWidth * cos(coneAngle) * cos(max);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                for (rim = max; fabsf(rim - M_PI) >= fabsf(step); rim += step) {
+                    x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			        x2 -= 0.5 * max_width * sin(perspective) * sin(rim);
+                    y2 = halfWidth * cos(coneAngle) * cos(rim);
+			        cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                }
+                x2 = halfWidth * sin(coneAngle) * cos(perspective);
+			    x2 -= 0.5 * max_width * sin(perspective) * sin(M_PI);
+                y2 = halfWidth * cos(coneAngle) * cos(M_PI);
+			    cairo_line_to(cr, centre_x + x2, centre_y - y2);
+                cairo_line_to(cr, centre_x, centre_y);
+                cairo_close_path(cr);
+                cairo_fill(cr);
+            }
+            cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6 - decoherence);
             cairo_move_to(cr, centre_x, centre_y);
             x2 = halfWidth * sin(coneAngle) * cos(perspective);
 			x2 += 0.5 * max_width * sin(perspective) * sin(min);

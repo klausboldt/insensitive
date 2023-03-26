@@ -1295,7 +1295,7 @@ ph31=0 2 0 2 0 0 0 0
                         <property name="active">0</property>
                         <items>
                           <item id="&lt;Enter ID&gt;" translatable="yes">Hertz</item>
-                          <item translatable="yes">Degrees</item>
+                          <item translatable="yes">Degrees / second</item>
                         </items>
                         <signal name="changed" handler="on_chemicalShift_units_combobox_changed" object="InsensitiveWindow" swapped="no"/>
                       </object>

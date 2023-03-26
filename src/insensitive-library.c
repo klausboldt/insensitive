@@ -2800,6 +2800,7 @@ void print_double_complex_matrix(DSPDoubleComplex *matrix, unsigned int size)
 char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_array)
 {
 	char *return_string, *po_string, *aux_string, *temp_string, spin_type_char;
+    int return_string_len, po_string_len, aux_string_len, temp_string_len;
 	int number_of_spins, spins_in_operator, spin, index, mask, m, n;
 	float value;
 	DSPComplex *po_matrix, z;
@@ -2818,10 +2819,20 @@ char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 		ymag[spin] = Iy(spin, number_of_spins);
 	}
 
-	/* return_spin takes the full string of product operators */
-	return_string = malloc((5 * number_of_spins + 9) * (pow(4, number_of_spins) + 1) * sizeof(char));
-	memset(return_string, '\0', (5 * number_of_spins + 9) * (pow(4, number_of_spins) + 1));
+    temp_string_len = 13;
+    aux_string_len = 5 * number_of_spins;
+    po_string_len = aux_string_len + 9;
+    return_string_len = po_string_len * (pow(4, number_of_spins) + 1);
+
+    /* return_spin takes the full string of product operators */
+	return_string = calloc(return_string_len, sizeof(char));
 	strcat(return_string, "E/2");
+	/* po_string takes the string for one product operator */
+	po_string = malloc(po_string_len * sizeof(char));
+    /* aux_string takes the combined product operator components */
+	aux_string = malloc(aux_string_len * sizeof(char));
+    /* temp_string takes one component of a product operator (e.g. I_1z) */
+	temp_string = malloc(temp_string_len * sizeof(char));
 
 	/**********************************************************/
 	/*                                                        */
@@ -2836,26 +2847,17 @@ char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 	/**********************************************************/
 	for (index = 1; index < pow(4, number_of_spins); index++) {
 		/* Initialize po_matrix to identity matrix */
-		for (m = 0; m < size; m++)
+		for (m = 0; m < size; m++) {
 			for (n = 0; n < size; n++) {
 				if (m == n)
 					po_matrix[n * size + m] = complex_rect(1 / pow(2, number_of_spins), 0);
 				else
 					po_matrix[n * size + m] = complex_rect(0, 0);
 			}
-
-		/* po_string takes the string for one product operator */
-		po_string = malloc((5 * number_of_spins + 9) * sizeof(char));
-		memset(po_string, '\0', (5 * number_of_spins + 9));
-
-		/* aux_string takes the combined product operator components */
-		aux_string = malloc(5 * number_of_spins * sizeof(char));
-		memset(aux_string, '\0', (5 * number_of_spins));
-
-		/* temp_string takes one component of a product operator (e.g. I_1z) */
-		temp_string = malloc(13 * sizeof(char));
-		memset(temp_string, '\0', 13);
-
+        }
+		memset(po_string, '\0', po_string_len);
+        memset(aux_string, '\0', aux_string_len);
+		memset(temp_string, '\0', temp_string_len);
 		spins_in_operator = 0;
 		for (spin = 0; spin <= number_of_spins; spin++) {
 			/* Select spin from base4 index by mask */
@@ -2871,19 +2873,19 @@ char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 				matrix_multiply(po_matrix, zmag[spin], size);
 				sprintf(temp_string, "%c%dz", spin_type_char, spin + 1);
 				strcat(aux_string, temp_string);
-				spins_in_operator += 1;
+				spins_in_operator++;
 				break;
 			case BASIS_X:
 				matrix_multiply(po_matrix, xmag[spin], size);
 				sprintf(temp_string, "%c%dx", spin_type_char, spin + 1);
 				strcat(aux_string, temp_string);
-				spins_in_operator += 1;
+				spins_in_operator++;
 				break;
 			case BASIS_Y:
 				matrix_multiply(po_matrix, ymag[spin], size);
 				sprintf(temp_string, "%c%dy", spin_type_char, spin + 1);
 				strcat(aux_string, temp_string);
-				spins_in_operator += 1;
+				spins_in_operator++;
 				break;
 			}
 		}
@@ -2903,8 +2905,7 @@ char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 		/*                                                        */
 		/**********************************************************/
 		z = expectation_value(matrix, po_matrix, size);
-		value =
-			pow2(number_of_spins * (spins_in_operator + 1)) * z.real;
+		value = pow2(number_of_spins * (spins_in_operator + 1)) * z.real;
 
 		/* format the product operator coefficient */
 		if ((value >= 0.005) || (value < -0.005)) {
@@ -2925,10 +2926,6 @@ char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 			strcat(po_string, aux_string);
 			strcat(return_string, po_string);
 		}
-
-		free(po_string);
-		free(aux_string);
-		free(temp_string);
 	}
 
 	/* Free base matrices for all spins 1 - n */
@@ -2941,14 +2938,20 @@ char *cartesian_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 	free(xmag);
 	free(ymag);
 	free(po_matrix);
+	free(po_string);
+	free(aux_string);
+	free(temp_string);
 
 	return return_string;
 }
 
+
 char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_array)
 {
 	char *return_string, *po_string, *aux_string, *temp_string, spin_type_char;
-	int number_of_spins, spins_in_operator, number_shift_operators, spin, index, mask, m, n;
+    int return_string_len, po_string_len, aux_string_len, temp_string_len;
+	int number_of_spins, spins_in_operator, spin, index, mask, m, n;
+    int number_shift_operators;
 	float resize_factor, arg_value, abs_value;
 	DSPComplex *po_matrix, z;
 	DSPComplex **zmag, **shiftplus, **shiftminus;
@@ -2968,10 +2971,20 @@ char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 		shiftminus[spin] = Iminus(spin, number_of_spins);
 	}
 
-	/* return_spin takes the full string of product operators */
-	return_string = malloc((20 * number_of_spins + 9) * (pow(4, number_of_spins) + 1) * sizeof(char));
-	memset(return_string, '\0', (20 * number_of_spins + 9) * (pow(4, number_of_spins) + 1));
+    temp_string_len = 6;
+    aux_string_len = 5 * number_of_spins + 1;
+    po_string_len = aux_string_len + 20;
+    return_string_len = po_string_len * (pow(4, number_of_spins) + 1);
+
+    /* return_spin takes the full string of product operators */
+	return_string = calloc(return_string_len, sizeof(char));
 	strcat(return_string, "E/2");
+	/* po_string takes the string for one product operator */
+	po_string = malloc(po_string_len * sizeof(char));
+    /* aux_string takes the combined product operator components */
+	aux_string = malloc(aux_string_len * sizeof(char));
+    /* temp_string takes one component of a product operator (e.g. I_1z) */
+	temp_string = malloc(temp_string_len * sizeof(char));
 
 	/**********************************************************/
 	/*                                                        */
@@ -2986,33 +2999,19 @@ char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 	/**********************************************************/
 	for (index = 1; index < pow(4, number_of_spins); index++) {
 		/* Initialize po_matrix to identity matrix */
-		for (m = 0; m < size; m++)
+		for (m = 0; m < size; m++) {
 			for (n = 0; n < size; n++) {
 				if (m == n)
-					po_matrix[n * size + m] =
-						complex_rect(1 /
-							     pow(2,
-								 number_of_spins),
-							     0);
+					po_matrix[n * size + m] = complex_rect(1 / pow(2, number_of_spins), 0);
 				else
-					po_matrix[n * size + m] =
-						complex_rect(0, 0);
+					po_matrix[n * size + m] = complex_rect(0, 0);
 			}
-
-		/* po_string takes the string for one product operator */
-		po_string = malloc((20 * number_of_spins + 9) * sizeof(char));
-		memset(po_string, '\0', (5 * number_of_spins + 9));
-
-		/* aux_string takes the combined product operator components */
-		aux_string = malloc(20 * number_of_spins * sizeof(char));
-		memset(aux_string, '\0', (5 * number_of_spins));
-
-		/* temp_string takes one component of a product operator (e.g. I_1z) */
-		temp_string = malloc(20 * sizeof(char));
-		memset(temp_string, '\0', 8);
-
+        }
+		memset(po_string, '\0', po_string_len);
+        memset(aux_string, '\0', aux_string_len);
+		memset(temp_string, '\0', temp_string_len);
 		spins_in_operator = 0;
-		number_shift_operators = 0;
+        number_shift_operators = 0;
 		for (spin = 0; spin <= number_of_spins; spin++) {
 			/* Select spin from base4 index by mask */
 			mask = component_from_base4_coded_product_operator(index, spin);
@@ -3082,51 +3081,42 @@ char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 				strcat(po_string, " + ");
 
 			/* Print Abs value */
-			if ((fabs(abs_value) < 0.995) || (fabs(abs_value) >= 1.005)) {
-				sprintf(temp_string, "%.2f ", fabs(abs_value));
+			if ((fabsf(abs_value) < 0.708) && (fabsf(abs_value) >= 0.706)) {
+				sprintf(temp_string, "1/√2 ");
+				strcat(po_string, temp_string);
+			} else if ((fabsf(abs_value) < 0.995) || (fabsf(abs_value) >= 1.005)) {
+				sprintf(temp_string, "%.2f ", fabsf(abs_value));
 				strcat(po_string, temp_string);
 			} else if ((abs_value < -0.005 && abs_value > -0.995) || abs_value < -1.005)
-				if (fabs(arg_value) < 0.005)
+				if (fabsf(arg_value) < 0.005)
 					strcat(po_string, " ");
 
 			/* Print Arg value */
-			if (abs_value > 0) {
-				if (fabs(arg_value) >= 0.005) {
+			if (abs_value > 0.005) {
+				if (fabsf(arg_value) >= 0.005 && fabsf(arg_value) < 3.136) {
 					strcat(po_string, "exp(");
-					if (arg_value < -0.005)
+					if ((arg_value < -0.005))
 						strcat(po_string, "-");
-
-					if ((fabs(arg_value) >= 0.995) && (fabs(arg_value) < 1.005))
+					if ((fabsf(arg_value) >= 0.995) && (fabsf(arg_value) < 1.005))
 						strcat(po_string, "i");
-					else if ((fabs(arg_value) >= 1.565) && (fabs(arg_value) < 1.575))
-						strcat(po_string, "pi/2");
-					else if ((fabs(arg_value) >= 1.995) && (fabs(arg_value) < 2.005))
-						strcat(po_string, "2");
-					else if ((fabs(arg_value) >= 2.995) && (fabs(arg_value) < 3.005))
-						strcat(po_string, "3");
-					else if ((fabs(arg_value) >= 3.135) && (fabs(arg_value) < 3.145))
-						strcat(po_string, "pi");
-					else if ((fabs(arg_value) >= 3.995) && (fabs(arg_value) < 4.005))
-						strcat(po_string, "4");
-					else if ((fabs(arg_value) >= 4.706) && (fabs(arg_value) < 4.715))
-						strcat(po_string, "3pi/2");
-					else if ((fabs(arg_value) >= 4.995) && (fabs(arg_value) < 5.005))
-						strcat(po_string, "5");
-					else if ((fabs(arg_value) >= 5.995) && (fabs(arg_value) < 6.005))
-						strcat(po_string, "6");
+					else if ((fabsf(arg_value) >= 1.565) && (fabsf(arg_value) < 1.575))
+						strcat(po_string, "ipi/2");
+					else if ((fabsf(arg_value) >= 1.995) && (fabsf(arg_value) < 2.005))
+						strcat(po_string, "2i");
+					else if ((fabsf(arg_value) >= 2.995) && (fabsf(arg_value) < 3.005))
+						strcat(po_string, "3i");
+					/*else if ((fabsf(arg_value) >= 3.135) && (fabsf(arg_value) < 3.145))
+						strcat(po_string, "ipi");*/
 					else {
-						sprintf(temp_string, "%.2f", fabs(arg_value));
+						sprintf(temp_string, "%.2fi", fabsf(arg_value));
 						strcat(po_string, temp_string);
 					}
-					strcat(po_string, " i) ");
+					strcat(po_string, ") ");
 				}
 			}
 			strcat(po_string, aux_string);
-			strcat(return_string, po_string);
+            strcat(return_string, po_string);
 		}
-		free(po_string);
-		free(aux_string);
-		free(temp_string);
 	}
 
 	/* Free base matrices for all spins 1 - n */
@@ -3139,6 +3129,9 @@ char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 	free(shiftplus);
 	free(shiftminus);
 	free(po_matrix);
+	free(po_string);
+	free(aux_string);
+	free(temp_string);
 
 	return return_string;
 }

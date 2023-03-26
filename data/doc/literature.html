@@ -4,6 +4,28 @@
 <meta name="viewport" content="width=320">
 </head>
 
+<style>
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+ol {
+    counter-reset: list;
+}
+ol > li {
+    list-style: none;
+    position: relative;
+}
+ol > li:before {
+    content: "[" counter(list) "]";
+    counter-increment: list;
+    left: -40px;
+    padding-right: 10px;
+    position: absolute;
+    text-align: right;
+    width: 40px;
+}
+</style>
+
 <body>
 
 <!--<div>
@@ -28,6 +50,7 @@ Reson.</i>, <b>2011</b>, <i>38A</i> (2), 17-24</a><a href="10.1002_cmr.a.20203.p
 <p><b>Books</b></p>
 <p>Malcolm H. Levitt, <i>Spin Dynamics</i>, 2nd edition, Wiley, Chichester, <b>2008</b>.</p>
 <p>James Keeler, <i>Understanding NMR Spectroscopy</i>, 2nd edition, Wiley, Chichester, <b>2010</b>.</p>
+<p>Ilya Kuprov, <i>Spin: From Basic Symmetries to Quantum Optimal Control</i>, Springer Nature, <b>2023</b>.</p>
 <p>David P. Goldenberg, <i>Principles of NMR Spectroscopy: An Illustrated Guide</i>, University Science Books, Mill Valley, <b>2016</b>.</p>
 <p>Timothy D. W. Claridge, <i>High-Resolution NMR Techniques in Organic Chemistry</i>, 3rd edition, Elsevier, Oxford, <b>2016</b>.
 <p>Ray Freeman, <i>Spin Choreography: Basic Steps in High Resolution NMR</i>, Oxford University Press, Oxford, <b>1998</b>.</p>
@@ -37,13 +60,14 @@ Reson.</i>, <b>2011</b>, <i>38A</i> (2), 17-24</a><a href="10.1002_cmr.a.20203.p
 <p>Maurice Goldman, <i>Quantum Description of High-Resolution NMR in Liquids</i>, Oxford University Press, Oxford, <b>1991</b>.</p>
 
 <p><b>Weblinks</b></p>
-<p><a href="https://www.cis.rit.edu/htbooks/nmr/">The Basics of NMR</a></p>
+<p><a href="https://www.cis.rit.edu/htbooks/nmr/">The Basics of NMR</a> by Joseph P. Hornak</p>
 <!--<p><a href="https://www.magritek.com/videos.html">Introductory NMR &amp; MRI Videos</a></p>-->
 <p><a href="https://www2.chemistry.msu.edu/faculty/reusch/VirtTxtJml/Spectrpy/nmr/nmr1.htm#nmr1">Tutorial from the University of Michigan</a></p>
 <!--p><a href="https://131.104.156.23/Lectures/CHEM_207/CHM_207_NMR.htm">Lecture by Michael K. Denk</a></p>
 <p><a href="https://www.chem.queensu.ca/facilities/NMR/nmr/webcourse/index.htm">NMR webcourse</a></p-->
-<p><a href="https://www.spindynamics.org/support.php">SpinDynamics.org</a></p>
-<p><a href="https://www.ray-freeman.org">Ray Freeman's website</a></p>
+<p><a href="https://www.spindynamics.org/">SpinDynamics.org</a> (Ilya Kuprov's group)</p>
+<!--<p><a href="https://www.ray-freeman.org">Ray Freeman's website</a></p>-->
+<p>The <a href="https://github.com/klausboldt/insensitive">GitHub page</a> for Insensitive</p>
 
 <p><b>Journals</b></p>
 <p><a href="https://www3.interscience.wiley.com/journal/122684470/grouphome/home.html">Concepts in Magnetic Resonance</a></p>
