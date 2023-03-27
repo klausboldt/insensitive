@@ -2754,7 +2754,8 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 	unsigned int d6Present = 0;
 	gboolean checkForD2 = TRUE, checkForD4 = TRUE, checkForD3 = TRUE;//, checkForD6 = TRUE;
 	gboolean cnstHH = FALSE, cnstHX = FALSE, cnstXX = FALSE, identifiedInversionRecovery = FALSE;
-	gboolean contains180Pulse_f1 = FALSE, contains180Pulse_f2 = FALSE, shapedPulse90 = FALSE, shapedPulse180 = FALSE, detectsISpins;
+	gboolean contains180Pulse_f1 = FALSE, contains180Pulse_f2 = FALSE, detectsISpins;
+    gboolean shapedPulse90 = FALSE, shapedPulse180 = FALSE;
 	GPtrArray *delayList = g_ptr_array_new();
 	GHashTable *delayNames = g_hash_table_new(g_str_hash, g_str_equal);
 	GPtrArray *gradientList = g_ptr_array_new();

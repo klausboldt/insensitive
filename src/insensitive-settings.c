@@ -484,13 +484,13 @@ void insensitive_settings_save_pulsesequence(InsensitiveSettings *self, gpointer
 		for (i = 0; i < phaseCyclingArray->len; i++)
 			phase_list[i] = g_ptr_array_index(phaseCyclingArray, i);
 		g_key_file_set_string_list(self->defaultSettings, pp_group, "PhaseCyclingArray",
-								   phase_list, phaseCyclingArray->len);
+								   (const char * const *)phase_list, phaseCyclingArray->len);
 		free(phase_list);
 		pp_code = malloc(size * sizeof(guchar *));
 		for (i = 0; i < size; i++)
 			pp_code[i] = g_base64_encode((const guchar *)insensitive_pulsesequence_get_element_at_index(pp, i),
 						 				 sizeof(SequenceElement));
-		g_key_file_set_string_list(self->defaultSettings, pp_group, "PulseSequence", pp_code, size);
+		g_key_file_set_string_list(self->defaultSettings, pp_group, "PulseSequence", (const char * const *)pp_code, size);
 		for (i = 0; i < size; i++)
 			g_free(pp_code[i]);
 		free(pp_code);

@@ -2358,8 +2358,7 @@ void set_openedFileState_for_spinSystem(InsensitiveWindow *window, enum OpenFile
 
 void spin_was_selected(InsensitiveWindow *window, unsigned int spin)
 {
-	unsigned int i, index;
-    gchar *string;
+	gchar *string;
 
 	if (spin > maxNumberOfSpins)
         insensitive_controller_set_selected_spin(window->controller, 0);
@@ -8402,7 +8401,7 @@ gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gp
         else {
             command = g_ptr_array_index(window->commandHistory, window->commandHistory->len - window->commandHistoryPosition);
             gtk_entry_set_text(window->command_line, command);
-            gtk_editable_set_position(window->command_line, -1);
+            gtk_editable_set_position(GTK_EDITABLE(window->command_line), -1);
         }
         return TRUE;
     } else if (event->keyval == GDK_KEY_Down) {
@@ -8413,7 +8412,7 @@ gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gp
         else {
             command = g_ptr_array_index(window->commandHistory, window->commandHistory->len - window->commandHistoryPosition);
             gtk_entry_set_text(window->command_line, command);
-            gtk_editable_set_position(window->command_line, -1);
+            gtk_editable_set_position(GTK_EDITABLE(window->command_line), -1);
         }
         return TRUE;
     }

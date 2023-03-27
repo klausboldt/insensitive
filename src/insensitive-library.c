@@ -3084,6 +3084,9 @@ char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 			if ((fabsf(abs_value) < 0.708) && (fabsf(abs_value) >= 0.706)) {
 				sprintf(temp_string, "1/√2 ");
 				strcat(po_string, temp_string);
+			} else if ((fabsf(abs_value) < 1.42) && (fabsf(abs_value) >= 1.41)) {
+				sprintf(temp_string, "√2 ");
+				strcat(po_string, temp_string);
 			} else if ((fabsf(abs_value) < 0.995) || (fabsf(abs_value) >= 1.005)) {
 				sprintf(temp_string, "%.2f ", fabsf(abs_value));
 				strcat(po_string, temp_string);

@@ -25,7 +25,8 @@
 #define initial_chemical_shift 0.0
 #define initial_scalar_coupling_constant 0.0
 #define initial_distance 0.3
-#define M_LN16 2.772588722239781144907055931980721653 /* loge(16) */
+#define M_LN16   2.772588722239781144907055931980721653 /* log_e(16) */
+#define M_3_PI_2 4.712388980384689857693965074919254326 /* 3π/2 */
 
 static const unsigned int spinTypeI = 0;
 static const unsigned int spinTypeS = 1;
