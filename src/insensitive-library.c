@@ -260,7 +260,7 @@ float random_noise(float noise_level)
 	float random_number;
 
 	/* Generate number between 1 and -1 */
-	random_number = (float)random();
+	random_number = (float)rand();
 	random_number *= 2;
 	random_number /= (float)RAND_MAX;
 	random_number = (random_number - 1) * (noise_level / 1000);
@@ -296,6 +296,8 @@ float gyro_for_code(unsigned int code)
 		return gyro_183W;
 	case 12:
 		return gyro_195Pt;
+    case 13:
+        return gyro_electron;
 	case 0:
 	default:
 		return gyro_1H;

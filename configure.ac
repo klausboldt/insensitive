@@ -3,6 +3,15 @@ AC_INIT([insensitive], [0.9.34], [klaus.boldt@uni-konstanz.de])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([1.9.6 -Wall -Werror])
 
+AC_ARG_ENABLE(
+  [webkit],
+  [AS_HELP_STRING([--disable-webkit], [Disable support for Webkit2Gtk. Use this
+                                       option on Windows or macOS systems for
+                                       which WebKit2Gtk has not been ported.])],
+  [enable_webkit=$enableval],
+  [enable_webkit=yes]
+)
+
 AC_PROG_CC
 AC_PROG_CC_C_O
 AC_PROG_INSTALL
@@ -42,11 +51,13 @@ PKG_CHECK_MODULES(GIO, gio-2.0 >= 2.50)
 PKG_CHECK_MODULES(GTK3, gtk+-3.0 >= 3.22)
 PKG_CHECK_MODULES(CAIRO, cairo)
 PKG_CHECK_MODULES(PANGO, pango)
-PKG_CHECK_MODULES(WEBKIT2GTK, webkit2gtk-4.0)
-#PKG_CHECK_MODULES(BLAS, blas, [have_blas=yes], AX_BLAS([have_blas=yes], [have_blas=no]))
-#AC_CHECK_LIB([blas],[cblas_caxpy], [HAVE_CBLAS=1], [HAVE_CBLAS=0])
-#AS_IF([test "$HAVE_CBLAS" -eq 0], [PKG_CHECK_MODULES(CBLAS, cblas)])
-#PKG_CHECK_MODULES(LAPACK, lapack, [have_lapack=yes], AX_LAPACK([have_lapack=yes], [have_lapack=no]))
+if test x$enable_webkit != xno ; then
+    PKG_CHECK_MODULES(WEBKIT2GTK, webkit2gtk-4.0, enable_webkit="yes", enable_webkit="no")
+fi
+AM_CONDITIONAL(USE_WEBKIT_GTK, test x$enable_webkit = xyes)
+if test "x$enable_webkit" == xyes ; then
+    AC_DEFINE(USE_WEBKIT_GTK, [], [Build Insensitive with Webkit2Gtk support.])
+fi
 AX_BLAS()
 if test "$ax_blas_ok" = "no"; then
     AC_MSG_ERROR([

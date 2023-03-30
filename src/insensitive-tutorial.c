@@ -61,19 +61,19 @@ static void insensitive_tutorial_init(InsensitiveTutorial *self)
 }
 
 
-void on_back_button_clicked(GtkToolItem *button, gpointer user_data)
+G_MODULE_EXPORT void on_back_button_clicked(GtkToolItem *button, gpointer user_data)
 {
     webkit_web_view_go_back((WebKitWebView *)user_data);
 }
 
 
-void on_forward_button_clicked(GtkToolItem *button, gpointer user_data)
+G_MODULE_EXPORT void on_forward_button_clicked(GtkToolItem *button, gpointer user_data)
 {
     webkit_web_view_go_forward((WebKitWebView *)user_data);
 }
 
 
-void load_default_page(GtkToolItem *button, gpointer user_data)
+G_MODULE_EXPORT void load_default_page(GtkToolItem *button, gpointer user_data)
 {
     WebKitWebView *webview = (WebKitWebView *)user_data;
     gchar *filename;
@@ -91,7 +91,7 @@ void load_default_page(GtkToolItem *button, gpointer user_data)
 }
 
 
-void load_manual_page(GtkToolItem *button, gpointer user_data)
+G_MODULE_EXPORT void load_manual_page(GtkToolItem *button, gpointer user_data)
 {
     WebKitWebView *webview = (WebKitWebView *)user_data;
     gchar *filename;
@@ -109,7 +109,7 @@ void load_manual_page(GtkToolItem *button, gpointer user_data)
 }
 
 
-void load_cmd_page(GtkToolItem *button, gpointer user_data)
+G_MODULE_EXPORT void load_cmd_page(GtkToolItem *button, gpointer user_data)
 {
     WebKitWebView *webview = (WebKitWebView *)user_data;
     gchar *filename;
@@ -127,7 +127,7 @@ void load_cmd_page(GtkToolItem *button, gpointer user_data)
 }
 
 
-void load_index_page(GtkToolItem *button, gpointer user_data)
+G_MODULE_EXPORT void load_index_page(GtkToolItem *button, gpointer user_data)
 {
     WebKitWebView *webview = (WebKitWebView *)user_data;
     gchar *filename;
@@ -145,7 +145,7 @@ void load_index_page(GtkToolItem *button, gpointer user_data)
 }
 
 
-void load_arbitrary_page(gchar *html_filename, gpointer user_data)
+G_MODULE_EXPORT void load_arbitrary_page(gchar *html_filename, gpointer user_data)
 {
     InsensitiveTutorial *window = (InsensitiveTutorial *)user_data;
     gchar *filename;

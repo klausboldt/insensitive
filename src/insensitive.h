@@ -43,6 +43,7 @@ static const float gyro_119Sn = -100.138e6;
 static const float gyro_129Xe = -74.41e6;
 static const float gyro_183W = 11.2e6;
 static const float gyro_195Pt = 57.68e6;
+static const float gyro_electron = 1.760859770e11;
 static const float h_bar = 1.055e-34;
 static const float cos45 = M_SQRT1_2;
 static const float sin45 = -M_SQRT1_2;

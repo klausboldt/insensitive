@@ -33,10 +33,12 @@
 #include "insensitive-settings.h"
 #include "insensitive-spinsystem.h"
 #include "insensitive-pulseshaper.h"
-#include "insensitive-tutorial.h"
 #include "insensitive-singlespins.h"
 #include "insensitive-composer.h"
 #include "insensitive-preferences.h"
+#ifdef USE_WEBKIT_GTK
+#include "insensitive-tutorial.h"
+#endif /* USE_WEBKIT_GTK */
 
 
 static const float icon_half_width = 32;
@@ -59,7 +61,7 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 	gtk_widget_class_set_template_from_resource(widget_class, "/com/klausboldt/insensitive/insensitive-window.ui");
 
 	/* Main window */
-	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, header_bar);
+	//gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, header_bar);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, command_line);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spinsystem_toolbutton);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spinstate_toolbutton);
@@ -501,7 +503,7 @@ static void insensitive_window_init(InsensitiveWindow *self)
 }
 
 
-void on_open_file_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_open_file_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GtkWidget *chooser;
@@ -624,7 +626,7 @@ void show_open_file_error(InsensitiveWindow *window, gchar *filename)
 }
 
 
-void on_preferences_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_preferences_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     InsensitivePreferences *preferences;
@@ -637,7 +639,7 @@ void on_preferences_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-void quit_insensitive(InsensitiveWindow *window)
+G_MODULE_EXPORT void quit_insensitive(InsensitiveWindow *window)
 {
     insensitive_settings_save_spinsystem(window->controller->settings, window->controller->spinSystem);
     insensitive_settings_save_pulsesequence(window->controller->settings, window->controller);
@@ -985,7 +987,7 @@ void spin_number_was_changed(InsensitiveWindow *window)
 // //  // // //      //    //    //        //   // //         //    // //    // //  // //      //
 // //   //// //       //////     //        //   //  //////    //    //  //////  //   //// ///////
 
-void on_equilibrium_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_equilibrium_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -997,7 +999,7 @@ void on_equilibrium_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1016,7 +1018,7 @@ void on_pulse_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse90x_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse90x_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1026,7 +1028,7 @@ void on_pulse90x_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse90y_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse90y_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1036,7 +1038,7 @@ void on_pulse90y_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse90minusx_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse90minusx_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1046,7 +1048,7 @@ void on_pulse90minusx_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse90minusy_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse90minusy_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1056,7 +1058,7 @@ void on_pulse90minusy_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse180x_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse180x_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1066,7 +1068,7 @@ void on_pulse180x_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse180y_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse180y_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1076,7 +1078,7 @@ void on_pulse180y_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse180minusx_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse180minusx_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1086,7 +1088,7 @@ void on_pulse180minusx_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_pulse180minusy_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulse180minusy_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1096,7 +1098,7 @@ void on_pulse180minusy_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_expandPulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_expandPulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1119,7 +1121,7 @@ void on_expandPulse_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_contractPulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_contractPulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1142,7 +1144,7 @@ void on_contractPulse_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_chemicalShift_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_chemicalShift_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1164,7 +1166,7 @@ void on_chemicalShift_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_coupling_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_coupling_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1186,7 +1188,7 @@ void on_coupling_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_relaxation_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_relaxation_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1195,7 +1197,7 @@ void on_relaxation_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_freeEvolution_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_freeEvolution_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1204,7 +1206,7 @@ void on_freeEvolution_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_gradient_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_gradient_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1214,7 +1216,7 @@ void on_gradient_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_acquire_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_acquire_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1238,7 +1240,7 @@ void on_acquire_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_undo_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_undo_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1246,7 +1248,7 @@ void on_undo_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_notebook_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void on_notebook_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     unsigned int page;
@@ -1263,7 +1265,7 @@ void on_notebook_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_dat
 }
 
 
-void on_matrix_composer_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void on_matrix_composer_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1271,7 +1273,7 @@ void on_matrix_composer_toolbutton_clicked(GtkToolButton *toolbutton, gpointer u
 }
 
 
-void on_pulse_shaper_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void on_pulse_shaper_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1279,7 +1281,7 @@ void on_pulse_shaper_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user
 }
 
 
-void on_single_spins_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void on_single_spins_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveSingleSpins *single_spins_window;
 
@@ -1292,8 +1294,9 @@ void on_single_spins_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user
 }
 
 
-void on_tutorial_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void on_tutorial_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
+#ifdef USE_WEBKIT_GTK
     InsensitiveTutorial *tutorial_window;
 
     tutorial_window = g_object_new(INSENSITIVE_TYPE_TUTORIAL,
@@ -1302,10 +1305,36 @@ void on_tutorial_toolbutton_clicked(GtkToolButton *toolbutton, gpointer user_dat
 		                           NULL);
     gtk_window_set_title((GtkWindow *)tutorial_window, "Tutorial");
 	gtk_window_present((GtkWindow *)tutorial_window);
+#else
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+    gchar *filename, *url;
+    const gchar * const *dirs = g_get_system_data_dirs();
+    GError *error = NULL;
+
+    while (*dirs != NULL) {
+        filename = g_build_filename(*dirs++, "insensitive", "doc", "default.html", NULL);
+        printf("%s\n", filename);
+        if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
+            url = malloc((strlen(filename) + 7) * sizeof(gchar));
+            strcpy(url, "file://");
+            strcat(url, filename);
+			gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
+            if (error != NULL) {
+                fprintf (stderr, "Error: %s\n", error->message);
+                g_error_free (error);
+            }
+            if (url != NULL)
+                g_free(url);
+		    if (filename != NULL)
+                g_free(filename);
+            break;
+        }
+	}
+#endif /* USE_WEBKIT_GTK */
 }
 
 
-void on_about_menu_item_activate(GtkMenuItem *item, gpointer *user_data)
+G_MODULE_EXPORT void on_about_menu_item_activate(GtkMenuItem *item, gpointer *user_data)
 {
 	GtkWidget *dialog = gtk_about_dialog_new();
 
@@ -1333,7 +1362,7 @@ void set_pulseEnvelope(InsensitiveWindow *self, enum PulseEnvelope value)
 }
 
 
-void on_pulseEnvelope_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_pulseEnvelope_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1364,7 +1393,7 @@ void set_flipAngle(InsensitiveWindow *window, float value)
 }
 
 
-void on_flipAngle_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
+G_MODULE_EXPORT void on_flipAngle_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = gtk_adjustment_get_value(slider);
@@ -1373,7 +1402,7 @@ void on_flipAngle_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
 }
 
 
-void on_flipAngle_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_flipAngle_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1392,7 +1421,7 @@ void set_pulseDuration(InsensitiveWindow *window, float value)
 }
 
 
-void on_pulseDuration_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_pulseDuration_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1411,7 +1440,7 @@ void set_pulseStrength(InsensitiveWindow *window, float value)
 }
 
 
-void on_pulseStrength_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_pulseStrength_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1420,7 +1449,7 @@ void on_pulseStrength_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_hardpulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_hardpulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1428,7 +1457,7 @@ void on_hardpulse_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_softpulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_softpulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1436,7 +1465,7 @@ void on_softpulse_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_softerpulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_softerpulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1444,7 +1473,7 @@ void on_softerpulse_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_selectivepulse_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_selectivepulse_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -1463,7 +1492,7 @@ void set_pulseFrequency(InsensitiveWindow *window, float value)
 }
 
 
-void on_pulseFrequency_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
+G_MODULE_EXPORT void on_pulseFrequency_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = gtk_adjustment_get_value(slider);
@@ -1472,7 +1501,7 @@ void on_pulseFrequency_adjustment_changed(GtkAdjustment *slider, gpointer user_d
 }
 
 
-void on_pulseFrequency_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_pulseFrequency_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1495,7 +1524,7 @@ void set_phase(InsensitiveWindow *window, float value)
 }
 
 
-void on_phase_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
+G_MODULE_EXPORT void on_phase_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = gtk_adjustment_get_value(slider);
@@ -1504,7 +1533,7 @@ void on_phase_adjustment_changed(GtkAdjustment *slider, gpointer user_data)
 }
 
 
-void on_phase_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_phase_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1522,7 +1551,7 @@ void set_spin_checkboxes(InsensitiveWindow *window, int pulseArray)
 }
 
 
-void on_spin_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_spin_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	const gchar *label = gtk_button_get_label((GtkButton *)checkbox);
@@ -1545,7 +1574,7 @@ void set_iSpins_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_iSpins_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_iSpins_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1564,7 +1593,7 @@ void set_sSpins_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_sSpins_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_sSpins_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1583,7 +1612,7 @@ void set_allSpins_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_allSpins_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_allSpins_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1599,7 +1628,7 @@ void set_strongCoupling_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_strongCoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_strongCoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1614,7 +1643,7 @@ void set_dipolarRelaxation_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_dipolar_relaxation_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_dipolar_relaxation_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1629,7 +1658,7 @@ void set_animation_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_animation_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_animation_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1644,7 +1673,7 @@ void set_include_relaxation_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_include_relaxation_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_include_relaxation_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1662,7 +1691,7 @@ void set_T1(InsensitiveWindow *window, float value)
 }
 
 
-void on_T1_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_T1_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1681,7 +1710,7 @@ void set_T2(InsensitiveWindow *window, float value)
 }
 
 
-void on_T2_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_T2_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1700,7 +1729,7 @@ void set_correlationTime(InsensitiveWindow *window, float value)
 }
 
 
-void on_correlationTime_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_correlationTime_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1719,7 +1748,7 @@ void set_delay(InsensitiveWindow *window, float value)
 }
 
 
-void on_delay_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_delay_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1728,7 +1757,7 @@ void on_delay_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_delay_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_delay_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gchar *tag_string = malloc(8 * sizeof(gchar));
@@ -1749,7 +1778,7 @@ void set_dephasingJitter_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_dephasingJitter_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_dephasingJitter_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1764,7 +1793,7 @@ void set_iDecoupling_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_iDecoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_iDecoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1780,7 +1809,7 @@ void set_sDecoupling_checkbox(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_sDecoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_sDecoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1805,7 +1834,7 @@ void set_spinlock(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_spinlock_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_spinlock_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1824,7 +1853,7 @@ void set_gradient_strength(InsensitiveWindow *window, float value)
 }
 
 
-void on_gradient_strength_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_gradient_strength_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_combo_box_text_get_active_text(combobox));
@@ -1833,7 +1862,7 @@ void on_gradient_strength_combobox_changed(GtkComboBoxText *combobox, gpointer u
 }
 
 
-void on_gradient_strength_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_gradient_strength_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1852,7 +1881,7 @@ void set_gradient_duration(InsensitiveWindow *window, float value)
 }
 
 
-void on_gradient_duration_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_gradient_duration_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1867,7 +1896,7 @@ void set_diffusion(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_diffusion_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_diffusion_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1883,7 +1912,7 @@ void set_dataPoints(InsensitiveWindow *window, int value)
 }
 
 
-void on_datapoints_spinbutton_value_changed(GtkSpinButton *spinbutton, gpointer user_data)
+G_MODULE_EXPORT void on_datapoints_spinbutton_value_changed(GtkSpinButton *spinbutton, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	unsigned int value = gtk_spin_button_get_value_as_int(spinbutton);
@@ -1892,7 +1921,7 @@ void on_datapoints_spinbutton_value_changed(GtkSpinButton *spinbutton, gpointer 
 }
 
 
-void on_datapoints_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_datapoints_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	unsigned int temp, value = gtk_adjustment_get_value(adjustment);
@@ -1915,7 +1944,7 @@ void set_dwellTime(InsensitiveWindow *window, float value)
 }
 
 
-void on_dwelltime_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_dwelltime_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1940,7 +1969,7 @@ void set_noiseLevel(InsensitiveWindow *window, float value)
 }
 
 
-void on_noise_level_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_noise_level_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
@@ -1961,7 +1990,7 @@ void disable_acquireAfterNextPulse(InsensitiveWindow *window)
 }
 
 
-void on_acquisitionAfterNextPulse_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_acquisitionAfterNextPulse_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -1982,7 +2011,7 @@ void disable_pulseBeforeAcquisition(InsensitiveWindow *window)
 }
 
 
-void on_pulseBeforeAcquisition_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_pulseBeforeAcquisition_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	// Not available on Linux
 }
@@ -1995,7 +2024,7 @@ void set_detectISignal(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_detectISignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpointer user_data)
+G_MODULE_EXPORT void on_detectISignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active((GtkToggleButton *)radiobutton);
@@ -2012,7 +2041,7 @@ void set_detectSSignal(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_detectSSignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpointer user_data)
+G_MODULE_EXPORT void on_detectSSignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active((GtkToggleButton *)radiobutton);
@@ -2022,7 +2051,7 @@ void on_detectSSignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpo
 }
 
 
-void detectSignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpointer user_data)
+G_MODULE_EXPORT void detectSignal_radiobutton_group_changed(GtkRadioButton *radiobutton, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	GSList *group =  gtk_radio_button_get_group(radiobutton);
@@ -2041,7 +2070,7 @@ void set_zeroFilling(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_zeroFilling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_zeroFilling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -2065,7 +2094,7 @@ void set_vectorDisplayType(InsensitiveWindow *self, enum VectorDisplayType value
 }
 
 
-void on_vectorDisplayType_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_vectorDisplayType_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2086,7 +2115,7 @@ void set_operatorBasis(InsensitiveWindow *self, enum OperatorBasis value)
 }
 
 
-void on_operatorBasis_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_operatorBasis_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2101,7 +2130,7 @@ void set_color1stOrderCoherences(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_color1stOrderCoherences_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_color1stOrderCoherences_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	gboolean value = gtk_toggle_button_get_active(checkbox);
@@ -2112,7 +2141,7 @@ void on_color1stOrderCoherences_checkbox_toggled(GtkToggleButton *checkbox, gpoi
 }
 
 
-void on_main_window_resize(GtkWindow *main_window, gpointer user_data)
+G_MODULE_EXPORT void on_main_window_resize(GtkWindow *main_window, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)main_window;
 
@@ -2162,7 +2191,7 @@ void set_matrixDisplayType(InsensitiveWindow *window, enum MatrixDisplayType val
 }
 
 
-void on_matrixDisplayType_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_matrixDisplayType_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2193,7 +2222,7 @@ void set_vectorDiagramType(InsensitiveWindow *window, enum VectorDiagramType val
 }
 
 
-void on_vectorDiagramType_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_vectorDiagramType_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2270,7 +2299,7 @@ gboolean perform_open_spinSystem(InsensitiveWindow *window, xmlNodePtr node)
 }
 
 
-void perform_save_spinSystem(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void perform_save_spinSystem(GtkMenuItem *menuitem, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GtkWidget *chooser;
@@ -2388,7 +2417,7 @@ void set_spin_type(InsensitiveWindow *window, unsigned int spin)
 }
 
 
-void on_chemicalShift_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_chemicalShift_entry_activate(GtkEntry *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry)) / insensitive_controller_get_unitConversion(window->controller);
@@ -2400,7 +2429,7 @@ void on_chemicalShift_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_scalarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_scalarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2411,7 +2440,7 @@ void on_scalarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_dipolarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_dipolarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2422,7 +2451,7 @@ void on_dipolarConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_distanceConstant_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_distanceConstant_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2477,7 +2506,7 @@ void set_distanceConstant(InsensitiveWindow *window, float value)
 }
 
 
-void on_addSpin_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_addSpin_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2488,7 +2517,7 @@ void on_addSpin_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_removeSpin_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_removeSpin_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2497,7 +2526,7 @@ void on_removeSpin_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_spinNumber_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_spinNumber_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = gtk_adjustment_get_value(adjustment);
@@ -2506,7 +2535,7 @@ void on_spinNumber_adjustment_value_changed(GtkAdjustment *adjustment, gpointer 
 }
 
 
-void on_spinNumber_spinbutton_activate(GtkSpinButton *entry, gpointer user_data)
+G_MODULE_EXPORT void on_spinNumber_spinbutton_activate(GtkSpinButton *entry, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	unsigned int number = (unsigned int)gtk_spin_button_get_value(entry);
@@ -2533,7 +2562,7 @@ void set_spin_number(InsensitiveWindow *window, unsigned int number)
 }
 
 
-void on_reset_constants_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_reset_constants_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2542,7 +2571,7 @@ void on_reset_constants_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_chemicalShift_units_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_chemicalShift_units_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2567,7 +2596,7 @@ void set_chemicalShift_units_to_degreesPerSecond(InsensitiveWindow *window, gboo
 }
 
 
-void on_displayedConstant_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_displayedConstant_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2585,7 +2614,7 @@ void on_displayedConstant_combobox_changed(GtkComboBox *combobox, gpointer user_
 }
 
 
-void on_rotate_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_rotate_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2593,7 +2622,7 @@ void on_rotate_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_gyro_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_gyro_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -2790,7 +2819,7 @@ gboolean redraw_pulseSequence(InsensitiveWindow *window)
 }
 
 
-void on_bottomDisplay_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_bottomDisplay_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     gint index = gtk_combo_box_get_active(combobox);
@@ -2923,7 +2952,7 @@ doneKeywords:
 }
 
 
-void export_pulse_program(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void export_pulse_program(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GString *pp;
@@ -3217,7 +3246,7 @@ void update_phaseCyclingTable(InsensitiveWindow *window, unsigned int number_of_
 }
 
 
-void on_phaseCycling_treeview_edited(GtkCellRendererText *cell, gchar *path_string, gchar *new_text, gpointer user_data)
+G_MODULE_EXPORT void on_phaseCycling_treeview_edited(GtkCellRendererText *cell, gchar *path_string, gchar *new_text, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int phase;
@@ -3242,7 +3271,7 @@ void on_phaseCycling_treeview_edited(GtkCellRendererText *cell, gchar *path_stri
 }
 
 
-void on_record_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_record_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -3255,7 +3284,7 @@ void on_record_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_play_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_play_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
@@ -3290,7 +3319,7 @@ void on_play_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_step_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_step_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     InsensitiveController *controller = window->controller;
@@ -3317,7 +3346,7 @@ void on_step_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_evolutionTimes_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_evolutionTimes_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	InsensitiveController *controller = window->controller;
@@ -3337,7 +3366,7 @@ void on_evolutionTimes_combobox_changed(GtkComboBox *combobox, gpointer user_dat
 }
 
 
-void on_detectionMethod_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_detectionMethod_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -3347,7 +3376,7 @@ void on_detectionMethod_combobox_changed(GtkComboBox *combobox, gpointer user_da
 }
 
 
-void on_phaseCycles_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_phaseCycles_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -3356,7 +3385,7 @@ void on_phaseCycles_combobox_changed(GtkComboBoxText *combobox, gpointer user_da
 }
 
 
-void on_phaseCycles_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_phaseCycles_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     unsigned int n = atoi(gtk_entry_get_text(entry));
@@ -3375,7 +3404,7 @@ void on_phaseCycles_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_acquire2DSpectrum_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_acquire2DSpectrum_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -3389,7 +3418,7 @@ void on_acquire2DSpectrum_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_erase_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_erase_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -3515,7 +3544,7 @@ gboolean perform_open_pulseProgram(InsensitiveWindow *window, xmlNodePtr node)
 }
 
 
-void perform_save_pulseProgram(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void perform_save_pulseProgram(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     GtkWidget *chooser;
@@ -3717,7 +3746,7 @@ void edit_sequence_element(InsensitiveWindow *window, int index)
 }
 
 
-void on_pp_edit_pulse_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_pp_edit_pulse_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     gchar *str;
@@ -3788,7 +3817,7 @@ void on_pp_edit_pulse_combobox_changed(GtkComboBox *combobox, gpointer user_data
 }
 
 
-void on_pp_edit_delay_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_pp_edit_delay_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     gchar *str;
@@ -3816,7 +3845,7 @@ void on_pp_edit_delay_combobox_changed(GtkComboBox *combobox, gpointer user_data
 }
 
 
-void on_pp_edit_gradient_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_pp_edit_gradient_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     gchar *str;
@@ -3839,7 +3868,7 @@ void on_pp_edit_gradient_combobox_changed(GtkComboBox *combobox, gpointer user_d
 }
 
 
-void on_pp_edit_fid_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_pp_edit_fid_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -3866,7 +3895,7 @@ void on_pp_edit_fid_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 }
 
 
-void on_editing_pulsesequence_finished(gpointer sender, gpointer user_data)
+G_MODULE_EXPORT void on_editing_pulsesequence_finished(gpointer sender, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     float value, temp;
@@ -4629,7 +4658,7 @@ void set_dataPoints_label(InsensitiveWindow *window, unsigned int points, unsign
 }
 
 
-void on_lineWidth_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_lineWidth_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     float value = atof(gtk_entry_get_text(entry));
@@ -4643,7 +4672,7 @@ void on_lineWidth_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_lineWidth_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_lineWidth_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4666,7 +4695,7 @@ float get_zero_order_phase(InsensitiveWindow *window)
 }
 
 
-void on_zeroOrder_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_zeroOrder_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4681,7 +4710,7 @@ float get_first_order_phase(InsensitiveWindow *window)
 }
 
 
-void on_firstOrder_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_firstOrder_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4696,7 +4725,7 @@ float get_pivot_point(InsensitiveWindow *window)
 }
 
 
-void on_pivotPoint_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_pivotPoint_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4727,7 +4756,7 @@ gboolean removePivotPointTimerEvent(gpointer user_data)
 }
 
 
-void on_resetPhase_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_resetPhase_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4755,7 +4784,7 @@ void set_showRealSpectrum(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_showReal_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_showReal_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4782,7 +4811,7 @@ void set_showImaginarySpectrum(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_showImaginary_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_showImaginary_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4809,7 +4838,7 @@ void set_showIntegral(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_integral_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_integral_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4839,7 +4868,7 @@ void set_show_windowFunction(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_window_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_window_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4848,7 +4877,7 @@ void on_window_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 }
 
 
-void on_shiftBaseline_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_shiftBaseline_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4871,7 +4900,7 @@ enum PlotMode get_plotMode(InsensitiveWindow *window)
 }
 
 
-void on_grid_checkbox_toggled(GtkToggleButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_grid_checkbox_toggled(GtkToggleButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4880,7 +4909,7 @@ void on_grid_checkbox_toggled(GtkToggleButton *button, gpointer user_data)
 }
 
 
-void on_plotStyle_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_plotStyle_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4909,7 +4938,7 @@ int get_current_spectrum_domain(InsensitiveWindow *window)
 }
 
 
-void on_fid_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_fid_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4927,7 +4956,7 @@ void on_fid_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_fft1D_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_fft1D_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4945,7 +4974,7 @@ void on_fft1D_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_fft2D_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_fft2D_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4959,7 +4988,7 @@ void on_fft2D_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_magnitude_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_magnitude_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -4984,7 +5013,7 @@ int get_statesDataSet(InsensitiveWindow *window)
 }
 
 
-void on_absDisp_radtiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_data)
+G_MODULE_EXPORT void on_absDisp_radtiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5006,7 +5035,7 @@ void on_absDisp_radtiobutton_toggled(GtkToggleButton *radiobutton, gpointer user
 }
 
 
-void on_gaussian_window_function_adjusted(gpointer widget, gpointer user_data)
+G_MODULE_EXPORT void on_gaussian_window_function_adjusted(gpointer widget, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5027,7 +5056,7 @@ void on_gaussian_window_function_adjusted(gpointer widget, gpointer user_data)
 }
 
 
-void on_apodization_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_apodization_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	enum WindowFunctionType windowFunction;
@@ -5091,7 +5120,7 @@ void on_apodization_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 }
 
 
-void on_sym_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_sym_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5109,7 +5138,7 @@ void on_sym_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-void on_syma_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_syma_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5127,7 +5156,7 @@ void on_syma_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-void on_symj_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_symj_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5145,7 +5174,7 @@ void on_symj_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-void on_tilt_jres_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_tilt_jres_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5154,7 +5183,7 @@ void on_tilt_jres_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-void on_tilt_secsy_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void on_tilt_secsy_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5164,7 +5193,7 @@ void on_tilt_secsy_menuitem_activate(GtkMenuItem *menuitem, gpointer user_data)
 
 
 // For DOSY tool box
-void on_dosyToolbox_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_dosyToolbox_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5172,7 +5201,7 @@ void on_dosyToolbox_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_dosy_show_1D_trace_only_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_dosy_show_1D_trace_only_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5187,7 +5216,7 @@ void on_dosy_show_1D_trace_only_button_clicked(GtkButton *button, gpointer user_
 }
 
 
-void on_dosy_fit_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_dosy_fit_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5203,7 +5232,7 @@ void on_dosy_fit_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_dosy_spectrum_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_dosy_spectrum_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5216,7 +5245,7 @@ void on_dosy_spectrum_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_auto_peak_picking_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_auto_peak_picking_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int dataset;
@@ -5240,7 +5269,7 @@ void on_auto_peak_picking_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-void on_dosy_fit_lorentzian_peaks_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_dosy_fit_lorentzian_peaks_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int dataset;
@@ -5273,7 +5302,7 @@ void reset_dosy_panel(InsensitiveWindow *window)
 }
 
 
-void on_signalToNoiseThreshold_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_signalToNoiseThreshold_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     gchar *str = malloc(6 * sizeof(gchar));
@@ -5571,7 +5600,7 @@ gboolean perform_open_spectrum(InsensitiveWindow *window, xmlNodePtr node)
 }
 
 
-void perform_save_spectrum(GtkMenuItem *menuitem, gpointer user_data)
+G_MODULE_EXPORT void perform_save_spectrum(GtkMenuItem *menuitem, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	GtkWidget *chooser, *dialog;
@@ -5751,7 +5780,7 @@ void perform_save_spectrum(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
+G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *window)
 {
 	float DW, begin1, step1, begin2, step2;
 	float freq1, freq2;
@@ -6461,7 +6490,7 @@ gboolean update_spectrum_parameter_panel(InsensitiveWindow *window)
 		parameterString = g_string_new("No spectrum report available");
 	}
 	gtk_text_buffer_set_text(window->spectrumParameters_textbuffer, parameterString->str, parameterString->len);
-	g_string_free(parameterString, true);
+	g_string_free(parameterString, TRUE);
 
 	return FALSE;
 }
@@ -6474,7 +6503,7 @@ void show_spectrumParameters_textview(InsensitiveWindow *window, gboolean value)
 }
 
 
-void on_toggleParameters_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_toggleParameters_button_clicked(GtkButton *button, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -6677,7 +6706,7 @@ DSPSplitComplex displayed_graph(InsensitiveWindow *window)
 //      //    // //  //  // //  //  // //   // //  // // //   //     //      // //  // // //
  //////  //////  //      // //      // //   // //   //// //////      /////// // //   //// ///////
 
-void execute_command(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 {
 	gchar *command, **word, *commandCopy;
 	GRegex *regex1spin_xy, *regex1spin_z, *regex2spins, *regex3spins, *regex4spins;
@@ -7174,6 +7203,7 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 			g_string_free(search_string, TRUE);
 
 			if (keyword_found) {
+#ifdef USE_WEBKIT_GTK
 				InsensitiveTutorial *tutorial_window = g_object_new(INSENSITIVE_TYPE_TUTORIAL,
 		                       										"default-width", 600,
 		                       										"default-height", 700,
@@ -7182,7 +7212,32 @@ void execute_command(GtkEntry *entry, gpointer user_data)
 				gtk_window_set_title((GtkWindow *)tutorial_window, "Tutorial");
 				gtk_window_present((GtkWindow *)tutorial_window);
 				load_arbitrary_page(html_file, tutorial_window);
-				g_free(html_file);
+#else
+                gchar *filename, *url;
+                const gchar * const *dirs = g_get_system_data_dirs();
+                GError *error = NULL;
+
+                while (*dirs != NULL) {
+                    filename = g_build_filename(*dirs++, "insensitive", "doc", html_file, NULL);
+                    if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
+                        url = malloc((strlen(filename) + 7) * sizeof(gchar));
+                        strcpy(url, "file://");
+                        strcat(url, filename);
+			            gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
+                        if (error != NULL) {
+                            fprintf (stderr, "Error: %s\n", error->message);
+                            g_error_free (error);
+                        }
+                        if (url != NULL)
+                            g_free(url);
+		                if (filename != NULL)
+                            g_free(filename);
+                        break;
+                    }
+	            }
+#endif /* USE_WEBKIT_GTK */
+                if (html_file != NULL)
+                    g_free(html_file);
 			} else {
 				dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 												GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -8388,7 +8443,7 @@ void alert_for_invalid_fourier_transform(InsensitiveWindow *window, unsigned int
 }
 
 
-gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gpointer user_data)
+G_MODULE_EXPORT gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     gchar *command;
@@ -8426,7 +8481,7 @@ gboolean on_command_line_key_press_event(GtkEntry *entry, GdkEventKey *event, gp
 //   // //   // //   // // /// // // //  // // //    //
 //////  //   // //   //  /// ///  // //   ////  //////
 
-gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	InsensitiveController *controller = window->controller;
@@ -8605,7 +8660,7 @@ gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 }
 
 
-gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT gboolean draw_vector_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	unsigned int i, spinTypeIsS;
 	float x, y, z, temp, slimness;
@@ -9022,7 +9077,7 @@ void draw_grapefruit_paths(InsensitiveController *controller, gboolean upper, gb
 }
 
 
-gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	//GtkStyleContext *context;
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
@@ -9173,7 +9228,7 @@ gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gpointer user_data
 }
 
 
-void on_spinEditor_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_spinEditor_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     float width, height;
@@ -9213,7 +9268,7 @@ void on_spinEditor_drawingarea_button_press_event(GtkWidget *widget, GdkEventBut
 }
 
 
-void on_spinEditor_drawingarea_button_release_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_spinEditor_drawingarea_button_release_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     float width, height;
@@ -9261,7 +9316,7 @@ void on_spinEditor_drawingarea_button_release_event(GtkWidget *widget, GdkEventB
 }
 
 
-void on_spinEditor_drawingarea_motion_notify_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_spinEditor_drawingarea_motion_notify_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -9327,7 +9382,7 @@ void set_energy_values(InsensitiveWindow *window, float *array, unsigned int lev
 }
 
 
-void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	unsigned int i, j, t, spins;
@@ -9563,7 +9618,7 @@ void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 }
 
 
-void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int width, height;
@@ -9577,7 +9632,7 @@ void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 }
 
 
-void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int width, height;
@@ -10291,7 +10346,7 @@ void add_label_for_element(cairo_t *cr, enum SequenceType type, float x, float y
 }
 
 
-int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, float mousePosition)
+G_MODULE_EXPORT int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, float mousePosition)
 {
     int i;
     float position, stepWidth;
@@ -10326,7 +10381,7 @@ int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, floa
 }
 
 
-void on_pulseSequence_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_pulseSequence_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int index;
@@ -10352,7 +10407,7 @@ void on_pulseSequence_drawingarea_button_press_event(GtkWidget *widget, GdkEvent
 }
 
 
-void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	unsigned int i, step;
@@ -10405,7 +10460,7 @@ void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_da
 }
 
 
-void draw_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int width, height;
@@ -11142,7 +11197,7 @@ void compute_contours(InsensitiveWindow *window, GPtrArray *contours, gboolean n
 
 
 
-gboolean on_spectrum_drawingarea_scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
+G_MODULE_EXPORT gboolean on_spectrum_drawingarea_scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     double delta_x, delta_y;
@@ -11158,7 +11213,7 @@ gboolean on_spectrum_drawingarea_scroll_event(GtkWidget *widget, GdkEventScroll 
 }
 
 
-void on_spectrum_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_spectrum_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -11169,7 +11224,7 @@ void on_spectrum_drawingarea_button_press_event(GtkWidget *widget, GdkEventButto
 }
 
 
-void on_spectrum_drawingarea_button_release_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_spectrum_drawingarea_button_release_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -11178,7 +11233,7 @@ void on_spectrum_drawingarea_button_release_event(GtkWidget *widget, GdkEventBut
 }
 
 
-void on_spectrum_drawingarea_motion_notify_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+G_MODULE_EXPORT void on_spectrum_drawingarea_motion_notify_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 

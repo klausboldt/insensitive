@@ -126,7 +126,7 @@ static void insensitive_preferences_init(InsensitivePreferences *self)
 }
 
 
-void on_InsensitivePreferences_destroy(InsensitivePreferences *self, gpointer user_data)
+G_MODULE_EXPORT void on_InsensitivePreferences_destroy(InsensitivePreferences *self, gpointer user_data)
 {
 }
 
@@ -176,7 +176,7 @@ void insensitive_preferences_set_controller(InsensitivePreferences *self, gpoint
 }
 
 
-void on_playSound_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_playSound_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
 
@@ -184,7 +184,7 @@ void on_playSound_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data
 }
 
 
-void on_offResonance_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_offResonance_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
 
@@ -195,7 +195,7 @@ void on_offResonance_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_d
 }
 
 
-void on_allowShiftCoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_allowShiftCoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
 
@@ -203,7 +203,7 @@ void on_allowShiftCoupling_checkbox_toggled(GtkToggleButton *checkbox, gpointer 
 }
 
 
-void on_export_radiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_data)
+G_MODULE_EXPORT void on_export_radiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
 
@@ -220,7 +220,7 @@ void on_export_radiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_d
 }
 
 
-void on_coherence_pathway_adjustment_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_coherence_pathway_adjustment_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
     float max_calcs;
@@ -240,7 +240,7 @@ void on_coherence_pathway_adjustment_changed(GtkAdjustment *adjustment, gpointer
 }
 
 
-void on_font_button_font_set(GtkFontButton *fontButton, gpointer user_data)
+G_MODULE_EXPORT void on_font_button_font_set(GtkFontButton *fontButton, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
     gchar *fontname;
@@ -251,7 +251,7 @@ void on_font_button_font_set(GtkFontButton *fontButton, gpointer user_data)
 }
 
 
-void on_reset_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_reset_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitivePreferences *self = (InsensitivePreferences *)user_data;
 

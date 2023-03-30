@@ -4039,6 +4039,8 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
         strcpy(nuc, "              183W");
     else if(f1gyro == gyro_195Pt)
         strcpy(nuc, "             195Pt");
+    else if(f1gyro == gyro_electron)
+        strcpy(nuc, "          electron"); // e⁻
     else
         strcpy(nuc, "                ??");
     g_string_append_printf(parameterString, "NUC1 %s\n", nuc);
@@ -4102,6 +4104,8 @@ GString *insensitive_controller_create_spectrumReport(InsensitiveController *sel
             strcpy(nuc, "              183W");
         else if(f2gyro == gyro_195Pt)
             strcpy(nuc, "             195Pt");
+        else if(f1gyro == gyro_electron)
+            strcpy(nuc, "          electron"); // e⁻
         else
             strcpy(nuc, "                ??");
         g_string_append_printf(parameterString, "NUC2 %s\n", nuc);

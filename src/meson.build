@@ -7,7 +7,6 @@ insensitive_sources = [
   'insensitive-settings.c',
   'insensitive-spinsystem.c',
   'insensitive-pulseshaper.c',
-  'insensitive-tutorial.c',
   'insensitive-singlespins.c',
   'insensitive-composer.c',
   'insensitive-preferences.c',
@@ -23,14 +22,23 @@ insensitive_deps = [
   dependency('fftw3'),
   dependency('cairo'),
   dependency('pango'),
-  dependency('webkit2gtk-4.0'),
   dependency('libxml-2.0'),
 ]
+
+webkit_dep = dependency('webkit2gtk-4.0', required : false)
+if webkit_dep.found()
+    insensitive_sources += ['insensitive-tutorial.c',]
+    insensitive_deps += webkit_dep
+    add_global_arguments('-DUSE_WEBKIT_GTK', language : 'c')
+endif
 
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'gcc'
     compiler_args = cc.get_supported_arguments([
         '-Wno-unused-parameter',
+        '-Wno-unused-variable',
+        '-Wno-unused-function',
+        '-Wno-unused-but-set-variable'
     ])
 endif
 add_project_arguments(compiler_args, language: 'c')

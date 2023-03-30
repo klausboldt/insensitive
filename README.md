@@ -32,6 +32,11 @@ make
 make install
 ```
 
+If Webkit2Gtk is not available (a likely scenario on Windows and macOS systems)
+use `./configure --disable-webkit` to compile without native support for 
+displaying html data. A request will then instead be sent to the standard web 
+browser to show the tutorial pages.
+
 ## Dependencies
 
 - BLAS/LAPACK

@@ -123,7 +123,7 @@ static InsensitiveComposerRow *insensitive_composer_row_new(InsensitiveComposer 
 }
 
 
-void on_coefficient_entry_changed(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_coefficient_entry_changed(GtkEntry *entry, gpointer user_data)
 {
     InsensitiveComposerRow *self = (InsensitiveComposerRow *)user_data;
 
@@ -132,7 +132,7 @@ void on_coefficient_entry_changed(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_spin_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_spin_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 {
     InsensitiveComposerRow *self = (InsensitiveComposerRow *)user_data;
     unsigned int i;
@@ -179,7 +179,7 @@ void on_spin_combobox_changed(GtkComboBoxText *combobox, gpointer user_data)
 }
 
 
-void on_delete_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_delete_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitiveComposerRow *self = (InsensitiveComposerRow *)user_data;
 
@@ -261,7 +261,7 @@ static void insensitive_composer_init(InsensitiveComposer *self)
 }
 
 
-void on_InsensitiveComposer_destroy(InsensitiveComposer *self, gpointer user_data)
+G_MODULE_EXPORT void on_InsensitiveComposer_destroy(InsensitiveComposer *self, gpointer user_data)
 {
 }
 
@@ -290,7 +290,7 @@ void insensitive_composer_initialize(InsensitiveComposer *self)
 }
 
 
-void insensitive_composer_add_operator(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void insensitive_composer_add_operator(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveComposer *self = (InsensitiveComposer *)user_data;
     InsensitiveComposerRow *row = insensitive_composer_row_new(self, self->controller->spinSystem);
@@ -354,7 +354,7 @@ void insensitive_composer_update_productOperator_string(InsensitiveComposer *sel
 }
 
 
-void on_updateMatrix_button_clicked(GtkToolButton *toolbutton, gpointer user_data)
+G_MODULE_EXPORT void on_updateMatrix_button_clicked(GtkToolButton *toolbutton, gpointer user_data)
 {
     InsensitiveComposer *self = (InsensitiveComposer *)user_data;
     InsensitiveComposerRow *row;

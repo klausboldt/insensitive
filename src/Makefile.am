@@ -20,16 +20,21 @@ insensitive_SOURCES = \
 	insensitive-spinsystem.c insensitive-spinsystem.h \
 	insensitive-pulseshaper.c insensitive-pulseshaper.h \
 	insensitive-singlespins.c insensitive-singlespins.h \
-	insensitive-tutorial.c insensitive-tutorial.h \
 	insensitive-composer.c insensitive-composer.h \
 	insensitive-preferences.c insensitive-preferences.h \
 	levmarq.c levmarq.h
 
 insensitive_CFLAGS = @GLIB_CFLAGS@ @GIO_CFLAGS@ @GTK3_CFLAGS@ \
-	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @WEBKIT2GTK_CFLAGS@ @XML2_CFLAGS@
+	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @XML2_CFLAGS@
 
 insensitive_LDADD = @LIBINTL@ @GLIB_LIBS@ @GIO_LIBS@ @GTK3_LIBS@ \
-	@FFTW3_LIBS@ @CAIRO_LIBS@ @WEBKIT2GTK_LIBS@ @XML2_LIBS@
+	@FFTW3_LIBS@ @CAIRO_LIBS@ @XML2_LIBS@
+
+if USE_WEBKIT_GTK
+insensitive_SOURCES += insensitive-tutorial.c insensitive-tutorial.h
+insensitive_CFLAGS += @WEBKIT2GTK_CFLAGS@
+insensitive_LDADD += @WEBKIT2GTK_LIBS@
+endif
 
 insensitive_LDFLAGS = -rdynamic
 
@@ -48,5 +53,9 @@ EXTRA_DIST = insensitive.gresource.xml \
 	insensitive-preferences.ui \
 	insensitive-window.ui \
 	meson.build
+
+if USE_WEBKIT_GTK
+EXTRA_DIST += insensitive-tutorial.c insensitive-tutorial.h
+endif
 
 CLEANFILES = *~ insensitive-resources.c insensitive-resources.h

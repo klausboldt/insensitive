@@ -206,7 +206,7 @@ void insensitive_pulse_shaper_set_pulseLength(InsensitivePulseShaper *self, floa
 }
 
 
-void on_time_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_time_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
     float value = atof(gtk_entry_get_text(entry));
@@ -216,7 +216,7 @@ void on_time_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_time_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_time_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
     float value = gtk_adjustment_get_value(adjustment);
@@ -226,7 +226,7 @@ void on_time_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_d
 }
 
 
-void on_reset_timeDomain_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_reset_timeDomain_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
 
@@ -249,7 +249,7 @@ void insensitive_pulse_shaper_set_pulseFrequency(InsensitivePulseShaper *self, f
 }
 
 
-void on_frequency_entry_activate(GtkEntry *entry, gpointer user_data)
+G_MODULE_EXPORT void on_frequency_entry_activate(GtkEntry *entry, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
     float value = atof(gtk_entry_get_text(entry));
@@ -259,7 +259,7 @@ void on_frequency_entry_activate(GtkEntry *entry, gpointer user_data)
 }
 
 
-void on_frequency_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_frequency_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
     float value = gtk_adjustment_get_value(adjustment);
@@ -269,7 +269,7 @@ void on_frequency_adjustment_value_changed(GtkAdjustment *adjustment, gpointer u
 }
 
 
-void on_reset_frequencyDomain_button_clicked(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_reset_frequencyDomain_button_clicked(GtkButton *button, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
 
@@ -285,7 +285,7 @@ void insensitive_pulse_shaper_set_pulseEnvelope(InsensitivePulseShaper *self, en
 }
 
 
-void on_pulseShape_combobox_changed(GtkComboBox *combobox, gpointer user_data)
+G_MODULE_EXPORT void on_pulseShape_combobox_changed(GtkComboBox *combobox, gpointer user_data)
 {
     InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
 
@@ -316,7 +316,7 @@ void insensitive_pulse_shaper_set_pulsePowerDisplayMode(InsensitivePulseShaper *
 }
 
 
-void on_pulsePowerDisplayMode_changed(GtkRadioButton *button, gpointer user_data)
+G_MODULE_EXPORT void on_pulsePowerDisplayMode_changed(GtkRadioButton *button, gpointer user_data)
 {
 	InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
 
@@ -343,7 +343,7 @@ void insensitive_pulse_shaper_set_ignoreOffResonanceEffectsForPulses(Insensitive
 }
 
 
-void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	InsensitivePulseShaper *window = (InsensitivePulseShaper *)user_data;
 	GtkDrawingArea *drawingarea = (GtkDrawingArea *)widget;

@@ -89,6 +89,10 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = insensitive$(EXEEXT)
+@USE_WEBKIT_GTK_TRUE@am__append_1 = insensitive-tutorial.c insensitive-tutorial.h
+@USE_WEBKIT_GTK_TRUE@am__append_2 = @WEBKIT2GTK_CFLAGS@
+@USE_WEBKIT_GTK_TRUE@am__append_3 = @WEBKIT2GTK_LIBS@
+@USE_WEBKIT_GTK_TRUE@am__append_4 = insensitive-tutorial.c insensitive-tutorial.h
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_blas.m4 \
@@ -109,6 +113,20 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__insensitive_SOURCES_DIST = insensitive-resources.c \
+	insensitive-resources.h main.c insensitive.h \
+	insensitive-window.c insensitive-window.h \
+	insensitive-controller.c insensitive-controller.h \
+	insensitive-library.c insensitive-library.h \
+	insensitive-pulsesequence.c insensitive-pulsesequence.h \
+	insensitive-settings.c insensitive-settings.h \
+	insensitive-spinsystem.c insensitive-spinsystem.h \
+	insensitive-pulseshaper.c insensitive-pulseshaper.h \
+	insensitive-singlespins.c insensitive-singlespins.h \
+	insensitive-composer.c insensitive-composer.h \
+	insensitive-preferences.c insensitive-preferences.h levmarq.c \
+	levmarq.h insensitive-tutorial.c insensitive-tutorial.h
+@USE_WEBKIT_GTK_TRUE@am__objects_1 = insensitive-insensitive-tutorial.$(OBJEXT)
 am_insensitive_OBJECTS = insensitive-insensitive-resources.$(OBJEXT) \
 	insensitive-main.$(OBJEXT) \
 	insensitive-insensitive-window.$(OBJEXT) \
@@ -119,12 +137,12 @@ am_insensitive_OBJECTS = insensitive-insensitive-resources.$(OBJEXT) \
 	insensitive-insensitive-spinsystem.$(OBJEXT) \
 	insensitive-insensitive-pulseshaper.$(OBJEXT) \
 	insensitive-insensitive-singlespins.$(OBJEXT) \
-	insensitive-insensitive-tutorial.$(OBJEXT) \
 	insensitive-insensitive-composer.$(OBJEXT) \
 	insensitive-insensitive-preferences.$(OBJEXT) \
-	insensitive-levmarq.$(OBJEXT)
+	insensitive-levmarq.$(OBJEXT) $(am__objects_1)
 insensitive_OBJECTS = $(am_insensitive_OBJECTS)
-insensitive_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+insensitive_DEPENDENCIES = $(am__DEPENDENCIES_1)
 insensitive_LINK = $(CCLD) $(insensitive_CFLAGS) $(CFLAGS) \
 	$(insensitive_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -174,7 +192,7 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(insensitive_SOURCES)
-DIST_SOURCES = $(insensitive_SOURCES)
+DIST_SOURCES = $(am__insensitive_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -352,10 +370,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-insensitive_SOURCES = \
-	insensitive-resources.c insensitive-resources.h \
-	main.c insensitive.h \
-	insensitive-window.c insensitive-window.h \
+insensitive_SOURCES = insensitive-resources.c insensitive-resources.h \
+	main.c insensitive.h insensitive-window.c insensitive-window.h \
 	insensitive-controller.c insensitive-controller.h \
 	insensitive-library.c insensitive-library.h \
 	insensitive-pulsesequence.c insensitive-pulsesequence.h \
@@ -363,28 +379,19 @@ insensitive_SOURCES = \
 	insensitive-spinsystem.c insensitive-spinsystem.h \
 	insensitive-pulseshaper.c insensitive-pulseshaper.h \
 	insensitive-singlespins.c insensitive-singlespins.h \
-	insensitive-tutorial.c insensitive-tutorial.h \
 	insensitive-composer.c insensitive-composer.h \
-	insensitive-preferences.c insensitive-preferences.h \
-	levmarq.c levmarq.h
-
+	insensitive-preferences.c insensitive-preferences.h levmarq.c \
+	levmarq.h $(am__append_1)
 insensitive_CFLAGS = @GLIB_CFLAGS@ @GIO_CFLAGS@ @GTK3_CFLAGS@ \
-	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @WEBKIT2GTK_CFLAGS@ @XML2_CFLAGS@
-
+	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @XML2_CFLAGS@ $(am__append_2)
 insensitive_LDADD = @LIBINTL@ @GLIB_LIBS@ @GIO_LIBS@ @GTK3_LIBS@ \
-	@FFTW3_LIBS@ @CAIRO_LIBS@ @WEBKIT2GTK_LIBS@ @XML2_LIBS@
-
+	@FFTW3_LIBS@ @CAIRO_LIBS@ @XML2_LIBS@ $(am__append_3)
 insensitive_LDFLAGS = -rdynamic
-EXTRA_DIST = insensitive.gresource.xml \
-	insensitive-composer-row.ui \
-	insensitive-pulseshaper.ui \
-	insensitive-tutorial.ui \
-	insensitive-composer.ui \
-	insensitive-singlespins.ui \
-	insensitive-preferences.ui \
-	insensitive-window.ui \
-	meson.build
-
+EXTRA_DIST = insensitive.gresource.xml insensitive-composer-row.ui \
+	insensitive-pulseshaper.ui insensitive-tutorial.ui \
+	insensitive-composer.ui insensitive-singlespins.ui \
+	insensitive-preferences.ui insensitive-window.ui meson.build \
+	$(am__append_4)
 CLEANFILES = *~ insensitive-resources.c insensitive-resources.h
 all: all-am
 
@@ -647,20 +654,6 @@ insensitive-insensitive-singlespins.obj: insensitive-singlespins.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -c -o insensitive-insensitive-singlespins.obj `if test -f 'insensitive-singlespins.c'; then $(CYGPATH_W) 'insensitive-singlespins.c'; else $(CYGPATH_W) '$(srcdir)/insensitive-singlespins.c'; fi`
 
-insensitive-insensitive-tutorial.o: insensitive-tutorial.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -MT insensitive-insensitive-tutorial.o -MD -MP -MF $(DEPDIR)/insensitive-insensitive-tutorial.Tpo -c -o insensitive-insensitive-tutorial.o `test -f 'insensitive-tutorial.c' || echo '$(srcdir)/'`insensitive-tutorial.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/insensitive-insensitive-tutorial.Tpo $(DEPDIR)/insensitive-insensitive-tutorial.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='insensitive-tutorial.c' object='insensitive-insensitive-tutorial.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -c -o insensitive-insensitive-tutorial.o `test -f 'insensitive-tutorial.c' || echo '$(srcdir)/'`insensitive-tutorial.c
-
-insensitive-insensitive-tutorial.obj: insensitive-tutorial.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -MT insensitive-insensitive-tutorial.obj -MD -MP -MF $(DEPDIR)/insensitive-insensitive-tutorial.Tpo -c -o insensitive-insensitive-tutorial.obj `if test -f 'insensitive-tutorial.c'; then $(CYGPATH_W) 'insensitive-tutorial.c'; else $(CYGPATH_W) '$(srcdir)/insensitive-tutorial.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/insensitive-insensitive-tutorial.Tpo $(DEPDIR)/insensitive-insensitive-tutorial.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='insensitive-tutorial.c' object='insensitive-insensitive-tutorial.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -c -o insensitive-insensitive-tutorial.obj `if test -f 'insensitive-tutorial.c'; then $(CYGPATH_W) 'insensitive-tutorial.c'; else $(CYGPATH_W) '$(srcdir)/insensitive-tutorial.c'; fi`
-
 insensitive-insensitive-composer.o: insensitive-composer.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -MT insensitive-insensitive-composer.o -MD -MP -MF $(DEPDIR)/insensitive-insensitive-composer.Tpo -c -o insensitive-insensitive-composer.o `test -f 'insensitive-composer.c' || echo '$(srcdir)/'`insensitive-composer.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/insensitive-insensitive-composer.Tpo $(DEPDIR)/insensitive-insensitive-composer.Po
@@ -702,6 +695,20 @@ insensitive-levmarq.obj: levmarq.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='levmarq.c' object='insensitive-levmarq.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -c -o insensitive-levmarq.obj `if test -f 'levmarq.c'; then $(CYGPATH_W) 'levmarq.c'; else $(CYGPATH_W) '$(srcdir)/levmarq.c'; fi`
+
+insensitive-insensitive-tutorial.o: insensitive-tutorial.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -MT insensitive-insensitive-tutorial.o -MD -MP -MF $(DEPDIR)/insensitive-insensitive-tutorial.Tpo -c -o insensitive-insensitive-tutorial.o `test -f 'insensitive-tutorial.c' || echo '$(srcdir)/'`insensitive-tutorial.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/insensitive-insensitive-tutorial.Tpo $(DEPDIR)/insensitive-insensitive-tutorial.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='insensitive-tutorial.c' object='insensitive-insensitive-tutorial.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -c -o insensitive-insensitive-tutorial.o `test -f 'insensitive-tutorial.c' || echo '$(srcdir)/'`insensitive-tutorial.c
+
+insensitive-insensitive-tutorial.obj: insensitive-tutorial.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -MT insensitive-insensitive-tutorial.obj -MD -MP -MF $(DEPDIR)/insensitive-insensitive-tutorial.Tpo -c -o insensitive-insensitive-tutorial.obj `if test -f 'insensitive-tutorial.c'; then $(CYGPATH_W) 'insensitive-tutorial.c'; else $(CYGPATH_W) '$(srcdir)/insensitive-tutorial.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/insensitive-insensitive-tutorial.Tpo $(DEPDIR)/insensitive-insensitive-tutorial.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='insensitive-tutorial.c' object='insensitive-insensitive-tutorial.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(insensitive_CFLAGS) $(CFLAGS) -c -o insensitive-insensitive-tutorial.obj `if test -f 'insensitive-tutorial.c'; then $(CYGPATH_W) 'insensitive-tutorial.c'; else $(CYGPATH_W) '$(srcdir)/insensitive-tutorial.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique

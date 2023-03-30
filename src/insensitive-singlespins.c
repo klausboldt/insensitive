@@ -138,14 +138,14 @@ static void insensitive_single_spins_init(InsensitiveSingleSpins *self)
 }
 
 
-void on_InsensitiveSingleSpins_destroy(InsensitiveSingleSpins *window, gpointer user_data)
+G_MODULE_EXPORT void on_InsensitiveSingleSpins_destroy(InsensitiveSingleSpins *window, gpointer user_data)
 {
     window->timer_is_running = FALSE;
 	g_source_remove(window->spinEvolutionTimerNr);
 }
 
 
-void on_B0_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_B0_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 
@@ -160,7 +160,7 @@ void on_B0_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 }
 
 
-void on_B1_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_B1_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 
@@ -179,7 +179,7 @@ void on_B1_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 }
 
 
-void on_rotatingFrame_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_rotatingFrame_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 
@@ -309,19 +309,19 @@ gboolean spinEvolutionTimerEvent(gpointer user_data)
 }
 
 
-void on_temperature_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_temperature_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
 	InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 }
 
 
-void on_ensembleVector_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
+G_MODULE_EXPORT void on_ensembleVector_checkbox_toggled(GtkToggleButton *checkbox, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 }
 
 
-void on_numberOfSpins_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
+G_MODULE_EXPORT void on_numberOfSpins_adjustment_value_changed(GtkAdjustment *adjustment, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
 
@@ -357,7 +357,7 @@ void on_numberOfSpins_adjustment_value_changed(GtkAdjustment *adjustment, gpoint
 }
 
 
-void create_zeeman_state(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void create_zeeman_state(GtkButton *button, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
     unsigned int i;
@@ -407,7 +407,7 @@ void create_zeeman_state(GtkButton *button, gpointer user_data)
 }
 
 
-void create_superposition_state(GtkButton *button, gpointer user_data)
+G_MODULE_EXPORT void create_superposition_state(GtkButton *button, gpointer user_data)
 {
     InsensitiveSingleSpins *self = (InsensitiveSingleSpins *)user_data;
     unsigned int i;
@@ -433,7 +433,7 @@ void create_superposition_state(GtkButton *button, gpointer user_data)
 }
 
 
-void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+G_MODULE_EXPORT void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	InsensitiveSingleSpins *window = (InsensitiveSingleSpins *)user_data;
 	unsigned int i;
@@ -663,12 +663,12 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
         cairo_arc(cr, centre_x, centre_y, halfWidth * cos(coneAngle), 0.0, 2 * M_PI);
 		cairo_stroke(cr);
 		cairo_set_source_rgba(cr, 1.0, 0.0, 0.0, 0.6);
-        if (trueMomentumUncertainty) {
+        /*if (trueMomentumUncertainty) {
             temp = halfWidth * cos(coneAngle);
             cairo_move_to(cr, centre_x, centre_y);
 			cairo_line_to(cr, centre_x + (-sin(window->phase) * sin(window->global_flip_angle) * temp),
                           centre_y - cos(window->global_flip_angle) * temp);
-        } else {
+        } else {*/
 		    operator_Ix = Ix(0, 1);
 		    operator_Iz = Iz(0, 1);
 		    for (i = 0; i < window->numberOfSpins; i++) {
@@ -692,7 +692,7 @@ void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 		    }
 		    free(operator_Ix);
 		    free(operator_Iz);
-        }
+        //}
 		cairo_stroke(cr);
 		break;
 	case Zfield:
