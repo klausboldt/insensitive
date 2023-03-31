@@ -395,30 +395,6 @@ static void insensitive_window_init(InsensitiveWindow *self)
 	   [maxCalculationsSlider setIntegerValue:[[NSUserDefaults standardUserDefaults] integerForKey:@"MaxCoherenceCalculations"]];
 	   [exponentLabel setStringValue:[NSString stringWithFormat:@"%ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:@"MaxCoherenceCalculations"]]];*/
 
-	// Recover last session from user defaults file.
-	/*  NSData *couplingData = [[NSUserDefaults standardUserDefaults] objectForKey:@"CouplingMatrix"];
-	   if(couplingData) {
-	      if([[NSUserDefaults standardUserDefaults] objectForKey:@"Spins"])
-	          [spinSystem setSpins:(unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"Spins"]];
-	      if([[NSUserDefaults standardUserDefaults] objectForKey:@"SpinTypeArray"])
-	          [spinSystem setSpinTypeArray:(unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:@"SpinTypeArray"]];
-	      [spinSystem substituteCouplingMatrixWith:(float *)[couplingData bytes]];
-	      if([spinSystem firstGradientPulseIssued])
-	          [spinSystem freeGradientArray];
-	      [controller spinNumberChanged:[spinSystem spins]];
-	      [controller calculateSelectableDelays];
-	      [controller returnToThermalEquilibrium];
-	   }
-	   NSDictionary *pulseProgramData = [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentPulseProgram"];
-	   if(pulseProgramData) {
-	      NSString *ppName = [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentPulseSequenceName"];
-	      if(ppName)
-	          [controller setNameForPulseSequence:ppName];
-	      [pulseSequenceController performOpenPulseProgram:pulseProgramData];
-	   }
-	   [settings release];
-	   [spinSystem release];*/
-
     self->coefficientsForISpins = NULL;
     self->pathwaysForISpins = NULL;
     self->coefficientsForSSpins = NULL;
@@ -549,7 +525,7 @@ void choose_file(GtkWidget *chooser, InsensitiveWindow *window)
 		open_file(window, filename);
 		g_free(filename);
 	}
-	g_object_unref(chooser);
+	gtk_widget_destroy(chooser);
 }
 
 
@@ -1003,18 +979,8 @@ G_MODULE_EXPORT void on_pulse_button_clicked(GtkButton *button, gpointer user_da
 {
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
-	/*if ([pulseButton selectedSegment] == 1) {
-	        [quickPulseButtons setHidden:FALSE];
-	   gtk_widget_set_sensitive(self->pulse_button, TRUE);
-	        gtk_widget_set_sensitive(self->chemicalShift_button, TRUE);
-	        gtk_widget_set_sensitive(self->coupling_button, TRUE);
-	        gtk_widget_set_sensitive(self->relaxation_button, TRUE);
-	        gtk_widget_set_sensitive(self->freeEvolution_button, TRUE);
-	        gtk_widget_set_sensitive(self->gradient_button, TRUE);
-	   } else {*/
 	start_progress_indicator(window);
 	insensitive_controller_perform_pulse_animated(window->controller, TRUE);
-	/*}*/
 }
 
 
@@ -1313,7 +1279,6 @@ G_MODULE_EXPORT void on_tutorial_toolbutton_clicked(GtkToolButton *toolbutton, g
 
     while (*dirs != NULL) {
         filename = g_build_filename(*dirs++, "insensitive", "doc", "default.html", NULL);
-        printf("%s\n", filename);
         if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
             url = malloc((strlen(filename) + 7) * sizeof(gchar));
             strcpy(url, "file://");
@@ -2186,8 +2151,6 @@ void set_matrixDisplayType(InsensitiveWindow *window, enum MatrixDisplayType val
 		matrix_height = 0.24 * gtk_widget_get_allocated_width((GtkWidget *)window->matrix_drawingarea);//177;
 	}
     gtk_widget_set_size_request((GtkWidget *)window->matrix_drawingarea, -1, matrix_height);
-	//[matrixView setMatrixFontSize:fontSize forNewSpinNumber:[[controller spinSystem] spins]];
-	//[matrixView displayMatrix:[controller spinSystem]];
 }
 
 
@@ -2213,12 +2176,7 @@ G_MODULE_EXPORT void on_matrixDisplayType_combobox_changed(GtkComboBoxText *comb
 
 void set_vectorDiagramType(InsensitiveWindow *window, enum VectorDiagramType value)
 {
-	//[iSpinVectorView setShowXYPlane:value == VectorDiagramXYplane];
-	//[sSpinVectorView setShowXYPlane:value == VectorDiagramXYplane];
-	//[iSpinVectorView setGrapefruitDiagram:value == VectorDiagramGrapefruit];
-	//[sSpinVectorView setGrapefruitDiagram:value == VectorDiagramGrapefruit];
 	gtk_combo_box_set_active((GtkComboBox *)window->vectorDiagramType_combobox, value);
-	// Now called from controller: spin_type_was_changed(self);
 }
 
 
@@ -2366,7 +2324,7 @@ G_MODULE_EXPORT void perform_save_spinSystem(GtkMenuItem *menuitem, gpointer use
         set_openedFileState_for_spinSystem(window, FileOpened, filename);
         g_free(filename);
     }
-    g_object_unref(chooser);
+    gtk_widget_destroy(chooser);
 }
 
 
@@ -2671,11 +2629,6 @@ void set_variable_evolution_time(InsensitiveWindow *window, int value)
     sprintf(tag, "%d", value);
     gtk_combo_box_set_active_id((GtkComboBox *)window->evolutionTimes_combobox, tag);
     free(tag);
-
-    /*if(value == 0)
-        [acquire2DSpectrumButton setEnabled:FALSE];
-    else
-        [acquire2DSpectrumButton setEnabled:TRUE];*/
 }
 
 
@@ -2700,8 +2653,6 @@ void allow_spectrum_acquisition(InsensitiveWindow *window, gboolean value)
         gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, value);
     }
     gtk_widget_set_sensitive((GtkWidget *)window->phaseCycles_combobox, value);
-    //[acquire2DSpectrumButton setEnabled:value && [[evolutionTimesPopupButton selectedItem] tag] != 0];
-    //[eraseButton setEnabled:value];
     gtk_widget_set_sensitive((GtkWidget *)window->phaseCycling_treeview, value);
     gtk_widget_set_sensitive((GtkWidget *)window->bottomDisplay_combobox, value);
 }
@@ -3009,7 +2960,7 @@ G_MODULE_EXPORT void export_pulse_program(GtkMenuItem *menuitem, gpointer user_d
                 g_free(name);
                 g_free(filename);
             }
-            g_object_unref(chooser);
+            gtk_widget_destroy(chooser);
         }
         g_string_free(pp, TRUE);
     } else {
@@ -3624,7 +3575,7 @@ G_MODULE_EXPORT void perform_save_pulseProgram(GtkMenuItem *menuitem, gpointer u
         set_openedFileState_for_pulseSequence(window, FileOpened, name);
         g_free(filename);
     }
-    g_object_unref(chooser);
+    gtk_widget_destroy(chooser);
 }
 
 
@@ -4443,17 +4394,6 @@ gpointer calculate_coherence_paths(gpointer user_data)
      // //      //      //         //    //   // //    // //  //  //
 /////// //      ///////  //////    //    //   //  //////  //      //
 
-/*- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSPreferredScrollerStyleDidChangeNotification
-                                                  object:nil];
-
-    [controller release];
-    [super dealloc];
-}*/
-
-
 gboolean shows_2D_spectrum(InsensitiveWindow *window)
 {
     return window->twoDimensionalSpectrum;
@@ -4464,15 +4404,6 @@ gboolean get_showsFrequencyDomain(InsensitiveWindow *window)
 {
     return window->showsFrequencyDomain;
 }
-
-
-/*- (IBAction)showPanel:(id)sender
-{
-    [fftPanel setHidden:[sender tag] != 0];
-    [apodisationPanel setHidden:([sender tag] != 1)];
-    [displayPanel setHidden:[sender tag] != 2];
-    [phasePanel setHidden:[sender tag] != 3];
-}*/
 
 
 void set_2D_mode(InsensitiveWindow *window, gboolean value)
@@ -5237,8 +5168,6 @@ G_MODULE_EXPORT void on_dosy_spectrum_button_clicked(GtkButton *button, gpointer
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
     insensitive_controller_dosy_spectrum(window->controller, insensitive_settings_get_showRealPart(window->controller->settings) ? 0 : 1);
-    /*[verticalScaleBar setUnit:@"cm²/s"];
-    [verticalScaleBar setNeedsDisplay:YES];*/
     window->domainOf2DSpectrum = 1;
     set_magnification(window, 0.1);
     window->spectrumIsDOSY2D = TRUE;
@@ -5766,7 +5695,7 @@ G_MODULE_EXPORT void perform_save_spectrum(GtkMenuItem *menuitem, gpointer user_
 			set_openedFileState_for_pulseSequence(window, FileOpened, filename);
 			g_free(filename);
 		}
-		g_object_unref(chooser);
+		gtk_widget_destroy(chooser);
 	} else {
         dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 							GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -6382,7 +6311,7 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 				g_string_free(csv, TRUE);
 			}
 		}
-		g_object_unref(chooser);
+		gtk_widget_destroy(chooser);
 	} else {
 		dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 						GTK_DIALOG_DESTROY_WITH_PARENT,

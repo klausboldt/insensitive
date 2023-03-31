@@ -36,7 +36,11 @@ insensitive_CFLAGS += @WEBKIT2GTK_CFLAGS@
 insensitive_LDADD += @WEBKIT2GTK_LIBS@
 endif
 
+if WINDOWS
+insensitive_LDFLAGS =
+else
 insensitive_LDFLAGS = -rdynamic
+endif
 
 insensitive-resources.c: insensitive.gresource.xml
 	@GLIB_COMPILE_RESOURCES@ --sourcedir=$(top_builddir)/src --target=$@ --generate-source --c-name insensitive $<

@@ -29,7 +29,7 @@ webkit_dep = dependency('webkit2gtk-4.0', required : false)
 if webkit_dep.found()
     insensitive_sources += ['insensitive-tutorial.c',]
     insensitive_deps += webkit_dep
-    add_global_arguments('-DUSE_WEBKIT_GTK', language : 'c')
+    add_project_arguments('-DUSE_WEBKIT_GTK', language : 'c')
 endif
 
 cc = meson.get_compiler('c')
