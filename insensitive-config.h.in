@@ -132,9 +132,6 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Build Insensitive for a generic Unix platform. */
-#undef PLATFORM
-
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
 #undef PTHREAD_CREATE_JOINABLE

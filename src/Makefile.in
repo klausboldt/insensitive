@@ -88,6 +88,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 bin_PROGRAMS = insensitive$(EXEEXT)
 @USE_WEBKIT_GTK_TRUE@am__append_1 = insensitive-tutorial.c insensitive-tutorial.h
 @USE_WEBKIT_GTK_TRUE@am__append_2 = @WEBKIT2GTK_CFLAGS@
@@ -366,7 +367,11 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
@@ -387,7 +392,7 @@ insensitive_CFLAGS = @GLIB_CFLAGS@ @GIO_CFLAGS@ @GTK3_CFLAGS@ \
 insensitive_LDADD = @LIBINTL@ @GLIB_LIBS@ @GIO_LIBS@ @GTK3_LIBS@ \
 	@FFTW3_LIBS@ @CAIRO_LIBS@ @XML2_LIBS@ $(am__append_3)
 @WINDOWS_FALSE@insensitive_LDFLAGS = -rdynamic
-@WINDOWS_TRUE@insensitive_LDFLAGS = 
+@WINDOWS_TRUE@insensitive_LDFLAGS = -Wl,--subsystem,windows
 EXTRA_DIST = insensitive.gresource.xml insensitive-composer-row.ui \
 	insensitive-pulseshaper.ui insensitive-tutorial.ui \
 	insensitive-composer.ui insensitive-singlespins.ui \

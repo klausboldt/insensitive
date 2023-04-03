@@ -37,7 +37,7 @@ insensitive_LDADD += @WEBKIT2GTK_LIBS@
 endif
 
 if WINDOWS
-insensitive_LDFLAGS =
+insensitive_LDFLAGS = -Wl,--subsystem,windows
 else
 insensitive_LDFLAGS = -rdynamic
 endif

@@ -40,6 +40,14 @@
 #include "insensitive-tutorial.h"
 #endif /* USE_WEBKIT_GTK */
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#define SYSTEM_FONT "Segoe UI"
+#elif __APPLE__
+#define SYSTEM_FONT "Lucida Grande"
+#else
+#define SYSTEM_FONT "default"
+#endif
+
 
 static const float icon_half_width = 32;
 static const int GAP_TOP = 17;
@@ -1281,9 +1289,9 @@ G_MODULE_EXPORT void on_tutorial_toolbutton_clicked(GtkToolButton *toolbutton, g
         filename = g_build_filename(*dirs++, "insensitive", "doc", "default.html", NULL);
         if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
             url = malloc((strlen(filename) + 7) * sizeof(gchar));
-            strcpy(url, "file://");
+            strcpy(url, "file:///");
             strcat(url, filename);
-			gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
+            gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
             if (error != NULL) {
                 fprintf (stderr, "Error: %s\n", error->message);
                 g_error_free (error);
@@ -5867,7 +5875,7 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 					}
 				    nuc1 = substring_for_keyword_in_string("NUC2", spectrum_report->str, spectrum_report->len);
 				    if (nuc1 == NULL) {
-					    nuc1 = malloc(strlen(nuc2) * sizeof(gchar));
+					    nuc1 = malloc((strlen(nuc2) + 1) * sizeof(gchar));
 					    strcpy(nuc1, nuc2);
 				    }
 					fnmode = substring_for_keyword_in_string("FnMode", spectrum_report->str, spectrum_report->len);
@@ -7150,7 +7158,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
                     filename = g_build_filename(*dirs++, "insensitive", "doc", html_file, NULL);
                     if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
                         url = malloc((strlen(filename) + 7) * sizeof(gchar));
-                        strcpy(url, "file://");
+                        strcpy(url, "file:///");
                         strcat(url, filename);
 			            gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
                         if (error != NULL) {
@@ -9099,7 +9107,7 @@ G_MODULE_EXPORT gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gp
 			    cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, alphaOfStroke);
 			    cairo_stroke(cr);
                 cairo_set_source_rgba(cr, 0.25, 0.25, 0.25, 1.0);
-                cairo_select_font_face(cr, "Lucida Grande", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+                cairo_select_font_face(cr, SYSTEM_FONT, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 			    if (!cairo_get_font_face(cr))
 				    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
                 cairo_set_font_size(cr, 10);
@@ -9129,7 +9137,7 @@ G_MODULE_EXPORT gboolean draw_spinEditor_view(GtkWidget *widget, cairo_t *cr, gp
         }
     	cairo_paint(cr);
         cairo_set_source_rgba(cr, 0.25, 0.25, 0.25, 1.0);
-        cairo_select_font_face(cr, "Lucida Grande", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+        cairo_select_font_face(cr, SYSTEM_FONT, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 	    if (!cairo_get_font_face(cr))
 			  cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
         cairo_set_font_size(cr, 12);
@@ -9421,7 +9429,9 @@ G_MODULE_EXPORT void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpoin
         } else {
             n = 1;
             //labelArray = [[NSMutableArray alloc] init];
-            cairo_select_font_face(cr, "default", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL); // Lucida Grande
+            cairo_select_font_face(cr, SYSTEM_FONT, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+			if (!cairo_get_font_face(cr))
+			  cairo_select_font_face(cr, "default", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL); // Lucida Grande
             cairo_set_font_size(cr, 12);
             cairo_text_extents (cr, "β₁β₂β₃β₄,", &extents);
             for (i = 0; i < window->numberOfLevels; i++) {
@@ -10264,7 +10274,7 @@ void add_label_for_element(cairo_t *cr, enum SequenceType type, float x, float y
 		*x_char = '2';
 
 	cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
-	cairo_select_font_face(cr, "LucidaGrande", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+	cairo_select_font_face(cr, SYSTEM_FONT, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
     if (!cairo_get_font_face(cr))
 		cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 	cairo_set_font_size(cr, 12);

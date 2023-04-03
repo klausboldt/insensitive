@@ -1,30 +1,8 @@
 AC_PREREQ(2.60)
 AC_INIT([insensitive], [0.9.34], [klaus.boldt@uni-konstanz.de])
 AC_CONFIG_AUX_DIR([build-aux])
+AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([1.9.6 -Wall -Werror])
-
-AC_CANONICAL_HOST
-case "${host_os}" in
-    linux*)
-        platform=linux
-        AC_DEFINE(PLATFORM, [linux], [Build Insensitive for GNU/Linux.])
-        ;;
-    cygwin*|mingw*)
-        platform=windows
-        AC_DEFINE(PLATFORM, [windows], [Build Insensitive for MS Windows.])
-        ;;
-    darwin*)
-        platform=macos
-        AC_DEFINE(PLATFORM, [macos], [Build Insensitive for macOS.])
-        ;;
-    *)
-        platform=generic
-        AC_DEFINE(PLATFORM, [generic], [Build Insensitive for a generic Unix platform.])
-        ;;
-esac
-AM_CONDITIONAL([LINUX], [test "x$platform" = "xlinux"])
-AM_CONDITIONAL([WINDOWS], [test "x$platform" = "xwindows"])
-AM_CONDITIONAL([OSX], [test "x$platform" = "xmacos"])
 
 AC_ARG_ENABLE(
   [webkit],
@@ -34,6 +12,20 @@ AC_ARG_ENABLE(
   [enable_webkit=$enableval],
   [enable_webkit=yes]
 )
+case "$target_os" in
+    cygwin* | mingw* | msys*)
+		[enable_webkit=no]
+		[platform=windows]
+		;;
+    darwin*)
+    	[enable_webkit=no]
+		[platform=macos]
+		;;
+    *)
+		[platform=posix]
+    	;;
+esac
+AM_CONDITIONAL([WINDOWS], [test x$platform = xwindows])
 
 AC_PROG_CC
 AC_PROG_CC_C_O

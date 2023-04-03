@@ -517,7 +517,11 @@ G_MODULE_EXPORT void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpoi
 	cairo_set_line_width(cr, 3.0);
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 	cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    cairo_select_font_face(cr, "Segoe UI", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+#else
     cairo_select_font_face(cr, "Helvetica Neue", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
+#endif
 	cairo_set_font_size(cr, 13);
     label = malloc(5 * sizeof(gchar));
 	// z axis

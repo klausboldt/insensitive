@@ -32,10 +32,13 @@ make
 make install
 ```
 
-If WebKit2GTK is not available (a likely scenario on Windows and macOS systems)
-use `./configure --disable-webkit` to compile without native support for 
-displaying html data. A request will then instead be sent to the standard web 
-browser to show the tutorial pages.
+Insensitive can be compiled for Microsoft Windows (7 and above) using MSYS2.
+It has been tested in the ucrt64 environment after invoking 
+`./configure --disable-webkit --disable-dependency-tracking --prefix=/usr`.
+There are no working ports of WebKit2GTK for Windows or macOS. On these
+systems Insensitive will fall back to displaying the tutorial pages using
+the default web browser.
+
 
 ## Dependencies
 
@@ -47,19 +50,21 @@ browser to show the tutorial pages.
 - Cairo
 - WebKit2GTK 4.0
 - libxml 2.0
+- libgfortran5
 
 On Ubuntu-based systems, install the dependencies with
 
 ```
 sudo apt install libblas-dev liblapack-dev libfftw3-dev libxml2-dev \
-                 libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev
+                 libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev \
+                 libgfortran5
 ```
 
 On Fedora-based systems, install the dependencies with
 
 ```
 yum install blas-devel lapack-devel fftw3-devel libxml2-devel \
-            glib2-devel gtk3-devel webkit2gtk3-devel
+            glib2-devel gtk3-devel webkit2gtk3-devel libgfortran5
 ```
 
 ## Support
