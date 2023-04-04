@@ -123,7 +123,7 @@ static void insensitive_single_spins_init(InsensitiveSingleSpins *self)
     self->phase = 0.0;
     self->numberOfSpins = totalNumberOfSingleSpins - 1;
 
-    srand((unsigned)time(&t) + (unsigned long)&self->numberOfSpins - (unsigned long)&self->phase);
+    srand((unsigned)time(&t) + (uintptr_t)&self->numberOfSpins - (uintptr_t)&self->phase);
     self->spinSet = g_ptr_array_sized_new(totalNumberOfSingleSpins);
     for (i = 0; i < totalNumberOfSingleSpins; i++) {
         SingleSpinVector *vector = malloc(sizeof(SingleSpinVector));

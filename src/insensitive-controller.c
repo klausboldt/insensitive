@@ -2636,11 +2636,14 @@ gpointer insensitive_controller_perform_pulseSequence_in_background(gpointer dat
 gboolean insensitive_controller_finish_perform_pulseSequence(gpointer data)
 {
     InsensitiveController *self = (InsensitiveController *)data;
+    gchar *old_report = NULL;
 
     self->acquisitionTime = (float)g_get_monotonic_time() - self->acquisitionTime;
     if(self->spectrumReport != NULL)
-        g_string_free(self->spectrumReport, FALSE);
+        old_report = g_string_free(self->spectrumReport, FALSE);
     self->spectrumReport = insensitive_controller_create_spectrumReport(self, TRUE);
+    if (old_report != NULL)
+        g_free(old_report);
 
     set_complex_spectrum((InsensitiveWindow *)self->displayController,
                          self->fid,
@@ -2741,6 +2744,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 {
 	unsigned int i, j, cycle, pulse;
 	unsigned int pulseNumber = 1, delayNumber = 2, gradientNumber = 1, numberOfDelays = 0;
+    unsigned long int phcorr = 0;
 	int delayOccurredBefore, gradientOccurredBefore, delayIndex = 1;
 	GString *pp = g_string_sized_new(710);
 	GString *pulseCode = g_string_sized_new(64);
@@ -2858,7 +2862,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						if (!p14issued) {
 							p14issued = TRUE;
 							p14duration = element->pulseDuration;
-							sp4file = malloc(strlen(shapedPulseFile) * sizeof(gchar));
+							sp4file = malloc((strlen(shapedPulseFile) + 1) * sizeof(gchar));
 							strcpy(sp4file, shapedPulseFile);
 						}
 					} else {
@@ -2867,7 +2871,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						if (!p13issued) {
 							p13issued = TRUE;
 							p13duration = element->pulseDuration;
-							sp3file = malloc(strlen(shapedPulseFile) * sizeof(gchar));
+							sp3file = malloc((strlen(shapedPulseFile) + 1) * sizeof(gchar));
 							strcpy(sp3file, shapedPulseFile);
 						}
 					}
@@ -2896,6 +2900,8 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						g_string_append_printf(pulseCode, "%s*%.2f:f2 ph%d:r", shapedPulseString, element->time / 90, pulseNumber);
 					if (element->activeISpins && element->activeSSpins)
 						g_string_append(pulseCode, ")");
+                    if (!(phcorr & pow2(pulseNumber)))
+                        phcorr += pow2(pulseNumber);
 				} else {
 					if (element->time == 90.0)
 						g_string_append_printf(pulseCode, "(%s ph%d):f2", shapedPulseString, pulseNumber);
@@ -2918,7 +2924,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						if (!p12issued) {
 							p12issued = TRUE;
 							p12duration = element->pulseDuration;
-							sp2file = malloc(strlen(shapedPulseFile) * sizeof(gchar));
+							sp2file = malloc((strlen(shapedPulseFile) + 1) * sizeof(gchar));
 							strcpy(sp2file, shapedPulseFile);
 						}
 					} else {
@@ -2927,7 +2933,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						if (!p11issued) {
 							p11issued = TRUE;
 							p11duration = element->pulseDuration;
-							sp1file = malloc(strlen(shapedPulseFile) * sizeof(gchar));
+							sp1file = malloc((strlen(shapedPulseFile) + 1) * sizeof(gchar));
 							strcpy(sp1file, shapedPulseFile);
 						}
 					}
@@ -2950,6 +2956,8 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						contains180Pulse_f1 = TRUE;
 					} else
 						g_string_append_printf(pulseCode, "%sp1*%.2f:f1 ph%d:r", shapedPulseString, element->time / 90, pulseNumber);
+                    if (!(phcorr & pow2(pulseNumber)))
+                        phcorr += pow2(pulseNumber);
 				} else {
 					if (element->time == 90.0)
 						g_string_append_printf(pulseCode, "%sp1 ph%d", shapedPulseString, pulseNumber);
@@ -3528,8 +3536,15 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 	//g_string_append(pp, ";d12: delay for power switching                      [20 usec]\n"];
 	if (gradientNumber > 1 || d13Present)
 		g_string_append(pp, ";d13: short delay                                    [4 usec]\n");
-	if (d14Present)
+	if (d14Present) {
 		g_string_append(pp, ";d14: delay for evolution after shaped pulse\n");
+        if (p11issued) {
+            g_string_append(pp, ";               for 90 deg pulse               (p11)/2 + d14 ~ 1/(");
+            if (!(spinlock || identifiedNOESY))
+                g_string_append(pp, "2");
+            g_string_append(pp, "J)\n");
+        }
+    }
 	if (includeGradients)
 		g_string_append(pp, ";d16: delay for homospoil/gradient recovery\n");
 	if (dante)
@@ -3564,6 +3579,16 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 	}
 	if ((lastElement->sDecoupling && detectsISpins) || (lastElement->iDecoupling && !detectsISpins))
 		g_string_append(pp, ";cpd2: decoupling according to sequence defined by cpdprg2\n;pcpd2: f2 channel - 90 degree pulse for decoupling sequence\n");
+
+    // Add phase correction comments when selective pulses have been issued
+    if (phcorr != 0) {
+        for (i = 1; pow2(i) <= phcorr; i++) {
+            if (pow2(i) & phcorr) {
+                g_string_append_printf(pp, "\n\n;phcorr %d : phasedifference between power levels sp%d and pl1\n", i, i);
+                g_string_append_printf(pp, "\n;choose p1%d according to desired selectivity\n;the flip-angle is determined by the amplitude\n;set O1 on resonance on the multiplet to be excited or use spoffs\n", i);
+            }
+        }
+    }
 
 	if (includeGradients) {
 		g_string_append(pp, "\n\n;use gradient ratio:    ");
