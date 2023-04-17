@@ -192,6 +192,7 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, step_button);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, phaseCycling_treeview);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, coherencePathway_drawingarea);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseProgram_textview);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseProgram_textbuffer);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_notebook);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_pulse_entry);
@@ -481,6 +482,7 @@ static void insensitive_window_init(InsensitiveWindow *self)
     set_2D_mode(self, FALSE);
     show_spectrumParameters_textview(self, FALSE);
     update_spectrum_parameter_panel(self);
+    gtk_text_view_set_monospace(self->pulseProgram_textview, TRUE);
 
 	gtk_notebook_set_show_tabs(self->mainwindow_notebook, FALSE);
 	show_mainWindow_notebook_page(self, 1);

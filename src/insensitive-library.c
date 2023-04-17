@@ -3241,7 +3241,7 @@ char *replace_numbers_by_indices(char *string)
     char *new_string;
 
     len = strlen(string);
-    new_string = malloc(len * sizeof(wchar_t)); //malloc(2 * len * sizeof(char));
+    new_string = malloc((len + 2) * sizeof(wchar_t)); //malloc(2 * len * sizeof(char));
     strcpy(new_string, "");
 
     for (i = 0; i < len; i++) {

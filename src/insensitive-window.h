@@ -36,16 +36,16 @@
 
 
 struct _InsensitiveWindow {
-	GtkApplicationWindow parent_instance;
+  	GtkApplicationWindow parent_instance;
 
-	/* Template widgets */
-	GtkHeaderBar        *header_bar;
-	GtkEntry            *command_line;
-	GtkToolButton       *spinsystem_toolbutton, *spinstate_toolbutton, *pulsesequence_toolbutton, *spectrum_toolbutton;
-	GtkNotebook         *mainwindow_notebook;
+	  /* Template widgets */
+  	GtkHeaderBar        *header_bar;
+	  GtkEntry            *command_line;
+	  GtkToolButton       *spinsystem_toolbutton, *spinstate_toolbutton, *pulsesequence_toolbutton, *spectrum_toolbutton;
+	  GtkNotebook         *mainwindow_notebook;
 
     GtkSpinButton       *spinNumber_spinbutton;
-	GtkAdjustment       *spinNumber_adjustment;
+	  GtkAdjustment       *spinNumber_adjustment;
     GtkEntry            *chemicalShift_entry;
     GtkLabel            *chemicalShift_unit_label;
     GtkComboBoxText     *chemicalShift_units_combobox;
@@ -57,45 +57,45 @@ struct _InsensitiveWindow {
     GtkDrawingArea      *spinEditor_drawingarea;
     GtkDrawingArea      *energyLevel_drawingarea;
 
-	GtkTextBuffer       *productoperator_textbuffer;
-	GtkButton           *pulse_button;
+	  GtkTextBuffer       *productoperator_textbuffer;
+	  GtkButton           *pulse_button;
     GtkButton           *pulse90x_button, *pulse90y_button, *pulse90minusx_button, *pulse90minusy_button;
     GtkButton           *pulse180x_button, *pulse180y_button, *pulse180minusx_button, *pulse180minusy_button;
     GtkButton           *expandPulse_button, *contractPulse_button;
-	GtkButton           *chemicalShift_button;
-	GtkButton           *coupling_button;
-	GtkButton           *relaxation_button;
-	GtkButton           *freeEvolution_button;
-	GtkButton           *gradient_button;
-	GtkButton           *acquire_button;
-	GtkButton           *equilibrium_button;
-	GtkButton           *undo_button;
-	GtkSpinner          *acquisition_spinner;
-	GtkDrawingArea      *iSpinVector_drawingarea, *sSpinVector_drawingarea, *matrix_drawingarea;
+	  GtkButton           *chemicalShift_button;
+	  GtkButton           *coupling_button;
+  	GtkButton           *relaxation_button;
+	  GtkButton           *freeEvolution_button;
+	  GtkButton           *gradient_button;
+	  GtkButton           *acquire_button;
+	  GtkButton           *equilibrium_button;
+	  GtkButton           *undo_button;
+	  GtkSpinner          *acquisition_spinner;
+	  GtkDrawingArea      *iSpinVector_drawingarea, *sSpinVector_drawingarea, *matrix_drawingarea;
 
-	GtkComboBoxText     *pulseEnvelope_combobox;
-	GtkEntry            *flipAngle_entry;
-	GtkAdjustment       *flipAngle_adjustment;
+	  GtkComboBoxText     *pulseEnvelope_combobox;
+	  GtkEntry            *flipAngle_entry;
+	  GtkAdjustment       *flipAngle_adjustment;
     GtkScale            *flipAngle_scale, *phase_scale, *pulseFrequency_scale;
-	GtkEntry            *pulseDuration_entry;
-	GtkEntry            *pulseStrength_entry;
-	GtkButton           *hardpulse_button;
-	GtkButton           *softpulse_button;
-	GtkButton           *softerpulse_button;
-	GtkButton           *selectivepulse_button;
-	GtkEntry            *pulseFrequency_entry;
-	GtkAdjustment       *pulseFrequency_adjustment;
-	GtkEntry            *phase_entry;
-	GtkAdjustment       *phase_adjustment;
-	GtkToggleButton     *spin1_checkbox, *spin2_checkbox, *spin3_checkbox, *spin4_checkbox;
-	GtkToggleButton     *ispins_checkbox, *sspins_checkbox, *allspins_checkbox;
-	GtkToggleButton     **spin_checkbox_array;
-	GtkToggleButton     *strong_coupling_checkbox_spinstate;
-	GtkToggleButton     *dipolar_relaxation_checkbox;
-	GtkToggleButton     *animation_checkbox;
-	GtkToggleButton     *include_relaxation_checkbox;
-	GtkEntry            *T1_entry, *T2_entry;
-	GtkEntry            *correlationTime_entry;
+	  GtkEntry            *pulseDuration_entry;
+	  GtkEntry            *pulseStrength_entry;
+	  GtkButton           *hardpulse_button;
+	  GtkButton           *softpulse_button;
+	  GtkButton           *softerpulse_button;
+	  GtkButton           *selectivepulse_button;
+	  GtkEntry            *pulseFrequency_entry;
+	  GtkAdjustment       *pulseFrequency_adjustment;
+	  GtkEntry            *phase_entry;
+	  GtkAdjustment       *phase_adjustment;
+	  GtkToggleButton     *spin1_checkbox, *spin2_checkbox, *spin3_checkbox, *spin4_checkbox;
+	  GtkToggleButton     *ispins_checkbox, *sspins_checkbox, *allspins_checkbox;
+	  GtkToggleButton     **spin_checkbox_array;
+	  GtkToggleButton     *strong_coupling_checkbox_spinstate;
+	  GtkToggleButton     *dipolar_relaxation_checkbox;
+	  GtkToggleButton     *animation_checkbox;
+	  GtkToggleButton     *include_relaxation_checkbox;
+	  GtkEntry            *T1_entry, *T2_entry;
+	  GtkEntry            *correlationTime_entry;
 	GtkEntry            *delay_entry;
 	GtkComboBoxText     *delay_combobox;
 	GtkToggleButton     *dephasingJitter_checkbox;
@@ -115,7 +115,7 @@ struct _InsensitiveWindow {
 	GtkComboBoxText     *matrixDisplayType_combobox;
 	GtkComboBoxText     *operatorBasis_combobox;
 	GtkComboBoxText     *vectorDiagramType_combobox;
-	GtkToggleButton     *color1stOrderCoherences_checkbox;
+	  GtkToggleButton     *color1stOrderCoherences_checkbox;
 
     InsensitivePulseShaper *pulse_shaper_window;
     InsensitiveComposer *matrix_composer_window;
@@ -131,6 +131,7 @@ struct _InsensitiveWindow {
     GtkTreeModel        *phaseCycling_treemodel;
     GtkListStore        *phaseCycling_liststore;
     GtkDrawingArea      *coherencePathway_drawingarea;
+    GtkTextView         *pulseProgram_textview;
     GtkTextBuffer       *pulseProgram_textbuffer;
     GtkNotebook         *pp_edit_notebook;
     GtkComboBoxText     *pp_edit_pulse_combobox, *pp_edit_pulse_shape_combobox;
@@ -180,7 +181,7 @@ struct _InsensitiveWindow {
     GtkButton           *dosyFirstTrace_button, *dosyPickPeaks_button, *dosyFitLorentzian_button;
     GtkButton           *dosyFitExponential_button, *dosyPlotSpectrum_button;
 
-	InsensitiveController *controller;
+    InsensitiveController *controller;
     GPtrArray *commandHistory;
     unsigned int commandHistoryPosition;
 
