@@ -4616,6 +4616,7 @@ ph31=0 2 0 2 0 0 0 0
                             <property name="vexpand">True</property>
                             <child>
                               <object class="GtkTextView" id="pulseProgram_textview">
+                                <property name="name">white_textview</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="hexpand">True</property>

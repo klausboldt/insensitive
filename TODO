@@ -11,10 +11,11 @@ Known bugs:
 - A lot of memory leaks (valgrind --leak-check=full)
 - Coherence transfer is not updated when spin type is changed
 - Checkboxes are not set correctly on startup (pulseArray, relaxation, show real/imag/integral)
+- Symmetrisation of amplitude-modulated 2D spectra fails
 
 Roadmap to version 1.0:
 -----------------------
-- Running versions for Windows (MSYS2), macOS (jhbuild)
+- Running versions for macOS (jhbuild)
 - Phase correction should be possible in F1 for 2D spectra
 
 Roadmap beyond version 1.0:

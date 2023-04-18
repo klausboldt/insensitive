@@ -294,7 +294,7 @@ static void insensitive_window_init(InsensitiveWindow *self)
     display = gdk_display_get_default();
     screen = gdk_display_get_default_screen(display);
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
+    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#white_textview {background-color: white; font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
 
 	self->spin_checkbox_array = malloc(4 * sizeof(GtkToggleButton *));
 	self->spin_checkbox_array[0] = self->spin1_checkbox;
