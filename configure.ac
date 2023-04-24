@@ -1,5 +1,5 @@
 AC_PREREQ(2.60)
-AC_INIT([insensitive], [0.9.34], [klaus.boldt@uni-konstanz.de])
+AC_INIT([insensitive], [0.9.34], [klaus.boldt@uni-rostock.de])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE([1.9.6 -Wall -Werror])
@@ -26,6 +26,7 @@ case "$target_os" in
     	;;
 esac
 AM_CONDITIONAL([WINDOWS], [test x$platform = xwindows])
+AM_CONDITIONAL([APPLE], [test x$platform = xmacos])
 
 AC_PROG_CC
 AC_PROG_CC_C_O
@@ -72,6 +73,9 @@ fi
 AM_CONDITIONAL(USE_WEBKIT_GTK, test x$enable_webkit = xyes)
 if test "x$enable_webkit" == xyes ; then
     AC_DEFINE(USE_WEBKIT_GTK, [], [Build Insensitive with Webkit2Gtk support.])
+fi
+if test x$platform = xmacos ; then
+    PKG_CHECK_MODULES(GTKMACINTEGRATION, gtk-mac-integration-gtk3)
 fi
 AX_BLAS()
 if test "$ax_blas_ok" = "no"; then

@@ -34,8 +34,13 @@ install-data-local: $(insensitive_DATA) $(desktop_DATA)
 	$(INSTALL_DATA) $(top_builddir)/data/com.klausboldt.insensitive.desktop.in $(desktopdir)/com.klausboldt.insensitive.desktop
 	$(UPDATE_DESKTOP_DATABASE) -q $(desktopdir)
 
+if APPLE
+install-data-hook:
+uninstall-hook:
+else
 install-data-hook: install-mime-database
 uninstall-hook: uninstall-mime-database
+endif
 
 install-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_ICON_RESOURCE)
 	$(XDG_MIME) install --novendor com.klausboldt.insensitive.mime.xml

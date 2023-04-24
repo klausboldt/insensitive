@@ -31,9 +31,18 @@ or, alternatively:
 	make
 	make install
 
-Insensitive can be compiled for Microsoft Windows (7 and above) using MSYS2.
-It has been tested in the ucrt64 environment after invoking
-"./configure --disable-webkit --disable-dependency-tracking --prefix=/usr".
+Insensitive can be compiled for Microsoft Windows (7 and above) using MSYS2
+(https://www.msys2.org/). It has been tested in the ucrt64 environment after
+installing the required dependencies using `pacman` and invoking
+"./configure --prefix=/usr".
+
+On Apple macOS Insensitive has been successfully compiled using GTK-OSX and
+JHBuild] https://wiki.gnome.org/Projects/GTK/OSX/Building). Insensitive for
+macOS makes use of the gtk-osx-integration library and gtk-mac-bundler to
+create a self-consistent application bundle. an installation script,
+moduleset and bundle file are provided in the macosx directory of the
+source tree.
+
 There are no working ports of WebKit2GTK for Windows or macOS. On these
 systems Insensitive will fall back to displaying the tutorial pages using
 the default web browser.

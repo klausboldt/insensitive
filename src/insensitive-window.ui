@@ -629,11 +629,11 @@ ph31=0 2 0 2 0 0 0 0
                 <property name="label" translatable="yes">_File</property>
                 <property name="use-underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu">
+                  <object class="GtkMenu" id="file_menu">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="open_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">_Open File...</property>
@@ -648,7 +648,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="save_spin_system_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Save Spin System...</property>
@@ -656,7 +656,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="save_pulse_program_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Save Pulse Sequence...</property>
@@ -664,7 +664,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="save_spectrum_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Save Spectrum...</property>
@@ -702,7 +702,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
+                      <object class="GtkImageMenuItem" id="quit_menu_item">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -722,11 +722,11 @@ ph31=0 2 0 2 0 0 0 0
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use-underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu">
+                  <object class="GtkMenu" id="edit_menu">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="undo_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Undo</property>
@@ -783,7 +783,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="preferences_menuitem">
+                      <object class="GtkMenuItem" id="preferences_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Preferences...</property>
@@ -802,7 +802,7 @@ ph31=0 2 0 2 0 0 0 0
                 <property name="label" translatable="yes">_Window</property>
                 <property name="use-underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu">
+                  <object class="GtkMenu" id="window_menu">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
@@ -843,7 +843,7 @@ ph31=0 2 0 2 0 0 0 0
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use-underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu">
+                  <object class="GtkMenu" id="help_menu">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>

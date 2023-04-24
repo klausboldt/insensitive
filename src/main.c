@@ -29,6 +29,10 @@
 
 #include <glib/gi18n.h>
 
+#ifdef __APPLE__
+#include <gtkosxapplication.h>
+#endif /* __APPLE__ */
+
 #include "insensitive-config.h"
 #include "insensitive-window.h"
 
@@ -76,8 +80,27 @@ static void on_open(GApplication *app, GFile **files, gint n_files, const gchar 
 	for (i = 0; i < n_files; i++)
 		open_file(window, g_file_get_path(files[i]));
 
-	gtk_window_present (GTK_WINDOW(window));
+	gtk_window_present(GTK_WINDOW(window));
 }
+
+
+#ifdef __APPLE__
+static void on_open_osx(GtkosxApplication *theApp, gchar *path, gpointer app)
+{
+    InsensitiveWindow *window;
+
+    g_assert(GTK_IS_APPLICATION(app));
+	window = INSENSITIVE_WINDOW(gtk_application_get_window_by_id(GTK_APPLICATION(app), 1));
+    if (window == NULL)
+		window = g_object_new(INSENSITIVE_TYPE_WINDOW,
+		                      "application", app,
+		                      "default-width", 1024,
+		                      "default-height", 768,
+		                      NULL);
+    open_file(window, path);
+	gtk_window_present(GTK_WINDOW(window));
+}
+#endif /* __APPLE__ */
 
 
 int main(int argc, char *argv[])
@@ -97,6 +120,12 @@ int main(int argc, char *argv[])
 	 */
 	app = gtk_application_new("com.klausboldt.insensitive", G_APPLICATION_HANDLES_OPEN);
 
+#ifdef __APPLE__
+    GtkosxApplication *theApp = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
+    g_signal_connect(theApp, "NSApplicationOpenFile", G_CALLBACK(on_open_osx), app);
+    gtkosx_application_set_use_quartz_accelerators(theApp, 1);
+#endif /* __APPLE__ */
+
 	/*
 	 * We connect to the activate signal to create a window when the application
 	 * has been launched. Additionally, this signal notifies us when the user
@@ -106,8 +135,8 @@ int main(int argc, char *argv[])
 	 * Because we can't pass a pointer to any function type, we have to cast
 	 * our "on_activate" function to a GCallback.
 	 */
-	g_signal_connect(app, "activate", G_CALLBACK (on_activate), NULL);
-	g_signal_connect(app, "open", G_CALLBACK (on_open), NULL);
+	g_signal_connect(app, "activate", G_CALLBACK(on_activate), NULL);
+	g_signal_connect(app, "open", G_CALLBACK(on_open), NULL);
 
 	/*
 	 * Run the application. This function will block until the application
@@ -119,7 +148,7 @@ int main(int argc, char *argv[])
 	 * method "run". But we need to cast, which is what the "G_APPLICATION()"
 	 * macro does.
 	 */
-	ret = g_application_run(G_APPLICATION (app), argc, argv);
+	ret = g_application_run(G_APPLICATION(app), argc, argv);
 
 	return ret;
 }

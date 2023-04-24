@@ -258,6 +258,8 @@ GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTK3_CFLAGS = @GTK3_CFLAGS@
 GTK3_LIBS = @GTK3_LIBS@
+GTKMACINTEGRATION_CFLAGS = @GTKMACINTEGRATION_CFLAGS@
+GTKMACINTEGRATION_LIBS = @GTKMACINTEGRATION_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -742,8 +744,10 @@ install-data-local: $(insensitive_DATA) $(desktop_DATA)
 	$(INSTALL_DATA) $(top_builddir)/data/com.klausboldt.insensitive.desktop.in $(desktopdir)/com.klausboldt.insensitive.desktop
 	$(UPDATE_DESKTOP_DATABASE) -q $(desktopdir)
 
-install-data-hook: install-mime-database
-uninstall-hook: uninstall-mime-database
+@APPLE_TRUE@install-data-hook:
+@APPLE_TRUE@uninstall-hook:
+@APPLE_FALSE@install-data-hook: install-mime-database
+@APPLE_FALSE@uninstall-hook: uninstall-mime-database
 
 install-mime-database: com.klausboldt.insensitive.mime.xml $(XDG_MIME) $(XDG_ICON_RESOURCE)
 	$(XDG_MIME) install --novendor com.klausboldt.insensitive.mime.xml

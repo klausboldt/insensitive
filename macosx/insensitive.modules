@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+  <repository type="git" name="github.com" default="yes" href="https://github.com/"/>
+  <repository type="tarball" name="www.fftw.org" href="https://www.fftw.org/"/>
+  <repository type="tarball" name="gcc.gnu.org" href="https://gcc.gnu.org/pub/gcc/"/>
+  
+  <metamodule id="fftw">
+    <dependencies>
+      <dep package="fftw-single"/>
+      <dep package="fftw-double"/>
+      <dep package="fftw-long-double"/>
+    </dependencies>
+  </metamodule>
+
+  <autotools id="fftw-double" autogenargs="--enable-shared --disable-static">
+    <branch repo="www.fftw.org" module="fftw-3.3.5.tar.gz" version="3.3.5"
+      hash="sha256:8ecfe1b04732ec3f5b7d279fdb8efcad536d555f9d1e8fabd027037d45ea8bcf"/>
+  </autotools>
+
+  <autotools id="fftw-single" autogenargs="--enable-float --enable-shared --disable-static">
+    <branch repo="www.fftw.org" module="fftw-3.3.5.tar.gz" version="3.3.5"
+      hash="sha256:8ecfe1b04732ec3f5b7d279fdb8efcad536d555f9d1e8fabd027037d45ea8bcf"/>
+  </autotools>
+
+  <autotools id="fftw-long-double" autogenargs="--enable-long-double --enable-shared --disable-static">
+    <branch repo="www.fftw.org" module="fftw-3.3.5.tar.gz" version="3.3.5"
+      hash="sha256:8ecfe1b04732ec3f5b7d279fdb8efcad536d555f9d1e8fabd027037d45ea8bcf"/>
+  </autotools>
+  
+  <cmake id="openblas" cmakeargs="-DBUILD_TESTING=OFF">
+    <branch repo="github.com" module="xianyi/OpenBLAS.git"/>
+  </cmake>
+
+  <autotools id="insensitive" autogen-sh="configure" autogenargs="--disable-webkit">
+    <branch repo="github.com" module="klausboldt/insensitive.git"/>
+    <dependencies>
+      <dep package="fftw"/>
+      <dep package="openblas"/>
+    </dependencies>  
+  </autotools>
+
+</moduleset>

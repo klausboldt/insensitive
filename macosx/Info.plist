@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>iss</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>iss.icns</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/insensitive-iss</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Insensitive Spin System</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>ipp</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>ipp.icns</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/insensitive-ipp</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Insensitive Pulse Program</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>igg</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>igg.icns</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/insensitive-igg</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Insensitive Spectrum Data</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>Insensitive</string>
+	<key>CFBundleGetInfoString</key>
+	<string>0.9.34, Copyright © 2009-2023 Klaus Boldt</string>
+	<key>CFBundleIconFile</key>
+	<string>Insensitive.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.klausboldt.insensitive</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.9.34</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>0.3</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2009-2023 KlausBoldt, MIT License.</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.8</string>
+</dict>
+</plist>

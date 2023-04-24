@@ -39,6 +39,9 @@
 #ifdef USE_WEBKIT_GTK
 #include "insensitive-tutorial.h"
 #endif /* USE_WEBKIT_GTK */
+#ifdef __APPLE__
+#include <gtkosxapplication.h>
+#endif /* __APPLE__ */
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #define SYSTEM_FONT "Segoe UI"
@@ -69,7 +72,18 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 	gtk_widget_class_set_template_from_resource(widget_class, "/com/klausboldt/insensitive/insensitive-window.ui");
 
 	/* Main window */
-	//gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, header_bar);
+	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, menu_bar);
+    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, file_menu); */
+    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, edit_menu); */
+    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, window_menu); */
+    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, help_menu); */
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, open_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_spin_system_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_pulse_program_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_spectrum_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, undo_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, preferences_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, about_menu_item);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, command_line);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spinsystem_toolbutton);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spinstate_toolbutton);
@@ -290,11 +304,52 @@ static void insensitive_window_init(InsensitiveWindow *self)
 
 	gtk_widget_init_template(GTK_WIDGET(self));
 
+    GtkAccelGroup *accel_group = gtk_accel_group_new();
+    gtk_window_add_accel_group(GTK_WINDOW(self), accel_group);
+#ifdef __APPLE__
+    gtk_widget_add_accelerator(GTK_WIDGET(self->open_menu_item), "activate", accel_group,
+                               GDK_KEY_o, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->save_spin_system_menu_item), "activate", accel_group,
+                               GDK_KEY_s, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->save_pulse_program_menu_item), "activate", accel_group,
+                               GDK_KEY_s, GDK_META_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->save_spectrum_menu_item), "activate", accel_group,
+                               GDK_KEY_s, GDK_META_MASK | GDK_MOD1_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->undo_menu_item), "activate", accel_group,
+                               GDK_KEY_z, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->preferences_menu_item), "activate", accel_group,
+                               GDK_KEY_comma, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    GtkosxApplication *theApp = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
+    gtk_widget_hide(GTK_WIDGET(self->menu_bar));
+    gtkosx_application_set_menu_bar(theApp, GTK_MENU_SHELL(self->menu_bar));
+    //gtkosx_application_set_window_menu(theApp, self->window_menu);
+    //gtkosx_application_set_help_menu(theApp, self->help_menu);
+    gtkosx_application_set_about_item(theApp, self->about_menu_item);
+    gtkosx_application_insert_app_menu_item(theApp, self->preferences_menu_item, 2);
+    GtkSeparatorMenuItem *separator = gtk_separator_menu_item_new();
+    gtkosx_application_insert_app_menu_item(theApp, separator, 3);
+    //gtk_widget_hide(GTK_WIDGET(self->quit_menu_item));
+    gtkosx_application_ready(theApp);
+#else
+    gtk_widget_add_accelerator(GTK_WIDGET(self->open_menu_item), "activate", accel_group,
+                               GDK_KEY_o, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->save_spin_system_menu_item), "activate", accel_group,
+                               GDK_KEY_s, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->save_pulse_program_menu_item), "activate", accel_group,
+                               GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->save_spectrum_menu_item), "activate", accel_group,
+                               GDK_KEY_s, GDK_CONTROL_MASK | GDK_MOD1_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->undo_menu_item), "activate", accel_group,
+                               GDK_KEY_z, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->preferences_menu_item), "activate", accel_group,
+                               GDK_KEY_p, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+#endif /* __APPLE__ */
+
     provider = gtk_css_provider_new();
     display = gdk_display_get_default();
     screen = gdk_display_get_default_screen(display);
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#white_textview {background-color: white; font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
+    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
 
 	self->spin_checkbox_array = malloc(4 * sizeof(GtkToggleButton *));
 	self->spin_checkbox_array[0] = self->spin1_checkbox;

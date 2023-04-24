@@ -39,7 +39,10 @@ struct _InsensitiveWindow {
   	GtkApplicationWindow parent_instance;
 
 	  /* Template widgets */
-  	GtkHeaderBar        *header_bar;
+  	GtkMenuBar          *menu_bar;
+    //GtkMenu             *file_menu, *edit_menu, *window_menu, *help_menu;
+    GtkMenuItem         *preferences_menu_item, *about_menu_item, *open_menu_item, *undo_menu_item;
+    GtkMenuItem         *save_spin_system_menu_item, *save_pulse_program_menu_item, *save_spectrum_menu_item;
 	  GtkEntry            *command_line;
 	  GtkToolButton       *spinsystem_toolbutton, *spinstate_toolbutton, *pulsesequence_toolbutton, *spectrum_toolbutton;
 	  GtkNotebook         *mainwindow_notebook;
@@ -96,25 +99,25 @@ struct _InsensitiveWindow {
 	  GtkToggleButton     *include_relaxation_checkbox;
 	  GtkEntry            *T1_entry, *T2_entry;
 	  GtkEntry            *correlationTime_entry;
-	GtkEntry            *delay_entry;
-	GtkComboBoxText     *delay_combobox;
-	GtkToggleButton     *dephasingJitter_checkbox;
-	GtkToggleButton     *iDecoupling_checkbox, *sDecoupling_checkbox;
-	GtkToggleButton     *spinlock_checkbox;
-	GtkEntry            *gradient_strength_entry, *gradient_duration_entry;
-	GtkComboBoxText     *gradient_strength_combobox;
-	GtkToggleButton     *diffusion_checkbox;
-	GtkSpinButton       *datapoints_spinbutton;
-	GtkEntry            *dwelltime_entry;
-	GtkAdjustment       *datapoints_adjustment;
-	GtkEntry            *noiseLevel_entry;
-	GtkToggleButton     *acquisitionAfterNextPulse_checkbox;
-	GtkRadioButton      *detectISignal_radiobutton, *detectSSignal_radiobutton;
-	GtkToggleButton     *zeroFilling_checkbox;
-	GtkComboBoxText     *vectorDisplayType_combobox;
-	GtkComboBoxText     *matrixDisplayType_combobox;
-	GtkComboBoxText     *operatorBasis_combobox;
-	GtkComboBoxText     *vectorDiagramType_combobox;
+	  GtkEntry            *delay_entry;
+	  GtkComboBoxText     *delay_combobox;
+	  GtkToggleButton     *dephasingJitter_checkbox;
+	  GtkToggleButton     *iDecoupling_checkbox, *sDecoupling_checkbox;
+	  GtkToggleButton     *spinlock_checkbox;
+	  GtkEntry            *gradient_strength_entry, *gradient_duration_entry;
+	  GtkComboBoxText     *gradient_strength_combobox;
+	  GtkToggleButton     *diffusion_checkbox;
+	  GtkSpinButton       *datapoints_spinbutton;
+	  GtkEntry            *dwelltime_entry;
+	  GtkAdjustment       *datapoints_adjustment;
+	  GtkEntry            *noiseLevel_entry;
+	  GtkToggleButton     *acquisitionAfterNextPulse_checkbox;
+	  GtkRadioButton      *detectISignal_radiobutton, *detectSSignal_radiobutton;
+	  GtkToggleButton     *zeroFilling_checkbox;
+	  GtkComboBoxText     *vectorDisplayType_combobox;
+	  GtkComboBoxText     *matrixDisplayType_combobox;
+	  GtkComboBoxText     *operatorBasis_combobox;
+	  GtkComboBoxText     *vectorDiagramType_combobox;
 	  GtkToggleButton     *color1stOrderCoherences_checkbox;
 
     InsensitivePulseShaper *pulse_shaper_window;

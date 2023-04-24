@@ -91,9 +91,11 @@ host_triplet = @host@
 target_triplet = @target@
 bin_PROGRAMS = insensitive$(EXEEXT)
 @USE_WEBKIT_GTK_TRUE@am__append_1 = insensitive-tutorial.c insensitive-tutorial.h
-@USE_WEBKIT_GTK_TRUE@am__append_2 = @WEBKIT2GTK_CFLAGS@
-@USE_WEBKIT_GTK_TRUE@am__append_3 = @WEBKIT2GTK_LIBS@
-@USE_WEBKIT_GTK_TRUE@am__append_4 = insensitive-tutorial.c insensitive-tutorial.h
+@USE_WEBKIT_GTK_TRUE@am__append_2 = insensitive-tutorial.c insensitive-tutorial.h
+@USE_WEBKIT_GTK_TRUE@am__append_3 = @WEBKIT2GTK_CFLAGS@
+@USE_WEBKIT_GTK_TRUE@am__append_4 = @WEBKIT2GTK_LIBS@
+@APPLE_TRUE@am__append_5 = @GTKMACINTEGRATION_CFLAGS@
+@APPLE_TRUE@am__append_6 = @GTKMACINTEGRATION_LIBS@
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_blas.m4 \
@@ -143,7 +145,7 @@ am_insensitive_OBJECTS = insensitive-insensitive-resources.$(OBJEXT) \
 	insensitive-levmarq.$(OBJEXT) $(am__objects_1)
 insensitive_OBJECTS = $(am_insensitive_OBJECTS)
 am__DEPENDENCIES_1 =
-insensitive_DEPENDENCIES = $(am__DEPENDENCIES_1)
+insensitive_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 insensitive_LINK = $(CCLD) $(insensitive_CFLAGS) $(CFLAGS) \
 	$(insensitive_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -261,6 +263,8 @@ GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 GTK3_CFLAGS = @GTK3_CFLAGS@
 GTK3_LIBS = @GTK3_LIBS@
+GTKMACINTEGRATION_CFLAGS = @GTKMACINTEGRATION_CFLAGS@
+GTKMACINTEGRATION_LIBS = @GTKMACINTEGRATION_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -386,18 +390,20 @@ insensitive_SOURCES = insensitive-resources.c insensitive-resources.h \
 	insensitive-singlespins.c insensitive-singlespins.h \
 	insensitive-composer.c insensitive-composer.h \
 	insensitive-preferences.c insensitive-preferences.h levmarq.c \
-	levmarq.h $(am__append_1)
+	levmarq.h $(am__append_2)
 insensitive_CFLAGS = @GLIB_CFLAGS@ @GIO_CFLAGS@ @GTK3_CFLAGS@ \
-	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @XML2_CFLAGS@ $(am__append_2)
+	@FFTW3_CFLAGS@ @CAIRO_CFLAGS@ @XML2_CFLAGS@ $(am__append_3) \
+	$(am__append_5)
 insensitive_LDADD = @LIBINTL@ @GLIB_LIBS@ @GIO_LIBS@ @GTK3_LIBS@ \
-	@FFTW3_LIBS@ @CAIRO_LIBS@ @XML2_LIBS@ $(am__append_3)
-@WINDOWS_FALSE@insensitive_LDFLAGS = -rdynamic
-@WINDOWS_TRUE@insensitive_LDFLAGS = -Wl,--subsystem,windows
+	@FFTW3_LIBS@ @CAIRO_LIBS@ @XML2_LIBS@ $(am__append_4) \
+	$(am__append_6)
 EXTRA_DIST = insensitive.gresource.xml insensitive-composer-row.ui \
 	insensitive-pulseshaper.ui insensitive-tutorial.ui \
 	insensitive-composer.ui insensitive-singlespins.ui \
 	insensitive-preferences.ui insensitive-window.ui meson.build \
-	$(am__append_4)
+	$(am__append_1)
+@WINDOWS_FALSE@insensitive_LDFLAGS = -rdynamic
+@WINDOWS_TRUE@insensitive_LDFLAGS = -Wl,--subsystem,windows
 CLEANFILES = *~ insensitive-resources.c insensitive-resources.h
 all: all-am
 
