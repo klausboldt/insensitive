@@ -28,8 +28,15 @@ if test -f ./insensitive.modules ; then
     sed -i '' -e '/use_local_modulesets = True/ {' -e "n; s|modulesets_dir.*|modulesets_dir = \"`pwd`\"|" -e '}' ~/.config/jhbuildrc
     jhbuild build fftw openblas insensitive
 else
+    echo
     echo You need to add the path to insensitive.modules manually to ~/.config/jhbuild
     echo and invoke \"jhbuild build insensitive\" to compile insensitive.  
 fi
-
+echo
+echo Copy the directory \"Catalina\" from the macosx directory in the source tree
+echo to \~/gtk/inst/share/themes and build the application bundle by running
+echo "    jhbuild shell"
+echo "    cd ~/gtk/source/insensitive/macosx"
+echo "    gtk-mac-bundler ./Insensitive.bundle"
+echo
 

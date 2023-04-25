@@ -41,8 +41,10 @@ struct _InsensitiveWindow {
 	  /* Template widgets */
   	GtkMenuBar          *menu_bar;
     //GtkMenu             *file_menu, *edit_menu, *window_menu, *help_menu;
-    GtkMenuItem         *preferences_menu_item, *about_menu_item, *open_menu_item, *undo_menu_item;
+    GtkMenuItem         *preferences_menu_item, *about_menu_item, *open_menu_item, *undo_menu_item, *quit_menu_item;
     GtkMenuItem         *save_spin_system_menu_item, *save_pulse_program_menu_item, *save_spectrum_menu_item;
+    GtkMenuItem         *export_spectrum_menu_item, *export_pulseprogram_menu_item, *tutorial_menu_item;
+    GtkMenuItem         *matrix_composer_menu_item, *pulse_shape_menu_item, *single_spins_menu_item;
 	  GtkEntry            *command_line;
 	  GtkToolButton       *spinsystem_toolbutton, *spinstate_toolbutton, *pulsesequence_toolbutton, *spectrum_toolbutton;
 	  GtkNotebook         *mainwindow_notebook;

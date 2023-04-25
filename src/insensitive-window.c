@@ -81,9 +81,16 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_spin_system_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_pulse_program_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_spectrum_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, export_spectrum_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, export_pulseprogram_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, quit_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, undo_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, preferences_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, matrix_composer_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulse_shape_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, single_spins_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, about_menu_item);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, tutorial_menu_item);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, command_line);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spinsystem_toolbutton);
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spinstate_toolbutton);
@@ -319,6 +326,18 @@ static void insensitive_window_init(InsensitiveWindow *self)
                                GDK_KEY_z, GDK_META_MASK, GTK_ACCEL_VISIBLE);
     gtk_widget_add_accelerator(GTK_WIDGET(self->preferences_menu_item), "activate", accel_group,
                                GDK_KEY_comma, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->export_spectrum_menu_item), "activate", accel_group,
+                               GDK_KEY_e, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->export_pulseprogram_menu_item), "activate", accel_group,
+                               GDK_KEY_e, GDK_META_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->tutorial_menu_item), "activate", accel_group,
+                               GDK_KEY_question, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->matrix_composer_menu_item), "activate", accel_group,
+                               GDK_KEY_y, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->pulse_shape_menu_item), "activate", accel_group,
+                               GDK_KEY_p, GDK_META_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->single_spins_menu_item), "activate", accel_group,
+                               GDK_KEY_b, GDK_META_MASK, GTK_ACCEL_VISIBLE);
     GtkosxApplication *theApp = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
     gtk_widget_hide(GTK_WIDGET(self->menu_bar));
     gtkosx_application_set_menu_bar(theApp, GTK_MENU_SHELL(self->menu_bar));
@@ -339,17 +358,36 @@ static void insensitive_window_init(InsensitiveWindow *self)
                                GDK_KEY_s, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
     gtk_widget_add_accelerator(GTK_WIDGET(self->save_spectrum_menu_item), "activate", accel_group,
                                GDK_KEY_s, GDK_CONTROL_MASK | GDK_MOD1_MASK, GTK_ACCEL_VISIBLE);
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    gtk_widget_add_accelerator(GTK_WIDGET(self->quit_menu_item), "activate", accel_group,
+                               GDK_KEY_F4, GDK_MOD1_MASK, GTK_ACCEL_VISIBLE);
+#else
+    gtk_widget_add_accelerator(GTK_WIDGET(self->quit_menu_item), "activate", accel_group,
+                               GDK_KEY_q, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+#endif /* WINDOWS */
     gtk_widget_add_accelerator(GTK_WIDGET(self->undo_menu_item), "activate", accel_group,
                                GDK_KEY_z, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-    gtk_widget_add_accelerator(GTK_WIDGET(self->preferences_menu_item), "activate", accel_group,
+    /*gtk_widget_add_accelerator(GTK_WIDGET(self->preferences_menu_item), "activate", accel_group,
+                               GDK_KEY_comma, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);*/
+    gtk_widget_add_accelerator(GTK_WIDGET(self->export_spectrum_menu_item), "activate", accel_group,
+                               GDK_KEY_e, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->export_pulseprogram_menu_item), "activate", accel_group,
+                               GDK_KEY_e, GDK_CONTROL_MASK | GDK_SHIFT_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->tutorial_menu_item), "activate", accel_group,
+                               GDK_KEY_F1, 0, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->matrix_composer_menu_item), "activate", accel_group,
+                               GDK_KEY_y, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->pulse_shape_menu_item), "activate", accel_group,
                                GDK_KEY_p, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(self->single_spins_menu_item), "activate", accel_group,
+                               GDK_KEY_b, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 #endif /* __APPLE__ */
 
     provider = gtk_css_provider_new();
     display = gdk_display_get_default();
     screen = gdk_display_get_default_screen(display);
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font: 15px \"Monospace\";}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
+    gtk_css_provider_load_from_data(provider, "#grey_scrollview {background-color: @theme_bg_color;}\n#grey_textview text {background-color: @theme_bg_color;}\n#grey_textview {font-family: Menlo, SF Mono, Andale Mono, monospace; font-size: 12px;}\n#white_textview {font-family: Menlo, SF Mono, Andale Mono, monospace;}\n#po_textview {font-family: Georgia, monospace; font-size: 14px;}\n#command_line {background-color: white; border: none; box-shadow: none;}\n#pulseSequence_toolbar {background-color: #CCCCCC;}", -1, NULL);
 
 	self->spin_checkbox_array = malloc(4 * sizeof(GtkToggleButton *));
 	self->spin_checkbox_array[0] = self->spin1_checkbox;

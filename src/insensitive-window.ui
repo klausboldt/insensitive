@@ -678,7 +678,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="export_spectrum_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Export Spectrum...</property>
@@ -687,7 +687,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="export_pulseprogram_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Export Pulse Program...</property>
@@ -741,48 +741,6 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-delete</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkMenuItem" id="preferences_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -806,7 +764,7 @@ ph31=0 2 0 2 0 0 0 0
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="matrix_composer_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Matrix Composer...</property>
@@ -815,7 +773,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="pulse_shape_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Pulse Shape...</property>
@@ -824,7 +782,7 @@ ph31=0 2 0 2 0 0 0 0
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem">
+                      <object class="GtkMenuItem" id="single_spins_menu_item">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Single Spins...</property>
@@ -847,7 +805,7 @@ ph31=0 2 0 2 0 0 0 0
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem">
+                      <object class="GtkImageMenuItem" id="tutorial_menu_item">
                         <property name="label" translatable="yes">Tutorial...</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -3740,13 +3698,13 @@ ph31=0 2 0 2 0 0 0 0
                         <property name="margin-bottom">5</property>
                         <child>
                           <object class="GtkTextView" id="product_operator_textview">
+                            <property name="name">po_textview</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="editable">False</property>
                             <property name="wrap-mode">word</property>
                             <property name="cursor-visible">False</property>
                             <property name="buffer">productoperator_textbuffer</property>
-                            <property name="monospace">True</property>
                           </object>
                         </child>
                       </object>
@@ -4623,7 +4581,6 @@ ph31=0 2 0 2 0 0 0 0
                                 <property name="vexpand">True</property>
                                 <property name="editable">False</property>
                                 <property name="buffer">pulseProgram_textbuffer</property>
-                                <property name="monospace">True</property>
                               </object>
                             </child>
                           </object>
