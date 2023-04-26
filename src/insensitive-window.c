@@ -75,8 +75,8 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, menu_bar);
     /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, file_menu); */
     /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, edit_menu); */
-    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, window_menu); */
-    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, help_menu); */
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, window_menu);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, help_menu);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, open_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_spin_system_menu_item);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, save_pulse_program_menu_item);
@@ -341,13 +341,13 @@ static void insensitive_window_init(InsensitiveWindow *self)
     GtkosxApplication *theApp = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
     gtk_widget_hide(GTK_WIDGET(self->menu_bar));
     gtkosx_application_set_menu_bar(theApp, GTK_MENU_SHELL(self->menu_bar));
-    //gtkosx_application_set_window_menu(theApp, self->window_menu);
-    //gtkosx_application_set_help_menu(theApp, self->help_menu);
+    gtkosx_application_set_help_menu(theApp, self->help_menu);
+    gtkosx_application_set_window_menu(theApp, self->window_menu);
     gtkosx_application_set_about_item(theApp, self->about_menu_item);
     gtkosx_application_insert_app_menu_item(theApp, self->preferences_menu_item, 2);
     GtkSeparatorMenuItem *separator = gtk_separator_menu_item_new();
     gtkosx_application_insert_app_menu_item(theApp, separator, 3);
-    //gtk_widget_hide(GTK_WIDGET(self->quit_menu_item));
+    gtk_widget_hide(GTK_WIDGET(self->quit_menu_item));
     gtkosx_application_ready(theApp);
 #else
     gtk_widget_add_accelerator(GTK_WIDGET(self->open_menu_item), "activate", accel_group,
@@ -8564,10 +8564,10 @@ G_MODULE_EXPORT gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpoint
                 matrixElement = insensitive_spinsystem_get_matrixelement(spinsystem, m, n);
                 factor = dimension;
                 matrixElement.real *= factor;
-                matrixElement.imag *= factor;
+                matrixElement.imag *= -factor;
                 strcpy(matrixElementString, "\0");
                 string_for_complex_number(matrixElementString, matrixElement);
-                cairo_text_extents (cr, matrixElementString, &extents);
+                cairo_text_extents(cr, matrixElementString, &extents);
                 alignment = element_width - extents.width - extents.x_bearing;
                 x = origin_x + m * element_width + m * spacing;
                 y = origin_y + (n + 1) * element_height + n * spacing;

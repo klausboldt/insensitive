@@ -40,7 +40,7 @@ struct _InsensitiveWindow {
 
 	  /* Template widgets */
   	GtkMenuBar          *menu_bar;
-    //GtkMenu             *file_menu, *edit_menu, *window_menu, *help_menu;
+    GtkMenuItem         *file_menu, *edit_menu, *window_menu, *help_menu;
     GtkMenuItem         *preferences_menu_item, *about_menu_item, *open_menu_item, *undo_menu_item, *quit_menu_item;
     GtkMenuItem         *save_spin_system_menu_item, *save_pulse_program_menu_item, *save_spectrum_menu_item;
     GtkMenuItem         *export_spectrum_menu_item, *export_pulseprogram_menu_item, *tutorial_menu_item;
