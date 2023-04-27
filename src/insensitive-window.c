@@ -8564,7 +8564,7 @@ G_MODULE_EXPORT gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpoint
                 matrixElement = insensitive_spinsystem_get_matrixelement(spinsystem, m, n);
                 factor = dimension;
                 matrixElement.real *= factor;
-                matrixElement.imag *= -factor;
+                matrixElement.imag *= factor;
                 strcpy(matrixElementString, "\0");
                 string_for_complex_number(matrixElementString, matrixElement);
                 cairo_text_extents(cr, matrixElementString, &extents);
@@ -8606,7 +8606,7 @@ G_MODULE_EXPORT gboolean draw_matrix_view(GtkWidget *widget, cairo_t *cr, gpoint
                 else
                     factor = dimension;
                 matrixElement.real *= factor;
-                matrixElement.imag *= factor;
+                matrixElement.imag *= -factor;
                 if(m == n) {
                     x = matrixElement.real * element_width / 2;
                     // Draw line
