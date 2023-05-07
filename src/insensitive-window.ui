@@ -5241,7 +5241,7 @@ ph31=0 2 0 2 0 0 0 0
                                     <property name="can-focus">True</property>
                                     <property name="receives-default">False</property>
                                     <property name="draw-indicator">True</property>
-                                    <signal name="toggled" handler="on_absDisp_radtiobutton_toggled" object="InsensitiveWindow" swapped="no"/>
+                                    <signal name="toggled" handler="on_absDisp_radiobutton_toggled" object="InsensitiveWindow" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left-attach">0</property>
@@ -5257,7 +5257,7 @@ ph31=0 2 0 2 0 0 0 0
                                     <property name="active">True</property>
                                     <property name="draw-indicator">True</property>
                                     <property name="group">absDispReal_radiobutton</property>
-                                    <signal name="toggled" handler="on_absDisp_radtiobutton_toggled" object="InsensitiveWindow" swapped="no"/>
+                                    <signal name="toggled" handler="on_absDisp_radiobutton_toggled" object="InsensitiveWindow" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left-attach">1</property>

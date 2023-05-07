@@ -223,6 +223,7 @@ void insensitive_controller_absolute_value_1D_spectrum(InsensitiveController *se
 void insensitive_controller_perform_single_dimension_fourier_transform(InsensitiveController *self,
                                                                        DSPSplitComplex source,
                                                                        DSPSplitComplex destination,
+                                                                       unsigned int indirectDataPoints,
                                                                        enum SpectrumDimension domain);
 void insensitive_controller_swap_states_spectra(gboolean realDataSet, DSPSplitComplex *sinModulated, DSPSplitComplex *cosModulated);
 void insensitive_controller_fourier_transform_2D_spectrum_along_T2(InsensitiveController *self);

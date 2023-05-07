@@ -1921,17 +1921,14 @@ void transverse_dipolar_relaxation(DSPComplex *matrix, unsigned int size, DSPCom
 		}
 		/* Add difference vector to original matrix */
 		for (i = 0; i < size; i++)
-			matrix[i * size + i] =
-				complex_rect(matrix[i * size + i].real + after_relaxation[i], 0);
+			matrix[i * size + i] = complex_rect(matrix[i * size + i].real + after_relaxation[i], 0);
 
 		/* Perform transverse relaxation */
 		for (i = 0; i < size; i++) {
 			for (j = 0; j < size; j++) {
 				if (i != j) {
 					if (relaxation[j * size + i].imag != 0)
-						dampening =
-							complex_rect(-time /
-								     relaxation[j * size + i].imag, 0);
+						dampening = complex_rect(-time / relaxation[j * size + i].imag, 0);
 					else
 						dampening = complex_rect(0, 0);
 					matrix_element = matrix[j * size + i];
@@ -3522,13 +3519,13 @@ void vDSP_fft_zip(fftw_plan __Plan, const DSPSplitComplex *__C, unsigned int __s
 	unsigned int i, size = pow2(__Log2N);
 
     fftw_data = fftw_malloc(size * sizeof(fftw_complex));
-	for (i = 0; i < size; i++)
-    	fftw_data[i] = __C->realp[i * __stride] + I * __C->imagp[i * __stride];
 	__Plan = fftw_plan_dft_1d(size, fftw_data, fftw_data, __Direction, FFTW_ESTIMATE);
+	for (i = 0; i < size; i++)
+    	fftw_data[i] = (double)__C->realp[i * __stride] + I * (double)__C->imagp[i * __stride];
 	fftw_execute(__Plan);
 	for (i = 0; i < size; i++) {
-		__C->realp[i * __stride] = creal(fftw_data[i]);
-		__C->imagp[i * __stride] = cimag(fftw_data[i]);
+		__C->realp[i * __stride] = (float)creal(fftw_data[i]);
+		__C->imagp[i * __stride] = (float)cimag(fftw_data[i]);
 	}
 	fftw_free(fftw_data);
 	fftw_destroy_plan(__Plan);

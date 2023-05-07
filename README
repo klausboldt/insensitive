@@ -97,5 +97,5 @@ Third Party Software
 
 Insensitive 0.9.34 and later versions includes code from third parties:
 
-- CONREC contour plots (Paul Bourke, https://paulbourke.net/papers/conrec/)
+- CONREC contour plots (Paul Bourke, http://paulbourke.net/papers/conrec/)
 - Levenberg-Marquardt (Ron Babich, https://gist.github.com/rbabich/3539146/)

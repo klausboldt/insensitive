@@ -127,10 +127,9 @@
             <property name="can-focus">False</property>
             <property name="margin-start">18</property>
             <property name="margin-end">18</property>
-            <property name="spacing">8</property>
             <child>
               <object class="GtkRadioButton" id="Mxy_phase_radiobutton">
-                <property name="label" translatable="yes">Mxy + Phase   </property>
+                <property name="label" translatable="yes">Mxy + φ  </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -146,7 +145,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="Mx_My_radiobutton">
-                <property name="label" translatable="yes">Mx + My   </property>
+                <property name="label" translatable="yes">Mx + My  </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -163,7 +162,7 @@
             </child>
             <child>
               <object class="GtkRadioButton" id="Mz_radiobutton">
-                <property name="label" translatable="yes">Mz</property>
+                <property name="label" translatable="yes">Mz  </property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
@@ -176,6 +175,23 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="Mxy_FT_radiobutton">
+                <property name="label" translatable="yes">Mxy + FT</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="active">True</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">Mxy_phase_radiobutton</property>
+                <signal name="toggled" handler="on_pulsePowerDisplayMode_changed" object="InsensitivePulseShaper" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
@@ -358,6 +374,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="valign">center</property>
+                <property name="hexpand">True</property>
                 <property name="text" translatable="yes">0.100</property>
                 <property name="input-purpose">number</property>
                 <signal name="activate" handler="on_time_entry_activate" object="InsensitivePulseShaper" swapped="no"/>
@@ -427,6 +444,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="valign">center</property>
+                <property name="hexpand">True</property>
                 <property name="text" translatable="yes">0.00</property>
                 <property name="input-purpose">number</property>
                 <signal name="activate" handler="on_frequency_entry_activate" object="InsensitivePulseShaper" swapped="no"/>

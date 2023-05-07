@@ -1383,7 +1383,7 @@ G_MODULE_EXPORT void on_tutorial_toolbutton_clicked(GtkToolButton *toolbutton, g
     while (*dirs != NULL) {
         filename = g_build_filename(*dirs++, "insensitive", "doc", "default.html", NULL);
         if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-            url = malloc((strlen(filename) + 7) * sizeof(gchar));
+            url = malloc((strlen(filename) + 9) * sizeof(gchar));
             strcpy(url, "file:///");
             strcat(url, filename);
             gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
@@ -5047,7 +5047,7 @@ int get_statesDataSet(InsensitiveWindow *window)
 }
 
 
-G_MODULE_EXPORT void on_absDisp_radtiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_data)
+G_MODULE_EXPORT void on_absDisp_radiobutton_toggled(GtkToggleButton *radiobutton, gpointer user_data)
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
@@ -5445,7 +5445,7 @@ gboolean perform_open_spectrum(InsensitiveWindow *window, xmlNodePtr node)
 				version = xmlNodeGetContent(iter->next->next);
 			else if (!strcmp((char *)xmlNodeGetContent(iter), "DetectionMethod"))
 				detectionMethod = (enum PurePhaseDetectionMethod)atoi((char *)xmlNodeGetContent(iter->next->next));
-			else if (!strcmp((char *)xmlNodeGetContent(iter), "Dimensions"))
+            else if (!strcmp((char *)xmlNodeGetContent(iter), "Dimensions"))
                 dimensions = atoi((char *)xmlNodeGetContent(iter->next->next));
             else if (!strcmp((char *)xmlNodeGetContent(iter), "DwellTime"))
 				dwellTime = atof((char *)xmlNodeGetContent(iter->next->next));
@@ -5509,9 +5509,19 @@ gboolean perform_open_spectrum(InsensitiveWindow *window, xmlNodePtr node)
     insensitive_controller_set_showImaginaryPart(window->controller, showImaginarySpectrum);
     set_showIntegral(window, showIntegral);
     insensitive_controller_set_showIntegral(window->controller, showIntegral);
+    g_signal_handlers_block_by_func(G_OBJECT(window->absDispReal_radiobutton), G_CALLBACK(on_absDisp_radiobutton_toggled), (gpointer)window);
+    g_signal_handlers_block_by_func(G_OBJECT(window->absDispImag_radiobutton), G_CALLBACK(on_absDisp_radiobutton_toggled), (gpointer)window);
+    if (statesDataSet == 0) {
+        gtk_toggle_button_set_active(window->absDispImag_radiobutton, TRUE);
+        gtk_toggle_button_set_active(window->absDispReal_radiobutton, FALSE);
+    } else {
+        gtk_toggle_button_set_active(window->absDispReal_radiobutton, TRUE);
+        gtk_toggle_button_set_active(window->absDispImag_radiobutton, FALSE);
+    }
     window->statesDataSet = statesDataSet;
-    gtk_toggle_button_set_active(window->absDispReal_radiobutton, statesDataSet);
     insensitive_controller_set_realDataSetsForStatesMethod(window->controller, statesDataSet);
+    g_signal_handlers_unblock_by_func(G_OBJECT(window->absDispReal_radiobutton), G_CALLBACK(on_absDisp_radiobutton_toggled), (gpointer)window);
+    g_signal_handlers_unblock_by_func(G_OBJECT(window->absDispImag_radiobutton), G_CALLBACK(on_absDisp_radiobutton_toggled), (gpointer)window);
     window->plotMode = plotStyle;
     switch (plotStyle) {
     case Stacked:
@@ -6742,7 +6752,9 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 {
 	gchar *command, **word, *commandCopy;
 	GRegex *regex1spin_xy, *regex1spin_z, *regex2spins, *regex3spins, *regex4spins;
+    GRegex *regexFracJ, *regexFracJ_indices;
 	gboolean commandMatches1SpinOperator_xy, commandMatches1SpinOperator_z;
+    gboolean commandMatchesFractionOfJ, commandMatchesFractionOfJ_indices;
 	gboolean commandMatches2SpinOperator, commandMatches3SpinOperator, commandMatches4SpinOperator;
 	GError *err = NULL;
 	GMatchInfo *matchInfo;
@@ -6785,6 +6797,20 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	regex4spins = g_regex_new("\\b8(i|s)[1-4]z(i|s)[1-4]z(i|s)[1-4]z(i|s)[1-4]z\\b", 0, 0, &err);
 	g_regex_match(regex4spins, word[0], 0, &matchInfo);
 	commandMatches4SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+    regexFracJ = g_regex_new("^1/[2-4|8]j$", 0, 0, &err);
+	g_regex_match(regexFracJ, word[0], 0, &matchInfo);
+	commandMatchesFractionOfJ = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+    free(regexFracJ);
+    regexFracJ = g_regex_new("^1/\\([2-4|8]j\\)$", 0, 0, &err);
+	g_regex_match(regexFracJ, word[0], 0, &matchInfo);
+    if (g_match_info_matches(matchInfo)) commandMatchesFractionOfJ = TRUE;
+    regexFracJ_indices = g_regex_new("^1/[2-4|8]j[1-4][1-4]$", 0, 0, &err);
+	g_regex_match(regexFracJ_indices, word[0], 0, &matchInfo);
+	commandMatchesFractionOfJ_indices = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+    free(regexFracJ_indices);
+    regexFracJ_indices = g_regex_new("^1/\\([2-4|8]j[1-4][1-4]\\)$", 0, 0, &err);
+	g_regex_match(regexFracJ_indices, word[0], 0, &matchInfo);
+    if (g_match_info_matches(matchInfo)) commandMatchesFractionOfJ_indices = TRUE;
 
 	// Translate pi and pi/2 keywords to 180 and 90
 	if (number_of_words > 1) {
@@ -6793,18 +6819,130 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		if (g_match_info_matches(matchInfo)) {
 			if (!g_strcmp0(word[0], "pi/4") || !g_strcmp0(word[0], "π/4"))
 				g_strlcpy(word[0], "45", str_len);
-			if (!g_strcmp0(word[0], "-pi/4") || !g_strcmp0(word[0], "-π/4"))
-				g_strlcpy(word[0], "-45", str_len);
 			if (!g_strcmp0(word[0], "pi/2") || !g_strcmp0(word[0], "π/2"))
 				g_strlcpy(word[0], "90", str_len);
-			if (!g_strcmp0(word[0], "-pi/2") || !g_strcmp0(word[0], "-π/2"))
-				g_strlcpy(word[0], "-90", str_len);
 			if (!g_strcmp0(word[0], "pi") || !g_strcmp0(word[0], "π"))
 				g_strlcpy(word[0], "180", str_len);
+            if (!g_strcmp0(word[0], "3pi/2") || !g_strcmp0(word[0], "3π/2"))
+				g_strlcpy(word[0], "270", str_len);
+			/*if (!g_strcmp0(word[0], "-pi/4") || !g_strcmp0(word[0], "-π/4"))
+				g_strlcpy(word[0], "-45", str_len);
+			if (!g_strcmp0(word[0], "-pi/2") || !g_strcmp0(word[0], "-π/2"))
+				g_strlcpy(word[0], "-90", str_len);
 			if (!g_strcmp0(word[0], "-pi") || !g_strcmp0(word[0], "-π"))
 				g_strlcpy(word[0], "-180", str_len);
+			if (!g_strcmp0(word[0], "-3pi/2") || !g_strcmp0(word[0], "-3π/2"))
+				g_strlcpy(word[0], "-270", str_len);*/
 		}
 	}
+    // Translate 1/(nJab) keyword to correct delay times
+    if ((commandMatchesFractionOfJ || commandMatchesFractionOfJ_indices) && number_of_words == 2) {
+        gboolean secondWordMatchesProductOperator, secondWordMatches2SpinOperator;
+
+        secondWordMatchesProductOperator = FALSE;
+        secondWordMatches2SpinOperator = FALSE;
+        g_regex_match(regex1spin_z, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
+        g_regex_match(regex2spins, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) {
+            secondWordMatchesProductOperator = TRUE;
+            secondWordMatches2SpinOperator = TRUE;
+        }
+        g_regex_match(regex3spins, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
+        g_regex_match(regex4spins, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
+
+        if (secondWordMatchesProductOperator) {
+            unsigned int i, factor, spin, spinType[2], spinNumber[2], array = 0;
+		    unsigned int numberOfSpins = lb(word[1][0] - 48) + 1;
+            float delay, couplingConstant;
+
+            i = (word[0][2] == '(') ? 3 : 2;
+            factor = word[0][i];
+            delay = 1 / (float)(factor - 48);
+            if (commandMatchesFractionOfJ_indices) {
+                spinNumber[0] = word[0][i + 2] - 49;
+                spinNumber[1] = word[0][i + 3] - 49;
+            } else if (secondWordMatches2SpinOperator) {
+                spinNumber[0] = word[1][2] - 49;
+                spinNumber[1] = word[1][5] - 49;
+                spinType[0] = (word[1][1] == 'i') ? spinTypeI : spinTypeS;
+                spinType[1] = (word[1][4] == 'i') ? spinTypeI : spinTypeS;
+                if (spinType[0] != insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spinNumber[0])
+                    || spinType[1] != insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spinNumber[1])) {
+                    dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+							                        GTK_DIALOG_DESTROY_WITH_PARENT,
+							                        GTK_MESSAGE_WARNING,
+							                        GTK_BUTTONS_OK,
+                                                    "This coefficient %s must be followed by a longitudinal two-spin order operator like 2I1zI2z with correct spin types and spin system size. %s does not match that description.", word[0], word[1]);
+			        gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
+			        gtk_dialog_run(GTK_DIALOG(dialog));
+			        gtk_widget_destroy(dialog);
+                    goto end_of_command_execution;
+                }
+            } else {
+                dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+									            GTK_DIALOG_DESTROY_WITH_PARENT,
+									            GTK_MESSAGE_WARNING,
+									            GTK_BUTTONS_OK,
+									            "The coefficient %s must be followed by a longitudinal two-spin order operator like 2I1zI2z", word[0]);
+			    gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
+			    gtk_dialog_run(GTK_DIALOG(dialog));
+			    gtk_widget_destroy(dialog);
+                goto end_of_command_execution;
+            }
+            if (spinNumber[0] == spinNumber[1]) {
+                dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+									            GTK_DIALOG_DESTROY_WITH_PARENT,
+									            GTK_MESSAGE_WARNING,
+									            GTK_BUTTONS_OK,
+									            "The spin numbers in the argument %s are equal", word[0]);
+			    gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
+			    gtk_dialog_run(GTK_DIALOG(dialog));
+			    gtk_widget_destroy(dialog);
+                goto end_of_command_execution;
+            } else if (spinNumber[0] >= insensitive_spinsystem_get_spins(window->controller->spinSystem)
+                       || spinNumber[1] >= insensitive_spinsystem_get_spins(window->controller->spinSystem)) {
+                dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+									            GTK_DIALOG_DESTROY_WITH_PARENT,
+									            GTK_MESSAGE_WARNING,
+									            GTK_BUTTONS_OK,
+									            "The spin numbers in the argument %s are larger than the current spin system", word[0]);
+			    gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
+			    gtk_dialog_run(GTK_DIALOG(dialog));
+			    gtk_widget_destroy(dialog);
+                goto end_of_command_execution;
+            } else {
+                couplingConstant = insensitive_spinsystem_get_jcouplingconstant_between_spins(window->controller->spinSystem,
+                                                                                              spinNumber[0], spinNumber[1]);
+                if (couplingConstant == 0) {
+                    dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+									                GTK_DIALOG_DESTROY_WITH_PARENT,
+									                GTK_MESSAGE_WARNING,
+									                GTK_BUTTONS_OK,
+									                "No scalar coupling constant defined between spin %d and spin %d", spinNumber[0] + 1, spinNumber[1] + 1);
+			        gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
+			        gtk_dialog_run(GTK_DIALOG(dialog));
+			        gtk_widget_destroy(dialog);
+                    goto end_of_command_execution;
+                } else {
+                    delay /= couplingConstant;
+                    sprintf(word[0], "%.2f", delay);
+                }
+            }
+        } else {
+            dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+									        GTK_DIALOG_DESTROY_WITH_PARENT,
+									        GTK_MESSAGE_WARNING,
+									        GTK_BUTTONS_OK,
+									        "The coefficient %s must be followed by a free evolution propagator", word[0]);
+			gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
+			gtk_dialog_run(GTK_DIALOG(dialog));
+			gtk_widget_destroy(dialog);
+            goto end_of_command_execution;
+        }
+    }
 
 	// Execute command
 
@@ -7152,30 +7290,41 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
             on_fid_button_clicked(window->fid_button, window);
         }
 	}
-	// GPL
-	else if (!g_strcmp0(word[0], "gpl") && number_of_words <= 2) {
+	// GPZ
+	else if (!g_strcmp0(word[0], "gpz") && number_of_words <= 2) {
 		if (number_of_words == 1) {
 			dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 							GTK_DIALOG_DESTROY_WITH_PARENT,
 							GTK_MESSAGE_INFO,
 							GTK_BUTTONS_OK,
-							"GPL = %.3f", insensitive_settings_get_gradientStrength(window->controller->settings));
+							"GPZ [%%] = %.0f (%.3f)", insensitive_settings_get_gradientStrength(window->controller->settings) / 320.0, insensitive_settings_get_gradientStrength(window->controller->settings));
 			gtk_window_set_title(GTK_WINDOW(dialog), "Gradient pulse power level");
 			gtk_dialog_run(GTK_DIALOG(dialog));
 			gtk_widget_destroy(dialog);
 		} else {
-			gtk_entry_set_text(window->gradient_strength_entry, word[1]);
+            unsigned int len = strlen(word[1]);
+            double value;
+            gchar str[10];
+            if (word[1][len - 1] == '%') {
+                word[1][len - 1] = '\0';
+                value = atof(word[1]);
+                //if (value > 100.0) value = 100.0;
+                value *= 320.0;
+                sprintf(str, "%.0f", value);
+                gtk_entry_set_text(window->gradient_strength_entry, str);
+            } else
+			    gtk_entry_set_text(window->gradient_strength_entry, word[1]);
 			on_gradient_strength_entry_activate(window->gradient_strength_entry, window);
 		}
 	}
-	// GPT
-	else if (!g_strcmp0(word[0], "gpt") && number_of_words <= 2) {
+	// GP
+	else if (!g_strcmp0(word[0], "gp") && number_of_words <= 2) {
 		if (number_of_words == 1) {
 			dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 							GTK_DIALOG_DESTROY_WITH_PARENT,
 							GTK_MESSAGE_INFO,
 							GTK_BUTTONS_OK,
-							"GPT [ms] = %.3f", insensitive_settings_get_gradientDuration(window->controller->settings));
+							"GP [ms] = %.3f", insensitive_settings_get_gradientDuration(window->controller->settings));
 			gtk_window_set_title(GTK_WINDOW(dialog), "Gradient pulse duration");
 			gtk_dialog_run(GTK_DIALOG(dialog));
 			gtk_widget_destroy(dialog);
@@ -7252,7 +7401,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
                 while (*dirs != NULL) {
                     filename = g_build_filename(*dirs++, "insensitive", "doc", html_file, NULL);
                     if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-                        url = malloc((strlen(filename) + 7) * sizeof(gchar));
+                        url = malloc((strlen(filename) + 9) * sizeof(gchar));
                         strcpy(url, "file:///");
                         strcat(url, filename);
 			            gtk_show_uri_on_window(GTK_WINDOW(window), url, GDK_CURRENT_TIME, &error);
@@ -7584,14 +7733,14 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		gtk_toggle_button_set_active(window->include_relaxation_checkbox, TRUE);
 		on_freeEvolution_button_clicked(window->freeEvolution_button, window);
 	}
-	// PT
-	else if (!g_strcmp0(word[0], "pt") && number_of_words <= 2) {
+	// P
+	else if (!g_strcmp0(word[0], "p") && number_of_words <= 2) {
 		if (number_of_words == 1) {
 			dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 							GTK_DIALOG_DESTROY_WITH_PARENT,
 							GTK_MESSAGE_INFO,
 							GTK_BUTTONS_OK,
-							"PT [ms] = %.3f", insensitive_settings_get_pulseDuration(window->controller->settings));
+							"P [ms] = %.3f", insensitive_settings_get_pulseDuration(window->controller->settings));
 			gtk_window_set_title(GTK_WINDOW(dialog), "Pulse duration");
 			gtk_dialog_run(GTK_DIALOG(dialog));
 			gtk_widget_destroy(dialog);
@@ -8226,7 +8375,8 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		for (i = 3; i <= 3 * numberOfSpins; i += 3) {
 			spin = word[0][i - 1] - 49;
 			type = (word[0][i - 2] == 'i') ? spinTypeI : spinTypeS;
-			if (array & pow2(spin) || insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin) != type) {
+			if (array & pow2(spin) || spin >= insensitive_spinsystem_get_spins(window->controller->spinSystem)
+                || insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin) != type) {
 				array = 0;
 				break;
 			} else {
@@ -8238,7 +8388,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 							GTK_DIALOG_DESTROY_WITH_PARENT,
 							GTK_MESSAGE_WARNING,
 							GTK_BUTTONS_OK,
-							"The same spin my occur twice or a spin may not match its spin type in the product operator %s", word[0]);
+							"The same spin my occur twice or a spin may not match its spin type or spin system size in the product operator %s", word[0]);
 			gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
 			gtk_dialog_run(GTK_DIALOG(dialog));
 			gtk_widget_destroy(dialog);
@@ -8386,7 +8536,8 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 				for (i = 3; i <= 3 * numberOfSpins; i += 3) {
 					spin = word[1][i - 1] - 49;
 					type = (word[1][i - 2] == 'i') ? spinTypeI : spinTypeS;
-					if (array & pow2(spin) || insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin) != type) {
+					if (array & pow2(spin) || spin >= insensitive_spinsystem_get_spins(window->controller->spinSystem)
+                        || insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin) != type) {
 						array = 0;
 						break;
 					} else {
@@ -8398,7 +8549,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 									GTK_DIALOG_DESTROY_WITH_PARENT,
 									GTK_MESSAGE_WARNING,
 									GTK_BUTTONS_OK,
-									"The same spin my occur twice or a spin may not match its spin type in the product operator %s", word[0]);
+									"The same spin my occur twice or a spin may not match its spin type or spin system size in the product operator %s", word[1]);
 					gtk_window_set_title(GTK_WINDOW(dialog), "Syntax error");
 					gtk_dialog_run(GTK_DIALOG(dialog));
 					gtk_widget_destroy(dialog);
@@ -8414,6 +8565,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	else
 		show_command_error((GtkWidget *)entry, window);
 
+end_of_command_execution:
 	gtk_entry_set_text(entry, "");
     window->commandHistoryPosition = 0;
 	g_strfreev(word);
@@ -8422,6 +8574,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	g_free(regex2spins);
 	g_free(regex3spins);
 	g_free(regex4spins);
+	g_free(regexFracJ);
 	g_free(matchInfo);
 	g_free(command);
 }
@@ -9427,7 +9580,7 @@ G_MODULE_EXPORT void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpoin
     int n, xPosition, signumDeltaE, transitionIndex;
     int distance;
     float *valuePtr;
-    cairo_text_extents_t extents;
+    cairo_text_extents_t extents, labelExtents;
 
 	if(window->energyLevel != NULL && window->numberOfLevels > 1) {
         width = gtk_widget_get_allocated_width(widget);
@@ -9523,12 +9676,11 @@ G_MODULE_EXPORT void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpoin
             cairo_stroke(cr);
         } else {
             n = 1;
-            //labelArray = [[NSMutableArray alloc] init];
             cairo_select_font_face(cr, SYSTEM_FONT, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
 			if (!cairo_get_font_face(cr))
 			  cairo_select_font_face(cr, "default", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL); // Lucida Grande
             cairo_set_font_size(cr, 12);
-            cairo_text_extents (cr, "β₁β₂β₃β₄,", &extents);
+            cairo_text_extents(cr, "α₁β₂, β₁α₂,", &extents);
             for (i = 0; i < window->numberOfLevels; i++) {
                 if(degeneracy[i] != 0 && window->energyLevel[i] != FLT_MAX) {
                     oneLevelWidth = (width - spacing * (degeneracy[i] + 1)) / degeneracy[i];
@@ -9572,13 +9724,6 @@ G_MODULE_EXPORT void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpoin
                         g_ptr_array_free(transitionsForLevel, TRUE);
                         transitionIndex++;
                     }
-                    // Create labels
-                    /*NSAttributedString *labelName = [[NSAttributedString alloc] initWithString:[levelNames objectAtIndex:i] attributes: attributes];
-                    float height = 16 * degeneracy[i];
-                    VerticallyCenteredTextField *label = [[VerticallyCenteredTextField alloc] initWithFrame:NSMakeRect(width - 16, energyPosition + 2 - height / 2, 60, height)];
-                    [label setAttributedStringValue:labelName];
-                    [labelArray addObject:label];
-                    [label release];*/
                 }
             }
             // Combine overlapping labels
@@ -9616,26 +9761,71 @@ G_MODULE_EXPORT void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpoin
                     }
                 }
             }
-            //float rowsPresent, rowsNeeded;
+            GPtrArray *labelArray;
+            char *labelPtr, *nextSpacePtr;
+            unsigned int widthLimit, len, pos = 0;
             cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
+            widthLimit = (insensitive_spinsystem_get_spins(window->controller->spinSystem) == 4
+                          && insensitive_settings_get_strongCoupling(window->controller->settings)) ? 6 : 10;
             for (i = 0; i < window->levelNames->len; i++) {
                 label1 = g_ptr_array_index(window->levelNames, i);
-                label1_y = origin_y - ((window->energyLevel[i] - min) / (max - min) * height) - spacing;
+                label1_y = origin_y - ((window->energyLevel[i] - min) / (max - min) * height) - spacing + 1;
                 if (strcmp(label1, "")) {
-                    cairo_move_to(cr, width - 16, label1_y - 2 + extents.height / 2);
-    	            cairo_show_text(cr, label1);
-                    cairo_stroke(cr);
-                    /*rowsPresent = [[labelArray objectAtIndex:i] frame].size.height / 16;
-                    rowsNeeded = [[[labelArray objectAtIndex:i] attributedStringValue] size].height / 16;
-                    rowsNeeded += ceil([[[labelArray objectAtIndex:i] attributedStringValue] size].width / 59) - 1;
-                    if (rowsNeeded < rowsPresent) {
-                        newFrame = NSMakeRect([[labelArray objectAtIndex:i] frame].origin.x,
-                                              [[labelArray objectAtIndex:i] frame].origin.y + ((rowsPresent - rowsNeeded) * 8),
-                                              [[labelArray objectAtIndex:i] frame].size.width,
-                                              rowsNeeded * 16);
-                        [[labelArray objectAtIndex:i] setFrame:newFrame];
+                    labelArray = g_ptr_array_new();
+                    labelPtr = label1;
+                    g_ptr_array_add(labelArray, labelPtr);
+                    cairo_text_extents(cr, labelPtr, &labelExtents);
+                    while (labelExtents.width > extents.width) {
+                        nextSpacePtr = labelPtr;
+                        len = strlen(nextSpacePtr);
+                        while (strlen(nextSpacePtr) > 1) {
+                            nextSpacePtr++;
+                            if (*nextSpacePtr == ',' && *(nextSpacePtr + 1) == ' ') {
+                                if (len - strlen(nextSpacePtr) > widthLimit) {
+                                    *(nextSpacePtr + 1) = '\0';
+                                    labelPtr = nextSpacePtr + 2;
+                                    g_ptr_array_add(labelArray, labelPtr);
+                                    cairo_text_extents(cr, labelPtr, &labelExtents);
+                                    break;
+                                }
+                            }
+                        }
                     }
-                    [[[labelArray objectAtIndex:i] attributedStringValue] drawInRect:[[labelArray objectAtIndex:i] frame]];*/
+                        /*printf("width=%f > %f\n", labelExtents.width, extents.width);
+                        len = strlen(labelPtr);
+                        printf("len=%d of %s\n", len, labelPtr);
+                        pos = (len > 22) ? len - 1 : 22;
+                        while (pos > 0) {
+                            if (labelPtr[pos] == ' ') {
+                                labelPtr[pos] = '\0';
+                                printf("%d\n", pos);
+                                pos++;
+                                labelPtr += pos;
+                                g_ptr_array_add(labelArray, labelPtr);
+                                cairo_text_extents(cr, labelPtr, &labelExtents);
+                                break;
+                            }
+                            pos--;
+                        }
+                        if (pos == 0) break;
+                    }
+                    cairo_text_extents(cr, label1, &labelExtents);
+                    while (labelExtents.width > extents.width) {
+                        for (int pos = strlen(label1) - 1; pos > 0; pos--) {
+                            if (label1[pos] == ' ') {
+                                label1[pos] = '\0';
+                                g_ptr_array_add(labelArray, label1 + pos + 1);
+                                cairo_text_extents(cr, label1, &labelExtents);
+                            }
+                        }
+                    }
+                    g_ptr_array_add(labelArray, label1);*/
+                    for (guint n = 0; n < labelArray->len; n++) {
+                        cairo_move_to(cr, width - 16, label1_y + (1.3 - labelArray->len + 2 * n) * extents.height / 2);
+    	                cairo_show_text(cr, g_ptr_array_index(labelArray, n));
+                        cairo_stroke(cr);
+                    }
+                    g_ptr_array_free(labelArray, FALSE);
                 }
             }
         }

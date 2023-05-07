@@ -2045,20 +2045,20 @@ void insensitive_controller_calculate_energy_levels(InsensitiveController *self)
                 for (i = 0; i < sizeOfTheSystem; i++) {
                     levelNameString = malloc(56 * sizeof(gchar));
                     if (fabsf(hamiltonian[i * sizeOfTheSystem + i].real - highestLevel) < 0.1) {
-                        strcpy(levelNameString, "|³⁄₂, −³⁄₂⟩");
+                        strcpy(levelNameString, "|³⁄₂,−³⁄₂⟩");
                     } else if (fabsf(hamiltonian[i * sizeOfTheSystem + i].real - secondHighestLevel) < 0.1) {
-                        strcpy(levelNameString, "|³⁄₂, −¹⁄₂⟩");
+                        strcpy(levelNameString, "|³⁄₂,−¹⁄₂⟩");
                     } else if (!thirdQuartetStateFound && fabsf(hamiltonian[i * sizeOfTheSystem + i].real - (2 * secondHighestLevel - highestLevel)) < 0.1) {
-                        strcpy(levelNameString, "|³⁄₂, ¹⁄₂⟩");
+                        strcpy(levelNameString, "|³⁄₂,¹⁄₂⟩");
                         thirdQuartetStateFound = TRUE;
                     } else if (!fourthQuartetStateFound && fabsf(hamiltonian[i * sizeOfTheSystem + i].real - (-2 * highestLevel + 3 * secondHighestLevel)) < 0.1) {
-                        strcpy(levelNameString, "|³⁄₂, ³⁄₂⟩");
+                        strcpy(levelNameString, "|³⁄₂,³⁄₂⟩");
                         fourthQuartetStateFound = TRUE;
                     } else {
                         if (doubletStatesFound < 2)
-                            strcpy(levelNameString, "|¹⁄₂, −¹⁄₂⟩");
+                            strcpy(levelNameString, "|¹⁄₂,−¹⁄₂⟩");
                         else
-                            strcpy(levelNameString, "|¹⁄₂, ¹⁄₂⟩");
+                            strcpy(levelNameString, "|¹⁄₂,¹⁄₂⟩");
                         doubletStatesFound++;
                     }
                     g_ptr_array_add(energyLevelNames, levelNameString);
@@ -2098,27 +2098,27 @@ void insensitive_controller_calculate_energy_levels(InsensitiveController *self)
                 for (i = 0; i < sizeOfTheSystem; i++) {
                     levelNameString = malloc(56 * sizeof(gchar));
                     if (fabsf(hamiltonian[i * sizeOfTheSystem + i].real - highestLevel) < 0.1) {
-                        strcpy(levelNameString, "|2, −2⟩");
+                        strcpy(levelNameString, "|2,−2⟩");
                     } else if (fabsf(hamiltonian[i * sizeOfTheSystem + i].real - secondHighestLevel) < 0.1) {
-                        strcpy(levelNameString, "|2, −1⟩");
+                        strcpy(levelNameString, "|2,−1⟩");
                     } else if (!thirdQuintetStateFound && fabsf(hamiltonian[i * sizeOfTheSystem + i].real - (2 * secondHighestLevel - highestLevel)) < 0.1) {
-                        strcpy(levelNameString, "|2, 0⟩");
+                        strcpy(levelNameString, "|2,0⟩");
                         thirdQuintetStateFound = TRUE;
                     } else if(!fourthQuintetStateFound && fabsf(hamiltonian[i * sizeOfTheSystem + i].real - (-2 * highestLevel + 3 * secondHighestLevel)) < 0.1) {
-                        strcpy(levelNameString, "|2, 1⟩");
+                        strcpy(levelNameString, "|2,1⟩");
                         fourthQuintetStateFound = TRUE;
                     } else if(!fifthQuintetStateFound && fabsf(hamiltonian[i * sizeOfTheSystem + i].real - (-3 * highestLevel + 4 * secondHighestLevel)) < 0.1) {
-                        strcpy(levelNameString, "|2, 2⟩");
+                        strcpy(levelNameString, "|2,2⟩");
                         fifthQuintetStateFound = TRUE;
                     } else {
                         if(otherStatesFound < 3)
-                            strcpy(levelNameString, "|1, −1⟩");
+                            strcpy(levelNameString, "|1,−1⟩");
                         else if(otherStatesFound < 6)
-                            strcpy(levelNameString, "|1, 0⟩");
+                            strcpy(levelNameString, "|1,0⟩");
                         else if(otherStatesFound < 8)
-                            strcpy(levelNameString, "|0, 0⟩");
+                            strcpy(levelNameString, "|0,0⟩");
                         else
-                            strcpy(levelNameString, "|1, 1⟩");
+                            strcpy(levelNameString, "|1,1⟩");
                        otherStatesFound++;
                     }
                     g_ptr_array_add(energyLevelNames, levelNameString);
@@ -5044,13 +5044,14 @@ void insensitive_controller_absolute_value_1D_spectrum(InsensitiveController *se
 void insensitive_controller_perform_single_dimension_fourier_transform(InsensitiveController *self,
 								                                       DSPSplitComplex source,
 								                                       DSPSplitComplex destination,
+                                                                       unsigned int indirectDataPoints,
 								                                       enum SpectrumDimension domain)
 {
 	unsigned int x, y, t1DataPoints, t2DataPoints, totalDataPoints, center;
 	DSPSplitComplex foldedSpectrum, fid_entry;
 
 	t2DataPoints = insensitive_settings_get_dataPoints(self->settings);
-	t1DataPoints = indirect_datapoints(self->detectionMethodOfCurrentSpectrum, t2DataPoints);
+	t1DataPoints = indirectDataPoints; //indirect_datapoints(self->detectionMethodOfCurrentSpectrum, t2DataPoints);
 	totalDataPoints = t1DataPoints * t2DataPoints;
 	foldedSpectrum.realp = malloc(totalDataPoints * sizeof(float));
 	foldedSpectrum.imagp = malloc(totalDataPoints * sizeof(float));
@@ -5135,17 +5136,17 @@ void insensitive_controller_fourier_transform_2D_spectrum_along_T2(InsensitiveCo
 {
     int t1DataPoints, t2DataPoints, totalDataPoints;
 
-    // Perform FFT on sine modulated spectrum
-    insensitive_controller_perform_single_dimension_fourier_transform(self, self->fid, self->spectrum1D, F2);
-    // Perform FFT on cosine modulated spectrum for States procedure
-    if(self->detectionMethodOfCurrentSpectrum == States) {
-        insensitive_controller_perform_single_dimension_fourier_transform(self, self->fidStates, self->spectrum1DStates, F2);
-        // Swap spectra to form pure phase 2D spectra:
-        insensitive_controller_swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
-    }
     t2DataPoints = insensitive_settings_get_dataPoints(self->settings);
     t1DataPoints = indirect_datapoints(self->detectionMethodOfCurrentSpectrum, t2DataPoints);
     totalDataPoints = t2DataPoints * t1DataPoints;
+    // Perform FFT on sine modulated spectrum
+    insensitive_controller_perform_single_dimension_fourier_transform(self, self->fid, self->spectrum1D, t1DataPoints, F2);
+    // Perform FFT on cosine modulated spectrum for States procedure
+    if(self->detectionMethodOfCurrentSpectrum == States) {
+        insensitive_controller_perform_single_dimension_fourier_transform(self, self->fidStates, self->spectrum1DStates, t1DataPoints, F2);
+        // Swap spectra to form pure phase 2D spectra:
+        insensitive_controller_swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
+    }
     set_indirect_dataPoints((InsensitiveWindow *)self->displayController, t1DataPoints);
     set_complex_spectrum((InsensitiveWindow *)self->displayController,
                          self->spectrum1D, t2DataPoints, totalDataPoints);
@@ -5169,15 +5170,15 @@ void insensitive_controller_fourier_transform_2D_spectrum_along_T2_and_T1(Insens
     // With amplitude modulation
     if(self->detectionMethodOfCurrentSpectrum != None) {
         // Perform FFT on sine modulated spectra
-        insensitive_controller_perform_single_dimension_fourier_transform(self, self->fid, self->spectrum1D, F2);
+        insensitive_controller_perform_single_dimension_fourier_transform(self, self->fid, self->spectrum1D, t1DataPoints, F2);
         // States
         if(self->detectionMethodOfCurrentSpectrum == States || self->detectionMethodOfCurrentSpectrum == StatesTPPI) {
             // Perform FFT on cosine modulated spectra
-            insensitive_controller_perform_single_dimension_fourier_transform(self, self->fidStates, self->spectrum1DStates, F2);
+            insensitive_controller_perform_single_dimension_fourier_transform(self, self->fidStates, self->spectrum1DStates, t1DataPoints, F2);
             // Swap spectra to form pure phase 2D spectra:
             insensitive_controller_swap_states_spectra(self->realDataSetsForStatesMethod, &self->spectrum1D, &self->spectrum1DStates);
             // Perform 2D FFT
-            insensitive_controller_perform_single_dimension_fourier_transform(self, self->spectrum1D, self->spectrum2D, F1);
+            insensitive_controller_perform_single_dimension_fourier_transform(self, self->spectrum1D, self->spectrum2D, t1DataPoints, F1);
             // Rearrange spectrum if States-TPPI method was used
             if(self->detectionMethodOfCurrentSpectrum == StatesTPPI) {
                 foldedSpectrum.realp = malloc(totalDataPoints * sizeof(float));
@@ -5354,13 +5355,14 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
                 }
             }
         }
-    } else /* symmetrisation along diagonal */ {
-        // Create a square spectrum
+    } else { /* symmetrisation along diagonal */
+        // Create a square spectrum by zero-filling the smaller T1 domain
         center = t2DataPoints / 2;
-        symmetricSER.realp = malloc(t2DataPoints * t2DataPoints * sizeof(float));
-        symmetricSER.imagp = malloc(t2DataPoints * t2DataPoints * sizeof(float));
-        squareSpectrum.realp = malloc(t2DataPoints * t2DataPoints * sizeof(float));
-        squareSpectrum.imagp = malloc(t2DataPoints * t2DataPoints * sizeof(float));
+        totalDataPoints = t2DataPoints * t2DataPoints;
+        symmetricSER.realp = malloc(totalDataPoints * sizeof(float));
+        symmetricSER.imagp = malloc(totalDataPoints * sizeof(float));
+        squareSpectrum.realp = malloc(totalDataPoints * sizeof(float));
+        squareSpectrum.imagp = malloc(totalDataPoints * sizeof(float));
         for (y = 0; y < t1DataPoints; y++)
             for (x = 0; x < t2DataPoints; x++) {
                 symmetricSER.realp[y * t2DataPoints + x] = self->fid.realp[y * t2DataPoints + x] * self->apodizationT2[x] * self->apodizationT1[y];
@@ -5368,26 +5370,153 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
             }
         for (y = t1DataPoints; y < t2DataPoints; y++)
             for(x = 0; x < t2DataPoints; x++) {
-                symmetricSER.realp[y * t2DataPoints + x] = 0;
-                symmetricSER.imagp[y * t2DataPoints + x] = 0;
+                symmetricSER.realp[y * t2DataPoints + x] = 0.0;
+                symmetricSER.imagp[y * t2DataPoints + x] = 0.0;
             }
-        vDSP_fft2d_zip(self->fftsetup, &symmetricSER, 1, 0, lb(t2DataPoints), lb(t2DataPoints), FFT_FORWARD);
+        // Fourier transform the square spectrum in two dimensions and store it in symmetricSER
+        if(self->detectionMethodOfCurrentSpectrum == None) {
+            vDSP_fft2d_zip(self->fftsetup, &symmetricSER, 1, 0, lb(t2DataPoints), lb(t2DataPoints), FFT_FORWARD);
+        } else {
+            DSPSplitComplex symmetric1D;
+            symmetric1D.realp = malloc(totalDataPoints * sizeof(float));
+            symmetric1D.imagp = malloc(totalDataPoints * sizeof(float));
+            // Perform FFT on sine modulated spectra
+            insensitive_controller_perform_single_dimension_fourier_transform(self, symmetricSER, symmetric1D, t2DataPoints, F2);
+            // States and States-TPPI
+            if(self->detectionMethodOfCurrentSpectrum == States || self->detectionMethodOfCurrentSpectrum == StatesTPPI) {
+                DSPSplitComplex symmetricSERStates, symmetric1DStates;
+                symmetricSERStates.realp = malloc(totalDataPoints * sizeof(float));
+                symmetricSERStates.imagp = malloc(totalDataPoints * sizeof(float));
+                for (y = 0; y < t1DataPoints; y++)
+                    for (x = 0; x < t2DataPoints; x++) {
+                        symmetricSERStates.realp[y * t2DataPoints + x] = self->fidStates.realp[y * t2DataPoints + x] * self->apodizationT2[x] * self->apodizationT1[y];
+                        symmetricSERStates.imagp[y * t2DataPoints + x] = self->fidStates.imagp[y * t2DataPoints + x] * self->apodizationT2[x] * self->apodizationT1[y];
+                    }
+                for (y = t1DataPoints; y < t2DataPoints; y++)
+                    for(x = 0; x < t2DataPoints; x++) {
+                        symmetricSERStates.realp[y * t2DataPoints + x] = 0.0;
+                        symmetricSERStates.imagp[y * t2DataPoints + x] = 0.0;
+                    }
+                symmetric1DStates.realp = malloc(totalDataPoints * sizeof(float));
+                symmetric1DStates.imagp = malloc(totalDataPoints * sizeof(float));
+                // Perform FFT on cosine modulated spectra
+                insensitive_controller_perform_single_dimension_fourier_transform(self, symmetricSERStates, symmetric1DStates, t2DataPoints, F2);
+                //
+                // This is an ugly bug-fix: fftw_plan_dft_1d returns NaN for random rows of zero.
+                // Same row numbers for real/imag, but index and number varies each time.
+                // Cause unknown, at the moment the errorneous rows are overwritten with zeros.
+                //
+                for (i = 0; i < totalDataPoints; i++) {
+                    if (isnan(symmetric1D.realp[i]))
+                        symmetric1D.realp[i] = 0.0;
+                    if (isnan(symmetric1D.imagp[i]))
+                        symmetric1D.imagp[i] = 0.0;
+                    if (isnan(symmetric1DStates.realp[i]))
+                        symmetric1DStates.realp[i] = 0.0;
+                    if (isnan(symmetric1DStates.imagp[i]))
+                        symmetric1DStates.imagp[i] = 0.0;
+                }
+                // Swap spectra to form pure phase 2D spectra:
+                insensitive_controller_swap_states_spectra(self->realDataSetsForStatesMethod, &symmetric1D, &symmetric1DStates);
+                // Perform 2D FFT
+                insensitive_controller_perform_single_dimension_fourier_transform(self, symmetric1D, symmetricSER, t2DataPoints, F1);
+                // Rearrange spectrum if States-TPPI method was used
+                if(self->detectionMethodOfCurrentSpectrum == StatesTPPI) {
+                    DSPSplitComplex foldedSpectrum;
+                    foldedSpectrum.realp = malloc(totalDataPoints * sizeof(float));
+                    foldedSpectrum.imagp = malloc(totalDataPoints * sizeof(float));
+                    center = totalDataPoints / 2;
+                    for(i = 0; i < totalDataPoints; i++) {
+                        if(i < center)
+                            position1 = i + center;
+                        else
+                            position1 = i - center;
+                        foldedSpectrum.realp[position1] = symmetricSER.realp[i];
+                        foldedSpectrum.imagp[position1] = symmetricSER.imagp[i];
+                    }
+                    for(i = 0; i < totalDataPoints; i++) {
+                        if(i < center) {
+                            symmetricSER.imagp[i] = foldedSpectrum.imagp[i + center / 2];
+                            symmetricSER.realp[i] = foldedSpectrum.realp[i + center / 2];
+                        } else {
+                            symmetricSER.imagp[i] = 0.0;
+                            symmetricSER.realp[i] = 0.0;
+                        }
+                    }
+                    free(foldedSpectrum.realp);
+                    free(foldedSpectrum.imagp);
+                }
+                // End States-TPPI
+                free(symmetric1DStates.realp);
+                free(symmetric1DStates.imagp);
+                free(symmetricSERStates.realp);
+                free(symmetricSERStates.imagp);
+            // TPPI
+            } else if(self->detectionMethodOfCurrentSpectrum == TPPI) {
+                unsigned int col, row;
+                double *realVector;
+                float halfT1DataPoints = t2DataPoints / 2;
+                DSPSplitComplex foldedSpectrum;
+                fftw_complex *complexSpectrum;
+
+                realVector = malloc(t2DataPoints * sizeof(double));
+                complexSpectrum = fftw_malloc((halfT1DataPoints + 1) * sizeof(fftw_complex));
+                foldedSpectrum.realp = malloc(totalDataPoints * sizeof(float));
+                foldedSpectrum.imagp = malloc(totalDataPoints * sizeof(float));
+                // Perform real FFT on F1 domain
+                for(col = 0; col < t2DataPoints; col++) {
+                    for(row = 0; row < t2DataPoints; row++) {
+                        if(self->realDataSetsForStatesMethod)
+                            realVector[row] = self->spectrum1D.realp[row * t2DataPoints + col];
+                        else
+                            realVector[row] = self->spectrum1D.imagp[row * t2DataPoints + col];
+                    }
+                    self->fftsetup = fftw_plan_dft_r2c_1d(t2DataPoints, realVector, complexSpectrum, FFTW_ESTIMATE);
+                    fftw_execute(self->fftsetup);
+                    fftw_destroy_plan(self->fftsetup);
+                    for(row = 0; row < halfT1DataPoints; row++) {
+                        foldedSpectrum.imagp[row * t2DataPoints + col] = creal(complexSpectrum[row]);
+                        foldedSpectrum.realp[row * t2DataPoints + col] = cimag(complexSpectrum[row]);
+                    }
+                    foldedSpectrum.realp[0 * t2DataPoints + col] = 0;
+                }
+                // Unfold the raw FFT
+                for(y = 0; y < t2DataPoints; y++) {
+                    for(x = 0; x < t2DataPoints; x++) {
+                        position1 = y * t2DataPoints + x;
+                        position2 = position1;
+                        symmetricSER.realp[position2] = -foldedSpectrum.imagp[position1];
+                        symmetricSER.imagp[position2] = -foldedSpectrum.realp[position1];
+                    }
+                }
+                free(foldedSpectrum.realp);
+                free(foldedSpectrum.imagp);
+                free(realVector);
+                fftw_free(complexSpectrum);
+            }
+            free(symmetric1D.realp);
+            free(symmetric1D.imagp);
+        }
         // Unfold the raw FFT (Mirror at 1/2 axis along F1)
         for (y = 0; y < t2DataPoints; y++) {
             for (x = 0; x < t2DataPoints; x++) {
                 position1 = y * t2DataPoints + x;
-                // First quadrant of the spectrum
-                if ((x < center) && (y < center))
-                    position2 = (y + center) * t2DataPoints + x + center;
-                // Second quadrant of the spectrum
-                else if ((x >= center) && (y < center))
-                    position2 = (y + center) * t2DataPoints + x - center;
-                // Third quadrant of the spectrum
-                else if ((x < center) && (y >= center))
-                    position2 = (y - center) * t2DataPoints + x + center;
-                // Fourth quadrant of the spectrum
-                else if ((x >= center) && (y >= center))
-                    position2 = (y - center) * t2DataPoints + x - center;
+                if (self->detectionMethodOfCurrentSpectrum != None) {
+                    position2 = position1;
+                } else {
+                    // First quadrant of the spectrum
+                    if ((x < center) && (y < center))
+                        position2 = (y + center) * t2DataPoints + x + center;
+                    // Second quadrant of the spectrum
+                    else if ((x >= center) && (y < center))
+                        position2 = (y + center) * t2DataPoints + x - center;
+                    // Third quadrant of the spectrum
+                    else if ((x < center) && (y >= center))
+                        position2 = (y - center) * t2DataPoints + x + center;
+                    // Fourth quadrant of the spectrum
+                    else if ((x >= center) && (y >= center))
+                        position2 = (y - center) * t2DataPoints + x - center;
+                }
                 if (spectrumDomain == 3) {
                     squareSpectrum.realp[position2] = hypotf(symmetricSER.realp[position1], symmetricSER.imagp[position1]);
                     squareSpectrum.imagp[position2] = hypotf(symmetricSER.realp[position1], symmetricSER.imagp[position1]);
@@ -5398,7 +5527,6 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
             }
         }
         // Symmetrize
-        if (self->detectionMethodOfCurrentSpectrum != States)
         for (y = 0; y < t2DataPoints; y++) {
             for (x = 0; x < t2DataPoints; x++) {
                 // Determine mirror pair
@@ -5445,6 +5573,7 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
             }
         }
         // Reduce F1 resolution to 128
+        totalDataPoints = t1DataPoints * t2DataPoints;
         denominator = t2DataPoints / t1DataPoints;
         for (y = 0; y < t1DataPoints; y++) {
             for (x = 0; x < t2DataPoints; x++) {
@@ -5460,6 +5589,8 @@ void insensitive_controller_spectrum_symmetrization(InsensitiveController *self,
         }
         free(symmetricSER.realp);
         free(symmetricSER.imagp);
+        free(squareSpectrum.realp);
+        free(squareSpectrum.imagp);
     }
     set_complex_spectrum((InsensitiveWindow *)self->displayController,
                          self->spectrumSymmetrized, t2DataPoints, totalDataPoints);
@@ -6261,7 +6392,8 @@ void insensitive_controller_create_pulse_powerspectrum(InsensitiveController *se
 		break;
 	}
 
-	if (insensitive_settings_get_ignoreOffResonanceEffectsForPulses(self->settings)) {
+	if (insensitive_settings_get_ignoreOffResonanceEffectsForPulses(self->settings)
+        || insensitive_settings_get_excitationProfile(self->settings) == Mxy_FT) {
         // If no off-resonance effects enabled: calculate Fourier transform of pulse shape
 		// Copy time domain
 		foldedSpectrum.realp = malloc(4 * pulsePowerSpectrumResolution * sizeof(float));
@@ -6294,51 +6426,12 @@ void insensitive_controller_create_pulse_powerspectrum(InsensitiveController *se
 			real = pow(-1, i) * foldedSpectrum.realp[j] / maximum;
 			imag = pow(-1, i) * foldedSpectrum.imagp[j] / maximum;
 			phase = atan2f(real, imag) / (M_PI * 4);
-			real = sqrt(pow(real, 2) + pow(imag, 2));
-			imag = phase;
-			if (i < pulsePowerSpectrumCenter) {
-				self->pulsePowerSpectrum.realp[i + pulsePowerSpectrumCenter] = real;
-				self->pulsePowerSpectrum.imagp[i + pulsePowerSpectrumCenter] = imag;
-			} else {
-				self->pulsePowerSpectrum.realp[i - pulsePowerSpectrumCenter] = real;
-				self->pulsePowerSpectrum.imagp[i - pulsePowerSpectrumCenter] = imag;
-			}
-		}
-        /*
-        // If no off-resonance effects enabled: calculate Fourier transform of pulse shape
-		// Copy time domain
-		foldedSpectrum.realp = malloc(2 * pulsePowerSpectrumResolution * sizeof(float));
-		foldedSpectrum.imagp = malloc(2 * pulsePowerSpectrumResolution * sizeof(float));
-        for (i = 0; i < 2 * pulsePowerSpectrumResolution; i++) {
-            if (i > pulsePowerSpectrumCenter && i < 3 * pulsePowerSpectrumCenter) {
-			    foldedSpectrum.realp[i] = self->pulseShape.realp[i - pulsePowerSpectrumCenter];
-			    foldedSpectrum.imagp[i] = self->pulseShape.imagp[i - pulsePowerSpectrumCenter];
+            real = sqrt(pow(real, 2) + pow(imag, 2));
+            if (insensitive_settings_get_excitationProfile(self->settings) == Mxy_FT) {
+                imag = real;
             } else {
-                foldedSpectrum.realp[i] = 0.0;
-                foldedSpectrum.imagp[i] = 0.0;
+			    imag = phase;
             }
-		}
-		// Fourier transformation
-		vDSP_fft_zip(self->fftsetup, &foldedSpectrum, 1, lb(2 * pulsePowerSpectrumResolution), FFT_FORWARD);
-		// Fold and normalise wrapped frequency domain
-        if (pulseFrequency >= 0)
-			maximum = fabsf(foldedSpectrum.realp[(int)pulseFrequency * 2]);
-		else
-			maximum = fabsf(foldedSpectrum.realp[((int)pulseFrequency + pulsePowerSpectrumResolution) * 2]);
-		if (pulseEnvelope == EBURP_1 || pulseEnvelope == EBURP_2)
-			maximum *= 3.5;
-		else if (pulseEnvelope == IBURP_1 || pulseEnvelope == IBURP_2 || pulseEnvelope == REBURP)
-			maximum *= 1.75;
-		else if (pulseEnvelope == UBURP)
-			maximum *= 8;
-		for (i = 0; i < pulsePowerSpectrumResolution; i++) {
-            int j = (i > pulsePowerSpectrumCenter) ? i + pulsePowerSpectrumResolution : i;
-			// Calculate envelope function (remove high frequency oscillations)
-			real = pow(-1, i) * foldedSpectrum.realp[j] / maximum;
-			imag = pow(-1, i) * foldedSpectrum.imagp[j] / maximum;
-			phase = atan2f(real, imag) / (M_PI * 4);
-			real = sqrt(pow(real, 2) + pow(imag, 2));
-			imag = phase;
 			if (i < pulsePowerSpectrumCenter) {
 				self->pulsePowerSpectrum.realp[i + pulsePowerSpectrumCenter] = real;
 				self->pulsePowerSpectrum.imagp[i + pulsePowerSpectrumCenter] = imag;
@@ -6347,46 +6440,8 @@ void insensitive_controller_create_pulse_powerspectrum(InsensitiveController *se
 				self->pulsePowerSpectrum.imagp[i - pulsePowerSpectrumCenter] = imag;
 			}
 		}
-        */
-        /*
-        // If no off-resonance effects enabled: calculate Fourier transform of pulse shape
-		// Copy time domain
-		foldedSpectrum.realp = malloc(pulsePowerSpectrumResolution * sizeof(float));
-		foldedSpectrum.imagp = malloc(pulsePowerSpectrumResolution * sizeof(float));
-		for (i = 0; i < pulsePowerSpectrumResolution; i++) {
-			foldedSpectrum.realp[i] = self->pulseShape.realp[i];
-			foldedSpectrum.imagp[i] = self->pulseShape.imagp[i];
-		}
-		// Fourier transformation
-		vDSP_fft_zip(self->fftsetup, &foldedSpectrum, 1, lb(pulsePowerSpectrumResolution), FFT_FORWARD);
-		// Fold and normalise wrapped frequency domain
-		if (pulseFrequency >= 0)
-			maximum = fabsf(foldedSpectrum.realp[(int)pulseFrequency]);
-		else
-			maximum = fabsf(foldedSpectrum.realp[(int)pulseFrequency + pulsePowerSpectrumResolution]);
-		if (pulseEnvelope == EBURP_1 || pulseEnvelope == EBURP_2)
-			maximum *= 3.5;
-		else if (pulseEnvelope == IBURP_1 || pulseEnvelope == IBURP_2 || pulseEnvelope == REBURP)
-			maximum *= 1.75;
-		else if (pulseEnvelope == UBURP)
-			maximum *= 8;
-		for (i = 0; i < pulsePowerSpectrumResolution; i++) {
-			// Calculate envelope function (remove high frequency oscillations)
-			real = pow(-1, i) * foldedSpectrum.realp[i] / maximum;
-			imag = pow(-1, i) * foldedSpectrum.imagp[i] / maximum;
-			phase = atan2f(real, imag) / (M_PI * 4);
-			real = sqrt(pow(real, 2) + pow(imag, 2));
-			imag = phase;
-			if (i < pulsePowerSpectrumCenter) {
-				self->pulsePowerSpectrum.realp[i + pulsePowerSpectrumCenter] = real;
-				self->pulsePowerSpectrum.imagp[i + pulsePowerSpectrumCenter] = imag;
-			} else {
-				self->pulsePowerSpectrum.realp[i - pulsePowerSpectrumCenter] = real;
-				self->pulsePowerSpectrum.imagp[i - pulsePowerSpectrumCenter] = imag;
-			}
-		}
-        */
-	} else {
+	}
+    if (!insensitive_settings_get_ignoreOffResonanceEffectsForPulses(self->settings)) {
 		// Simulate pulse for spectrum width
 		int danteCycles;
 		float steps = pulseShapeResolution;
@@ -6425,6 +6480,10 @@ void insensitive_controller_create_pulse_powerspectrum(InsensitiveController *se
 			case Mz:
 				self->pulsePowerSpectrum.realp[i] = insensitive_spinsystem_get_expectationvalue_z_for_spin(simulatedSpinSystem, 0);
 				self->pulsePowerSpectrum.imagp[i] = 0.0;
+                break;
+            case Mxy_FT:
+				self->pulsePowerSpectrum.realp[i] = sqrt(pow(real, 2) + pow(imag, 2));
+				//self->pulsePowerSpectrum.imagp[i] = atan2f(real, imag) / (M_PI * 4);
 			}
 		}
 		g_object_unref(simulatedSpinSystem);
@@ -6433,7 +6492,8 @@ void insensitive_controller_create_pulse_powerspectrum(InsensitiveController *se
 	insensitive_settings_set_pulsePowerSpectrum(self->settings, &(self->pulsePowerSpectrum.realp[pulsePowerSpectrumQuarter]));
 	insensitive_pulse_shaper_refreshGraphs(self->pulseShaperController);
 
-	if (insensitive_settings_get_ignoreOffResonanceEffectsForPulses(self->settings)) {
+	if (insensitive_settings_get_ignoreOffResonanceEffectsForPulses(self->settings)
+        || insensitive_settings_get_excitationProfile(self->settings) == Mxy_FT) {
 		free(foldedSpectrum.realp);
 		free(foldedSpectrum.imagp);
 	}

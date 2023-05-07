@@ -183,7 +183,8 @@ enum ExportFormat {
 enum ExcitationProfile {
     Mx_My,
     Mxy_Phase,
-    Mz
+    Mz,
+    Mxy_FT
 };
 
 enum SettingsPickerViewContents {

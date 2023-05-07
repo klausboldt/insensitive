@@ -41,7 +41,7 @@ struct _InsensitivePulseShaper
 	GtkDrawingArea      *timeDomain_drawingarea, *frequencyDomain_drawingarea;
     GtkComboBoxText     *pulseShape_combobox;
     GtkEntry            *time_entry, *frequency_entry;
-    GtkRadioButton      *Mxy_phase_radiobutton, *Mx_My_radiobutton, *Mz_radiobutton;
+    GtkRadioButton      *Mxy_phase_radiobutton, *Mx_My_radiobutton, *Mz_radiobutton, *Mxy_FT_radiobutton;
     GtkScale            *time_slider, *frequency_slider;
     GtkAdjustment       *time_adjustment, *frequency_adjustment;
     GtkLabel            *scaleLabel200, *scaleLabel400, *scaleLabel600, *scaleLabel800, *scaleLabel1000;
@@ -70,6 +70,7 @@ static void insensitive_pulse_shaper_class_init(InsensitivePulseShaperClass *kla
     gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, Mxy_phase_radiobutton);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, Mx_My_radiobutton);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, Mz_radiobutton);
+    gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, Mxy_FT_radiobutton);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, time_slider);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, frequency_slider);
     gtk_widget_class_bind_template_child(widget_class, InsensitivePulseShaper, time_adjustment);
@@ -135,6 +136,18 @@ static void insensitive_pulse_shaper_init(InsensitivePulseShaper *self)
     gtk_scale_add_mark(self->frequency_slider, 0, GTK_POS_BOTTOM, NULL);
     gtk_scale_add_mark(self->frequency_slider, 64, GTK_POS_BOTTOM, NULL);
     gtk_scale_add_mark(self->frequency_slider, 127, GTK_POS_BOTTOM, NULL);
+
+#ifndef __APPLE__
+    GList *list;
+    list = gtk_container_get_children(GTK_CONTAINER(self->Mxy_phase_radiobutton));
+    gtk_label_set_markup(GTK_LABEL(list->data), "M<sub>xy</sub>+ φ  ");
+    list = gtk_container_get_children(GTK_CONTAINER(self->Mx_My_radiobutton));
+    gtk_label_set_markup(GTK_LABEL(list->data), "M<sub>x</sub>+ M<sub>y</sub>  ");
+    list = gtk_container_get_children(GTK_CONTAINER(self->Mz_radiobutton));
+    gtk_label_set_markup(GTK_LABEL(list->data), "M<sub>z</sub>  ");
+    list = gtk_container_get_children(GTK_CONTAINER(self->Mxy_FT_radiobutton));
+    gtk_label_set_markup(GTK_LABEL(list->data), "M<sub>xy</sub>+ FT");
+#endif /* __APPLE__ */
 }
 
 
@@ -311,6 +324,10 @@ void insensitive_pulse_shaper_set_pulsePowerDisplayMode(InsensitivePulseShaper *
 			gtk_toggle_button_set_active((GtkToggleButton *)self->Mz_radiobutton, TRUE);
 			on_pulsePowerDisplayMode_changed(self->Mz_radiobutton, self);
 			break;
+        case Mxy_FT:
+			gtk_toggle_button_set_active((GtkToggleButton *)self->Mxy_FT_radiobutton, TRUE);
+			on_pulsePowerDisplayMode_changed(self->Mxy_FT_radiobutton, self);
+			break;
 		}
 	}
 }
@@ -327,6 +344,8 @@ G_MODULE_EXPORT void on_pulsePowerDisplayMode_changed(GtkRadioButton *button, gp
 			insensitive_settings_set_excitationProfile(window->controller->settings, Mx_My);
 		else if (button == window->Mz_radiobutton)
 			insensitive_settings_set_excitationProfile(window->controller->settings, Mz);
+        else if (button == window->Mxy_FT_radiobutton)
+			insensitive_settings_set_excitationProfile(window->controller->settings, Mxy_FT);
 		insensitive_controller_create_pulse_powerspectrum(window->controller);
 	}
 }
@@ -339,6 +358,7 @@ void insensitive_pulse_shaper_set_ignoreOffResonanceEffectsForPulses(Insensitive
 		gtk_widget_set_sensitive(GTK_WIDGET(self->Mxy_phase_radiobutton), !value);
 		gtk_widget_set_sensitive(GTK_WIDGET(self->Mx_My_radiobutton), !value);
 		gtk_widget_set_sensitive(GTK_WIDGET(self->Mz_radiobutton), !value);
+        gtk_widget_set_sensitive(GTK_WIDGET(self->Mxy_FT_radiobutton), !value);
 	}
 }
 
@@ -349,9 +369,10 @@ G_MODULE_EXPORT void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr
 	GtkDrawingArea *drawingarea = (GtkDrawingArea *)widget;
     gboolean plotFrequencyDomain = (drawingarea == window->frequencyDomain_drawingarea);
     unsigned int i, maxDataPoints, index;
-	float stepSizeX, stepSizeY;
+	float stepSizeX, stepSizeY, stepSizeX_FT;
 	float width, height, origin_x, origin_y;
     DSPSplitComplex displayedData;
+    double *dashes;
     enum ExcitationProfile excitationProfile;
 
     maxDataPoints = plotFrequencyDomain ? pulsePowerSpectrumCenter : pulsePowerSpectrumResolution;
@@ -389,6 +410,10 @@ G_MODULE_EXPORT void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr
         case Mz:
             stepSizeY /= 2.4;
             origin_y = height / 2;
+            break;
+        case Mxy_FT:
+            stepSizeY /= 1.5;
+            origin_y = 5 * height / 6;
         }
     } else {
         stepSizeY /= 1.5;
@@ -404,24 +429,46 @@ G_MODULE_EXPORT void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr
 		if (plotFrequencyDomain && insensitive_settings_get_excitationProfile(window->controller->settings) != Mz
             && !insensitive_settings_get_ignoreOffResonanceEffectsForPulses(window->controller->settings)) {
 			cairo_set_line_width(cr, window->lineWidth);
-			for (i = 0; i < maxDataPoints; i++) {
-				if (i == 0) {
-					cairo_move_to(cr, origin_x, origin_y - stepSizeY * displayedData.imagp[i]);
-				} else {
-					cairo_line_to(cr, origin_x + i * stepSizeX, origin_y - stepSizeY * displayedData.imagp[i]);
-				}
-			}
-			cairo_set_source_rgba(cr, 0.0, 0.75, 0.0, 1.0);
+            if (insensitive_settings_get_excitationProfile(window->controller->settings) == Mxy_FT) {
+                // Only show the central 1/10th of the FFT, but to improve the resolution the
+                // time domain data is expanded 4-fold, which means only show the central 4/10th
+                for (i = 0; i < 0.4 * maxDataPoints + 2; i++) {
+                    index = i + 0.5 * maxDataPoints * (1 - 0.4);
+                    stepSizeX_FT = width / (0.8 * maxDataPoints + 2.0);
+                    stepSizeX_FT *= 2;
+			        if (i == 0) {
+			    	    cairo_move_to(cr, origin_x, origin_y - stepSizeY * displayedData.imagp[index]);
+			        } else {
+			    	    cairo_line_to(cr, origin_x + i * stepSizeX_FT, origin_y - stepSizeY * displayedData.imagp[index]);
+			        }
+                }
+                cairo_set_source_rgba(cr, 0.0, 0.0, 1.0, 1.0);
+                dashes = malloc(2 * sizeof(float));
+                dashes[0] = 6.0;
+                dashes[1] = 3.0;
+                cairo_set_dash(cr, dashes, 2, 0.0);
+                free(dashes);
+            } else {
+			    for (i = 0; i < maxDataPoints; i++) {
+				    if (i == 0) {
+					    cairo_move_to(cr, origin_x, origin_y - stepSizeY * displayedData.imagp[i]);
+				    } else {
+					    cairo_line_to(cr, origin_x + i * stepSizeX, origin_y - stepSizeY * displayedData.imagp[i]);
+				    }
+			    }
+			    cairo_set_source_rgba(cr, 0.0, 0.75, 0.0, 1.0);
+            }
 			cairo_stroke(cr);
 		}
 		// Draw the real graph in red
 		cairo_set_line_width(cr, window->lineWidth);
+        cairo_set_dash(cr, NULL, 0, 0.0);
         if (plotFrequencyDomain && insensitive_settings_get_ignoreOffResonanceEffectsForPulses(window->controller->settings)) {
             // Only show the central 1/10th of the FFT, but to improve the resolution the
             // time domain data is expanded 4-fold, which means only show the central 4/10th
-            for (i = 0; i < 0.4 * maxDataPoints; i++) {
+            for (i = 0; i <= 0.4 * maxDataPoints + 2; i++) {
                 index = i + 0.5 * maxDataPoints * (1 - 0.4);
-                stepSizeX = width / (0.8 * maxDataPoints - 1);
+                stepSizeX = width / (0.8 * maxDataPoints + 2.0);
                 stepSizeX *= 2;
 			    if (i == 0) {
 			    	cairo_move_to(cr, origin_x, origin_y - stepSizeY * displayedData.realp[index]);

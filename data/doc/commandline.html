@@ -18,10 +18,46 @@
         
         <div>
             <p>
-            Insensitive offers a Bruker style command line at the bottom of the main window. A subset from the
-            commands known from the XWin-NMR and TopSpin applications are available for users familiar with these
-            programs to quickly access functions for spectrum acquisition, processing, and system variables.
-            The commands are not case-sensitive. A list of commands is given below, which take no arguments:
+              Insensitive offers a command line at the bottom of the main window with which
+              <a href="product_operator_formalism.html">product operators</a> can be applied directly to the
+              spin system. They take form of the operator symbol, as shown in the Spin State panel, optionally
+              preceded by a numerical factor. The factor autometically changes the respective system settings.
+            </p>
+            <p>
+              <a href="pulse.html">Pulses</a> can be issued by using the operators <op>Ix</op>, <op>Iy</op>,
+              <op>Sx</op>, <op>Sy</op>, as well as operators that address individual spins, such as <op>I1x</op>
+              or <op>S2y</op>. The numerical factor is given in units of 1&deg;. If no coefficient is given, a
+              90&deg; pulse is assumed. Insensitive also understands "pi" and &pi; = 180&deg;, &pi;/2 = 90&deg;,
+              3&pi;/2 = 27&deg;, and &pi;/4 = 45&deg;.
+            </p>
+            <p>
+              For <a href="chemical_shift.html">chemical shift</a> the operators <op>Iz</op> and <op>Sz</op>
+              (as well as spin-specific operators like e.g. <op>I1z</op> or <op>S3z</op>) can be used. A
+              preceding parameter is understood as the delay time in seconds.
+            </p>
+            <p>
+              <a href="coupling.html">J-coupling</a> is applied using the operators for
+              <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a>, e.g. <op>2I1zI2z</op>,
+              <op>2I2zS3z</op>, <op>4I1zI2zS4z</op>, or <op>8I1zI2zS3zS4z</op>. The order of the spin indices
+              does not matter, but the spin type needs to match the spin system.
+              To perform coupling between all spins, the operators <op>IzIz</op>, <op>SzSz</op>, and <op>IzSz</op>
+              can be used to address only I spins, only S spins, or all spins, respectively.
+            </p>
+            <p>
+              The argument for the delay time can also be given as fractions of the coupling constant <i>J</i>
+              in the form 1/(<i>n</i>J<i>ab</i>), in which <i>n</i> = 2, 3, 4, or 8, and <i>a</i> and <i>b</i>
+              are indices for the coupled spins. The parentheses are optional. E.g., 1/(2J12) or 1/2J12 gives a
+              delay time equal to 1 over twice the coupling constant <i>J</i><sub>12</sub> between spin 1 and
+              spin 2. For coupling interactions between two spins (e.g., <op>2I1zI2z</op>) the spin numbers
+              can be omitted. For the arguments 1/(2J), 1/(3J), 1/(4J), or 1/(8J) Insensitive automatically
+              determines the correct coupling constant between the spins addressed by the operator.
+            </p>
+            <p>
+              Apart from product operators, Insensitive understands a subset of the commands of the Bruker TopSpin
+              and XWin-NMR application suites. They can be used to quickly access functions for spectrum acquisition and
+              processing. The commands are not case-sensitive and take no arguments. The exact function of the commands
+              may differ between Insensitive and Bruker TopSpin/XWin-NMR due to the different scope of the programs.
+              Commands that are proprietary to Insensitive and not found in the Bruker software are marked with an asterisk (*).
             </p>
             <p>
             <table border="1" cellpadding="2">
@@ -167,7 +203,7 @@
                 </tr>
                 <tr>
                     <td align="left"><b>go</b></td>
-                    <td align="left">Acquire 1D spectrum from current spin state. (Same as "zg" with no pulse sequence loaded)</td>
+                    <td align="left">Acquire 1D spectrum from current spin state. (Same as "zg" if no pulse sequence is loaded)</td>
                 </tr>
                 <tr>
                     <td align="left"><b>halt</b></td>
@@ -328,9 +364,100 @@
             </table>
             </p>
             <p>
-            A number of system variables can be changed by the following commands. Most take one argument, which
-            unless stated is a floating point value. Variables that are proprietary to Insensitive are marked with
-            and asterisk (*).
+              In addition, the following Insensitive-only commands can be used to manipulate the spin state and control
+              basic functions of the program. Some of these commands optionally take one or two arguments, as indicated below.
+              The units of the numerical parameters match those of the product operators: free evolution times are given in
+              seconds (s), flip angles and phases in degrees (&deg;) or fractions of &pi;.
+            </p>
+            <p>
+            <table border="1" cellpadding="2">
+                <tr>
+                    <th bgcolor="#DDDDDD"><i>Command</i></th>
+                    <th bgcolor="#DDDDDD"><i>Function</i></th>
+                </tr>
+                <tr>
+                    <td align="left"><b>anim</b></td>
+                    <td align="left">Start animation of precession using current settings. The command takes one optional argument: "stop" or "halt" ends the animation, "start" does the same as no argument.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>animr</b></td>
+                    <td align="left">Start animation of precession, including relaxation. The command takes the same arguments as "anim".</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>animnr</b></td>
+                    <td align="left">Start animation of precession, excluding relaxation. The command takes the same arguments as "anim".</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>cs</b></td>
+                    <td align="left">Chemical shift only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>eq</b></td>
+                    <td align="left">Return to thermal equilibrium.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>jc</b></td>
+                    <td align="left">J-coupling only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>mcdisp</b></td>
+                    <td align="left">Open density matrix composer window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>play</b></td>
+                    <td align="left">Play back the recorded pulse sequence.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>prec</b></td>
+                    <td align="left">Free precession performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>precr</b></td>
+                    <td align="left">Free precession including relaxation performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>precnr</b></td>
+                    <td align="left">Free precession without relaxation performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>pfg</b></td>
+                    <td align="left">A pulsed field gradient is issued.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>pulse</b></td>
+                    <td align="left">An rf-pulse is issued. The command optionally takes one or two parameters, flip angle and phase. The phase may be given as "x", "y", "-x", or "-y".</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>record</b></td>
+                    <td align="left">Start recording a new pulse sequence.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>relax</b></td>
+                    <td align="left">Relaxation only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>reset</b></td>
+                    <td align="left">Reset all settings and parameters to the factory defaults.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>ssdisp</b></td>
+                    <td align="left">Open individual spin precession window.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>step</b></td>
+                    <td align="left">Execute pulse sequence step-wise.</td>
+                </tr>
+                <tr>
+                    <td align="left"><b>undo</b></td>
+                    <td align="left">Undo the last action on the spin system.</td>
+                </tr>
+            </table>
+            </p>
+            <p>
+              Insensitive understands a number of system variables, which can be queried when issuing them with
+              no argument. Most can also be set by appending one argument. Unless stated otherwise, the argument is a
+              floating point value. If available, these variables match those in Bruker TopSpin/XWin-NMR.
+              Variables that are proprietary to Insensitive are marked with and asterisk (*).
             </p>
             <p>
             <table border="1" cellpadding="2">
@@ -355,11 +482,11 @@
                     <td align="left">Adjust maximum position for a gaussian window function.</td>
                 </tr>
                 <tr>
-                    <td align="left"><b>GPL</b></td>
-                    <td align="left">Gradient pulse power level (gradient strength). (*)</td>
+                    <td align="left"><b>GPZ</b></td>
+                    <td align="left">Gradient pulse power level (gradient strength).</td>
                 </tr>
                 <tr>
-                    <td align="left"><b>GPT</b></td>
+                    <td align="left"><b>GP</b></td>
                     <td align="left">Gradient pulse duration. (*)</td>
                 </tr>
                 <tr>
@@ -403,8 +530,8 @@
                     <td align="left">Pulse power level (pulse strength).</td>
                 </tr>
                 <tr>
-                    <td align="left"><b>PT</b></td>
-                    <td align="left">Pulse duration. (*)</td>
+                    <td align="left"><b>P</b></td>
+                    <td align="left">Pulse duration.</td>
                 </tr>
                 <tr>
                     <td align="left"><b>SF</b></td>
@@ -443,107 +570,6 @@
                     <td align="left">Size of fid (sum of real and imaginary data points for each dimension). This command takes no argument.</td>
                 </tr>
             </table>
-            </p>
-            <p>
-            Actions on the spin system can be issued using the following propietary commands in Insensitive or by applying
-            <a href="product_operator_formalism.html">product operators</a> directly, optionally preceded by a
-            numerical factor. The available product operators for pulses are <op>Ix</op>, <op>Iy</op>, <op>Sx</op>,
-            <op>Sy</op>, and derived operators for specific spins in the form of e.g. <op>I1x</op> or <op>S2y</op>.
-            The numerical factor is given in units of 1&deg;. If no coefficient is given, a 90&deg; pulse is assumed.
-            Insensitive also understands "pi" and &pi; = 180&deg;, &pi;/2 = 90&deg;, and &pi;/4 = 45&deg;.
-            For <a href="chemical_shift.html">chemical shift</a> the
-            operators <op>Iz</op> and <op>Sz</op> (and spin-specific operators like e.g. <op>I1z</op>) can be used
-            for the given delay time. <a href="coupling.html">J-coupling</a> is applied using the operators for
-            <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a>, e.g. <op>2I1zI2z</op>,
-            <op>2I2zS3z</op>, <op>4I1zI2zS4z</op>, or <op>8I1zI2zS3zS4z</op>. Alternatively the operators
-            <op>IzIz</op>, <op>SzSz</op>, and <op>IzSz</op> perform coupling for I-spins, S-spins, and all spins,
-            respectively.
-            </p>
-            <p>
-            <table border="1" cellpadding="2">
-                <tr>
-                    <th bgcolor="#DDDDDD"><i>Command</i></th>
-                    <th bgcolor="#DDDDDD"><i>Function</i></th>
-                </tr>
-                <tr>
-                    <td align="left"><b>anim</b></td>
-                    <td align="left">Start animation of precession using current settings. The command takes one optional argument: "stop" or "halt" ends the animation, "start" does the same as no argument.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>animr</b></td>
-                    <td align="left">Start animation of precession, including relaxation.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>animnr</b></td>
-                    <td align="left">Start animation of precession, excluding relaxation.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>cs</b></td>
-                    <td align="left">Chemical shift only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>eq</b></td>
-                    <td align="left">Return to thermal equilibrium.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>jc</b></td>
-                    <td align="left">J-coupling only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>mcdisp</b></td>
-                    <td align="left">Open density matrix composer window.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>play</b></td>
-                    <td align="left">Play back the recorded pulse sequence.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>prec</b></td>
-                    <td align="left">Free precession performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>precr</b></td>
-                    <td align="left">Free precession including relaxation performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>precnr</b></td>
-                    <td align="left">Free precession without relaxation performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>pfg</b></td>
-                    <td align="left">A pulsed field gradient is issued.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>pulse</b></td>
-                    <td align="left">An rf-pulse is issued. The command optionally takes one or two parameters, flip angle and phase in degrees. The phase may be given as "x", "y", "-x", or "-y".</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>record</b></td>
-                    <td align="left">Start recording a new pulse sequence.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>relax</b></td>
-                    <td align="left">Relaxation only is performed for delay time <i>d</i> or an evolution time given by an optional numerical parameter.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>reset</b></td>
-                    <td align="left">Reset all settings and parameters to the factory defaults.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>ssdisp</b></td>
-                    <td align="left">Open individual spin precession window.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>step</b></td>
-                    <td align="left">Execute pulse sequence step-wise.</td>
-                </tr>
-                <tr>
-                    <td align="left"><b>undo</b></td>
-                    <td align="left">Undo the last action on the spin system.</td>
-                </tr>
-            </table>
-            </p>
         </div>
-        
     </body>
 </html>

@@ -18,20 +18,33 @@ Phase factor
 
 <div>
 <p>
-In a superposition of states the coefficents <i>c<sub>n</sub></i> in the linear combination 
-<i>c</i><sub>1</sub><i>&Psi;</i><sub>1</sub> + <i>c</i><sub>2</sub><i>&Psi;</i><sub>2</sub> + ... are 
-generally complex numbers. They have therefore an amplitude and a phase. The amplitude is a measure
-for the weighting of each wave function <i>&Psi;<sub>n</sub></i> in the linear combination, while the 
-phase gives the orientation of the spin vector in the x,y-plane.
+An eigenstate <i>n</i> of a quantum mechanical system is characterised by a complex coefficient
+<i>c<sub>n</sub></i> = <i>A<sub>n</sub></i> exp(<i>i&phi;<sub>n</sub></i>), which is comprised of the
+amplitude <i>A<sub>n</sub></i>, which is a weighing factor for the population of the state, and a phase
+<i>&phi;<sub>n</sub></i>. The phase evolves with time, but for a pure eigenstate with
+<i>A<sub>n</sub></i> = 1 its value is largely inconsequential, because its value does not affect the
+eigenvalue for an operator of that eigenstate.
 </p>
 <p>
-A phase shift of the <a href="pulse.html">rf-pulse</a> determines the axis around which the spin vectors 
-are rotated during the pulse. A pulse from x with a phase of 0&deg; will cause a rotation around the
-x-axis. A phase shift of 90&deg; will cause the spin vectors to rotate around the y-axis.
+This changes for a <a href="coherences.html">coherent</a> superposition state. "Superposition" means that
+the state is composed of contributions of several states in form of a linear combination
+<i>c</i><sub>1</sub><i>&Psi;</i><sub>1</sub> + <i>c</i><sub>2</sub><i>&Psi;</i><sub>2</sub> + ...
+so that the sum of the amplitudes are 1. For a spin 1/2 these are the spin up (&alpha;) and spin down
+(&beta;) states. "Coherent" means that there is a defined phase relationship between the contributing
+states <i>&Psi;<sub>n</sub></i>. This phase difference &Delta;<i>&phi;</i> determines the orientation
+of the <a href="spin.html">spin</a> vector in the <i>x</i>,<i>y</i>-plane.
 </p>
 <p>
-If the phase of a spin is not zero at the beginning of the <a href="fid.html">FID</a>, the signals will 
-show a phase shift. This appears as a deviation of the pure absorption Lozentzian <a href="lineshapes.html">
+A phase shift of the <a href="pulse.html">rf-pulse</a> determines which coherent superposition state is
+formed, starting from a pure excess <a href="populations.html">population</a>, or which coherence is
+able to interact with that pulse. In practical terms, pulse from the <i>x</i> direction (0&deg;)
+will cause a rotation around the <i>x</i>-axis. A phase shift of 90&deg; will cause the spin vectors to
+rotate around the <i>y</i>-axis.
+</p>
+<p>
+If the phase of a spin is not zero (i.e., aligned along the -<i>y</i> axis following a pulse with a phase
+shift of 0&deg;) at the beginning of the <a href="fid.html">FID</a>, the peaks in the spectrum will be phase
+shifted. This appears as a deviation of the pure absorption Lozentzian <a href="lineshapes.html">
 line shape</a> of the real spectrum and a pure dispersion line shape of the imaginary spectrum to a mixture of
 absorption and dispersion line shapes. This can be corrected by multiplying the spectra with a phase 
 factor. In zero order phase correction this is a constant complex number <i>&phi;</i><sub>0</sub> that 

@@ -97,7 +97,7 @@ make suggestions, please contact [Klaus Boldt](mailto:klaus.boldt@uni-rostock.de
 
 Insensitive makes use of the Levenberg-Marquardt fitting algorithm written by 
 [Ron Babich](https://gist.github.com/rbabich/3539146/) and CONREC by 
-[Paul Bourke](https://paulbourke.net/papers/conrec/) to draw contour plots.
+[Paul Bourke](http://paulbourke.net/papers/conrec/) to draw contour plots.
 
 ## License
 

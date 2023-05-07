@@ -3,14 +3,15 @@ Roadmap for Insensitive (GTK)
 
 Missing features not yet ported from the OSX version:
 -----------------------------------------------------
-- Energy level labels need to wrap if they are too long (use pango)
 - The application should look for available updates
+- Play sound when acquisition is finished
 
 Known bugs:
 -----------
+- Combine overlapping Energy level labels
 - Coherence transfer is not updated when spin type is changed
 - Checkboxes are not set correctly on startup (pulseArray, relaxation, show real/imag/integral)
-- Symmetrisation of amplitude-modulated 2D spectra fails
+- Symmetrisation of amplitude-modulated 2D spectra fails (TPPI, States-TPPI)
 
 Roadmap to version 1.0:
 -----------------------
