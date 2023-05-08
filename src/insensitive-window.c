@@ -8262,11 +8262,31 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		on_flipAngle_entry_activate(window->flipAngle_entry, window);
 		on_pulse_button_clicked(window->pulse_button, window);
 	}
+	// -Ix
+	else if (!g_strcmp0(word[0], "-ix") && number_of_words == 1) {
+		gtk_toggle_button_set_active(window->ispins_checkbox, TRUE);
+		gtk_toggle_button_set_active(window->sspins_checkbox, FALSE);
+		gtk_entry_set_text(window->phase_entry, "180.0");
+		on_phase_entry_activate(window->phase_entry, window);
+		gtk_entry_set_text(window->flipAngle_entry, "90.0");
+		on_flipAngle_entry_activate(window->flipAngle_entry, window);
+		on_pulse_button_clicked(window->pulse_button, window);
+	}
 	// Iy
 	else if (!g_strcmp0(word[0], "iy") && number_of_words == 1) {
 		gtk_toggle_button_set_active(window->ispins_checkbox, TRUE);
 		gtk_toggle_button_set_active(window->sspins_checkbox, FALSE);
 		gtk_entry_set_text(window->phase_entry, "90.0");
+		on_phase_entry_activate(window->phase_entry, window);
+		gtk_entry_set_text(window->flipAngle_entry, "90.0");
+		on_flipAngle_entry_activate(window->flipAngle_entry, window);
+		on_pulse_button_clicked(window->pulse_button, window);
+	}
+	// Iy
+	else if (!g_strcmp0(word[0], "-iy") && number_of_words == 1) {
+		gtk_toggle_button_set_active(window->ispins_checkbox, TRUE);
+		gtk_toggle_button_set_active(window->sspins_checkbox, FALSE);
+		gtk_entry_set_text(window->phase_entry, "270.0");
 		on_phase_entry_activate(window->phase_entry, window);
 		gtk_entry_set_text(window->flipAngle_entry, "90.0");
 		on_flipAngle_entry_activate(window->flipAngle_entry, window);
@@ -8287,11 +8307,31 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		on_flipAngle_entry_activate(window->flipAngle_entry, window);
 		on_pulse_button_clicked(window->pulse_button, window);
 	}
+	// -Sx
+	else if (!g_strcmp0(word[0], "-sx") && number_of_words == 1) {
+		insensitive_controller_set_all_iSpins_active(window->controller, FALSE);
+		insensitive_controller_set_all_sSpins_active(window->controller, TRUE);
+		gtk_entry_set_text(window->phase_entry, "180.0");
+		on_phase_entry_activate(window->phase_entry, window);
+		gtk_entry_set_text(window->flipAngle_entry, "90.0");
+		on_flipAngle_entry_activate(window->flipAngle_entry, window);
+		on_pulse_button_clicked(window->pulse_button, window);
+	}
 	// Sy
 	else if (!g_strcmp0(word[0], "sy") && number_of_words == 1) {
 		insensitive_controller_set_all_iSpins_active(window->controller, FALSE);
 		insensitive_controller_set_all_sSpins_active(window->controller, TRUE);
 		gtk_entry_set_text(window->phase_entry, "90.0");
+		on_phase_entry_activate(window->phase_entry, window);
+		gtk_entry_set_text(window->flipAngle_entry, "90.0");
+		on_flipAngle_entry_activate(window->flipAngle_entry, window);
+		on_pulse_button_clicked(window->pulse_button, window);
+	}
+	// -Sy
+	else if (!g_strcmp0(word[0], "-sy") && number_of_words == 1) {
+		insensitive_controller_set_all_iSpins_active(window->controller, FALSE);
+		insensitive_controller_set_all_sSpins_active(window->controller, TRUE);
+		gtk_entry_set_text(window->phase_entry, "270.0");
 		on_phase_entry_activate(window->phase_entry, window);
 		gtk_entry_set_text(window->flipAngle_entry, "90.0");
 		on_flipAngle_entry_activate(window->flipAngle_entry, window);
@@ -8319,11 +8359,12 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	}
 	// I#x, I#y, S#x, S#y
 	else if (commandMatches1SpinOperator_xy && number_of_words == 1) {
-		unsigned int spin = (unsigned int)word[0][1] - 48;
+        unsigned int signPtrShift = (word[0][0] == '-') ? 1 : 0;
+        unsigned int spin = (unsigned int)word[0][signPtrShift + 1] - 48;
 		GtkToggleButton *spin_checkbox;
 		if (spin <= insensitive_spinsystem_get_spins(window->controller->spinSystem)) {
-			if ((word[0][0] == 'i' && insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin - 1) == spinTypeI) ||
-			    (word[0][0] == 's' && insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin - 1) == spinTypeS)) {
+			if ((word[0][signPtrShift] == 'i' && insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin - 1) == spinTypeI) ||
+			    (word[0][signPtrShift] == 's' && insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin - 1) == spinTypeS)) {
 				g_signal_handlers_block_by_func(G_OBJECT(window->allspins_checkbox), G_CALLBACK(on_allSpins_checkbox_toggled), (gpointer)user_data);
 				gtk_toggle_button_set_active(window->allspins_checkbox, FALSE);
 				on_allSpins_checkbox_toggled(window->allspins_checkbox, window);
@@ -8345,10 +8386,10 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 				gtk_toggle_button_set_active(spin_checkbox, TRUE);
 				on_spin_checkbox_toggled(spin_checkbox, window);
 				g_signal_handlers_unblock_by_func(G_OBJECT(spin_checkbox), G_CALLBACK(on_spin_checkbox_toggled), (gpointer)user_data);
-				if (word[0][2] == 'x')
-					gtk_entry_set_text(window->phase_entry, "0.0");
-				else if (word[0][2] == 'y')
-					gtk_entry_set_text(window->phase_entry, "90.0");
+				if (word[0][signPtrShift + 2] == 'x')
+					gtk_entry_set_text(window->phase_entry, signPtrShift ? "180.0" : "0.0");
+				else if (word[0][signPtrShift + 2] == 'y')
+					gtk_entry_set_text(window->phase_entry, signPtrShift ? "270.0" : "90.0");
 				on_phase_entry_activate(window->phase_entry, window);
 				gtk_entry_set_text(window->flipAngle_entry, "90.0");
 				on_flipAngle_entry_activate(window->flipAngle_entry, window);
@@ -8412,6 +8453,8 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		} else if (numberOfMinusSigns == 1 && (*word[0] != '-' || strlen(word[0]) < 2)) {
 			show_command_error((GtkWidget *)entry, window);
 		} else {
+            if (numberOfMinusSigns == 1)
+                word[0][0] = ' ';
 			g_regex_match(regex1spin_xy, word[1], 0, &matchInfo);
 			commandMatches1SpinOperator_xy = g_match_info_matches(matchInfo) ? TRUE : FALSE;
 			g_regex_match(regex1spin_z, word[1], 0, &matchInfo);
@@ -8496,13 +8539,13 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 				}
 				if (!noActiveSpin) {
 					if (atof(word[0]) < 0 && word[1][coordinateIndex] == 'x')
-						gtk_entry_set_text(window->phase_entry, "180.0");
+						gtk_entry_set_text(window->phase_entry, (numberOfMinusSigns == 1) ? "0.0" : "180.0");
 					else if (atof(word[0]) >= 0 && word[1][coordinateIndex] == 'x')
-						gtk_entry_set_text(window->phase_entry, "0.0");
+						gtk_entry_set_text(window->phase_entry, (numberOfMinusSigns == 1) ? "180.0" : "0.0");
 					else if (atof(word[0]) < 0 && word[1][coordinateIndex] == 'y')
-						gtk_entry_set_text(window->phase_entry, "270.0");
+						gtk_entry_set_text(window->phase_entry, (numberOfMinusSigns == 1) ? "90.0" : "270.0");
 					else if (atof(word[0]) >= 0 && word[1][coordinateIndex] == 'y')
-						gtk_entry_set_text(window->phase_entry, "90.0");
+						gtk_entry_set_text(window->phase_entry, (numberOfMinusSigns == 1) ? "270.0" : "90.0");
 					on_phase_entry_activate(window->phase_entry, window);
 					// Apply pulse operator in units of 1°
 					float flipAngle = fabs(atof(word[0]));
