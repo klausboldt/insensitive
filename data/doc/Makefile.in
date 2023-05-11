@@ -600,6 +600,7 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	meson.build \
 	mlevph.html \
 	multi_quantum_coherence.html \
+	navbar.js \
 	noe.html \
 	noesyph.html \
 	pendant.html \

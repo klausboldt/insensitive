@@ -5,7 +5,7 @@ nb {
   height: 17px;
   top: 0;
   left: 0;
-  padding-top: 5px; 
+  /*padding-top: 5px;*/
   padding-left: 5px; 
   border-bottom: 1px solid #939393;
   background-color: #dddddd;
@@ -46,7 +46,7 @@ ul {
   font-size: 15px;
 }
 
-.typewriter p{
+.typewriter p {
   font-family: monospace;
   font-size: 14px;
 }
@@ -58,4 +58,32 @@ op {
 
 a {
   text-decoration:none;
+}
+
+navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #444;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+navbar li {
+  float: left;
+}
+
+navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 12px 16px;
+  text-decoration: none;
+}
+
+navbar li a:hover {
+  background-color: #111;
 }

@@ -73,8 +73,6 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 
 	/* Main window */
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, menu_bar);
-    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, file_menu); */
-    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, edit_menu); */
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, window_menu);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, help_menu);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, open_menu_item);

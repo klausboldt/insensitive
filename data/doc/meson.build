@@ -287,6 +287,7 @@ foreach file: [
   'meson.build',
   'mlevph.html',
   'multi_quantum_coherence.html',
+  'navbar.js',
   'noe.html',
   'noesyph.html',
   'pendant.html',

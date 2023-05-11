@@ -1747,7 +1747,7 @@ void insensitive_controller_calculate_energy_levels(InsensitiveController *self)
         energyLevel[i] = FLT_MAX;
     }
     // Initialize the transition array to no transitions
-    for(i = 0; i < maxNumberOfTransitions /*size * spins*/; i++)
+    for(i = 0; i < maxNumberOfTransitions; i++)
         transition[i] = -1;
 
     // Determine spin systems
@@ -2373,7 +2373,7 @@ void insensitive_controller_substitute_phaseCyclingArray(InsensitiveController *
         g_ptr_array_add(self->phaseCyclingArray, phaseString);
     }
     set_phaseCycling_combobox((InsensitiveWindow *)self->displayController, numberOfCycles);
-    update_phaseCyclingTable((InsensitiveWindow *)self->displayController, self->pulseList->len + 1/*2*/);
+    update_phaseCyclingTable((InsensitiveWindow *)self->displayController, self->pulseList->len + 1);
     // Update Phase Cycling ComboBox
     // Does not really work with phase cycling
 }
@@ -3250,7 +3250,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 				}
 			}
 		}
-		if (checkForD4 && 4 * 6 /*[selectableDelayValues count]*/ > 0) {
+		if (checkForD4 && 4 * 6 > 0) {
 			for (j = 2; j < 4 * 6; j += 4) {
 				delayValue = self->selectableDelayValues + j;
 				delayValueInMenu = g_hash_table_lookup(delayNames, delayLabel);
