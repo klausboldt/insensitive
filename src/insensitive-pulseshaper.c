@@ -372,7 +372,7 @@ G_MODULE_EXPORT void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr
 	float stepSizeX, stepSizeY, stepSizeX_FT;
 	float width, height, origin_x, origin_y;
     DSPSplitComplex displayedData;
-    double *dashes;
+    double dashes[2];
     enum ExcitationProfile excitationProfile;
 
     maxDataPoints = plotFrequencyDomain ? pulsePowerSpectrumCenter : pulsePowerSpectrumResolution;
@@ -443,11 +443,9 @@ G_MODULE_EXPORT void draw_pulse_shaper_graph_view(GtkWidget *widget, cairo_t *cr
 			        }
                 }
                 cairo_set_source_rgba(cr, 0.0, 0.0, 1.0, 1.0);
-                dashes = malloc(2 * sizeof(float));
                 dashes[0] = 6.0;
                 dashes[1] = 3.0;
                 cairo_set_dash(cr, dashes, 2, 0.0);
-                free(dashes);
             } else {
 			    for (i = 0; i < maxDataPoints; i++) {
 				    if (i == 0) {
