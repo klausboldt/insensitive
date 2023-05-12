@@ -2970,7 +2970,7 @@ char *spherical_product_operators(DSPComplex *matrix, int size, int spin_type_ar
 		shiftminus[spin] = Iminus(spin, number_of_spins);
 	}
 
-    temp_string_len = 6;
+    temp_string_len = 15;
     aux_string_len = 5 * number_of_spins + 1;
     po_string_len = aux_string_len + 20;
     return_string_len = po_string_len * (pow(4, number_of_spins) + 1);
