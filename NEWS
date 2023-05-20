@@ -12,6 +12,8 @@ Version 0.9.34 included the following new features and fixes:
 - Export spectrum als PNG image file
 - Fixed serious bugs in the quantum mechanics of the Single Spins module
 - Fixed minor bugs in the spectrum report
+- The command line now understands 1/nJ as an argument for delay times
+- Show FT of the pulse shape in comparison to the power spectrum (Pulse shaper)
 - The presentation mode has been temporarily disabled
 
 Version 0.9.33 included the following new features and fixes:

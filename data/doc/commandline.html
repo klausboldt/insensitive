@@ -19,14 +19,14 @@
               Insensitive offers a command line at the bottom of the main window with which
               <a href="product_operator_formalism.html">product operators</a> can be applied directly to the
               spin system. They take form of the operator symbol, as shown in the Spin State panel, optionally
-              preceded by a numerical factor. The factor autometically changes the respective system settings.
+              preceded by a numerical factor. The factor automatically changes the respective system settings.
             </p>
             <p>
               <a href="pulse.html">Pulses</a> can be issued by using the operators <op>Ix</op>, <op>Iy</op>,
               <op>Sx</op>, <op>Sy</op>, as well as operators that address individual spins, such as <op>I1x</op>
               or <op>S2y</op>. The numerical factor is given in units of 1&deg;. If no coefficient is given, a
-              90&deg; pulse is assumed. Insensitive also understands "pi" and &pi; = 180&deg;, &pi;/2 = 90&deg;,
-              3&pi;/2 = 27&deg;, and &pi;/4 = 45&deg;.
+              90&deg; pulse is assumed. Insensitive also understands &pi; and pi = 180&deg;, pi/2 = 90&deg;,
+              3pi/2 = 27&deg;, and pi/4 = 45&deg;.
             </p>
             <p>
               For <a href="chemical_shift.html">chemical shift</a> the operators <op>Iz</op> and <op>Sz</op>
@@ -34,12 +34,15 @@
               preceding parameter is understood as the delay time in seconds.
             </p>
             <p>
-              <a href="coupling.html">J-coupling</a> is applied using the operators for
+              <a href="coupling.html">J-coupling</a> is applied in the weak coupling regime using the operators for
               <a href="longitudinal_two_spin_order.html">longitudinal two-spin order</a>, e.g. <op>2I1zI2z</op>,
               <op>2I2zS3z</op>, <op>4I1zI2zS4z</op>, or <op>8I1zI2zS3zS4z</op>. The order of the spin indices
               does not matter, but the spin type needs to match the spin system.
               To perform coupling between all spins, the operators <op>IzIz</op>, <op>SzSz</op>, and <op>IzSz</op>
               can be used to address only I spins, only S spins, or all spins, respectively.
+              The operators equivalent to the examples above that account for strong couping are <op>2I1.I2</op>,
+              <op>4I1.I2.S4</op>, or <op>8I1.I2.S3.S4</op>. The general operators for all spins are <op>I.I</op>,
+              <op>S.S</op>, and <op>I.S</op>.
             </p>
             <p>
               The argument for the delay time can also be given as fractions of the coupling constant <i>J</i>
@@ -481,7 +484,7 @@
                 </tr>
                 <tr>
                     <td align="left"><b>GPZ</b></td>
-                    <td align="left">Gradient pulse power level (gradient strength) in arbitrary units (-32000 to 32000) pr percent (-100% to 100%).</td>
+                    <td align="left">Gradient pulse power level (gradient strength) in percent (-100% to 100%).</td>
                 </tr>
                 <tr>
                     <td align="left"><b>GP</b></td>
@@ -497,11 +500,11 @@
                 </tr>
                 <tr>
                     <td align="left"><b>NUC1</b></td>
-                    <td align="left">Type of I-spin nucleus. Possible values are 1H, 13C, 15N, 19F, 29Si, and 31P.</td>
+                    <td align="left">Type of I-spin nucleus. Possible values are 1H, 13C, 15N, 19F, 29Si, 31P, 57Fe, 77Se, 113Cd, 119Sn, 129Xe 183W, and 195Pt.</td>
                 </tr>
                 <tr>
                     <td align="left"><b>NUC2</b></td>
-                    <td align="left">Type of S-spin nucleus. Possible values are 1H, 13C, 15N, 19F, 29Si, and 31P.</td>
+                    <td align="left">Type of S-spin nucleus. Possible values are 1H, 13C, 15N, 19F, 29Si, 31P, 57Fe, 77Se, 113Cd, 119Sn, 129Xe 183W, and 195Pt.</td>
                 </tr>
                 <tr>
                     <td align="left"><b>O1</b></td>

@@ -156,6 +156,7 @@ struct _InsensitiveWindow {
     GtkButton           *pp_edit_fid_ok_button;
     GtkWindow           *step_window;
     GtkButton           *stepWindow_button;
+    GtkSpinner          *coherenceProgressIndicator;
 
     cairo_surface_t     *spectrum_surface;
     GtkDrawingArea      *spectrum_drawingarea;
@@ -431,7 +432,7 @@ void resize_pulseSequence_view(InsensitiveWindow *window);
 gboolean redraw_pulseSequence(InsensitiveWindow *window);
 void on_bottomDisplay_combobox_changed(GtkComboBox *combobox, gpointer user_data);
 void close_coherencePathway(InsensitiveWindow *window);
-void display_pulseProgram_code(InsensitiveWindow *window);
+gboolean display_pulseProgram_code(InsensitiveWindow *window);
 void export_pulse_program(GtkMenuItem *menuitem, gpointer user_data);
 void update_evolutionTimes_combobox(InsensitiveWindow *window);
 void insert_column_into_phaseCyclingTable(InsensitiveWindow *window, unsigned int old_n_columns, unsigned int n);
@@ -462,6 +463,8 @@ void erase_coherencePathway(InsensitiveWindow *window);
 void set_iSpin_coherencePathway_coefficients(InsensitiveWindow *window, DSPComplex *coefficients);
 void set_sSpin_coherencePathway_coefficients(InsensitiveWindow *window, DSPComplex *coefficients);
 void set_needsToRecalculateCoherencePathways(InsensitiveWindow *window, gboolean value);
+gboolean start_coherencePathway_spinner(gpointer user_data);
+gboolean stop_coherencePathway_spinner(gpointer user_data);
 void draw_coherencePathway(InsensitiveWindow *window);
 gpointer calculate_coherence_paths(gpointer user_data);
 

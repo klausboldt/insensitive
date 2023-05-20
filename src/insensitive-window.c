@@ -73,8 +73,6 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 
 	/* Main window */
 	gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, menu_bar);
-    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, file_menu); */
-    /* gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, edit_menu); */
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, window_menu);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, help_menu);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, open_menu_item);
@@ -241,6 +239,7 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_fid_ok_button);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, step_window);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, stepWindow_button);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, coherenceProgressIndicator);
 
 	/* Spectrum*/
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, spectrum_drawingarea);
@@ -343,9 +342,9 @@ static void insensitive_window_init(InsensitiveWindow *self)
     gtkosx_application_set_menu_bar(theApp, GTK_MENU_SHELL(self->menu_bar));
     gtkosx_application_set_help_menu(theApp, self->help_menu);
     gtkosx_application_set_window_menu(theApp, self->window_menu);
-    gtkosx_application_set_about_item(theApp, self->about_menu_item);
-    gtkosx_application_insert_app_menu_item(theApp, self->preferences_menu_item, 2);
-    GtkSeparatorMenuItem *separator = gtk_separator_menu_item_new();
+    gtkosx_application_set_about_item(theApp, GTK_WIDGET(self->about_menu_item));
+    gtkosx_application_insert_app_menu_item(theApp, GTK_WIDGET(self->preferences_menu_item), 2);
+    GtkWidget *separator = gtk_separator_menu_item_new();
     gtkosx_application_insert_app_menu_item(theApp, separator, 3);
     gtk_widget_hide(GTK_WIDGET(self->quit_menu_item));
     gtkosx_application_ready(theApp);
@@ -1915,7 +1914,7 @@ void set_gradient_strength(InsensitiveWindow *window, float value)
 {
 	gchar *string = malloc(10 * sizeof(gchar));
 
-	sprintf(string, "%.0f", value);
+	sprintf(string, "%.0f", value / 320.0);
 	gtk_entry_set_text(window->gradient_strength_entry, string);
 	g_free(string);
 }
@@ -1926,7 +1925,8 @@ G_MODULE_EXPORT void on_gradient_strength_combobox_changed(GtkComboBoxText *comb
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_combo_box_text_get_active_text(combobox));
 
-	insensitive_controller_set_gradientStrength(window->controller, value);
+	if (value != 0.0)
+        insensitive_controller_set_gradientStrength(window->controller, 320.0 * value);
 }
 
 
@@ -1935,7 +1935,7 @@ G_MODULE_EXPORT void on_gradient_strength_entry_activate(GtkEntry *entry, gpoint
 	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 	float value = atof(gtk_entry_get_text(entry));
 
-	insensitive_controller_set_gradientStrength(window->controller, value);
+	insensitive_controller_set_gradientStrength(window->controller, 320.0 * value);
 }
 
 
@@ -2824,7 +2824,7 @@ gboolean update_pulseSequence(InsensitiveWindow *window)
             gtk_widget_set_sensitive((GtkWidget *)window->detectionMethod_combobox, TRUE);
         }
         close_coherencePathway(window);
-        display_pulseProgram_code(window);
+        g_idle_add((GSourceFunc)display_pulseProgram_code, window);
     }
 
 	return FALSE;
@@ -2880,7 +2880,7 @@ G_MODULE_EXPORT void on_bottomDisplay_combobox_changed(GtkComboBox *combobox, gp
 
     if (gtk_combo_box_get_active(combobox) == 1) {
         if (window->needsToRecalculateCoherencePathways) {
-            //[coherenceProgressIndicator startAnimation:self];
+            start_coherencePathway_spinner(window);
             insensitive_controller_perform_threaded_coherencePathway_calculation(window->controller);
         }
     } else
@@ -2896,12 +2896,12 @@ void close_coherencePathway(InsensitiveWindow *window)
         gtk_notebook_set_current_page(window->bottomDisplay_notebook, 0);
         gtk_combo_box_set_active((GtkComboBox *)window->bottomDisplay_combobox, 0);
     }
-    //[coherenceProgressIndicator stopAnimation:self];
+    stop_coherencePathway_spinner(window);
     calculate_coherence_paths(window);
 }
 
 
-void display_pulseProgram_code(InsensitiveWindow *window)
+gboolean display_pulseProgram_code(InsensitiveWindow *window)
 {
     gchar *filename;
     gchar alt_text[] = "A sequence ending with data acquisition is required to compute pulse program code.\0";
@@ -2933,9 +2933,9 @@ void display_pulseProgram_code(InsensitiveWindow *window)
             }
             start = end;
             for (;;) {
-                if (!gtk_text_iter_forward_char (&start))
+                if (!gtk_text_iter_forward_char(&start))
                     goto doneKeywords;
-                if (gtk_text_iter_starts_word (&start))
+                if (gtk_text_iter_starts_word(&start))
                     break;
             }
         }
@@ -3003,6 +3003,8 @@ doneKeywords:
         } while (gtk_text_iter_forward_char(&start));
     } else
         gtk_text_buffer_set_text(buffer, alt_text, strlen(alt_text));
+
+    return FALSE;
 }
 
 
@@ -3777,7 +3779,7 @@ void edit_sequence_element(InsensitiveWindow *window, int index)
             gtk_notebook_set_current_page(window->pp_edit_notebook, 3);
             gtk_combo_box_set_active(GTK_COMBO_BOX(window->pp_edit_gradient_combobox), 0);
             str = malloc(12 * sizeof(gchar));
-            sprintf(str, "%.0f", window->editedElement->secondParameter);
+            sprintf(str, "%.0f", window->editedElement->secondParameter / 320.0);
             gtk_entry_set_text(window->pp_edit_gradient_entry, str);
             free(str);
             break;
@@ -3915,7 +3917,7 @@ G_MODULE_EXPORT void on_pp_edit_gradient_combobox_changed(GtkComboBox *combobox,
     default: // Strength
         gtk_widget_set_visible(GTK_WIDGET(window->pp_edit_gradient_entry), TRUE);
         str = malloc(12 * sizeof(gchar));
-        sprintf(str, "%.0f", window->editedElement->secondParameter);
+        sprintf(str, "%.0f", window->editedElement->secondParameter / 320.0);
         gtk_entry_set_text(window->pp_edit_gradient_entry, str);
         free(str);
     }
@@ -4095,7 +4097,7 @@ G_MODULE_EXPORT void on_editing_pulsesequence_finished(gpointer sender, gpointer
             }
             break;
         case SequenceTypeGradient:
-            value = atof(gtk_entry_get_text(window->pp_edit_gradient_entry));
+            value = 320.0 * atof(gtk_entry_get_text(window->pp_edit_gradient_entry));
             // Strength
             if(gtk_combo_box_get_active(GTK_COMBO_BOX(window->pp_edit_gradient_combobox)) == 0) {
                 if(value < -32000)
@@ -4174,18 +4176,16 @@ void set_iSpin_coherencePathway_coefficients(InsensitiveWindow *window, DSPCompl
     unsigned int spins = insensitive_spinsystem_get_number_of_ispins(window->controller->spinSystem);
     unsigned int pulses = window->controller->pulseList->len;
 
-    if(spins == 0)
-        orders = 1;
-    else if(intensities == NULL)
+    if (intensities == NULL)
         orders = 0;
     else
         orders = 2 * spins + 1;
 
-    if(window->coefficientsForISpins != NULL) {
+    if (window->coefficientsForISpins != NULL) {
         free(window->coefficientsForISpins);
         window->coefficientsForISpins = NULL;
     }
-    if(window->pathwaysForISpins != NULL) {
+    if (window->pathwaysForISpins != NULL) {
         for(i = 0; i < window->numberOfISpinPathways; i++)
             free(window->pathwaysForISpins[i]);
         free(window->pathwaysForISpins);
@@ -4193,7 +4193,7 @@ void set_iSpin_coherencePathway_coefficients(InsensitiveWindow *window, DSPCompl
     }
     window->numberOfISpinOrders = orders;
     window->numberOfPulses = pulses;
-    if(pulses == 0)
+    if (pulses == 0)
         window->errorCode |= 1;
     else
         window->errorCode &= ~1;
@@ -4232,9 +4232,7 @@ void set_sSpin_coherencePathway_coefficients(InsensitiveWindow *window, DSPCompl
     unsigned int spins = insensitive_spinsystem_get_number_of_sspins(window->controller->spinSystem);
     unsigned int pulses = window->controller->pulseList->len;
 
-    if(spins == 0)
-        orders = 1;
-    else if(intensities == NULL)
+    if (intensities == NULL)
         orders = 0;
     else
         orders = 2 * spins + 1;
@@ -4290,10 +4288,31 @@ void set_needsToRecalculateCoherencePathways(InsensitiveWindow *window, gboolean
 }
 
 
+gboolean start_coherencePathway_spinner(gpointer user_data)
+{
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+    gtk_spinner_start(window->coherenceProgressIndicator);
+
+    return FALSE;
+}
+
+
+gboolean stop_coherencePathway_spinner(gpointer user_data)
+{
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+
+    gtk_spinner_stop(window->coherenceProgressIndicator);
+
+    return FALSE;
+}
+
+
 void draw_coherencePathway(InsensitiveWindow *window)
 {
-    g_thread_new("CoherencePathwayThread", calculate_coherence_paths, window);
-    //[coherenceProgressIndicator performSelectorOnMainThread:@selector(stopAnimation:) withObject:self waitUntilDone:FALSE];
+    //g_thread_new("CoherencePathwayThread", calculate_coherence_paths, window);
+    calculate_coherence_paths(window);
+    g_idle_add((GSourceFunc)stop_coherencePathway_spinner, window);
 }
 
 
@@ -4314,20 +4333,25 @@ gpointer calculate_coherence_paths(gpointer user_data)
 
     if (window->labelArray != NULL) {
         g_ptr_array_free(window->labelArray, TRUE);
+        //g_ptr_array_unref(window->labelArray);
     }
     window->labelArray = g_ptr_array_new();
     //g_ptr_array_remove_range(window->labelArray, 0, window->labelArray->len);
     if (window->alphaArray != NULL) {
         g_ptr_array_free(window->alphaArray, TRUE);
+        //g_ptr_array_unref(window->alphaArray);
     }
-    window->pathArray = g_ptr_array_new();
+    window->alphaArray = g_ptr_array_new();
     //g_ptr_array_remove_range(window->alphaArray, 0, window->labelArray->len);
-    if (window->pathArray != NULL)
+    if (window->pathArray != NULL) {
         while (window->pathArray->len > 0) {
             path = g_ptr_array_remove_index_fast(window->pathArray, 0);
             g_ptr_array_free(path, TRUE);
+            //g_ptr_array_unref(path);
         }
-    window->alphaArray = g_ptr_array_new();
+        g_ptr_array_unref(window->pathArray);
+    }
+    window->pathArray = g_ptr_array_new();
 
     shiftFromText = 27.0;
     for (type = 0; type < 2; type++) {
@@ -4457,17 +4481,6 @@ gpointer calculate_coherence_paths(gpointer user_data)
         } else {
             if (numberOfOrders == 0 && !(window->errorCode & 1) && !(window->errorCode & 4)) {
                 spins = (numberOfOrders - 1) / 2;
-                /*label = [[NSTextField alloc] initWithFrame:NSMakeRect(15 * pathway_scaling, (offset + 16 + numberOfOrders * 15) * pathway_scaling, 500 * pathway_scaling, 17 * pathway_scaling)];
-                [label setBordered:NO];
-                [label setSelectable:NO];
-                [label setTextColor:[NSColor blackColor]];
-                [label setBackgroundColor:[NSColor windowBackgroundColor]];
-                [label setDrawsBackground:NO];
-                [label setAlignment:NSLeftTextAlignment];
-                [label setFont:[NSFont fontWithName:@"LucidaGrande-Bold" size:12 * pathway_scaling]];
-                [label setStringValue:[NSString stringWithFormat:NSLocalizedString(@"Too many calculations required for %c Spins!", nil), (type == 1) ? 'S' : 'I']];
-                [labelArray addObject:label];
-                [self addSubview:label];*/
             }
         }
     }
@@ -6752,10 +6765,13 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 {
 	gchar *command, **word, *commandCopy;
 	GRegex *regex1spin_xy, *regex1spin_z, *regex2spins, *regex3spins, *regex4spins;
+    GRegex *regexStrong2spins, *regexStrong3spins, *regexStrong4spins;
     GRegex *regexFracJ, *regexFracJ_indices;
 	gboolean commandMatches1SpinOperator_xy, commandMatches1SpinOperator_z;
     gboolean commandMatchesFractionOfJ, commandMatchesFractionOfJ_indices;
 	gboolean commandMatches2SpinOperator, commandMatches3SpinOperator, commandMatches4SpinOperator;
+    gboolean commandMatchesStrong2SpinOperator, commandMatchesStrong3SpinOperator, commandMatchesStrong4SpinOperator;
+    gboolean saveState;
 	GError *err = NULL;
 	GMatchInfo *matchInfo;
 	unsigned int number_of_words, str_len;
@@ -6797,6 +6813,15 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	regex4spins = g_regex_new("\\b8(i|s)[1-4]z(i|s)[1-4]z(i|s)[1-4]z(i|s)[1-4]z\\b", 0, 0, &err);
 	g_regex_match(regex4spins, word[0], 0, &matchInfo);
 	commandMatches4SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+    regexStrong2spins = g_regex_new("\\b2(i|s)[1-4]\\.(i|s)[1-4]$", 0, 0, &err);
+	g_regex_match(regexStrong2spins, word[0], 0, &matchInfo);
+	commandMatchesStrong2SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+	regexStrong3spins = g_regex_new("\\b4(i|s)[1-4]\\.(i|s)[1-4]\\.(i|s)[1-4]$", 0, 0, &err);
+	g_regex_match(regexStrong3spins, word[0], 0, &matchInfo);
+	commandMatchesStrong3SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+	regexStrong4spins = g_regex_new("\\b8(i|s)[1-4]\\.(i|s)[1-4]\\.(i|s)[1-4]\\.(i|s)[1-4]$", 0, 0, &err);
+	g_regex_match(regexStrong4spins, word[0], 0, &matchInfo);
+	commandMatchesStrong4SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
     regexFracJ = g_regex_new("^1/[2-4|8]j$", 0, 0, &err);
 	g_regex_match(regexFracJ, word[0], 0, &matchInfo);
 	commandMatchesFractionOfJ = g_match_info_matches(matchInfo) ? TRUE : FALSE;
@@ -6837,10 +6862,11 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	}
     // Translate 1/(nJab) keyword to correct delay times
     if ((commandMatchesFractionOfJ || commandMatchesFractionOfJ_indices) && number_of_words == 2) {
-        gboolean secondWordMatchesProductOperator, secondWordMatches2SpinOperator;
+        gboolean secondWordMatchesProductOperator, secondWordMatches2SpinOperator, secondWordMatchesStrong2SpinOperator;
 
         secondWordMatchesProductOperator = FALSE;
         secondWordMatches2SpinOperator = FALSE;
+        secondWordMatchesStrong2SpinOperator = FALSE;
         g_regex_match(regex1spin_z, word[1], 0, &matchInfo);
         if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
         g_regex_match(regex2spins, word[1], 0, &matchInfo);
@@ -6848,9 +6874,18 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
             secondWordMatchesProductOperator = TRUE;
             secondWordMatches2SpinOperator = TRUE;
         }
+        g_regex_match(regexStrong2spins, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) {
+            secondWordMatchesProductOperator = TRUE;
+            secondWordMatchesStrong2SpinOperator = TRUE;
+        }
         g_regex_match(regex3spins, word[1], 0, &matchInfo);
         if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
         g_regex_match(regex4spins, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
+        g_regex_match(regexStrong3spins, word[1], 0, &matchInfo);
+        if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
+        g_regex_match(regexStrong4spins, word[1], 0, &matchInfo);
         if (g_match_info_matches(matchInfo)) secondWordMatchesProductOperator = TRUE;
 
         if (secondWordMatchesProductOperator) {
@@ -6864,7 +6899,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
             if (commandMatchesFractionOfJ_indices) {
                 spinNumber[0] = word[0][i + 2] - 49;
                 spinNumber[1] = word[0][i + 3] - 49;
-            } else if (secondWordMatches2SpinOperator) {
+            } else if (secondWordMatches2SpinOperator || secondWordMatchesStrong2SpinOperator) {
                 spinNumber[0] = word[1][2] - 49;
                 spinNumber[1] = word[1][5] - 49;
                 spinType[0] = (word[1][1] == 'i') ? spinTypeI : spinTypeS;
@@ -6881,6 +6916,11 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 			        gtk_widget_destroy(dialog);
                     goto end_of_command_execution;
                 }
+                saveState = insensitive_settings_get_strongCoupling(window->controller->settings);
+                if (secondWordMatchesStrong2SpinOperator)
+                    insensitive_controller_set_strongCoupling(window->controller, TRUE);
+                else
+                    insensitive_controller_set_strongCoupling(window->controller, FALSE);
             } else {
                 dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 									            GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -7297,23 +7337,17 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 							GTK_DIALOG_DESTROY_WITH_PARENT,
 							GTK_MESSAGE_INFO,
 							GTK_BUTTONS_OK,
-							"GPZ [%%] = %.0f (%.3f)", insensitive_settings_get_gradientStrength(window->controller->settings) / 320.0, insensitive_settings_get_gradientStrength(window->controller->settings));
+							"GPZ [%%] = %.0f", insensitive_settings_get_gradientStrength(window->controller->settings) / 320.0);
 			gtk_window_set_title(GTK_WINDOW(dialog), "Gradient pulse power level");
 			gtk_dialog_run(GTK_DIALOG(dialog));
 			gtk_widget_destroy(dialog);
 		} else {
-            unsigned int len = strlen(word[1]);
             double value;
             gchar str[10];
-            if (word[1][len - 1] == '%') {
-                word[1][len - 1] = '\0';
-                value = atof(word[1]);
-                //if (value > 100.0) value = 100.0;
-                value *= 320.0;
-                sprintf(str, "%.0f", value);
-                gtk_entry_set_text(window->gradient_strength_entry, str);
-            } else
-			    gtk_entry_set_text(window->gradient_strength_entry, word[1]);
+            value = atof(word[1]);
+            value *= 320.0;
+            sprintf(str, "%.0f", value);
+            gtk_entry_set_text(window->gradient_strength_entry, str);
 			on_gradient_strength_entry_activate(window->gradient_strength_entry, window);
 		}
 	}
@@ -8345,16 +8379,37 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	// iziz
 	else if (!g_strcmp0(word[0], "iziz") && number_of_words == 1) {
 		start_progress_indicator(window);
+        insensitive_controller_set_strongCoupling(window->controller, FALSE);
 		insensitive_controller_perform_coupling_on_ISpins_animated(window->controller, TRUE);
 	}
 	// izsz
 	else if (!g_strcmp0(word[0], "izsz") && number_of_words == 1) {
 		start_progress_indicator(window);
+        insensitive_controller_set_strongCoupling(window->controller, FALSE);
 		insensitive_controller_perform_coupling_animated(window->controller, TRUE);
 	}
 	// szsz
 	else if (!g_strcmp0(word[0], "szsz") && number_of_words == 1) {
 		start_progress_indicator(window);
+        insensitive_controller_set_strongCoupling(window->controller, FALSE);
+		insensitive_controller_perform_coupling_on_SSpins_animated(window->controller, TRUE);
+	}
+	// iziz
+	else if (!g_strcmp0(word[0], "i.i") && number_of_words == 1) {
+		start_progress_indicator(window);
+        insensitive_controller_set_strongCoupling(window->controller, TRUE);
+		insensitive_controller_perform_coupling_on_ISpins_animated(window->controller, TRUE);
+	}
+	// izsz
+	else if (!g_strcmp0(word[0], "i.s") && number_of_words == 1) {
+		start_progress_indicator(window);
+        insensitive_controller_set_strongCoupling(window->controller, TRUE);
+		insensitive_controller_perform_coupling_animated(window->controller, TRUE);
+	}
+	// szsz
+	else if (!g_strcmp0(word[0], "s.s") && number_of_words == 1) {
+		start_progress_indicator(window);
+        insensitive_controller_set_strongCoupling(window->controller, TRUE);
 		insensitive_controller_perform_coupling_on_SSpins_animated(window->controller, TRUE);
 	}
 	// I#x, I#y, S#x, S#y
@@ -8408,8 +8463,9 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 			}
 		}
 	}
-	// #(Iz)_n
-	else if (commandMatches2SpinOperator || commandMatches3SpinOperator || commandMatches4SpinOperator) {
+	// #(Iz)_n, #(I.)_n
+	else if (commandMatches2SpinOperator || commandMatches3SpinOperator || commandMatches4SpinOperator
+             || commandMatchesStrong2SpinOperator || commandMatchesStrong3SpinOperator || commandMatchesStrong4SpinOperator) {
 		unsigned int i, spin, type, array = 0;
 		unsigned int numberOfSpins = lb(word[0][0] - 48) + 1;
 
@@ -8435,6 +8491,10 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 			gtk_widget_destroy(dialog);
 		} else {
 			start_progress_indicator(window);
+            if (commandMatches2SpinOperator || commandMatches3SpinOperator || commandMatches4SpinOperator)
+                insensitive_controller_set_strongCoupling(window->controller, FALSE);
+            else
+                insensitive_controller_set_strongCoupling(window->controller, TRUE);
 			insensitive_controller_perform_coupling_on_spinArray(window->controller, array, TRUE);
 		}
 	}
@@ -8446,7 +8506,8 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 		string = command;
 		for (numberOfMinusSigns = 0; string[numberOfMinusSigns]; string[numberOfMinusSigns] == '-' ? numberOfMinusSigns++ : *(string++));
 		string = command;
-		for (numberOfDecimalPoints = 0; string[numberOfDecimalPoints]; string[numberOfDecimalPoints] == '.' ? numberOfDecimalPoints++ : *(string++));
+		for (numberOfDecimalPoints = 0; string[numberOfDecimalPoints]; string[numberOfDecimalPoints] == '.' ? numberOfDecimalPoints++ : *(string++))
+            if (string[numberOfDecimalPoints] == ' ') break;
 
 		if (numberOfMinusSigns > 1 || numberOfDecimalPoints > 1) {
 			show_command_error((GtkWidget *)entry, window);
@@ -8465,6 +8526,12 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 			commandMatches3SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
 			g_regex_match(regex4spins, word[1], 0, &matchInfo);
 			commandMatches4SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+            g_regex_match(regexStrong2spins, word[1], 0, &matchInfo);
+			commandMatchesStrong2SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+			g_regex_match(regexStrong3spins, word[1], 0, &matchInfo);
+			commandMatchesStrong3SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
+			g_regex_match(regexStrong4spins, word[1], 0, &matchInfo);
+			commandMatchesStrong4SpinOperator = g_match_info_matches(matchInfo) ? TRUE : FALSE;
 
 			if (commandMatches1SpinOperator_z) {
 				gtk_entry_set_text(window->delay_entry, word[0]);
@@ -8559,18 +8626,40 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 				gtk_entry_set_text(window->delay_entry, word[0]);
 				on_delay_entry_activate(window->delay_entry, window);
 				start_progress_indicator(window);
+                insensitive_controller_set_strongCoupling(window->controller, FALSE);
 				insensitive_controller_perform_coupling_on_ISpins_animated(window->controller, TRUE);
 			} else if (!g_strcmp0(word[1], "izsz")) {
 				gtk_entry_set_text(window->delay_entry, word[0]);
 				on_delay_entry_activate(window->delay_entry, window);
 				start_progress_indicator(window);
+                insensitive_controller_set_strongCoupling(window->controller, FALSE);
 				insensitive_controller_perform_coupling_animated(window->controller, TRUE);
 			} else if (!g_strcmp0(word[1], "szsz")) {
 				gtk_entry_set_text(window->delay_entry, word[0]);
 				on_delay_entry_activate(window->delay_entry, window);
 				start_progress_indicator(window);
+                insensitive_controller_set_strongCoupling(window->controller, FALSE);
 				insensitive_controller_perform_coupling_on_SSpins_animated(window->controller, TRUE);
-			} else if (commandMatches2SpinOperator || commandMatches3SpinOperator || commandMatches4SpinOperator) {
+            } else if (!g_strcmp0(word[1], "i.i")) {
+				gtk_entry_set_text(window->delay_entry, word[0]);
+				on_delay_entry_activate(window->delay_entry, window);
+				start_progress_indicator(window);
+                insensitive_controller_set_strongCoupling(window->controller, TRUE);
+				insensitive_controller_perform_coupling_on_ISpins_animated(window->controller, TRUE);
+			} else if (!g_strcmp0(word[1], "i.s")) {
+				gtk_entry_set_text(window->delay_entry, word[0]);
+				on_delay_entry_activate(window->delay_entry, window);
+				start_progress_indicator(window);
+                insensitive_controller_set_strongCoupling(window->controller, TRUE);
+				insensitive_controller_perform_coupling_animated(window->controller, TRUE);
+			} else if (!g_strcmp0(word[1], "s.s")) {
+				gtk_entry_set_text(window->delay_entry, word[0]);
+				on_delay_entry_activate(window->delay_entry, window);
+				start_progress_indicator(window);
+                insensitive_controller_set_strongCoupling(window->controller, TRUE);
+				insensitive_controller_perform_coupling_on_SSpins_animated(window->controller, TRUE);
+			} else if (commandMatches2SpinOperator || commandMatches3SpinOperator || commandMatches4SpinOperator
+                       || commandMatchesStrong2SpinOperator || commandMatchesStrong3SpinOperator || commandMatchesStrong4SpinOperator) {
 				unsigned int i, spin, type, array = 0;
 				unsigned int numberOfSpins = lb(*word[1]  - 48) + 1;
 
@@ -8598,6 +8687,10 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 					gtk_widget_destroy(dialog);
 				} else {
 					start_progress_indicator(window);
+                    if (commandMatches2SpinOperator || commandMatches3SpinOperator || commandMatches4SpinOperator)
+                        insensitive_controller_set_strongCoupling(window->controller, FALSE);
+                    else
+                        insensitive_controller_set_strongCoupling(window->controller, TRUE);
 					insensitive_controller_perform_coupling_on_spinArray(window->controller, array, TRUE);
 				}
 			} else
@@ -8617,6 +8710,9 @@ end_of_command_execution:
 	g_free(regex2spins);
 	g_free(regex3spins);
 	g_free(regex4spins);
+	g_free(regexStrong2spins);
+	g_free(regexStrong3spins);
+	g_free(regexStrong4spins);
 	g_free(regexFracJ);
 	g_free(matchInfo);
 	g_free(command);

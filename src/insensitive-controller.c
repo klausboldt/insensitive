@@ -2484,12 +2484,12 @@ void insensitive_controller_perform_pulseSequence(InsensitiveController *self)
             self->acquisitionAfterPulseSequence = TRUE;
             self->acquisitionTime = (float)g_get_monotonic_time();
             // Perform Phase cycling for 1D spectrum silently
-            if (self->phaseCycles > 1) {
+         // if (self->phaseCycles > 1) {
                 enable_acquisition_button((InsensitiveWindow *)self->displayController, FALSE);
                 set_acquisition_in_background((InsensitiveWindow *)self->displayController, TRUE);
                 g_thread_new("PulseSequenceThread", insensitive_controller_perform_pulseSequence_in_background, self);
             // Perform single acquisition with animation
-            } else {
+         /* } else {
                 phaseCyclingIndex++;
                 for (i = 0; i < self->pulseList->len; i++) {
                     element = g_ptr_array_index(self->pulseList, i);
@@ -2516,7 +2516,7 @@ void insensitive_controller_perform_pulseSequence(InsensitiveController *self)
                 set_iSpins_checkbox((InsensitiveWindow *)self->displayController, insensitive_settings_get_allISpinsSelected(self->settings));
                 set_sSpins_checkbox((InsensitiveWindow *)self->displayController, insensitive_settings_get_allSSpinsSelected(self->settings));
                 set_allSpins_checkbox((InsensitiveWindow *)self->displayController, insensitive_settings_get_allSpinsSelected(self->settings));
-            }
+            }*/
         } else {
             insensitive_pulsesequence_perform_actions_on_spinsystem(self->pulseSequence, self->spinSystem, 0, 0, self->settings, self);
             spin_state_was_changed((InsensitiveWindow *)self->displayController);
@@ -3081,7 +3081,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 				float_ptr2 = g_ptr_array_index(gradientList, index + 1);
 				if ((*float_ptr1 == element->time) && (*float_ptr2 == fabsf(element->secondParameter))) {
 					gradientOccurredBefore = index;
-					index = (unsigned int)delayList->len;
+					index = (unsigned int)gradientList->len;
 				}
 			}
 			if (!includeGradients)
@@ -3799,7 +3799,7 @@ gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
                                     c = complex_mul(c, z);
                                     // Remove pathways that do not change after 90° and 180° pulses
                                     if(step + 1 <= (unsigned int)insensitive_pulsesequence_get_number_of_elements(self->pulseSequence) && index > 1) { // <= is < if next line is not commented out
-                                        // Only  allow pulses on the current spin type
+                                        // Only allow pulses on the current spin type
                                         if((type == spinTypeI && element->activeISpins)
                                            || (type == spinTypeS && element->activeSSpins)) {
                                             if((element->time == 90 || element->time == 180) &&
@@ -3853,9 +3853,8 @@ gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
                 set_sSpin_coherencePathway_coefficients((InsensitiveWindow *)self->displayController, NULL);
         }
         // Tell the pulse sequence controller not to redraw only if this loop has reached the final round
-        if(type == 1) {
+        if(type == spinTypeS)
             set_needsToRecalculateCoherencePathways((InsensitiveWindow *)self->displayController, FALSE);
-        }
     }
     // Restore phase cycling table
     for(step = 0; step < (unsigned int)numberOfPulses && !self->interruptCoherencePathwayCalculation; step++) {
@@ -3864,7 +3863,6 @@ gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
         element->secondParameter = atoi(char_ptr);
     }
     draw_coherencePathway((InsensitiveWindow *)self->displayController);
-    //insensitive_settings_set_ignoreOffResonanceEffectsForPulses(simpleSettings, insensitive_settings_get_ignoreOffResonanceEffectsForPulses(self->settings));
     g_object_unref(simpleSettings);
     free(zmag);
     free(shiftminus);

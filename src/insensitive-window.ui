@@ -2761,20 +2761,22 @@ ph31=0 2 0 2 0 0 0 0
                                         <property name="active">13</property>
                                         <property name="has-entry">True</property>
                                         <items>
-                                          <item translatable="yes">32000</item>
-                                          <item translatable="yes">16000</item>
-                                          <item translatable="yes">10000</item>
-                                          <item translatable="yes">5000</item>
-                                          <item translatable="yes">2000</item>
-                                          <item translatable="yes">1000</item>
-                                          <item translatable="yes">500</item>
-                                          <item translatable="yes">-500</item>
-                                          <item translatable="yes">-1000</item>
-                                          <item translatable="yes">-2000</item>
-                                          <item translatable="yes">-5000</item>
-                                          <item translatable="yes">-10000</item>
-                                          <item translatable="yes">-16000</item>
-                                          <item translatable="yes">-32000</item>
+                                          <item translatable="yes">100</item>
+                                          <item translatable="yes">50</item>
+                                          <item translatable="yes">40</item>
+                                          <item translatable="yes">30</item>
+                                          <item translatable="yes">16</item>
+                                          <item translatable="yes">12</item>
+                                          <item translatable="yes">10</item>
+                                          <item translatable="yes">4</item>
+                                          <item translatable="yes">-4</item>
+                                          <item translatable="yes">-10</item>
+                                          <item translatable="yes">-12</item>
+                                          <item translatable="yes">-16</item>
+                                          <item translatable="yes">-30</item>
+                                          <item translatable="yes">-40</item>
+                                          <item translatable="yes">-50</item>
+                                          <item translatable="yes">-100</item>
                                         </items>
                                         <signal name="changed" handler="on_gradient_strength_combobox_changed" object="InsensitiveWindow" swapped="no"/>
                                         <child internal-child="entry">
@@ -2822,7 +2824,16 @@ ph31=0 2 0 2 0 0 0 0
                                       </packing>
                                     </child>
                                     <child>
-                                      <placeholder/>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="halign">start</property>
+                                        <property name="label" translatable="yes">%</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left-attach">3</property>
+                                        <property name="top-attach">0</property>
+                                      </packing>
                                     </child>
                                     <child>
                                       <placeholder/>
@@ -3974,6 +3985,17 @@ ph31=0 2 0 2 0 0 0 0
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinner" id="coherenceProgressIndicator">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                       </object>

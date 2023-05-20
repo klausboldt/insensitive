@@ -559,13 +559,12 @@ G_MODULE_EXPORT void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpoi
         origin_x = 41.0;
 	    height = 71.0;
         origin_y = gtk_widget_get_allocated_height(widget) - height;
-	    width = gtk_widget_get_allocated_width(widget) - 2 * origin_x; //gtk_widget_get_allocated_width(widget) - origin_x - 7.0;
+	    width = gtk_widget_get_allocated_width(widget) - 2 * origin_x;
         centre_x = origin_x + width / 2;
 	    centre_y = origin_y + height / 2;
         top = origin_y + 25.0;
 	    bottom = origin_y + height - 25.0;
 	    left = origin_x + 25.0;
-	    //right = origin_x + width - 25.0;
 	    if (rotatingFrame) {
 		    cairo_move_to(cr, centre_x, centre_y);
 		    cairo_line_to(cr, left, centre_y);
@@ -1721,7 +1720,7 @@ G_MODULE_EXPORT void draw_single_spins_view(GtkWidget *widget, cairo_t *cr, gpoi
 		}
 		break;
 	case XYRotatingField:
-		precessionAngle = cos(window->phase) / 5;
+		precessionAngle = cos(window->phase) / 7;//5;
 		circleWidth = sin(window->phase) * 8.0;
 		// Hind half
 		cairo_set_source_rgba(cr, 0.1, 0.75, 0.1, 0.25);
