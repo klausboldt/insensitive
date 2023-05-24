@@ -5253,6 +5253,7 @@ G_MODULE_EXPORT void on_dosy_show_1D_trace_only_button_clicked(GtkButton *button
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
     insensitive_controller_get_first_trace_of_2D_spectrum(window->controller, TRUE);
+    window->controller->fittedPeaks = 0;
     on_fft1D_button_clicked(NULL, window);
     set_magnification(window, 1.0);
 
@@ -11262,6 +11263,67 @@ void create_graph_view(InsensitiveWindow *window, int surface_width, int surface
                 pos += gap_left;
                 cairo_move_to(cr, pos, 0.0);
                 cairo_line_to(cr, pos, y);
+                cairo_stroke(cr);
+            }
+        }
+    }
+    // DOSY stuff
+    if (window->controller->fittedPeaks > 0 && window->showsFrequencyDomain) {
+        if (window->twoDimensionalSpectrum) {
+            if (window->plotMode != Stacked && !window->shows2DFrequencyDomain && !window->spectrumIsDOSY2D) {
+                double dashes[2] = {6.0, 3.0};
+                cairo_set_dash(cr, dashes, 2, 0.0);
+                stepSizeX = width / (window->maxDataPoints / window->indirectDataPoints - 1);
+                cairo_set_line_width(cr, 1.0);
+                for (i = 0; i < window->controller->fittedPeaks; i++) {
+                    pos = (int)window->controller->dosyParameters[i].x * stepSizeX + origin_x;
+                    if(pos < 0)
+                        pos *= -1;
+                    cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
+                    cairo_move_to(cr, pos, origin_y);
+                    cairo_line_to(cr, pos, height + origin_y);
+                    cairo_stroke(cr);
+                }
+                cairo_set_dash(cr, NULL, 0, 0.0);
+            }
+        } else {
+            unsigned int peak;
+            int x;
+            float A, wx;
+            for (peak = 0; peak < window->controller->fittedPeaks; peak++) {
+                A = window->controller->dosyParameters[peak].A;
+                x = window->controller->dosyParameters[peak].x;
+                wx = window->controller->dosyParameters[peak].wx;
+                if (A == 0.0 || wx == 0.0)
+                    break;
+                cairo_set_line_width(cr, window->lineWidth);
+                for (i = 0; i < window->lastDataPointDisplayed; i++) {
+                    deflection = A * wx / (pow(wx, 2) + pow(i - (float)x, 2));
+                    deflection -= window->baselineRe;
+                    deflection = origin_y - stepSizeY * deflection;
+                    if (deflection < gap_top)
+                        deflection = gap_top;
+                    else if (deflection > gap_top + height)
+                        deflection = gap_top + height;
+                    if (i == 0)
+                        cairo_move_to(cr, origin_x, deflection);
+                    else if(lastValueOutOfRange && deflection != gap_top && deflection != gap_top + height) {
+                        cairo_move_to(cr, origin_x + (i - 0.5) * stepSizeX, lastValueOutOfRange);
+                        cairo_line_to(cr, origin_x + i * stepSizeX, deflection);
+                    } else if (!lastValueOutOfRange && deflection != gap_top && deflection != gap_top + height)
+                        cairo_line_to(cr, origin_x + i * stepSizeX, deflection);
+                    if (deflection == gap_top || deflection == gap_top + height) {
+                        if (!lastValueOutOfRange)
+                            cairo_line_to(cr, origin_x + (i - 0.5) * stepSizeX, deflection);
+                        else if (lastValueOutOfRange != deflection) {
+                            cairo_move_to(cr, origin_x + i * stepSizeX, lastValueOutOfRange);
+                            cairo_line_to(cr, origin_x + i * stepSizeX, deflection);
+                        }
+                        lastValueOutOfRange = deflection;
+                    } else
+                        lastValueOutOfRange = 0.0;
+                }
+                cairo_set_source_rgba(cr, 1.0, 0.5, 0.5, 0.5);
                 cairo_stroke(cr);
             }
         }

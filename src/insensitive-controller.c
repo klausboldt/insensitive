@@ -4312,6 +4312,7 @@ void insensitive_controller_reset_acquisition_for_dataPoints(InsensitiveControll
     self->recordedDataPointsInFID = 0;
     self->firstDataPointInFID = 0;
     self->acquisitionTime = 0.0;
+    self->fittedPeaks = 0;
     // Should call this on main thread, but messes up perform_open_spectrum
     //g_idle_add((GSourceFunc)reset_spectrum_display, (InsensitiveWindow *)self->displayController);
     reset_spectrum_display((InsensitiveWindow *)self->displayController);

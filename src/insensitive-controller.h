@@ -43,56 +43,56 @@
 
 
 struct _InsensitiveController {
-	GObject parent_instance;
+	  GObject parent_instance;
 
-	InsensitiveSpinSystem *spinSystem;
-	InsensitiveSettings *settings;
-	gpointer displayController;
+	  InsensitiveSpinSystem *spinSystem;
+	  InsensitiveSettings *settings;
+	  gpointer displayController;
 
-	guint stepwiseOperationTimerNr, animationTimerNr;
-	unsigned int stepsPerformedForOperation, stepsToBePerformedForOperation, dwellTimeFraction, danteCounter;
-	gboolean operationIsInProgress, animationIsInProgress, acquisitionIsInProgress, interruptAcquisition;
-	gboolean haltAnimation, relaxationWasIncludedBefore, iSpinsWereDecoupledBefore, sSpinsWereDecoupledBefore;
-	gboolean interruptCoherencePathwayCalculation;
+	  guint stepwiseOperationTimerNr, animationTimerNr;
+	  unsigned int stepsPerformedForOperation, stepsToBePerformedForOperation, dwellTimeFraction, danteCounter;
+	  gboolean operationIsInProgress, animationIsInProgress, acquisitionIsInProgress, interruptAcquisition;
+	  gboolean haltAnimation, relaxationWasIncludedBefore, iSpinsWereDecoupledBefore, sSpinsWereDecoupledBefore;
+	  gboolean interruptCoherencePathwayCalculation;
     InsensitivePulseShaper *pulseShaperController;
     InsensitiveComposer *matrixComposerController;
 
-	unsigned int selectedSpin, expno, selectivePrecessionArray;
+	  unsigned int selectedSpin, expno, selectivePrecessionArray;
 
-	DSPSplitComplex fid, spectrum1D, spectrum2D, spectrumSymmetrized;
-	DSPSplitComplex fidStates, spectrum1DStates;
-	DSPSplitComplex noiseTime, noiseFrequency, noiseAbs, pulseShape, pulsePowerSpectrum;
-	unsigned int totalDataPointsInSER, recordedDataPointsInFID, firstDataPointInFID;
-	fftw_plan fftsetup;
-	enum WindowFunctionType windowFunction;
-	float gaussianWidth, gaussianShift;
-	float *apodizationT2, *apodizationT1;
-	gboolean realDataSetsForStatesMethod, spectrumDataAvailable;
-	enum PurePhaseDetectionMethod detectionMethodOfCurrentSpectrum;
+	  DSPSplitComplex fid, spectrum1D, spectrum2D, spectrumSymmetrized;
+	  DSPSplitComplex fidStates, spectrum1DStates;
+	  DSPSplitComplex noiseTime, noiseFrequency, noiseAbs, pulseShape, pulsePowerSpectrum;
+	  unsigned int totalDataPointsInSER, recordedDataPointsInFID, firstDataPointInFID;
+	  fftw_plan fftsetup;
+	  enum WindowFunctionType windowFunction;
+	  float gaussianWidth, gaussianShift;
+	  float *apodizationT2, *apodizationT1;
+	  gboolean realDataSetsForStatesMethod, spectrumDataAvailable;
+	  enum PurePhaseDetectionMethod detectionMethodOfCurrentSpectrum;
     float acquisitionProgress;
 
-	gboolean isRecordingPulseSequence, acquisitionAfterPulseSequence;
-	gboolean currentSpectrumIsTwoDimensional;
-	unsigned int phaseCycles;
-	InsensitivePulseSequence *pulseSequence;
-	GPtrArray *phaseCyclingArray, *pulseList;
+	  gboolean isRecordingPulseSequence, acquisitionAfterPulseSequence;
+	  gboolean currentSpectrumIsTwoDimensional;
+	  unsigned int phaseCycles;
+	  InsensitivePulseSequence *pulseSequence;
+	  GPtrArray *phaseCyclingArray, *pulseList;
     GtkListStore *phaseCyclingTable;
-	int indexForVariableEvolutionTime;
-	gchar *pulseSequenceName;
+	  int indexForVariableEvolutionTime;
+	  gchar *pulseSequenceName;
     GString *spectrumReport;
-	double acquisitionTime;
-	FittedSpectrum *dosyParameters;
-	unsigned int fittedPeaks;
-	unsigned int currentStepInPulseSequence, previousStepInPulseSequence;
+	  double acquisitionTime;
+	  FittedSpectrum *dosyParameters;
+	  unsigned int fittedPeaks;
+	  unsigned int currentStepInPulseSequence, previousStepInPulseSequence;
 
-	gchar **selectableDelayNames;
-	float *selectableDelayValues;
-	GPtrArray *grapefruitPath;
+	  gchar **selectableDelayNames;
+	  float *selectableDelayValues;
+	  GPtrArray *grapefruitPath;
 
-	unsigned int previousPhaseCycles, previousPulseArray;
-	InsensitiveSpinSystem *previousSpinSystem;
-	InsensitivePulseSequence *previousPulseSequence;
-	GPtrArray *previousPhaseCyclingArray, *previousPulseList;
+	  unsigned int previousPhaseCycles, previousPulseArray;
+	  InsensitiveSpinSystem *previousSpinSystem;
+	  InsensitivePulseSequence *previousPulseSequence;
+	  GPtrArray *previousPhaseCyclingArray, *previousPulseList;
 };
 
 

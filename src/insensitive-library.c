@@ -2361,10 +2361,8 @@ int dosy_fit(float *spectrum, int t1datapoints, int t2datapoints, unsigned int n
 				dosy_parameters[peak].y = 0;
 				dosy_parameters[peak].wy = 0;
 			} else {
-				dosy_parameters[peak].y =
-					(int)(parameter[2] * t2datapoints / 2);
-				dosy_parameters[peak].wy =
-					lmstat->final_err * 2;
+				dosy_parameters[peak].y = (int)(parameter[2] * t2datapoints / 2);
+				dosy_parameters[peak].wy = lmstat->final_err * 2;
 			}
 		}
 	}
@@ -2394,8 +2392,8 @@ void dosy_spectrum(float *spectrum, int t1datapoints, int t2datapoints, unsigned
 			   }
 			   } else { */
 			for (peak = 0; peak < (int)number_of_peaks; peak++) {
-				value += dosy_parameters[peak].A * dosy_parameters[peak].wx / (pow(dosy_parameters[peak].wx, 2) +
-											       pow(x - dosy_parameters[peak].x, 2)) * dosy_parameters[peak].wy / (pow(dosy_parameters[peak].wy, 2) + pow(y - dosy_parameters[peak].y, 2));
+				value += dosy_parameters[peak].A * dosy_parameters[peak].wx / (pow(dosy_parameters[peak].wx, 2) + pow(x - dosy_parameters[peak].x, 2))
+                                                 * dosy_parameters[peak].wy / (pow(dosy_parameters[peak].wy, 2) + pow(y - dosy_parameters[peak].y, 2));
 			}
 			//}
 			spectrum[y * t2datapoints + x] = value;
