@@ -1357,7 +1357,7 @@ G_MODULE_EXPORT void on_single_spins_toolbutton_clicked(GtkToolButton *toolbutto
 		                           "default-width", 480,
 		                           "default-height", 414,
 		                           NULL);
-    gtk_window_set_title((GtkWindow *)single_spins_window, "Individual spins on resonance with Ω⁰ = 0 Hz");
+    gtk_window_set_title((GtkWindow *)single_spins_window, "Single spin on resonance with Ω⁰ = 0 Hz");
 	gtk_window_present((GtkWindow *)single_spins_window);
 }
 
