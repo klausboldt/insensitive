@@ -3684,8 +3684,9 @@ gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
     simpleSettings = insensitive_settings_new();
     simpleSettings->saveSettings = FALSE;
     insensitive_settings_set_ignoreOffResonanceEffectsForPulses(simpleSettings, TRUE);
-    insensitive_settings_set_dipolarRelaxation(simpleSettings,FALSE);
-    insensitive_settings_set_dephasingJitter(simpleSettings,FALSE);
+    insensitive_settings_set_dipolarRelaxation(simpleSettings, FALSE);
+    //insensitive_settings_set_relaxationWithEvolution(simpleSettings, FALSE);
+    insensitive_settings_set_dephasingJitter(simpleSettings, FALSE);
 
     zmag = Iz(0, 1);
     shiftplus = Iplus(0, 1);
@@ -3800,8 +3801,7 @@ gpointer insensitive_controller_calculate_coherencePathway(gpointer data)
                                     // Remove pathways that do not change after 90° and 180° pulses
                                     if(step + 1 <= (unsigned int)insensitive_pulsesequence_get_number_of_elements(self->pulseSequence) && index > 1) { // <= is < if next line is not commented out
                                         // Only allow pulses on the current spin type
-                                        if((type == spinTypeI && element->activeISpins)
-                                           || (type == spinTypeS && element->activeSSpins)) {
+                                        if((type == spinTypeI && element->activeISpins) || (type == spinTypeS && element->activeSSpins)) {
                                             if((element->time == 90 || element->time == 180) &&
                                                (pathway[i][index - 1] == pathway[i][index - 2] && pathway[i][index - 1] != (int)spins)) {
                                                 c = complex_rect(0.0, 0.0);
@@ -3893,8 +3893,10 @@ void insensitive_controller_set_name_for_pulseSequence(InsensitiveController *se
         g_free(self->pulseSequenceName);
         self->pulseSequenceName = NULL;
     }
-    if(name != NULL)
-        self->pulseSequenceName = name;
+    if(name != NULL) {
+        self->pulseSequenceName = malloc((strlen(name) + 1) * sizeof(char));
+        strcpy(self->pulseSequenceName, name);
+    }
 }
 
 

@@ -4479,7 +4479,7 @@ ph31=0 2 0 2 0 0 0 0
                     <property name="vscrollbar-policy">never</property>
                     <property name="propagate-natural-width">True</property>
                     <child>
-                      <object class="GtkViewport">
+                      <object class="GtkViewport" id="pulseSequence_viewport">
                         <property name="name">grey_scrollview</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>

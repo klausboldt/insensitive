@@ -127,6 +127,7 @@ struct _InsensitiveWindow {
 
     cairo_surface_t     *pulseSequence_surface;
     GtkDrawingArea      *pulseSequence_drawingarea, *pulseSequenceStep_drawingarea;
+    GtkViewport         *pulseSequence_viewport;
     GtkNotebook         *bottomDisplay_notebook;
     GtkComboBoxText     *detectionMethod_combobox, *bottomDisplay_combobox;
     GtkComboBoxText     *phaseCycles_combobox, *evolutionTimes_combobox;
@@ -573,6 +574,8 @@ void set_energy_values(InsensitiveWindow *window, float *array, unsigned int lev
                        GPtrArray *names, int *transitions, float *probabilities);
 void draw_energyLevel_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+int get_pulseSequence_surface_width(InsensitivePulseSequence *sequence);
 void create_pulseSequence_view(InsensitiveWindow *window, int width, int height);
 void add_label_for_element(cairo_t *cr, enum SequenceType type, float x, float y, int index);
 int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, float mousePosition);

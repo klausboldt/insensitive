@@ -200,6 +200,7 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
 	/* Pulse sequence */
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseSequence_drawingarea);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseSequenceStep_drawingarea);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseSequence_viewport);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, evolutionTimes_combobox);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, detectionMethod_combobox);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, phaseCycles_combobox);
@@ -2803,7 +2804,8 @@ gboolean update_pulseSequence(InsensitiveWindow *window)
     int width, height;
 
     if(!window->acquisitionIsBeingPerformed && GTK_IS_WINDOW(window)) {
-        width = gtk_widget_get_allocated_width(GTK_WIDGET(window->pulseSequence_drawingarea));
+        //width = gtk_widget_get_allocated_width(GTK_WIDGET(window->pulseSequence_drawingarea));
+        width = get_pulseSequence_surface_width(controller->pulseSequence);
         height = gtk_widget_get_allocated_height(GTK_WIDGET(window->pulseSequence_drawingarea));
         if (window->pulseSequence_surface != NULL)
             cairo_surface_destroy(window->pulseSequence_surface);
@@ -3014,60 +3016,89 @@ G_MODULE_EXPORT void export_pulse_program(GtkMenuItem *menuitem, gpointer user_d
     GString *pp;
     gchar *filename, *name, *nameWithoutSuffix;
     gint result, len;
+    GtkFileFilter *filter, *current_filter;
     GtkWidget *dialog, *chooser;
 
     if (insensitive_pulsesequence_get_number_of_elements(window->controller->pulseSequence) > 0) {
-        pp = insensitive_controller_export_pulseSequence(window->controller, "<no name>");
-        if (pp != NULL) {
-            chooser = gtk_file_chooser_dialog_new("Export Bruker Pulse Program",
-                                                  (GtkWindow *)window,
-                                                  GTK_FILE_CHOOSER_ACTION_SAVE,
-                                                  "Cancel", GTK_RESPONSE_CANCEL,
-                                                  "Export", GTK_RESPONSE_ACCEPT,
-                                                  NULL);
-            name = insensitive_controller_get_pulseSequence_name(window->controller);
-            if (name != NULL && strlen(name) > 0)
-                gtk_file_chooser_set_current_name((GtkFileChooser *)chooser, name);
-            gtk_widget_show_all(chooser);
-            result = gtk_dialog_run((GtkDialog *)chooser);
-            show_mainWindow_notebook_page(window, 2);
-            gtk_combo_box_set_active((GtkComboBox *)window->bottomDisplay_combobox, 2);
-            if (result == GTK_RESPONSE_ACCEPT) {
-                filename = gtk_file_chooser_get_filename((GtkFileChooser *)chooser);
-                name = g_path_get_basename(filename);
-                // Cut suffix from name if user entered .txt or .pp
-                nameWithoutSuffix = malloc((strlen(name) + 1) * sizeof(gchar));
-                strcpy(nameWithoutSuffix, name);
-                len = strlen(nameWithoutSuffix);
-                if (!strcmp(name + len - 4, ".txt"))
+        chooser = gtk_file_chooser_dialog_new("Export Bruker Pulse Program",
+                                              (GtkWindow *)window,
+                                              GTK_FILE_CHOOSER_ACTION_SAVE,
+                                              "Cancel", GTK_RESPONSE_CANCEL,
+                                              "Export", GTK_RESPONSE_ACCEPT,
+                                              NULL);
+        filter = gtk_file_filter_new();
+		gtk_file_filter_add_pattern(filter, "*");
+		gtk_file_filter_set_name(filter, "Bruker Pulse Program");
+		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
+		current_filter = filter;
+		filter = gtk_file_filter_new();
+		gtk_file_filter_add_pattern(filter, "*.png");
+		gtk_file_filter_set_name(filter, "Portable Network Graphic (PNG)");
+		if (insensitive_settings_get_exportFormat(window->controller->settings) == PNG)
+			current_filter = filter;
+		gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
+		gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(chooser), current_filter);
+        name = insensitive_controller_get_pulseSequence_name(window->controller);
+        if (name != NULL && strlen(name) > 0)
+            gtk_file_chooser_set_current_name((GtkFileChooser *)chooser, name);
+        gtk_widget_show_all(chooser);
+        result = gtk_dialog_run((GtkDialog *)chooser);
+        show_mainWindow_notebook_page(window, 2);
+        gtk_combo_box_set_active((GtkComboBox *)window->bottomDisplay_combobox, 2);
+        if (result == GTK_RESPONSE_ACCEPT) {
+            filter = gtk_file_chooser_get_filter((GtkFileChooser *)chooser);
+            filename = gtk_file_chooser_get_filename((GtkFileChooser *)chooser);
+            name = g_path_get_basename(filename);
+            nameWithoutSuffix = malloc((strlen(name) + 1) * sizeof(gchar));
+            strcpy(nameWithoutSuffix, name);
+            len = strlen(nameWithoutSuffix);
+            g_free(name);
+            if (len >= 4) {
+                if (!strcmp(nameWithoutSuffix + len - 4, ".txt"))
                     *(nameWithoutSuffix + len - 4) = '\0';
-                else if (!strcmp(name + len - 3, ".pp"))
+                else if (!strcmp(nameWithoutSuffix + len - 3, ".pp"))
                     *(nameWithoutSuffix + len - 3) = '\0';
-                // Replace placeholder by file name
-                while (insensitive_g_string_replace(pp, "<no name>", nameWithoutSuffix, pp));
-                FILE *f = fopen(filename, "w");
-                if (f == NULL) {
-                    dialog = gtk_message_dialog_new(GTK_WINDOW(window),
-							                        GTK_DIALOG_DESTROY_WITH_PARENT,
-							                        GTK_MESSAGE_ERROR,
-							                        GTK_BUTTONS_OK,
-							                        "Could not write pulse program to file %s.", filename);
-		            gtk_window_set_title(GTK_WINDOW(dialog), "Exporting pulse program failed");
-		            gtk_dialog_run(GTK_DIALOG(dialog));
-		            gtk_widget_destroy(dialog);
-                } else {
-                    fprintf(f, "%s", pp->str);
-                    fclose(f);
-                    insensitive_controller_set_name_for_pulseSequence(window->controller, nameWithoutSuffix);
-                    update_pulseSequence(window);
-                }
-                g_free(nameWithoutSuffix);
-                g_free(name);
-                g_free(filename);
+                else if (!strcmp(nameWithoutSuffix + len - 4, ".png"))
+                    *(nameWithoutSuffix + len - 4) = '\0';
             }
-            gtk_widget_destroy(chooser);
+            // Append extension "png" if necessary
+			if (!strcmp(gtk_file_filter_get_name(filter), "Portable Network Graphic (PNG)")) {
+                len = strlen(filename);
+                if (strcmp(filename + len - 4, ".png")) {
+                    name = malloc((len + 5) * sizeof(gchar));
+                    sprintf(name, "%s.png", filename);
+                    g_free(filename);
+                    filename = name;
+                }
+				cairo_surface_write_to_png(window->pulseSequence_surface, filename);
+            } else {
+                pp = insensitive_controller_export_pulseSequence(window->controller, "<no name>");
+                if (pp != NULL) {
+                    // Replace placeholder by file name
+                    while (insensitive_g_string_replace(pp, "<no name>", nameWithoutSuffix, pp));
+                    FILE *f = fopen(filename, "w");
+                    if (f == NULL) {
+                        dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+							                            GTK_DIALOG_DESTROY_WITH_PARENT,
+							                            GTK_MESSAGE_ERROR,
+							                            GTK_BUTTONS_OK,
+							                            "Could not write pulse program to file %s.", filename);
+		                gtk_window_set_title(GTK_WINDOW(dialog), "Exporting pulse program failed");
+		                gtk_dialog_run(GTK_DIALOG(dialog));
+		                gtk_widget_destroy(dialog);
+                    } else {
+                        fprintf(f, "%s", pp->str);
+                        fclose(f);
+                    }
+                    g_string_free(pp, TRUE);
+                }
+            }
+            insensitive_controller_set_name_for_pulseSequence(window->controller, nameWithoutSuffix);
+            update_pulseSequence(window);
+            g_free(nameWithoutSuffix);
+            g_free(filename);
         }
-        g_string_free(pp, TRUE);
+        gtk_widget_destroy(chooser);
     } else {
         dialog = gtk_message_dialog_new(GTK_WINDOW(window),
 							            GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -9987,8 +10018,10 @@ G_MODULE_EXPORT void draw_pulseSequence_view(GtkWidget *widget, cairo_t *cr, gpo
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int width, height;
 
-    width = gtk_widget_get_allocated_width(widget);
+    width = get_pulseSequence_surface_width(window->controller->pulseSequence);
     height = gtk_widget_get_allocated_height(widget);
+    gtk_widget_set_size_request(GTK_WIDGET(window->pulseSequence_drawingarea), width, height);
+    gtk_widget_set_size_request(GTK_WIDGET(window->pulseSequence_viewport), width, height);
 
     cairo_set_source_surface(cr, window->pulseSequence_surface, 0, 0);
 	cairo_rectangle(cr, 0, 0, width, height);
@@ -10000,8 +10033,9 @@ G_MODULE_EXPORT void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr,
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
     int width, height;
+    GtkAllocation *allocation;
 
-    width = gtk_widget_get_allocated_width(GTK_WIDGET(window->pulseSequence_drawingarea));
+    width = get_pulseSequence_surface_width(window->controller->pulseSequence);
     height = gtk_widget_get_allocated_height(GTK_WIDGET(window->pulseSequence_drawingarea));
 
     if (window->pulseSequence_surface != NULL) {
@@ -10010,6 +10044,36 @@ G_MODULE_EXPORT void draw_pulseSequenceStep_view(GtkWidget *widget, cairo_t *cr,
 	    cairo_rectangle(cr, 0, 0, width, height);
 	    cairo_fill(cr);
     }
+}
+
+
+int get_pulseSequence_surface_width(InsensitivePulseSequence *sequence)
+{
+	int step, numberOfElements, width;
+	SequenceElement *currentElement;
+
+	width = 100;
+	numberOfElements = insensitive_pulsesequence_get_number_of_elements(sequence);
+	for (int step = 0; step < numberOfElements; step++) {
+		currentElement = insensitive_pulsesequence_get_element_at_index(sequence, step);
+		switch (currentElement->type) {
+		case SequenceTypePulse:
+			width += currentElement->time / 360 * 50;
+			break;
+		case SequenceTypeEvolution:
+			width += currentElement->time * 100;
+			break;
+		case SequenceTypeGradient:
+			width += currentElement->time * 30;
+			break;
+		case SequenceTypeFID:
+			width += 100;
+			break;
+		default:
+			width += 0;
+		}
+	}
+    return width;
 }
 
 
