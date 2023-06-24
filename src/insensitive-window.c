@@ -212,6 +212,7 @@ static void insensitive_window_class_init(InsensitiveWindowClass *klass)
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, step_button);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, phaseCycling_treeview);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, coherencePathway_drawingarea);
+    gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, coherencePathway_viewport);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseProgram_textview);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pulseProgram_textbuffer);
     gtk_widget_class_bind_template_child(widget_class, InsensitiveWindow, pp_edit_notebook);
@@ -726,6 +727,7 @@ G_MODULE_EXPORT void quit_insensitive(InsensitiveWindow *window)
     gtk_widget_destroy((GtkWidget *)window->pulse_shaper_window);
     gtk_widget_destroy((GtkWidget *)window->matrix_composer_window);
     cairo_surface_destroy(window->pulseSequence_surface);
+    cairo_surface_destroy(window->coherencePathway_surface);
     cairo_surface_destroy(window->spectrum_surface);
 }
 
@@ -3070,7 +3072,24 @@ G_MODULE_EXPORT void export_pulse_program(GtkMenuItem *menuitem, gpointer user_d
                     g_free(filename);
                     filename = name;
                 }
-				cairo_surface_write_to_png(window->pulseSequence_surface, filename);
+
+                int width = get_pulseSequence_surface_width(window->controller->pulseSequence);
+                int height = gtk_widget_get_allocated_height(GTK_WIDGET(window->pulseSequence_drawingarea));
+                cairo_surface_t *export_surface;
+                if (!window->needsToRecalculateCoherencePathways)
+                    export_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height + get_coherencePathway_surface_height(window));
+                else
+                    export_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+                cairo_t *cr = cairo_create(export_surface);
+                cairo_set_source_surface(cr, window->pulseSequence_surface, 0, 0);
+                cairo_paint(cr);
+                if (!window->needsToRecalculateCoherencePathways) {
+                    cairo_set_source_surface(cr, window->coherencePathway_surface, 0, height);
+                    cairo_paint(cr);
+                }
+				cairo_surface_write_to_png(export_surface, filename);
+
+                //cairo_surface_write_to_png(window->pulseSequence_surface, filename);
             } else {
                 pp = insensitive_controller_export_pulseSequence(window->controller, "<no name>");
                 if (pp != NULL) {
@@ -4529,6 +4548,12 @@ gpointer calculate_coherence_paths(gpointer user_data)
                 }
             }
         }
+    if (window->coherencePathway_surface != NULL)
+        cairo_surface_destroy(window->coherencePathway_surface);
+    int width = get_pulseSequence_surface_width(window->controller->pulseSequence);
+    int height = gtk_widget_get_allocated_height(GTK_WIDGET(window->coherencePathway_drawingarea));
+    window->coherencePathway_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    create_coherencePathway_view(window, width, height);
     gtk_widget_queue_draw((GtkWidget *)window->coherencePathway_drawingarea);
 
 	return user_data;
@@ -10837,7 +10862,23 @@ G_MODULE_EXPORT void on_pulseSequence_drawingarea_button_press_event(GtkWidget *
 
 G_MODULE_EXPORT void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
-	InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+    InsensitiveWindow *window = (InsensitiveWindow *)user_data;
+    int width, height;
+
+    width = get_pulseSequence_surface_width(window->controller->pulseSequence);
+    height = gtk_widget_get_allocated_height(widget);
+    gtk_widget_set_size_request(GTK_WIDGET(window->coherencePathway_drawingarea), width, height);
+    gtk_widget_set_size_request(GTK_WIDGET(window->coherencePathway_viewport), width, height);
+
+    cairo_set_source_surface(cr, window->coherencePathway_surface, 0, 0);
+	cairo_rectangle(cr, 0, 0, width, height);
+	cairo_fill(cr);
+}
+
+
+void create_coherencePathway_view(InsensitiveWindow *window, int width, int height)
+{
+	cairo_t *cr = cairo_create(window->coherencePathway_surface);
 	unsigned int i, step;
 	float *alpha;
 	float complex *tuple;
@@ -10885,6 +10926,20 @@ G_MODULE_EXPORT void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, 
 				cairo_stroke(cr);
 			}
 	}
+}
+
+
+int get_coherencePathway_surface_height(InsensitiveWindow *window)
+{
+    int height;
+
+    height = (window->numberOfISpinOrders > 0) ? 44 : 0;
+    height += window->numberOfISpinOrders * 15;
+    height += (window->numberOfSSpinOrders > 0) ? 44 : 0;
+    height += window->numberOfSSpinOrders * 15;
+    height *= window->pathway_scaling;
+
+    return height;
 }
 
 

@@ -136,7 +136,9 @@ struct _InsensitiveWindow {
     GtkTreeView         *phaseCycling_treeview;
     GtkTreeModel        *phaseCycling_treemodel;
     GtkListStore        *phaseCycling_liststore;
+    cairo_surface_t     *coherencePathway_surface;
     GtkDrawingArea      *coherencePathway_drawingarea;
+    GtkViewport         *coherencePathway_viewport;
     GtkTextView         *pulseProgram_textview;
     GtkTextBuffer       *pulseProgram_textbuffer;
     GtkNotebook         *pp_edit_notebook;
@@ -581,6 +583,8 @@ void add_label_for_element(cairo_t *cr, enum SequenceType type, float x, float y
 int get_sequenceElementIndex_from_mouse_position(InsensitiveWindow *window, float mousePosition);
 void on_pulseSequence_drawingarea_button_press_event(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 void draw_coherencePathway_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+void create_coherencePathway_view(InsensitiveWindow *window, int width, int height);
+int get_coherencePathway_surface_height(InsensitiveWindow *window);
 void draw_graph_view(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 void create_graph_view(InsensitiveWindow *window, int surface_width, int surface_height);
 float contour_height(InsensitiveWindow *window, int x, int y, int maxX, int maxY, gboolean negativeValues);
