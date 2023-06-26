@@ -3077,7 +3077,7 @@ G_MODULE_EXPORT void export_pulse_program(GtkMenuItem *menuitem, gpointer user_d
                 int height = gtk_widget_get_allocated_height(GTK_WIDGET(window->pulseSequence_drawingarea));
                 cairo_surface_t *export_surface;
                 if (!window->needsToRecalculateCoherencePathways)
-                    export_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height + get_coherencePathway_surface_height(window));
+                    export_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, 2 * height);
                 else
                     export_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
                 cairo_t *cr = cairo_create(export_surface);
@@ -7451,20 +7451,20 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 						line_buffer = text_buffer;
 						while (line_buffer && !keyword_found) {
   							next_line = strchr(line_buffer, '\n');
-  							if (next_line)
-							  *next_line = '\0';  // temporarily terminate the current line
-							keyword = g_strsplit_set(line_buffer, " \t\n", 20);
-							for (keyword_index = 1; keyword[keyword_index] != NULL; keyword_index++) {
-								if (!strcmp(keyword[keyword_index], search_string->str)) {
-									keyword_found = TRUE;
-									html_file = malloc(256 * sizeof(gchar));
-									strcpy(html_file, keyword[0]);
-									break;
-								}
-							}
-							g_strfreev(keyword);
-  							if (next_line)
-							  *next_line = '\n';  // then restore newline-char, just to be tidy
+  							if (next_line) {
+							    *next_line = '\0';  // temporarily terminate the current line
+							    keyword = g_strsplit_set(line_buffer, " \t\n", 20);
+							    for (keyword_index = 1; keyword[keyword_index] != NULL; keyword_index++) {
+								    if (!strcmp(keyword[keyword_index], search_string->str)) {
+									    keyword_found = TRUE;
+									    html_file = malloc(256 * sizeof(gchar));
+									    strcpy(html_file, keyword[0]);
+									    break;
+								    }
+							    }
+							    g_strfreev(keyword);
+							        *next_line = '\n';  // then restore newline-char, just to be tidy
+                            }
   							line_buffer = next_line ? (next_line + 1) : NULL;
 						}
 						g_free(text_buffer);
@@ -10926,20 +10926,6 @@ void create_coherencePathway_view(InsensitiveWindow *window, int width, int heig
 				cairo_stroke(cr);
 			}
 	}
-}
-
-
-int get_coherencePathway_surface_height(InsensitiveWindow *window)
-{
-    int height;
-
-    height = (window->numberOfISpinOrders > 0) ? 44 : 0;
-    height += window->numberOfISpinOrders * 15;
-    height += (window->numberOfSSpinOrders > 0) ? 44 : 0;
-    height += window->numberOfSSpinOrders * 15;
-    height *= window->pathway_scaling;
-
-    return height;
 }
 
 
