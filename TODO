@@ -10,8 +10,7 @@ Known bugs:
 -----------
 - Combine overlapping Energy level labels
 - Sometimes phase cycling table has NaNs at the end
-- Coherence transfer is not updated when spin type is changed
-- Checkboxes are not set correctly on startup (pulseArray, relaxation, show real/imag/integral)
+- Checkboxes are not set correctly on startup (show real/imag/integral)
 - Symmetrisation of amplitude-modulated 2D spectra fails (TPPI, States-TPPI)
 
 Roadmap to version 1.0:

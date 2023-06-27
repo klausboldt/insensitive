@@ -448,8 +448,11 @@ static void insensitive_window_init(InsensitiveWindow *self)
     self->controller = insensitive_controller_new();
 	spinsystem = insensitive_spinsystem_new();
 	settings = insensitive_settings_new();
+    // pulseArray gets overwritten when calling spin_number_was_changed() and needs to be restored
+    unsigned int saved_pulseArray = settings->pulseArray;
 	insensitive_controller_setup(self->controller, spinsystem, settings, self);
     spin_number_was_changed(self);
+    set_spin_checkboxes(self, saved_pulseArray); // restore pulseArray after initialisation
     spin_state_was_changed(self);
     reset_phaseCyclingTable(self);
     insensitive_settings_load_pulsesequence(self->controller->settings, self);
@@ -2470,9 +2473,9 @@ void spin_was_selected(InsensitiveWindow *window, unsigned int spin)
 void set_spin_type(InsensitiveWindow *window, unsigned int spin)
 {
     if(insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin) == spinTypeI)
-        insensitive_spinsystem_set_spintype_for_spin(window->controller->spinSystem, spinTypeS, spin);
+        insensitive_controller_set_spinType_of_spin(window->controller, spin, spinTypeS);
     else if(insensitive_spinsystem_get_spintype_for_spin(window->controller->spinSystem, spin) == spinTypeS)
-        insensitive_spinsystem_set_spintype_for_spin(window->controller->spinSystem, spinTypeI, spin);
+        insensitive_controller_set_spinType_of_spin(window->controller, spin, spinTypeI);
 
     spin_number_was_changed(window);
     spin_state_was_changed(window);
@@ -2631,7 +2634,8 @@ G_MODULE_EXPORT void on_reset_constants_button_clicked(GtkButton *button, gpoint
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
     insensitive_controller_reset_couplingMatrix(window->controller);
-    //[self setOpenedFileState:NoFile withName:nil];
+    gtk_widget_queue_draw((GtkWidget *)window->spinEditor_drawingarea);
+    set_openedFileState_for_spinSystem(window, NoFile, NULL);
 }
 
 

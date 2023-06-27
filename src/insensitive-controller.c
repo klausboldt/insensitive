@@ -193,7 +193,7 @@ static void insensitive_controller_init(InsensitiveController *self)
 
     firstPhaseCycleString = malloc(5 * sizeof(gchar));
     sprintf(firstPhaseCycleString, "0");
-    self->phaseCyclingArray = g_ptr_array_new_with_free_func(g_free); // g_ptr_array_sized_new(self->phaseCycles);
+    self->phaseCyclingArray = g_ptr_array_new_with_free_func(g_free);
     g_ptr_array_add(self->phaseCyclingArray, firstPhaseCycleString);
 
 	self->indexForVariableEvolutionTime = 0;
@@ -559,7 +559,6 @@ void insensitive_controller_set_dipolarCouplingConstant_between_spins(Insensitiv
 void insensitive_controller_set_distance_between_spins(InsensitiveController *self, int spinNumber1, int spinNumber2, float r)
 {
     insensitive_spinsystem_set_distance_between_spins(self->spinSystem, spinNumber1, spinNumber2, r);
-    // [spinEditorController updateCouplingConstantLabels];
     set_dipolarConstant((InsensitiveWindow *)self->displayController,
                          insensitive_spinsystem_get_dipolarcouplingconstant_between_spins(self->spinSystem, spinNumber1, spinNumber2));
     set_distanceConstant((InsensitiveWindow *)self->displayController,
@@ -608,7 +607,6 @@ void insensitive_controller_spin_number_changed(InsensitiveController *self, uns
         }
 
         // Update user interface
-        //[spinEditorController updateCouplingConstantLabels];
         spin_number_was_changed((InsensitiveWindow *)self->displayController);
         spin_state_was_changed((InsensitiveWindow *)self->displayController);
         if(self->operationIsInProgress) {
@@ -2653,7 +2651,8 @@ gboolean insensitive_controller_finish_perform_pulseSequence(gpointer data)
     if (insensitive_settings_get_playSoundAfterAcquisition(self->settings))
         play_sound((InsensitiveWindow *)self->displayController);
     enable_fft_along_t1((InsensitiveWindow *)self->displayController, TRUE);
-    insensitive_controller_restore_relaxation_with_evolution(self);
+    //insensitive_controller_restore_relaxation_with_evolution(self);
+    set_include_relaxation_checkbox((InsensitiveWindow *)self->displayController, self->relaxationWasIncludedBefore);
     insensitive_controller_restore_decoupling(self);
     show_mainWindow_notebook_page((InsensitiveWindow *)self->displayController, 3);
 
