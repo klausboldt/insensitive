@@ -3,6 +3,7 @@
 docdir = $(datadir)/@PACKAGE@/doc
 
 doc_DATA = 10.1002_cmr.a.20203.pdf \
+	s00723-023-01552-9.pdf \
 	abbreviations.html \
 	adiabatic_pulse.html \
 	animation.png \
