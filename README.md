@@ -4,7 +4,12 @@ Insensitive (Incredible Nuclear Spin EvolutioN SImulation Tool Intended for
 Visual Education) is a simulation of the nuclear magnetic resonance (NMR)
 experiment for educational purposes. It allows to interact with every step 
 from spin precession to Fourier transformation and processing of acquired 1D 
-and 2D spectra. A paper on an earlier verion of Insensitive has been published
+and 2D spectra. Two papers have been published on Insensitive, in [Concepts of 
+Magnetic Resonance](https://onlinelibrary.wiley.com/doi/full/10.1002/cmr.a.20203)
+(DOI:10.1002/cmr.a.20203) and in [Applied Magnetic Resonance](https://doi.org/10.1007/s00723-023-01552-9) 
+(DOI:10.1007/s00723-023-01552-9).
+
+A paper on an earlier verion of Insensitive has been published
 in [Concepts in Magnetic Resonance](https://onlinelibrary.wiley.com/doi/full/10.1002/cmr.a.20203) 
 (DOI:10.1002/cmr.a.20203).
 

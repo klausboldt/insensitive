@@ -5,9 +5,9 @@ Insensitive (Incredible Nuclear Spin EvolutioN SImulation Tool Intended for
 Visual Education) is a simulation of the nuclear magnetic resonance (NMR)
 experiment for educational purposes. It allows to interact with every step
 from spin precession to Fourier transformation and processing of acquired 1D
-and 2D spectra. A paper on an earlier verion of Insensitive has been published
-in Concepts of Magnetic Resonance, 2011, 38A (2), 17-24.
-(DOI:10.1002/cmr.a.20203)
+and 2D spectra. Two papers have been published on Insensitive, in Concepts of
+Magnetic Resonance, 2011, 38A (2), 17-24 (DOI:10.1002/cmr.a.20203) and in
+Applied Magnetic Resonance, 2023, 54, 761-777 (DOI:10.1007/s00723-023-01552-9).
 
 Until version 0.9.33 Insensitive was written in Objective-C and based on
 Apple's Cocoa framework. For version 0.9.34 it has been ported to C with GLib

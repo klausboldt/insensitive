@@ -226,6 +226,12 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	img_powder_pattern.png \
 	img_presentation.png \
 	img_polarised_pulse.png \
+	img_pp_decouple.png \
+	img_pp_fid.png \
+	img_pp_gauss.png \
+	img_pp_pfg.png \
+	img_pp_pulse.png \
+	img_pp_shaped.png \
 	img_pulse_sequence.png \
 	img_pulsesequence.png \
 	img_pulse_shaper.png \
@@ -245,17 +251,13 @@ doc_DATA = 10.1002_cmr.a.20203.pdf \
 	img_singlet_store.png \
 	img_spectrometer_photo.png \
 	img_spectrometer.png \
-	img_spectrum_1D.png \
-	img_spectrum_2D.png \
 	img_spectrumdisplay_2D.png \
 	img_spectrumdisplay.png \
 	img_spherical_harmonics.png \
 	img_spinlock.png \
-	img_spin_network_editor.png \
 	img_spinstate.png \
 	img_spin_system_homonuclear.png \
 	img_spinsystem.png \
-	img_tabbar.png \
 	img_three_level.png \
 	img_toolbar.png \
 	img_two_level.png \

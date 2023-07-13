@@ -41,12 +41,45 @@
             <a href="spectrum.html">Spectrum</a> panel and a spectrum is displayed. If no FID is recorded the pulse
             sequence is simply applied to the spin system in its current state (no phase cycling is used) and the
             resulting spin state will be displayed in the Spin State panel.<br>
-            When holding the ALT key when clicking "Play" the pulse sequence can be executed step-wise. For this only
-            the first row of the phase cycling table is used and t<sub>1</sub> of a 2D sequence is not incremented.
+            By clicking "Step" the pulse sequence can be executed step-wise. For this only the first row of the
+            phase cycling table is used and t<sub>1</sub> of a 2D sequence is not incremented.
             Insensitive will switch to the Spin State panel and the pulse sequence is shown in a separate window.
             The current position in the pulse sequence is shown by a yellow diamond. Further steps can be applied by
             clicking the button with the footprint icon. The resulting spectrum acquired at the end of step-wise
             execution is always a 1D spectrum.
+            </p>
+            <p><b>Pulse Sequence Elements</b></p>
+            <p>
+            </p>
+            <p>
+            <img src="img_pp_pulse.png" align="left" height="66" width="24" hspace="15">
+            <img src="img_pp_gauss.png" align="left" height="66" width="23" hspace="5">
+            <img src="img_pp_shaped.png" align="left" height="78" width="24" hspace="15">
+            A radiofrequency pulse appears as a red rectangle with the corresponding phase in the phase cycling table
+            denoted as &phi;<sub><i>n</i></sub> above. The red shading varies between red and light red as the phase is
+            varied between &plusmn;<i>x</i> and &plusmn;<i>y</i>. A gaussian shaped pulse appears a single Gauss curve,
+            while any other shaped pulse (sinc, BURP, etc.) appears with with the shape of a sinc function.
+            The width of the pulse corresponds to the pulse duration, while the height signifies the pulse strength.
+            A 180&deg; hard pulse therefore appears with twice the width of the 90&deg; pulse.
+            </p>
+            <p>
+            <img src="img_pp_decouple.png" align="left" height="62" width=107" hspace="20">
+            Free evolution appears as gaps with a width proportional to the delay time, which is enumerated with
+            &tau;<sub><i>n</i></sub> with <i>n</i> starting at 1. In a 2D experiment, the variable delay time is
+            marked in blue and indicated by <i>t</i><sub>1</sub> for a single variable delay or <i>t</i><sub>1</sub>/2
+            for a pulse sandwiched by two variable delay times. Decoupling and spin lock sequences appear as long,
+            low rectangles, light red in case of decoupling and pink in case of spin locks.
+            </p>
+            <p>
+            <img src="img_pp_pfg.png" align="left" height="62" width=39" hspace="15">
+            Pulsed field gradients are shown as green Gauss-shaped peaks on the channel labelled "G<sub>z</sub>".
+            They appear either up or down and with a height corresponding to their respective strength.
+            </p>
+            <p>
+            <img src="img_pp_fid.png" align="left" height="59" width=100" hspace="15">
+            Acquisition of the FID is indicated by a dampened oscillation on one of the two radiofrequency channels
+            for either I or S spins. It is denoted with either <i>t</i><sub>1</sub> for 1D experiments or
+            <i>t</i><sub>2</sub> fpr 2D experiments.
             </p>
             <p><b>Editing pulse sequences</b></p>
             <p>
