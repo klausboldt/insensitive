@@ -9,10 +9,6 @@ Magnetic Resonance](https://onlinelibrary.wiley.com/doi/full/10.1002/cmr.a.20203
 (DOI:10.1002/cmr.a.20203) and in [Applied Magnetic Resonance](https://doi.org/10.1007/s00723-023-01552-9) 
 (DOI:10.1007/s00723-023-01552-9).
 
-A paper on an earlier verion of Insensitive has been published
-in [Concepts in Magnetic Resonance](https://onlinelibrary.wiley.com/doi/full/10.1002/cmr.a.20203) 
-(DOI:10.1002/cmr.a.20203).
-
 Until version 0.9.33 Insensitive was written in Objective-C and based on 
 Apple's Cocoa framework. For version 0.9.34 it has been ported to C with GLib
 and GTK3 for better portability. The new version is compatible with the old
