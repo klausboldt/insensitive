@@ -5905,7 +5905,7 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 	//float first_x1, first_x2, first_y1, first_y2, last_x1, last_x2;
 	float *dataset;
 	gchar *nuc1, *nuc2, *fnmode, *pulprog, *datatype, *x_unit, *y_unit, *x_scale, *sqz;
-	signed long current;
+	signed long long current;
 	char *z;
 	unsigned int i, j, p, t1DataPoints, t2DataPoints;
 	DSPSplitComplex data;
@@ -6190,8 +6190,8 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 								g_string_append_printf(csv, "%.0f", begin1 + i);
 								for (j = 0; j < 10; j++) {
 									if (i + j < t2DataPoints) {
-										current = lroundf(data.realp[i + j + (p * t2DataPoints)] * factor_y1);
-										sprintf(sqz, "%ld", current);
+										current = llroundf(data.realp[i + j + (p * t2DataPoints)] * factor_y1);
+										sprintf(sqz, "%lld", current);
 										if (current < 0) {
 											// negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
 											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
@@ -6209,8 +6209,8 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 								g_string_append_printf(csv, "%.0f", begin2 + i);
 								for (j = 0; j < 10; j++) {
 									if (i + j < t2DataPoints) {
-										current = lroundf(data.imagp[i + j + (p * t2DataPoints)] * factor_y2);
-										sprintf(sqz, "%ld", current);
+										current = llroundf(data.imagp[i + j + (p * t2DataPoints)] * factor_y2);
+										sprintf(sqz, "%lld", current);
 										if (current < 0) {
 											// negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
 											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
@@ -6232,8 +6232,8 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 								for (j = 0; j < 10; j++) {
 									if (i + j < t2DataPoints) {
 									    // SQZ: Difference to previous value (first digit: @ = 0, A-I > 0, a-i < 0)
-										current = lroundf(dataset[i + j + (p * t2DataPoints)] * factor_y1);
-									    sprintf(sqz, "%ld", current);
+										current = llroundf(dataset[i + j + (p * t2DataPoints)] * factor_y1);
+									    sprintf(sqz, "%lld", current);
 										if (current < 0) {
 										    // negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
 											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
@@ -6333,8 +6333,8 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 									g_string_append_printf(csv, "%.0f", begin1 + i);
 									for (j = 0; j < 10; j++) {
 										if (i + j < t2DataPoints) {
-											current = lroundf(dataset[i + j] * factor_y1);
-											sprintf(sqz, "%ld", current);
+											current = llroundf(dataset[i + j] * factor_y1);
+											sprintf(sqz, "%lld", current);
 											if (current < 0) {
 												// negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
 												g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
@@ -6367,8 +6367,8 @@ G_MODULE_EXPORT void export_spectrum(GtkMenuItem *menuitem, InsensitiveWindow *w
 									if (i + j < t2DataPoints) {
 									    // SQZ: Difference to previous value (first digit: @ = 0, A-I > 0, a-i < 0)
 										// DIF: Difference to previous value (first digit: % = 0, J-R > 0, j-r < 0)
-										current = lroundf(data.realp[i + j] * factor_y1 /*+ 0.5*/);
-										sprintf(sqz, "%ld", current);
+										current = llroundf(data.realp[i + j] * factor_y1 /*+ 0.5*/);
+										sprintf(sqz, "%lld", current);
 										if (current < 0) {
 										    // negative numbers: replace first digit by a, b, c, ... for -1, -2, -3, ...
 											g_string_append_printf(csv, "%c%s", *(sqz + 1) + 48, sqz + 2);
