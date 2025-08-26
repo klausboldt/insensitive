@@ -5049,17 +5049,19 @@ G_MODULE_EXPORT void on_fid_button_clicked(GtkButton *button, gpointer user_data
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
-    set_display_frequency_domain(window, FALSE);
-    window->spectrumIsDOSY2D = FALSE;
-    if (window->twoDimensionalSpectrum) {
-        window->scaling = 100;
-        window->shows2DFrequencyDomain = FALSE;
-        insensitive_controller_show_SER(window->controller);
-    } else {
-        insensitive_controller_show_FID(window->controller);
+    if(window->controller->fid.realp != NULL && window->controller->fid.imagp != NULL) {
+        set_display_frequency_domain(window, FALSE);
+        window->spectrumIsDOSY2D = FALSE;
+        if (window->twoDimensionalSpectrum) {
+            window->scaling = 100;
+            window->shows2DFrequencyDomain = FALSE;
+            insensitive_controller_show_SER(window->controller);
+        } else {
+            insensitive_controller_show_FID(window->controller);
+        }
+        set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
+        window->domainOf2DSpectrum = 0;
     }
-    set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
-    window->domainOf2DSpectrum = 0;
 }
 
 
@@ -5067,17 +5069,19 @@ G_MODULE_EXPORT void on_fft1D_button_clicked(GtkButton *button, gpointer user_da
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
-    set_display_frequency_domain(window, TRUE);
-    window->spectrumIsDOSY2D = FALSE;
-    if(window->twoDimensionalSpectrum){
-        window->scaling = 10;
-        window->shows2DFrequencyDomain = FALSE;
-        insensitive_controller_fourier_transform_2D_spectrum_along_T2(window->controller);
-    } else {
-        insensitive_controller_fourier_transform_1D_spectrum(window->controller);
+    if(window->controller->fid.realp != NULL && window->controller->fid.imagp != NULL) {
+        set_display_frequency_domain(window, TRUE);
+        window->spectrumIsDOSY2D = FALSE;
+        if(window->twoDimensionalSpectrum){
+            window->scaling = 10;
+            window->shows2DFrequencyDomain = FALSE;
+            insensitive_controller_fourier_transform_2D_spectrum_along_T2(window->controller);
+        } else {
+            insensitive_controller_fourier_transform_1D_spectrum(window->controller);
+        }
+        set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
+        window->domainOf2DSpectrum = 1;
     }
-    set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
-    window->domainOf2DSpectrum = 1;
 }
 
 
@@ -5099,18 +5103,20 @@ G_MODULE_EXPORT void on_magnitude_button_clicked(GtkButton *button, gpointer use
 {
     InsensitiveWindow *window = (InsensitiveWindow *)user_data;
 
-    set_display_frequency_domain(window, TRUE);
-    window->spectrumIsDOSY2D = FALSE;
-    if(window->twoDimensionalSpectrum) {
-        window->scaling = 1;
-        window->shows2DFrequencyDomain = TRUE;
-        insensitive_controller_absolute_value_spectrum(window->controller);
-    } else {
-        insensitive_controller_absolute_value_1D_spectrum(window->controller, TRUE);
+    if(window->controller->fid.realp != NULL && window->controller->fid.imagp != NULL) {
+        set_display_frequency_domain(window, TRUE);
+        window->spectrumIsDOSY2D = FALSE;
+        if(window->twoDimensionalSpectrum) {
+            window->scaling = 1;
+            window->shows2DFrequencyDomain = TRUE;
+            insensitive_controller_absolute_value_spectrum(window->controller);
+        } else {
+            insensitive_controller_absolute_value_1D_spectrum(window->controller, TRUE);
+        }
+        set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
+        window->domainOf2DSpectrum = 3;
+        update_spectrum_parameter_panel(window);
     }
-    set_openedFileState_for_spectrum(window, FileOpenedAndChanged, NULL);
-    window->domainOf2DSpectrum = 3;
-    update_spectrum_parameter_panel(window);
 }
 
 
