@@ -577,6 +577,9 @@ static void insensitive_window_init(InsensitiveWindow *self)
     gtk_widget_hide(GTK_WIDGET(self->step_window));
     gtk_widget_hide(GTK_WIDGET(self->dosyToolBox_window));
     set_2D_mode(self, FALSE);
+    enable_fft_along_t1(self, FALSE);
+    enable_fft_along_t2(self, FALSE);
+    enable_symmerization(self, FALSE);
     show_spectrumParameters_textview(self, FALSE);
     update_spectrum_parameter_panel(self);
     gtk_text_view_set_monospace(self->pulseProgram_textview, TRUE);

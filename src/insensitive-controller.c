@@ -4292,7 +4292,7 @@ void insensitive_controller_reset_acquisition_for_dataPoints(InsensitiveControll
     self->spectrum2D.imagp = malloc(number * sizeof(float));
     self->spectrumSymmetrized.realp = malloc(number * sizeof(float));
     self->spectrumSymmetrized.imagp = malloc(number * sizeof(float));
-    // Begin only needed for Stated method
+    // Begin only needed for States method
     if(insensitive_settings_get_detectionMethod(self->settings) == States || insensitive_settings_get_detectionMethod(self->settings) == StatesTPPI
        || self->detectionMethodOfCurrentSpectrum == States || self->detectionMethodOfCurrentSpectrum == StatesTPPI) {
         if (self->fidStates.realp != NULL)

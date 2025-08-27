@@ -33,15 +33,22 @@ or, alternatively:
 
 Insensitive can be compiled for Microsoft Windows (7 and above) using MSYS2
 (https://www.msys2.org/). It has been tested in the ucrt64 environment after
-installing the required dependencies using `pacman` and invoking
+installing the required dependencies using "pacman" and invoking
 "./configure --prefix=/usr".
 
 On Apple macOS Insensitive has been successfully compiled using GTK-OSX and
-JHBuild] https://wiki.gnome.org/Projects/GTK/OSX/Building). Insensitive for
+JHBuild (https://wiki.gnome.org/Projects/GTK/OSX/Building). Insensitive for
 macOS makes use of the gtk-osx-integration library and gtk-mac-bundler to
-create a self-consistent application bundle. an installation script,
-moduleset and bundle file are provided in the macosx directory of the
-source tree.
+create a self-consistent application bundle. An installation script,
+moduleset, and bundle file are provided in the "macosx" directory of the
+source tree. After GTK-OSX was installed and configured correctly, copy the 
+file "insensitive.modules" the folder "modelsets" in the GTK-OSX directory
+and compile using the following commands:
+
+        jhbuild shell
+        jhbuild build insensitive
+        cd <path_to_gtk-osx>/source/insensitive/macosx
+        gtk-mac-bundler ./Insensitive.bundle
 
 There are no working ports of WebKit2GTK for Windows or macOS. On these
 systems Insensitive will fall back to displaying the tutorial pages using
