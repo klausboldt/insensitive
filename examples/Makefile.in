@@ -296,6 +296,7 @@ examples_files = 13C_decoupled.ipp \
 	3_Spins_A2X.iss \
 	3_Spins_A3.iss \
 	3_Spins_AMX.iss \
+	3_Spins_AMX-2.iss \
 	3_Spins_AX+A.iss \
 	3_Spins_H-C-C.iss \
 	3_Spins_heteronuclear.iss \
@@ -329,6 +330,19 @@ examples_files = 13C_decoupled.ipp \
 	AMX_TOCSY.igg \
 	AMX_TQF-COSY.igg \
 	AMX_z-COSY.igg \
+	AMX-2_1D.igg \
+	AMX-2_COSY-45.igg \
+	AMX-2_COSY.igg \
+	AMX-2_DQF-COSY.igg \
+	AMX-2_gCOSY.igg \
+	AMX-2_J-resolved.igg \
+	AMX-2_NOESY.igg \
+	AMX-2_Relayed_COSY.igg \
+	AMX-2_ROESY.igg \
+	AMX-2_SECSY.igg \
+	AMX-2_TOCSY.igg \
+	AMX-2_TQF-COSY.igg \
+	AMX-2_z-COSY.igg \
 	APT.ipp \
 	AX+A_DOSY.igg \
 	AXAX_2D-INADEQUATE.igg \
