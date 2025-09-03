@@ -6849,7 +6849,7 @@ G_MODULE_EXPORT void execute_command(GtkEntry *entry, gpointer user_data)
 	GtkWidget *dialog;
 
 	// Tokenise the command string into
-    commandCopy = malloc(strlen(gtk_entry_get_text(entry)) * sizeof(gchar));
+    commandCopy = malloc(strlen(gtk_entry_get_text(entry)) * sizeof(gchar) + 1);
     strcpy(commandCopy, gtk_entry_get_text(entry));
     g_strstrip(commandCopy);
     if (strlen(commandCopy) == 0)

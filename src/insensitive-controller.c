@@ -3470,7 +3470,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
         // Determine greatest common denominator for all phases                                                                                                             // Determine greatest common denominator for all phases
         phases = malloc(cycleSize * sizeof(int));
         for (cycle = 0; cycle < cycleSize; cycle++) {
-            char_ptr1 = g_ptr_array_index(self->phaseCyclingArray, cycle * (self->pulseList->len + 1) + pulse + 1);
+            char_ptr1 = g_ptr_array_index(self->phaseCyclingArray, cycle * (self->pulseList->len + 1));
             phases[cycle] = atof(char_ptr1);
         }
         divisor = gcd_list(phases, cycleSize);

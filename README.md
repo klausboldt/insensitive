@@ -70,20 +70,22 @@ the default web browser.
 - WebKit2GTK 4.0
 - libxml 2.0
 - gfortran
+- gettext
 
 On Ubuntu-based systems, install the dependencies with
 
 ```
 sudo apt install libblas-dev liblapack-dev libfftw3-dev libxml2-dev \
                  libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.0-dev \
-                 libgfortran5
+                 libgfortran5 gettext
 ```
 
 On Fedora-based systems, install the dependencies with
 
 ```
 yum install blas-devel lapack-devel fftw3-devel libxml2-devel \
-            glib2-devel gtk3-devel webkit2gtk3-devel libgfortran5
+            glib2-devel gtk3-devel webkit2gtk3-devel libgfortran5 \
+            gettext
 ```
 
 ## Support
