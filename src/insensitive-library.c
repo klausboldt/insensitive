@@ -367,6 +367,39 @@ void coupling_partners_from_index(int *spin1type, int *spin2type, int index, int
 }
 
 
+unsigned int gcd(unsigned int a, unsigned int b)
+{
+    unsigned int temp;
+
+    if (a < b) {
+        temp = a;
+        a = b;
+        b = temp;
+    }
+    while (b) {
+        temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+
+int gcd_list(int *numbers, unsigned int size)
+{
+    int i, result;
+
+    if (!numbers || size <= 0)
+        return 0;
+
+    result = numbers[0];
+    for (i = 1; i < size; i++) {
+        result = gcd(result, numbers[i]);
+    }
+    return result;
+}
+
+
  //////  //////  ///    /// //////  //      /////// //   //      /////  //       //////  /////// //////  //////   /////
 //      //    // ////  //// //   // //      //       // //      //   // //      //       //      //   // //   // //   //
 //      //    // // //// // //////  //      /////     ///       /////// //      //   /// /////   //////  //////  ///////

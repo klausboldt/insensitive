@@ -3413,6 +3413,7 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
     if (self->phaseCyclingArray->len >= (self->phaseCycles / 2) * (self->pulseList->len + 1) + self->pulseList->len + 1) {
 		unsigned int cycleSize;
 		gboolean half;
+        int *phases, divisor;
 		for (pulse = 0; pulse < self->pulseList->len; pulse++) {
 			// ph31 is reserved for receiver phase cycle
 			g_string_append_printf(pp, "\nph%d=", pulse + ((pulse < 30) ? 1 : 2));
@@ -3432,11 +3433,21 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 						cycleSize /= 2;
 				}
 			}
+            // Determine greatest common denominator for all phases
+            phases = malloc(cycleSize * sizeof(int));
+            for (cycle = 0; cycle < cycleSize; cycle++) {
+                char_ptr1 = g_ptr_array_index(self->phaseCyclingArray, cycle * (self->pulseList->len + 1) + pulse + 1);
+                phases[cycle] = atof(char_ptr1);
+            }
+            divisor = gcd_list(phases, cycleSize);
+            if (divisor == 180 || divisor == 0)
+                divisor = 90;
+            if (divisor != 90)
+                g_string_append_printf(pp, "(%d) ", 360 / divisor);
 			// Append pulse phase list
-			for (cycle = 0; cycle < cycleSize; cycle++) {
-				char_ptr1 = g_ptr_array_index(self->phaseCyclingArray, cycle * (self->pulseList->len + 1) + pulse + 1);
-				g_string_append_printf(pp, "%.0f ", atof(char_ptr1) / 90);
-			}
+			for (cycle = 0; cycle < cycleSize; cycle++)
+                g_string_append_printf(pp, "%d ", phases[cycle] / divisor);
+            free(phases);
 		}
 		// Receiver phase
 		g_string_append(pp, "\nph31=");
@@ -3456,11 +3467,21 @@ GString *insensitive_controller_export_pulseSequence(InsensitiveController *self
 					cycleSize /= 2;
 			}
 		}
+        // Determine greatest common denominator for all phases                                                                                                             // Determine greatest common denominator for all phases
+        phases = malloc(cycleSize * sizeof(int));
+        for (cycle = 0; cycle < cycleSize; cycle++) {
+            char_ptr1 = g_ptr_array_index(self->phaseCyclingArray, cycle * (self->pulseList->len + 1) + pulse + 1);
+            phases[cycle] = atof(char_ptr1);
+        }
+        divisor = gcd_list(phases, cycleSize);
+        if (divisor == 180 || divisor == 0)
+            divisor = 90;
+        if (divisor != 90)
+            g_string_append_printf(pp, "(%d) ", 360 / divisor);
 		// Append receiver phase cycling table
-		for (cycle = 0; cycle < cycleSize; cycle++) {
-			char_ptr1 = g_ptr_array_index(self->phaseCyclingArray, cycle * (self->pulseList->len + 1));
-			g_string_append_printf(pp, "%.0f ", atof(char_ptr1) / 90);
-		}
+		for (cycle = 0; cycle < cycleSize; cycle++)
+            g_string_append_printf(pp, "%d ", phases[cycle] / divisor);
+        free(phases);
 	} else {
 		g_string_append(pp, "\n;Error creating phase cycling table");
 	}

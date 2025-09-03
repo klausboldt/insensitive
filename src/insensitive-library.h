@@ -65,6 +65,8 @@ int indirect_datapoints(enum PurePhaseDetectionMethod method, int direct_datapoi
 float pulseDurationToSliderScale(float value, float flipAngle);
 float sliderScaleToPulseDuration(float value, float flipAngle);
 void coupling_partners_from_index(int *spin1type, int *spin2type, int index, int spins);
+unsigned int gcd(unsigned int a, unsigned int b);
+int gcd_list(int *numbers, unsigned int size);
 
 // Complex Algebra
 DSPComplex complex_rect(float re, float im);
